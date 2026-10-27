@@ -1,0 +1,72 @@
+@import 'tailwindcss';
+@import './tokens.css';
+
+/* Map Tailwind's theme onto the Sulzer tokens (e.g. bg-primary, text-navy-900, rounded-md). */
+@theme inline {
+  --color-brand: var(--sz-color-brand);
+  --color-primary: var(--sz-color-primary);
+  --color-primary-hover: var(--sz-color-primary-hover);
+  --color-primary-tint: var(--sz-color-primary-tint);
+  --color-primary-tint-strong: var(--sz-color-primary-tint-strong);
+  --color-primary-border: var(--sz-color-primary-border);
+  --color-accent-yellow: var(--sz-color-accent-yellow);
+  --color-accent-red: var(--sz-color-accent-red);
+
+  --color-navy-900: var(--sz-color-navy-900);
+  --color-navy-800: var(--sz-color-navy-800);
+  --color-navy-700: var(--sz-color-navy-700);
+  --color-navy-600: var(--sz-color-navy-600);
+  --color-navy-500: var(--sz-color-navy-500);
+
+  --color-text: var(--sz-color-text);
+  --color-text-muted: var(--sz-color-text-muted);
+  --color-text-subtle: var(--sz-color-text-subtle);
+  --color-text-on-dark: var(--sz-color-text-on-dark);
+  --color-text-on-dark-muted: var(--sz-color-text-on-dark-muted);
+
+  --color-surface: var(--sz-color-surface);
+  --color-surface-subtle: var(--sz-color-surface-subtle);
+  --color-surface-muted: var(--sz-color-surface-muted);
+  --color-surface-sunken: var(--sz-color-surface-sunken);
+  --color-border: var(--sz-color-border);
+  --color-border-strong: var(--sz-color-border-strong);
+
+  --color-success: var(--sz-color-success);
+  --color-success-strong: var(--sz-color-success-strong);
+  --color-success-tint: var(--sz-color-success-tint);
+  --color-warning: var(--sz-color-warning);
+  --color-warning-strong: var(--sz-color-warning-strong);
+  --color-warning-tint: var(--sz-color-warning-tint);
+  --color-danger: var(--sz-color-danger);
+
+  --font-sans: var(--sz-font-sans);
+  --default-font-family: var(--sz-font-sans);
+
+  --radius-sm: var(--sz-radius-sm);
+  --radius-md: var(--sz-radius-md);
+  --radius-lg: var(--sz-radius-lg);
+  --radius-pill: var(--sz-radius-pill);
+
+  --shadow-card: var(--sz-shadow-card);
+  --shadow-raised: var(--sz-shadow-raised);
+
+  --ease-sz: var(--sz-ease);
+  --default-transition-duration: var(--sz-duration-base);
+  --default-transition-timing-function: var(--sz-ease);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-surface font-sans text-text;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--sz-color-primary);
+    outline-offset: 2px;
+  }
+}

@@ -1,0 +1,67 @@
+/*
+ * Sulzer design tokens.
+ * Derived from the Sulzer Pump Replacement Guide (sulzer-guide.netlify.app,
+ * copy in _reference/sulzer-guide) and the logo files in _asset-source/logo.
+ * Tailwind's theme maps onto these variables in index.css — change values here.
+ */
+:root {
+  /* Brand */
+  --sz-color-brand: #003da5; /* logo blue */
+  --sz-color-primary: #1d59af; /* buttons, links, accents */
+  --sz-color-primary-hover: #174a93;
+  --sz-color-primary-tint: #eef4fb;
+  --sz-color-primary-tint-strong: #dce8f8;
+  --sz-color-primary-border: #cfe0f4;
+  --sz-color-accent-yellow: #fab900;
+  --sz-color-accent-red: #c8000a;
+
+  /* Navy (utility bar, main nav, hero backgrounds, footer) */
+  --sz-color-navy-900: #0c1c2e;
+  --sz-color-navy-800: #11203a;
+  --sz-color-navy-700: #21344f;
+  --sz-color-navy-600: #2c4565;
+  --sz-color-navy-500: #33465a;
+
+  /* Text */
+  --sz-color-text: #0c1c2e;
+  --sz-color-text-muted: #5d6b7a;
+  --sz-color-text-subtle: #8a97a5;
+  --sz-color-text-on-dark: #cdd7e2;
+  --sz-color-text-on-dark-muted: #9fb3c7;
+
+  /* Surfaces & borders */
+  --sz-color-surface: #ffffff;
+  --sz-color-surface-subtle: #fafbfc;
+  --sz-color-surface-muted: #f5f7f9;
+  --sz-color-surface-sunken: #f0f2f5;
+  --sz-color-border: #e3e8ed;
+  --sz-color-border-strong: #cfd8e1;
+
+  /* Status */
+  --sz-color-success: #1f9d57;
+  --sz-color-success-strong: #137040;
+  --sz-color-success-tint: #eaf7ef;
+  --sz-color-warning: #c87f17;
+  --sz-color-warning-strong: #9a6512;
+  --sz-color-warning-tint: #fdf4e6;
+  --sz-color-danger: #b4341f;
+
+  /* Typography */
+  --sz-font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  /* Radii */
+  --sz-radius-sm: 6px;
+  --sz-radius-md: 9px;
+  --sz-radius-lg: 14px;
+  --sz-radius-pill: 999px;
+
+  /* Shadows */
+  --sz-shadow-card: 0 1px 2px rgba(12, 28, 46, 0.06), 0 8px 24px -12px rgba(12, 28, 46, 0.18);
+  --sz-shadow-raised: 0 20px 44px -28px rgba(29, 89, 175, 0.6);
+
+  /* Motion */
+  --sz-duration-fast: 150ms;
+  --sz-duration-base: 200ms;
+  --sz-duration-slow: 250ms;
+  --sz-ease: cubic-bezier(0.2, 0, 0, 1);
+}
