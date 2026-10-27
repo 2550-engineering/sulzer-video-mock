@@ -9,6 +9,7 @@
   --color-primary-tint: var(--sz-color-primary-tint);
   --color-primary-tint-strong: var(--sz-color-primary-tint-strong);
   --color-primary-border: var(--sz-color-primary-border);
+  --color-primary-on-dark: var(--sz-color-primary-on-dark);
   --color-accent-yellow: var(--sz-color-accent-yellow);
   --color-accent-red: var(--sz-color-accent-red);
 
@@ -53,6 +54,27 @@
   --ease-sz: var(--sz-ease);
   --default-transition-duration: var(--sz-duration-base);
   --default-transition-timing-function: var(--sz-ease);
+
+  --animate-fade-in: sz-fade-in var(--sz-duration-base) var(--sz-ease);
+
+  @keyframes sz-fade-in {
+    from {
+      opacity: 0;
+      translate: 0 4px;
+    }
+  }
+}
+
+/* Centred content column used by header, footer and every page section. */
+@utility site-container {
+  margin-inline: auto;
+  width: 100%;
+  max-width: calc(var(--sz-content-max) + 2 * var(--sz-gutter));
+  padding-inline: var(--sz-gutter);
+
+  @media (width < 40rem) {
+    padding-inline: 1rem;
+  }
 }
 
 @layer base {

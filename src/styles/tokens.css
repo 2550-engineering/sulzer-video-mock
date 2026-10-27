@@ -12,6 +12,7 @@
   --sz-color-primary-tint: #eef4fb;
   --sz-color-primary-tint-strong: #dce8f8;
   --sz-color-primary-border: #cfe0f4;
+  --sz-color-primary-on-dark: #6ea8f0; /* active indicators on navy */
   --sz-color-accent-yellow: #fab900;
   --sz-color-accent-red: #c8000a;
 
@@ -48,6 +49,10 @@
 
   /* Typography */
   --sz-font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  /* Layout */
+  --sz-content-max: 1440px;
+  --sz-gutter: 2rem;
 
   /* Radii */
   --sz-radius-sm: 6px;

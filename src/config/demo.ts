@@ -18,6 +18,7 @@ export const market = {
   // Placeholder market — confirm with Sulzer.
   country: 'Sweden',
   language: 'English',
+  languageCode: 'EN',
 } as const
 
 export const products = {

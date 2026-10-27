@@ -1,12 +1,29 @@
 import { BrowserRouter, Route, Routes } from 'react-router'
+import { AuthProvider } from './auth/AuthProvider'
+import { SiteLayout } from './components/SiteLayout'
+import { placeholderRoutes } from './config/placeholderRoutes'
 import { HomePage } from './pages/HomePage'
+import { NotFoundPage } from './pages/NotFoundPage'
+import { PlaceholderPage } from './pages/PlaceholderPage'
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<SiteLayout />}>
+            <Route path="/" element={<HomePage />} />
+            {placeholderRoutes.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={<PlaceholderPage route={route} />}
+              />
+            ))}
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   )
 }
