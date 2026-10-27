@@ -1,6 +1,7 @@
 import type { LucideIcon } from 'lucide-react'
 
 export type User = {
+  firstName: string
   name: string
   initials: string
   company: string
@@ -75,4 +76,44 @@ export type PlaceholderRoute = {
   description: string
   /** Path of the parent page, used to build the breadcrumb trail. */
   parent?: string
+}
+
+/** Colour of a count badge or stat: plain, Sulzer blue, or amber for things that need a look. */
+export type StatusTone = 'neutral' | 'info' | 'warning'
+
+export type Badge = {
+  label: string
+  tone?: StatusTone
+}
+
+/** A link in a My Pages card, with an optional count or status badge. */
+export type DashboardLink = NavItem & {
+  badge?: Badge
+}
+
+/** My Pages card: icon, title and subtitle header, then a list of links. */
+export type DashboardCard = {
+  title: string
+  subtitle: string
+  icon: LucideIcon
+  links: DashboardLink[]
+}
+
+/** Headline number on the My assets card. Deterministic demo data. */
+export type AssetStat = {
+  value: string
+  label: string
+  detail: string
+  tone: StatusTone
+  icon: LucideIcon
+}
+
+/** A row in the My Pages "Recent activity" list. */
+export type ActivityItem = {
+  /** Bold lead-in, e.g. the document or project name. */
+  subject: string
+  text: string
+  time: string
+  to: string
+  icon: LucideIcon
 }

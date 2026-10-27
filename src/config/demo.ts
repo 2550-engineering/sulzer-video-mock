@@ -7,6 +7,7 @@
 
 export const demoUser = {
   // Placeholder persona — confirm name/role with Sulzer.
+  firstName: 'Emma',
   name: 'Emma Lindqvist',
   initials: 'EL',
   // Placeholder customer company — confirm with Sulzer (fictional, not a real customer).

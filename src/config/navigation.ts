@@ -1,10 +1,13 @@
 import {
   Activity,
   CircleUserRound,
+  FolderKanban,
   GraduationCap,
   Headset,
+  LayoutDashboard,
   Ruler,
   Search,
+  Settings,
   ShoppingCart,
   Wrench,
 } from 'lucide-react'
@@ -81,6 +84,13 @@ export const popularSearches = [
   'Mixers',
   'Condition monitoring',
   'Pump sizing',
+]
+
+/** Links in the signed-in account menu, above "Sign out". */
+export const accountMenuLinks: IconLink[] = [
+  { label: 'My Pages', to: '/my-pages', icon: LayoutDashboard },
+  { label: 'My projects', to: '/my-projects', icon: FolderKanban },
+  { label: 'Settings', to: '/settings', icon: Settings },
 ]
 
 /** Canned options in the floating chat card. */

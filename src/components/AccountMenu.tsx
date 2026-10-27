@@ -1,8 +1,12 @@
-import { ChevronDown, CircleUserRound, LayoutDashboard, LogOut } from 'lucide-react'
+import { ChevronDown, CircleUserRound, LogOut } from 'lucide-react'
 import { Link } from 'react-router'
 import { useAuth } from '../auth/useAuth'
+import { accountMenuLinks } from '../config/navigation'
 import { popoverClasses } from '../lib/popover'
 import { Avatar } from './Avatar'
+
+const menuItem =
+  'flex items-center gap-3 rounded-sm px-3 py-2.5 transition-colors hover:bg-primary-tint hover:text-primary'
 
 type AccountMenuProps = {
   open: boolean
@@ -53,24 +57,22 @@ export function AccountMenu({ open, onToggle, onClose, buttonClassName }: Accoun
           </div>
         </div>
         <ul className="p-2 text-sm font-medium">
-          <li>
-            <Link
-              to="/my-pages"
-              onClick={onClose}
-              className="flex items-center gap-3 rounded-sm px-3 py-2.5 transition-colors hover:bg-primary-tint hover:text-primary"
-            >
-              <LayoutDashboard className="size-[18px] text-primary" strokeWidth={1.75} />
-              My Pages
-            </Link>
-          </li>
-          <li>
+          {accountMenuLinks.map(({ label, to, icon: Icon }) => (
+            <li key={to}>
+              <Link to={to} onClick={onClose} className={menuItem}>
+                <Icon className="size-[18px] text-primary" strokeWidth={1.75} />
+                {label}
+              </Link>
+            </li>
+          ))}
+          <li className="mt-2 border-t border-border pt-2">
             <button
               type="button"
               onClick={() => {
                 onClose()
                 signOut()
               }}
-              className="flex w-full items-center gap-3 rounded-sm px-3 py-2.5 transition-colors hover:bg-primary-tint hover:text-primary"
+              className={`w-full ${menuItem}`}
             >
               <LogOut className="size-[18px] text-primary" strokeWidth={1.75} />
               Sign out

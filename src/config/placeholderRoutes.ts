@@ -61,10 +61,34 @@ export const placeholderRoutes: PlaceholderRoute[] = [
     description: 'Order products and spare parts online with your account pricing.',
   },
   {
-    path: '/my-pages',
-    title: 'My Pages',
-    description: 'Your products, projects, orders and learning in one place.',
-    parent: '/my-sulzer',
+    path: '/my-pages/saved',
+    title: 'My saved items',
+    description: 'Products, documents and drawings you have bookmarked.',
+    parent: '/my-pages',
+  },
+  {
+    path: '/my-pages/recently-viewed',
+    title: 'Recently viewed products',
+    description: 'Pick up where you left off.',
+    parent: '/my-pages',
+  },
+  {
+    path: '/my-projects',
+    title: 'My projects',
+    description: 'Collect products, sizing results and documents per project and share them.',
+    parent: '/my-pages',
+  },
+  {
+    path: '/assets',
+    title: 'My assets',
+    description: 'Your installed base with live condition, alerts and service history.',
+    parent: '/my-pages',
+  },
+  {
+    path: '/settings',
+    title: 'Account settings',
+    description: 'Your profile, company details, notifications and team members.',
+    parent: '/my-pages',
   },
   {
     path: '/self-service/list-price',
@@ -76,6 +100,18 @@ export const placeholderRoutes: PlaceholderRoute[] = [
     path: '/self-service/export',
     title: 'Export information',
     description: 'Download product, price and order data for your own systems.',
+    parent: '/my-sulzer',
+  },
+  {
+    path: '/self-service/quotations',
+    title: 'Quotations',
+    description: 'Request, follow and download your Sulzer quotations.',
+    parent: '/my-sulzer',
+  },
+  {
+    path: '/self-service/requests',
+    title: 'Requests',
+    description: 'Follow your service, support and return requests.',
     parent: '/my-sulzer',
   },
   {
@@ -102,6 +138,12 @@ export const placeholderRoutes: PlaceholderRoute[] = [
     parent: '/support',
   },
   {
+    path: '/support/service-portal',
+    title: 'Service portal',
+    description: 'Book service visits and follow repairs on your equipment.',
+    parent: '/support',
+  },
+  {
     path: '/support/documentation',
     title: 'Documentation',
     description: 'Manuals, datasheets, certificates and drawings.',
@@ -111,6 +153,30 @@ export const placeholderRoutes: PlaceholderRoute[] = [
     path: '/learn',
     title: 'Sulzer Academy',
     description: 'Courses, webinars and certifications for pump professionals.',
+  },
+  {
+    path: '/learn/completed',
+    title: 'My completed courses',
+    description: 'Every Sulzer Academy course you have finished.',
+    parent: '/learn',
+  },
+  {
+    path: '/learn/in-progress',
+    title: 'My courses in progress',
+    description: 'Continue the courses you have started.',
+    parent: '/learn',
+  },
+  {
+    path: '/learn/certificates',
+    title: 'My certificates',
+    description: 'Download and share your Sulzer Academy certificates.',
+    parent: '/learn',
+  },
+  {
+    path: '/learn/bookmarks',
+    title: 'My bookmarks',
+    description: 'Courses, webinars and articles you have saved for later.',
+    parent: '/learn',
   },
   {
     path: '/about',
@@ -177,6 +243,7 @@ export const placeholderRoutes: PlaceholderRoute[] = [
 /** Real (built) pages that placeholder routes can name as their parent. */
 const builtPages: Pick<PlaceholderRoute, 'path' | 'title' | 'parent'>[] = [
   { path: '/my-sulzer', title: 'mySulzer' },
+  { path: '/my-pages', title: 'My Pages', parent: '/my-sulzer' },
 ]
 
 /** Ancestor pages of a placeholder route, outermost first (Home is added by the Breadcrumb). */
