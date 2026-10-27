@@ -14,12 +14,12 @@ export function QuickLinksPanel({ open, onNavigate }: QuickLinksPanelProps) {
       {/* Caret, centred under the trigger. */}
       <span
         aria-hidden
-        className={`absolute top-[calc(100%+8px)] left-1/2 z-10 size-3.5 -translate-x-1/2 rotate-45 rounded-[2px] bg-white ${popoverClasses(open)}`}
+        className={`absolute top-[calc(100%+17px)] left-1/2 z-10 size-3.5 -translate-x-1/2 rotate-45 rounded-[2px] bg-white ${popoverClasses(open)}`}
       />
       <div
         id="quick-links-panel"
         inert={!open}
-        className={`absolute top-[calc(100%+14px)] right-0 w-[392px] rounded-lg bg-white p-6 text-text shadow-card ring-1 ring-navy-900/5 ${popoverClasses(open)}`}
+        className={`absolute top-[calc(100%+24px)] right-0 w-[392px] rounded-lg bg-white p-6 text-text shadow-card ring-1 ring-navy-900/5 ${popoverClasses(open)}`}
       >
         <QuickLinkSection title="Quick links" links={quickLinks} onNavigate={onNavigate} />
         <div className="my-5 border-t border-border" />

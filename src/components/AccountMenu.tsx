@@ -18,7 +18,7 @@ export function AccountMenu({ open, onToggle, onClose, buttonClassName }: Accoun
   if (!user) {
     return (
       <button type="button" onClick={signIn} className={buttonClassName}>
-        <CircleUserRound className="size-5" strokeWidth={1.75} />
+        <CircleUserRound className="size-5 text-primary" strokeWidth={1.75} />
         Sign in
       </button>
     )
@@ -33,17 +33,17 @@ export function AccountMenu({ open, onToggle, onClose, buttonClassName }: Accoun
         aria-controls="account-menu"
         className={`${buttonClassName} pl-1.5`}
       >
-        <Avatar initials={user.initials} className="ring-2 ring-white/20" />
+        <Avatar initials={user.initials} className="ring-2 ring-primary-tint-strong" />
         {user.name}
         <ChevronDown
-          className={`size-4 text-white/70 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          className={`size-4 text-text-subtle transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
         />
       </button>
 
       <div
         id="account-menu"
         inert={!open}
-        className={`absolute top-[calc(100%+14px)] right-0 w-72 overflow-hidden rounded-lg bg-white text-text shadow-card ring-1 ring-navy-900/5 ${popoverClasses(open)}`}
+        className={`absolute top-[calc(100%+24px)] right-0 w-72 overflow-hidden rounded-lg bg-white text-text shadow-card ring-1 ring-navy-900/5 ${popoverClasses(open)}`}
       >
         <div className="flex items-center gap-3 border-b border-border bg-surface-muted px-5 py-4">
           <Avatar initials={user.initials} size="md" />
