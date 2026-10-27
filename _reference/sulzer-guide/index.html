@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<script src="./chatbot.js" defer></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;background:#ffffff;color:#0c1c2e}
+  select,input,button{font-family:inherit}
+  select:focus,input:focus{outline:2px solid #1d59af;outline-offset:1px}
+  .print-only{display:none}
+  .print-footer{display:none}
+  @media print{
+    .no-print{display:none!important}
+    .print-only{display:block!important}
+    .print-footer{display:flex!important}
+    body{background:#fff!important}
+    *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+    .pcard{break-inside:avoid}
+    .pgrid{grid-template-columns:1fr!important;gap:16px!important;margin-top:0!important}
+    @page{margin:13mm}
+  }
+  .avail-instock{color:#137040;background:#eaf7ef;border:1px solid #bfe6cd}
+  .avail-lead{color:#9a6512;background:#fdf4e6;border:1px solid #f0d9ad}
+  .avail-contact{color:#5d6b7a;background:#eef1f4;border:1px solid #d6dde4}
+  .avail-dot-instock{background:#1f9d57}
+  .avail-dot-lead{background:#c87f17}
+  .avail-dot-contact{background:#8a97a5}
+  .mobile-compare{display:none}
+  @media (max-width:767px){
+    .pgrid{grid-template-columns:1fr!important}
+    .spec-2col{grid-template-columns:1fr!important}
+    .calc-metrics{grid-template-columns:repeat(2,1fr)!important}
+    .calc-inputs{grid-template-columns:1fr!important}
+    .topnav{display:none!important}
+    .head-tag{display:none!important}
+    .util-row{flex-wrap:wrap!important;gap:4px 16px!important}
+    .hero-h1{font-size:36px!important}
+    .compare-grid{display:none!important}
+    .mobile-compare{display:block}
+  }
+</style>
+<script src="image-slot.js"></script>
+</helmet>
+
+<div style="min-height:100vh;background:#ffffff">
+
+  <!-- utility bar -->
+  <div class="no-print" style="background:#0c1c2e;color:#cdd7e2;font-size:12px;letter-spacing:.02em">
+    <div class="util-row" style="max-width:1180px;margin:0 auto;padding:8px 28px;display:flex;justify-content:space-between;align-items:center">
+      <span style="display:flex;align-items:center;gap:8px">
+        <select style="background:transparent;color:#cdd7e2;border:none;font-size:12px;font-family:inherit;letter-spacing:.02em;cursor:pointer;outline:none;appearance:auto">
+          <option>Sweden</option>
+          <option>Norway</option>
+          <option>Germany</option>
+          <option>France</option>
+        </select>
+        <span style="opacity:.4">·</span>
+        <select style="background:transparent;color:#cdd7e2;border:none;font-size:12px;font-family:inherit;letter-spacing:.02em;cursor:pointer;outline:none;appearance:auto">
+          <option>English</option>
+          <option>Swedish</option>
+          <option>German</option>
+          <option>French</option>
+        </select>
+      </span>
+    </div>
+  </div>
+
+  <!-- header -->
+  <header class="no-print" style="background:#fff;border-bottom:1px solid #e3e8ed">
+    <div style="max-width:1180px;margin:0 auto;padding:20px 28px;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:baseline;gap:16px">
+        <svg viewBox="0 0 171 28" aria-label="Sulzer Home Page" style="height:28px;fill:#1d59af"><path d="M8.4,0C2.1,0,0,4.3,0,7.1C0,9.5,0,9.9,0,11c0,3,2.8,6.4,6.9,6.4c3.6,0,8,0,8.7,0c1,0,1.2,0.6,1.2,1
+	c0,0.4,0,0.7,0,1c0,0.5-0.4,1-1.2,1c-1,0-15.2,0-15.2,0v7.2c0,0,11.6,0,18.5,0c5,0,7.9-4.4,7.9-7.3c0-2,0-2.7,0-4
+	c0-4.1-4.1-6.9-8.2-6.9c-3.6,0-7.5,0-8.2,0c-0.9,0-1.2-0.6-1.2-1s0-0.4,0-0.7c0-0.5,0.4-1,1.2-1c1,0,15.2,0,15.2,0V0
+	C25.6,0,9.6,0,8.4,0z M30.3,0c0,1.5,0,17.7,0,19.1c0,4.5,3.3,8.9,11,8.9c4.5,0,2,0,6.5,0c8.1,0,10.8-4,10.8-8.9c0-1.3,0-17.6,0-19.1
+	c-2.8,0-9.7,0-9.7,0s0,17.2,0,18.1c0,1.3-0.6,2.4-2.5,2.4h-4.1c-1.9,0-2.5-1-2.5-2.4c0-0.9,0-18.1,0-18.1S33.1,0,30.3,0z M62.7,0
+	v27.7h20.9v-7.2H72.2V0H62.7z M86.1,0.1v6.9h12.7L85.9,20.4v7.2H111v-7.2H98l12.5-13.6V0.1H86.1z M114.7,0.1v27.6h23.4v-7.2h-14.1
+	v-3.6h11.2v-6.8h-11.2V6.8h13.3V0.1H114.7z M141.5,0.1v27.6h8.9V17.4h0.8l8.9,10.2H171c0,0-8.4-9.5-9.2-10.5c1.8,0,6.3-2.4,6.3-7.4
+	V7.4c0-2-1.5-7.3-9-7.3H141.5z M150.2,6.8h6.8c2.1,0,2.1,1.3,2.1,2.3c0,1.5-0.7,2-1.9,2h-6.9V6.8z"></path></svg>
+        <span class="head-tag" style="height:22px;width:1px;background:#d3dae1;align-self:center"></span>
+        <span class="head-tag" style="font-size:15px;color:#5d6b7a;font-weight:400">Pump Replacement Guide</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- hero with video frame -->
+  <section class="no-print" style="position:relative;height:440px;overflow:hidden;background:#0c1c2e">
+    <image-slot id="sulzer-hero-light" shape="rect" fit="cover" src="uploads/dynamical_still_corporate_1620x1080px.jpg" placeholder="Drop a frame from the Sulzer homepage video" style="position:absolute;inset:0;width:100%;height:100%"></image-slot>
+    <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,18,33,.86) 0%,rgba(8,18,33,.55) 42%,rgba(8,18,33,.08) 100%)"></div>
+    <div style="position:relative;max-width:1180px;margin:0 auto;padding:0 28px;height:100%;display:flex;flex-direction:column;justify-content:center">
+      <h1 class="hero-h1" style="color:#fff;font-size:52px;line-height:1.05;font-weight:700;margin:0;max-width:800px;letter-spacing:-.01em">Find your Sulzer replacement
+        
+      </h1>
+      <p style="color:#d7e0ea;font-size:18px;line-height:1.5;margin:18px 0 0;max-width:800px">Match any installed pump to a Premium-Efficiency Sulzer replacement</p>
+    </div>
+  </section>
+
+  <!-- selector -->
+  <div style="max-width:1180px;margin:0 auto;padding:0 28px">
+    <div class="no-print" style="background:#fff;border:1px solid #e3e8ed;border-radius:14px;box-shadow:0 18px 40px -22px rgba(12,28,46,.45);margin-top:-48px;position:relative;padding:24px 26px">
+      <div style="margin-bottom:18px">
+        <label style="display:block;font-size:12px;font-weight:600;color:#5d6b7a;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px">Search by part number or RSK number</label>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <input value="{{ query }}" onChange="{{ onQuery }}" onKeyDown="{{ onQueryKey }}" placeholder="e.g. 581 30 22 or 98044186" style="flex:1;min-width:240px;padding:13px 14px;font-size:15px;border:1px solid #cfd8e1;border-radius:9px;background:#fff;color:#0c1c2e"/>
+          <button onClick="{{ doSearch }}" style="background:#1d59af;color:#fff;border:none;border-radius:9px;padding:13px 26px;font-size:14px;font-weight:600;cursor:pointer;flex:none">Find replacement</button>
+        </div>
+        <div style="margin-top:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span style="font-size:12px;color:#8a97a5">Try a sample:</span>
+          <sc-for list="{{ examples }}" as="ex" hint-placeholder-count="4">
+            <button onClick="{{ ex.run }}" style="background:#eef4fb;color:#1d59af;border:1px solid #cfe0f4;border-radius:999px;padding:6px 13px;font-size:12px;font-weight:600;cursor:pointer">{{ ex.label }}</button>
+          </sc-for>
+        </div>
+        <sc-if value="{{ searchFound }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:10px;display:flex;align-items:center;gap:9px;color:#137040;font-size:13px;font-weight:600"><span style="width:18px;height:18px;border-radius:50%;background:#1f9d57;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;flex:none">✓</span><span>{{ searchMsg }}</span></div>
+        </sc-if>
+        <sc-if value="{{ searchError }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:10px;color:#b4341f;font-size:13px;font-weight:600">{{ searchMsg }}</div>
+        </sc-if>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+        <div style="height:1px;background:#e3e8ed;flex:1"></div>
+        <span style="font-size:12px;color:#8a97a5;text-transform:uppercase;letter-spacing:.08em">or browse by brand</span>
+        <div style="height:1px;background:#e3e8ed;flex:1"></div>
+      </div>
+      <div style="display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap">
+        <div style="flex:1;min-width:220px">
+          <label style="display:block;font-size:12px;font-weight:600;color:#5d6b7a;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px">Installed pump — brand</label>
+          <select value="{{ brand }}" onChange="{{ onBrand }}" style="width:100%;padding:13px 14px;font-size:15px;border:1px solid #cfd8e1;border-radius:9px;background:#fff;color:#0c1c2e;appearance:none;cursor:pointer">
+            <sc-for list="{{ brands }}" as="b" hint-placeholder-count="3">
+              <option value="{{ b }}">{{ b }}</option>
+            </sc-for>
+          </select>
+        </div>
+        <div style="flex:1;min-width:220px">
+          <label style="display:block;font-size:12px;font-weight:600;color:#5d6b7a;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px">Installed pump — model</label>
+          <select value="{{ model }}" onChange="{{ onModel }}" style="width:100%;padding:13px 14px;font-size:15px;border:1px solid #cfd8e1;border-radius:9px;background:#fff;color:#0c1c2e;appearance:none;cursor:pointer">
+            <sc-for list="{{ models }}" as="m" hint-placeholder-count="4">
+              <option value="{{ m }}">{{ m }}</option>
+            </sc-for>
+          </select>
+        </div>
+        <div style="display:flex;align-items:center;gap:11px;padding:11px 16px;border-radius:9px;background:#eef4fb;min-width:200px">
+          <span style="font-size:12px;color:#5d6b7a">Recommended replacement</span>
+          <span style="font-size:15px;font-weight:700;color:#1d59af">{{ repTitle }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- print header (PDF only) -->
+  <div class="print-only" style="display:none;max-width:1180px;margin:0 auto;padding:0 28px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #1d59af;padding-bottom:12px;margin-bottom:18px">
+      <div>
+        <div style="font-size:26px;font-weight:700;letter-spacing:.14em;color:#1d59af">SULZER</div>
+        <div style="font-size:13px;color:#5d6b7a;margin-top:5px">Pump Replacement Report — Wastewater &amp; Sewage</div>
+      </div>
+      <div style="font-size:13px;color:#5d6b7a;text-align:right">{{ today }}</div>
+    </div>
+  </div>
+
+  <!-- fit badge -->
+  <div style="max-width:1180px;margin:22px auto 0;padding:0 28px">
+    <sc-if value="{{ drop }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;align-items:center;gap:14px;background:#eaf7ef;border:1px solid #bfe6cd;border-radius:11px;padding:15px 20px">
+        <span style="width:30px;height:30px;border-radius:50%;background:#1f9d57;color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700">✓</span>
+        <div>
+          <div style="font-size:15px;font-weight:700;color:#137040">{{ fitLabel }}</div>
+          <div style="font-size:13px;color:#3f7a59">{{ fitSub }}</div>
+        </div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ notDrop }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:center;gap:14px;background:#fdf4e6;border:1px solid #f0d9ad;border-radius:11px;padding:15px 20px">
+        <span style="width:30px;height:30px;border-radius:50%;background:#c87f17;color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700">!</span>
+        <div>
+          <div style="font-size:15px;font-weight:700;color:#9a6512">{{ fitLabel }}</div>
+          <div style="font-size:13px;color:#86683a">{{ fitSub }}</div>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+
+  <!-- comparison -->
+  <div class="pgrid compare-grid" style="max-width:1180px;margin:18px auto 0;padding:0 28px;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
+
+    <!-- existing -->
+    <div class="pcard" style="background:#fff;border:1px solid #e3e8ed;border-radius:14px;overflow:hidden">
+      <div style="padding:20px 24px;border-bottom:1px solid #eef1f4;display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+        <div>
+          <div style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#8a97a5">Your existing pump</div>
+          <div style="font-size:21px;font-weight:700;margin-top:5px;color:#0c1c2e">{{ existTitle }}</div>
+        </div>
+        <image-slot id="{{ existImgId }}" shape="rounded" radius="10" fit="contain" placeholder="{{ existPhotoLabel }}" style="width:108px;height:108px;flex:none;background:#f5f7f9;border:1px solid #e3e8ed"></image-slot>
+      </div>
+      <div style="padding:18px 24px 24px;display:grid;grid-template-columns:1fr;gap:8px">
+        <sc-for list="{{ existSpecs }}" as="s" hint-placeholder-count="7">
+          <div style="display:flex;justify-content:space-between;gap:16px;padding:11px 14px;border-radius:8px;background:#f5f7f9">
+            <span style="color:#5d6b7a;font-size:13px">{{ s.label }}</span>
+            <span style="color:#0c1c2e;font-size:13px;font-weight:600;text-align:right">{{ s.value }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <!-- replacement -->
+    <div class="pcard" style="background:#fff;border:1px solid #1d59af;border-radius:14px;overflow:hidden;box-shadow:0 20px 44px -28px rgba(29,89,175,.6)">
+      <div style="height:5px;background:#1d59af"></div>
+      <div style="padding:20px 24px;border-bottom:1px solid #eef1f4;display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+        <div>
+          <div style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#1d59af">Sulzer replacement · {{ rep.tier }}</div>
+          <div style="font-size:21px;font-weight:700;margin-top:5px;color:#0c1c2e">{{ repTitle }}</div>
+          <span class="{{ availClass }}" style="display:inline-flex;align-items:center;gap:7px;margin-top:10px;font-size:12px;font-weight:600;line-height:1;padding:6px 11px;border-radius:6px;white-space:nowrap"><span class="{{ availDotClass }}" style="width:7px;height:7px;border-radius:50%"></span>{{ availLabel }}</span>
+        </div>
+        <image-slot id="{{ repImgId }}" shape="rounded" radius="10" fit="contain" placeholder="{{ repPhotoLabel }}" style="width:140px;height:140px;flex:none;background:#f5f7f9;border:1px solid #e3e8ed"></image-slot>
+      </div>
+      <div class="spec-2col" style="padding:18px 24px 8px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <sc-for list="{{ repSpecs }}" as="s" hint-placeholder-count="16">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 14px;border-radius:8px;background:#f5f7f9">
+            <span style="color:#5d6b7a;font-size:13px">{{ s.label }}</span>
+            <span style="color:#0c1c2e;font-size:13px;font-weight:600;text-align:right">{{ s.value }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="padding:8px 24px 0;display:flex;gap:10px">
+        <span style="color:#5d6b7a;font-size:13px;font-weight:600;flex:none">Comments</span>
+        <span style="color:#33465a;font-size:13px;line-height:1.5">{{ comment }}</span>
+      </div>
+      <div class="no-print" style="padding:20px 24px 24px;display:flex;gap:8px;flex-wrap:nowrap;justify-content:center">
+        <a href="https://www.sulzer.com/-/media/files/products/pumps/submersible-pumps/brochures/xfp_submersiblepumps_e10238.pdf" target="_blank" style="background:#fff;color:#1d59af;border:1px solid #1d59af;border-radius:9px;padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap">
+          <svg viewBox="0 0 16 16" style="width:14px;height:14px;fill:currentColor;flex:none"><path d="M8 1a.75.75 0 0 1 .75.75v6.19l1.97-1.97a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.03a.75.75 0 0 1 1.06-1.06L7.25 7.94V1.75A.75.75 0 0 1 8 1zM2.5 13.25a.75.75 0 0 1 .75-.75h9.5a.75.75 0 0 1 0 1.5h-9.5a.75.75 0 0 1-.75-.75z"/></svg>
+          Product sheet
+        </a>
+        <a href="https://sense.sulzer.com/sulzer/en/USD/login" target="_blank" style="background:#fff;color:#1d59af;border:1px solid #1d59af;border-radius:9px;padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap">
+          <svg viewBox="0 0 171 28" style="height:12px;fill:#1d59af;flex:none"><path d="M8.4,0C2.1,0,0,4.3,0,7.1C0,9.5,0,9.9,0,11c0,3,2.8,6.4,6.9,6.4c3.6,0,8,0,8.7,0c1,0,1.2,0.6,1.2,1c0,0.4,0,0.7,0,1c0,0.5-0.4,1-1.2,1c-1,0-15.2,0-15.2,0v7.2c0,0,11.6,0,18.5,0c5,0,7.9-4.4,7.9-7.3c0-2,0-2.7,0-4c0-4.1-4.1-6.9-8.2-6.9c-3.6,0-7.5,0-8.2,0c-0.9,0-1.2-0.6-1.2-1s0-0.4,0-0.7c0-0.5,0.4-1,1.2-1c1,0,15.2,0,15.2,0V0C25.6,0,9.6,0,8.4,0z M30.3,0c0,1.5,0,17.7,0,19.1c0,4.5,3.3,8.9,11,8.9c4.5,0,2,0,6.5,0c8.1,0,10.8-4,10.8-8.9c0-1.3,0-17.6,0-19.1c-2.8,0-9.7,0-9.7,0s0,17.2,0,18.1c0,1.3-0.6,2.4-2.5,2.4h-4.1c-1.9,0-2.5-1-2.5-2.4c0-0.9,0-18.1,0-18.1S33.1,0,30.3,0z M62.7,0v27.7h20.9v-7.2H72.2V0H62.7z M86.1,0.1v6.9h12.7L85.9,20.4v7.2H111v-7.2H98l12.5-13.6V0.1H86.1z M114.7,0.1v27.6h23.4v-7.2h-14.1v-3.6h11.2v-6.8h-11.2V6.8h13.3V0.1H114.7z M141.5,0.1v27.6h8.9V17.4h0.8l8.9,10.2H171c0,0-8.4-9.5-9.2-10.5c1.8,0,6.3-2.4,6.3-7.4V7.4c0-2-1.5-7.3-9-7.3H141.5z M150.2,6.8h6.8c2.1,0,2.1,1.3,2.1,2.3c0,1.5-0.7,2-1.9,2h-6.9V6.8z"/></svg>
+          webstore
+        </a>
+        <a href="https://www.gc-gruppe.de/" target="_blank" style="background:#FAB900;color:#C8000A;border:none;border-radius:9px;padding:10px 14px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;letter-spacing:.01em">
+          GC Gruppe
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- mobile comparison table -->
+  <div class="mobile-compare no-print" style="max-width:1180px;margin:18px auto 0;padding:0 16px">
+    <div style="background:#fff;border:1px solid #e3e8ed;border-radius:14px;overflow:hidden">
+      <!-- column headers -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:#f5f7f9;border-bottom:2px solid #e3e8ed">
+        <div style="padding:12px 10px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#8a97a5"></div>
+        <div style="padding:12px 10px;border-left:1px solid #e3e8ed">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#8a97a5;margin-bottom:3px">Existing</div>
+          <div style="font-size:13px;font-weight:700;color:#0c1c2e;line-height:1.2">{{ existTitle }}</div>
+        </div>
+        <div style="padding:12px 10px;border-left:3px solid #1d59af;border-top:3px solid #1d59af">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#1d59af;margin-bottom:3px">Sulzer · {{ rep.tier }}</div>
+          <div style="font-size:13px;font-weight:700;color:#0c1c2e;line-height:1.2">{{ repTitle }}</div>
+          <span class="{{ availClass }}" style="display:inline-flex;align-items:center;gap:5px;margin-top:6px;font-size:10px;font-weight:600;line-height:1;padding:4px 8px;border-radius:5px;white-space:nowrap"><span class="{{ availDotClass }}" style="width:6px;height:6px;border-radius:50%;flex:none"></span>{{ availLabel }}</span>
+        </div>
+      </div>
+      <!-- image row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid #f0f2f5">
+        <div style="padding:9px 10px;font-size:11px;color:#5d6b7a;background:#fafbfc;display:flex;align-items:center">Photo</div>
+        <div style="padding:9px 10px;border-left:1px solid #f0f2f5;display:flex;align-items:center;justify-content:center">
+          <image-slot id="{{ existImgId }}" shape="rounded" radius="8" fit="contain" placeholder="{{ existPhotoLabel }}" style="width:72px;height:72px;background:#f5f7f9;border:1px solid #e3e8ed"></image-slot>
+        </div>
+        <div style="padding:9px 10px;border-left:1px solid #dce8f8;display:flex;align-items:center;justify-content:center">
+          <image-slot id="{{ repImgId }}" shape="rounded" radius="8" fit="contain" placeholder="{{ repPhotoLabel }}" style="width:72px;height:72px;background:#f5f7f9;border:1px solid #e3e8ed"></image-slot>
+        </div>
+      </div>
+      <!-- spec rows -->
+      <sc-for list="{{ mobileRows }}" as="row" hint-placeholder-count="16">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid #f0f2f5">
+          <div style="padding:9px 10px;font-size:11px;color:#5d6b7a;background:#fafbfc;display:flex;align-items:center">{{ row.label }}</div>
+          <div style="padding:9px 10px;font-size:12px;font-weight:600;color:#0c1c2e;border-left:1px solid #f0f2f5;display:flex;align-items:center">{{ row.existVal }}</div>
+          <div style="padding:9px 10px;font-size:12px;font-weight:600;color:#0c1c2e;border-left:1px solid #dce8f8;display:flex;align-items:center">{{ row.repVal }}</div>
+        </div>
+      </sc-for>
+      <!-- comment -->
+      <div style="padding:12px 10px;display:flex;gap:8px;border-bottom:1px solid #f0f2f5">
+        <span style="color:#5d6b7a;font-size:11px;font-weight:600;flex:none">Comments</span>
+        <span style="color:#33465a;font-size:11px;line-height:1.5">{{ comment }}</span>
+      </div>
+      <!-- buttons -->
+      <div style="padding:16px 12px;display:flex;gap:8px;flex-wrap:nowrap;justify-content:center">
+        <a href="https://www.sulzer.com/-/media/files/products/pumps/submersible-pumps/brochures/xfp_submersiblepumps_e10238.pdf" target="_blank" style="background:#fff;color:#1d59af;border:1px solid #1d59af;border-radius:9px;padding:10px 12px;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:5px;white-space:nowrap">
+          <svg viewBox="0 0 16 16" style="width:13px;height:13px;fill:currentColor;flex:none"><path d="M8 1a.75.75 0 0 1 .75.75v6.19l1.97-1.97a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.03a.75.75 0 0 1 1.06-1.06L7.25 7.94V1.75A.75.75 0 0 1 8 1zM2.5 13.25a.75.75 0 0 1 .75-.75h9.5a.75.75 0 0 1 0 1.5h-9.5a.75.75 0 0 1-.75-.75z"/></svg>
+          Product sheet
+        </a>
+        <a href="https://sense.sulzer.com/sulzer/en/USD/login" target="_blank" style="background:#fff;color:#1d59af;border:1px solid #1d59af;border-radius:9px;padding:10px 12px;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:5px;white-space:nowrap">
+          <svg viewBox="0 0 171 28" style="height:11px;fill:#1d59af;flex:none"><path d="M8.4,0C2.1,0,0,4.3,0,7.1C0,9.5,0,9.9,0,11c0,3,2.8,6.4,6.9,6.4c3.6,0,8,0,8.7,0c1,0,1.2,0.6,1.2,1c0,0.4,0,0.7,0,1c0,0.5-0.4,1-1.2,1c-1,0-15.2,0-15.2,0v7.2c0,0,11.6,0,18.5,0c5,0,7.9-4.4,7.9-7.3c0-2,0-2.7,0-4c0-4.1-4.1-6.9-8.2-6.9c-3.6,0-7.5,0-8.2,0c-0.9,0-1.2-0.6-1.2-1s0-0.4,0-0.7c0-0.5,0.4-1,1.2-1c1,0,15.2,0,15.2,0V0C25.6,0,9.6,0,8.4,0z M30.3,0c0,1.5,0,17.7,0,19.1c0,4.5,3.3,8.9,11,8.9c4.5,0,2,0,6.5,0c8.1,0,10.8-4,10.8-8.9c0-1.3,0-17.6,0-19.1c-2.8,0-9.7,0-9.7,0s0,17.2,0,18.1c0,1.3-0.6,2.4-2.5,2.4h-4.1c-1.9,0-2.5-1-2.5-2.4c0-0.9,0-18.1,0-18.1S33.1,0,30.3,0z M62.7,0v27.7h20.9v-7.2H72.2V0H62.7z M86.1,0.1v6.9h12.7L85.9,20.4v7.2H111v-7.2H98l12.5-13.6V0.1H86.1z M114.7,0.1v27.6h23.4v-7.2h-14.1v-3.6h11.2v-6.8h-11.2V6.8h13.3V0.1H114.7z M141.5,0.1v27.6h8.9V17.4h0.8l8.9,10.2H171c0,0-8.4-9.5-9.2-10.5c1.8,0,6.3-2.4,6.3-7.4V7.4c0-2-1.5-7.3-9-7.3H141.5z M150.2,6.8h6.8c2.1,0,2.1,1.3,2.1,2.3c0,1.5-0.7,2-1.9,2h-6.9V6.8z"/></svg>
+          webstore
+        </a>
+        <a href="https://www.gc-gruppe.de/" target="_blank" style="background:#FAB900;color:#C8000A;border:none;border-radius:9px;padding:10px 12px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;white-space:nowrap;letter-spacing:.01em">
+          GC Gruppe
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- print footer (PDF only) -->
+  <div class="print-footer" style="display:none;max-width:1180px;margin:22px auto 0;padding:12px 28px 0;border-top:1px solid #e3e8ed;justify-content:space-between;font-size:12px;color:#8a97a5">
+    <span>Generated by Sulzer Pump Replacement Guide</span>
+    <span>{{ today }}</span>
+  </div>
+
+  <!-- energy calculator -->
+  <div class="no-print" style="max-width:1180px;margin:30px auto 0;padding:0 28px">
+    <div style="background:#0c1c2e;border-radius:16px;padding:30px 32px;color:#fff">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:22px">
+        <div>
+          <h2 style="margin:0;font-size:23px;font-weight:700">Energy savings calculator</h2>
+          <p style="margin:7px 0 0;color:#9fb3c7;font-size:14px">Premium-Efficiency IE3 motors cut running cost against your installed pump.</p>
+        </div>
+      </div>
+      <div class="calc-inputs" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:520px;margin-bottom:26px">
+        <div>
+          <label style="display:block;font-size:12px;color:#9fb3c7;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px">Operating hours / year</label>
+          <input type="number" value="{{ hours }}" onChange="{{ onHours }}" style="width:100%;padding:13px 14px;font-size:16px;border:1px solid #2c4565;border-radius:9px;background:#11203a;color:#fff"/>
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;color:#9fb3c7;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px">Electricity rate (€ / kWh)</label>
+          <input type="number" step="0.01" value="{{ rate }}" onChange="{{ onRate }}" style="width:100%;padding:13px 14px;font-size:16px;border:1px solid #2c4565;border-radius:9px;background:#11203a;color:#fff"/>
+        </div>
+      </div>
+      <div class="calc-metrics" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+        <div style="background:#11203a;border:1px solid #21344f;border-radius:12px;padding:18px 20px">
+          <div style="font-size:12px;color:#9fb3c7;text-transform:uppercase;letter-spacing:.06em">Energy saved / yr</div>
+          <div style="font-size:28px;font-weight:700;margin-top:8px">{{ energySaved }}<span style="font-size:14px;color:#9fb3c7;font-weight:400"> kWh</span></div>
+        </div>
+        <div style="background:#11203a;border:1px solid #21344f;border-radius:12px;padding:18px 20px">
+          <div style="font-size:12px;color:#9fb3c7;text-transform:uppercase;letter-spacing:.06em">Cost saved / yr</div>
+          <div style="font-size:28px;font-weight:700;margin-top:8px;color:#5fd092">€ {{ costSaved }}</div>
+        </div>
+        <div style="background:#11203a;border:1px solid #21344f;border-radius:12px;padding:18px 20px">
+          <div style="font-size:12px;color:#9fb3c7;text-transform:uppercase;letter-spacing:.06em">Saved over 10 yr</div>
+          <div style="font-size:28px;font-weight:700;margin-top:8px;color:#5fd092">€ {{ tenYear }}</div>
+        </div>
+        <div style="background:#11203a;border:1px solid #21344f;border-radius:12px;padding:18px 20px">
+          <div style="font-size:12px;color:#9fb3c7;text-transform:uppercase;letter-spacing:.06em">CO₂ avoided / yr</div>
+          <div style="font-size:28px;font-weight:700;margin-top:8px">{{ co2 }}<span style="font-size:14px;color:#9fb3c7;font-weight:400"> kg</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="no-print" style="max-width:1180px;margin:40px auto 0;padding:28px;border-top:1px solid #e3e8ed;display:flex;justify-content:space-between;align-items:center;color:#8a97a5;font-size:13px">
+    <svg viewBox="0 0 171 28" aria-label="Sulzer" style="height:16px;fill:#1d59af"><path d="M8.4,0C2.1,0,0,4.3,0,7.1C0,9.5,0,9.9,0,11c0,3,2.8,6.4,6.9,6.4c3.6,0,8,0,8.7,0c1,0,1.2,0.6,1.2,1c0,0.4,0,0.7,0,1c0,0.5-0.4,1-1.2,1c-1,0-15.2,0-15.2,0v7.2c0,0,11.6,0,18.5,0c5,0,7.9-4.4,7.9-7.3c0-2,0-2.7,0-4c0-4.1-4.1-6.9-8.2-6.9c-3.6,0-7.5,0-8.2,0c-0.9,0-1.2-0.6-1.2-1s0-0.4,0-0.7c0-0.5,0.4-1,1.2-1c1,0,15.2,0,15.2,0V0C25.6,0,9.6,0,8.4,0z M30.3,0c0,1.5,0,17.7,0,19.1c0,4.5,3.3,8.9,11,8.9c4.5,0,2,0,6.5,0c8.1,0,10.8-4,10.8-8.9c0-1.3,0-17.6,0-19.1c-2.8,0-9.7,0-9.7,0s0,17.2,0,18.1c0,1.3-0.6,2.4-2.5,2.4h-4.1c-1.9,0-2.5-1-2.5-2.4c0-0.9,0-18.1,0-18.1S33.1,0,30.3,0z M62.7,0v27.7h20.9v-7.2H72.2V0H62.7z M86.1,0.1v6.9h12.7L85.9,20.4v7.2H111v-7.2H98l12.5-13.6V0.1H86.1z M114.7,0.1v27.6h23.4v-7.2h-14.1v-3.6h11.2v-6.8h-11.2V6.8h13.3V0.1H114.7z M141.5,0.1v27.6h8.9V17.4h0.8l8.9,10.2H171c0,0-8.4-9.5-9.2-10.5c1.8,0,6.3-2.4,6.3-7.4V7.4c0-2-1.5-7.3-9-7.3H141.5z M150.2,6.8h6.8c2.1,0,2.1,1.3,2.1,2.3c0,1.5-0.7,2-1.9,2h-6.9V6.8z"/></svg>
+    <span>Indicative data for selection guidance. Confirm duty point with Sulzer ABSEL before ordering.</span>
+  </footer>
+
+</div>
+</x-dc>
+<script type=”text/x-dc” data-dc-script>
+class Component extends DCLogic {
+  state = { data: null, brand: null, model: null, hours: 4000, rate: 0.25, query: '', searchStatus: '' };
+
+  async componentDidMount() {
+    try {
+      const m = await import('./pump-data.js');
+      const data = m.default && m.default.BRANDS ? m.default : m;
+      const brand = data.BRANDS[0];
+      const model = data.EXISTING[brand][0].model;
+      this.setState({ data, brand, model });
+    } catch (e) {
+      console.error('pump-data load failed', e);
+    }
+  }
+
+  onBrand = (e) => {
+    const brand = e.target.value;
+    const model = this.state.data.EXISTING[brand][0].model;
+    this.setState({ brand, model, searchStatus: '' });
+  };
+  onModel = (e) => this.setState({ model: e.target.value, searchStatus: '' });
+  onQuery = (e) => this.setState({ query: e.target.value });
+  onQueryKey = (e) => { if (e.key === 'Enter') this.doSearch(); };
+  doSearch = () => {
+    const hit = this.state.data && this.state.data.searchByCode(this.state.query);
+    if (hit) this.setState({ brand: hit.brand, model: hit.model, searchStatus: 'found' });
+    else this.setState({ searchStatus: 'error' });
+  };
+  tryExample = (code) => this.setState({ query: code }, this.doSearch);
+  onHours = (e) => this.setState({ hours: Math.max(0, Number(e.target.value) || 0) });
+  onRate = (e) => this.setState({ rate: Math.max(0, Number(e.target.value) || 0) });
+  printPage = () => { try { window.print(); } catch (e) {} };
+
+  fmt(n, d = 0) {
+    return Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+  }
+
+  renderVals() {
+    const d = this.state.data;
+    if (!d) {
+      return { ready: false, brands: [], models: [], existSpecs: [], repSpecs: [],
+        brand: '', model: '', repTitle: '', existTitle: '', drop: true, notDrop: false,
+        fitLabel: '', fitSub: '', comment: '', rep: { tier: '' },
+        hours: this.state.hours, rate: this.state.rate,
+        energySaved: '0', costSaved: '0', tenYear: '0', co2: '0',
+        repImgId: '', existImgId: '', repPhotoLabel: 'Pump photo', existPhotoLabel: 'Pump photo',
+        availLabel: '', availClass: 'avail-contact', availDotClass: 'avail-dot-contact',
+        query: this.state.query, searchFound: false, searchError: false, searchMsg: '', examples: [],
+        today: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
+        onQuery: this.onQuery, onQueryKey: this.onQueryKey, doSearch: this.doSearch,
+        onBrand: this.onBrand, onModel: this.onModel, onHours: this.onHours, onRate: this.onRate, printPage: this.printPage };
+    }
+    const { brand, model, hours, rate } = this.state;
+    const existing = d.findExisting(brand, model) || d.EXISTING[brand][0];
+    const rep = d.getReplacement(existing.rep);
+    const drop = existing.fit === 'drop-in';
+    const energySaved = Math.max(0, (existing.powerKw - rep.powerKw)) * hours;
+    const costSaved = energySaved * rate;
+    const co2 = energySaved * 0.35;
+    const tenYear = costSaved * 10;
+
+    const existSpecs = [
+      { label: 'Manufacturer', value: brand },
+      { label: 'Model', value: existing.model },
+      { label: 'Discharge connection', value: existing.discharge },
+      { label: 'Motor power', value: existing.power },
+      { label: 'Supply', value: existing.voltage },
+      { label: 'Max head', value: existing.maxHead },
+      { label: 'Max flow', value: existing.maxFlow },
+    ];
+    const availClassMap = {
+      'In stock':            { cls: 'avail-instock',  dot: 'avail-dot-instock' },
+      '2–3 week lead time':  { cls: 'avail-lead',     dot: 'avail-dot-lead' },
+      'Contact distributor': { cls: 'avail-contact',  dot: 'avail-dot-contact' },
+    };
+    const availLabel = rep.availability || 'Contact distributor';
+    const avail = availClassMap[availLabel] || availClassMap['Contact distributor'];
+
+    const repSpecs = [
+      { label: 'Manufacturer', value: 'Sulzer' },
+      { label: 'Range', value: rep.range },
+      { label: 'Model', value: rep.model },
+      { label: 'Article number', value: rep.article },
+      { label: 'Material number', value: rep.material },
+      { label: 'Discharge connection', value: rep.discharge },
+      { label: 'Motor power', value: rep.power },
+      { label: 'Supply', value: rep.voltage },
+      { label: 'Impeller', value: rep.impeller },
+      { label: 'Max head', value: rep.maxHead },
+      { label: 'Max flow', value: rep.maxFlow },
+      { label: 'Solids passage', value: rep.solids },
+      { label: 'Efficiency', value: rep.efficiency },
+      { label: 'Protection', value: rep.protection },
+      { label: 'Fluid temperature', value: rep.temp },
+      { label: 'Weight', value: rep.weight },
+    ];
+
+    const existMap = Object.fromEntries(existSpecs.map(s => [s.label, s.value]));
+    const repMap = Object.fromEntries(repSpecs.map(s => [s.label, s.value]));
+    const seenLabels = new Set();
+    const mobileRows = [];
+    for (const s of existSpecs) {
+      seenLabels.add(s.label);
+      mobileRows.push({ label: s.label, existVal: s.value, repVal: repMap[s.label] || '' });
+    }
+    for (const s of repSpecs) {
+      if (!seenLabels.has(s.label)) {
+        mobileRows.push({ label: s.label, existVal: '', repVal: s.value });
+      }
+    }
+
+    const searchFound = this.state.searchStatus === 'found';
+    const searchError = this.state.searchStatus === 'error';
+    const searchMsg = searchFound
+      ? ('Matched ' + brand + ' ' + existing.model + '  →  ' + rep.range + ' ' + rep.model)
+      : (searchError ? ('No catalog match for “' + this.state.query + '”. Try the brand / model lists below.') : '');
+
+    const examples = [
+      { label: 'RSK 581 30 22', run: () => this.tryExample('581 30 22') },
+      { label: 'Part 98044186', run: () => this.tryExample('98044186') },
+      { label: 'RSK 581 41 25', run: () => this.tryExample('581 41 25') },
+      { label: 'KTZ 411', run: () => this.tryExample('KTZ411') },
+    ];
+    const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    return {
+      ready: true,
+      brands: d.BRANDS,
+      models: d.EXISTING[brand].map((m) => m.model),
+      brand, model,
+      onBrand: this.onBrand, onModel: this.onModel,
+      query: this.state.query, searchFound, searchError, searchMsg, examples, today,
+      onQuery: this.onQuery, onQueryKey: this.onQueryKey, doSearch: this.doSearch,
+      rep,
+      existSpecs, repSpecs, mobileRows,
+      availLabel, availClass: avail.cls, availDotClass: avail.dot,
+      repTitle: rep.range + ' ' + rep.model,
+      existTitle: brand + ' ' + existing.model,
+      drop, notDrop: !drop,
+      fitLabel: drop ? 'Drop-in fit' : 'Fits with adapter kit',
+      fitSub: drop ? 'Mounts directly on the existing guide-rail base.' : 'Requires a Sulzer guide-rail adapter claw.',
+      comment: rep.comment,
+      repImgId: 'simg-rep-' + rep.id,
+      existImgId: 'simg-exist-' + (brand + '-' + model).replace(/[^a-z0-9]+/gi, '-').toLowerCase(),
+      repPhotoLabel: rep.range + ' photo',
+      existPhotoLabel: brand + ' photo',
+      hours, rate,
+      onHours: this.onHours, onRate: this.onRate, printPage: this.printPage,
+      energySaved: this.fmt(energySaved),
+      costSaved: this.fmt(costSaved),
+      tenYear: this.fmt(tenYear),
+      co2: this.fmt(co2),
+    };
+  }
+}
+</script>
+</body>
+</html>
