@@ -55,7 +55,7 @@ export function AccountMenu({ open, onToggle, onClose, buttonClassName }: Accoun
         <ul className="p-2 text-sm font-medium">
           <li>
             <Link
-              to="/my-sulzer"
+              to="/my-pages"
               onClick={onClose}
               className="flex items-center gap-3 rounded-sm px-3 py-2.5 transition-colors hover:bg-primary-tint hover:text-primary"
             >

@@ -61,9 +61,34 @@ export const placeholderRoutes: PlaceholderRoute[] = [
     description: 'Order products and spare parts online with your account pricing.',
   },
   {
-    path: '/my-sulzer',
-    title: 'mySulzer',
+    path: '/my-pages',
+    title: 'My Pages',
     description: 'Your products, projects, orders and learning in one place.',
+    parent: '/my-sulzer',
+  },
+  {
+    path: '/self-service/list-price',
+    title: 'List price & availability',
+    description: 'Check your prices, stock levels and delivery times for any Sulzer product.',
+    parent: '/my-sulzer',
+  },
+  {
+    path: '/self-service/export',
+    title: 'Export information',
+    description: 'Download product, price and order data for your own systems.',
+    parent: '/my-sulzer',
+  },
+  {
+    path: '/self-service/orders',
+    title: 'Order status',
+    description: 'Follow every order from confirmation to delivery with track & trace.',
+    parent: '/my-sulzer',
+  },
+  {
+    path: '/register',
+    title: 'Create a Sulzer account',
+    description: 'Get personal prices, saved products, shared projects and more.',
+    parent: '/my-sulzer',
   },
   {
     path: '/support',
@@ -149,14 +174,20 @@ export const placeholderRoutes: PlaceholderRoute[] = [
   },
 ]
 
+/** Real (built) pages that placeholder routes can name as their parent. */
+const builtPages: Pick<PlaceholderRoute, 'path' | 'title' | 'parent'>[] = [
+  { path: '/my-sulzer', title: 'mySulzer' },
+]
+
 /** Ancestor pages of a placeholder route, outermost first (Home is added by the Breadcrumb). */
 export function getParentTrail(route: PlaceholderRoute): NavItem[] {
+  const pages = [...placeholderRoutes, ...builtPages]
   const trail: NavItem[] = []
-  let parent = placeholderRoutes.find((r) => r.path === route.parent)
+  let parent = pages.find((r) => r.path === route.parent)
   while (parent) {
     trail.unshift({ label: parent.title, to: parent.path })
     const next = parent.parent
-    parent = placeholderRoutes.find((r) => r.path === next)
+    parent = pages.find((r) => r.path === next)
   }
   return trail
 }

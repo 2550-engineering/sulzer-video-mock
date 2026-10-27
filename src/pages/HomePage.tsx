@@ -1,27 +1,62 @@
-import { ArrowRight } from 'lucide-react'
-import { SulzerLogo } from '../components/SulzerLogo'
-import { demoUser } from '../config/demo'
+import { ApplicationTile } from '../components/home/ApplicationTile'
+import { ConnectPromo } from '../components/home/ConnectPromo'
+import { FinderCard } from '../components/home/FinderCard'
+import { HomeHero } from '../components/home/HomeHero'
+import { SectionHeading } from '../components/SectionHeading'
+import { SupportCard } from '../components/SupportCard'
+import { applicationsSection, finderSection, supportSection } from '../data/home'
 
-// Temporary home route — replaced by the real home page in Phase 1.
 export function HomePage() {
   return (
-    <section className="bg-surface">
-      <div className="site-container py-24">
-        <SulzerLogo variant="blue" className="h-10" />
-        <h1 className="mt-10 max-w-3xl text-5xl leading-tight font-bold tracking-tight text-brand">
-          Welcome to mySulzer
-        </h1>
-        <p className="mt-5 max-w-2xl text-lg text-brand">
-          Your products, projects and service in one place, {demoUser.name.split(' ')[0]}.
-        </p>
-        <button
-          type="button"
-          className="mt-10 inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
-        >
-          Get started
-          <ArrowRight className="size-4" aria-hidden />
-        </button>
-      </div>
-    </section>
+    <>
+      <title>Sulzer | Everything you need, whenever you need it</title>
+
+      <HomeHero />
+
+      <section className="bg-surface-muted">
+        <div className="site-container py-24">
+          <SectionHeading title={finderSection.title} subtitle={finderSection.subtitle} />
+          <ul className="mt-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+            {finderSection.cards.map((card) => (
+              <li key={card.title}>
+                <FinderCard card={card} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="bg-surface">
+        <div className="site-container py-24">
+          <SectionHeading
+            title={applicationsSection.title}
+            subtitle={applicationsSection.subtitle}
+            action={{ label: applicationsSection.linkLabel, to: applicationsSection.to }}
+          />
+          <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {applicationsSection.items.map((item) => (
+              <li key={item.title}>
+                <ApplicationTile item={item} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <ConnectPromo />
+
+      <section className="bg-surface-muted">
+        <div className="site-container py-24">
+          <SectionHeading title={supportSection.title} subtitle={supportSection.subtitle} />
+          <ul className="mt-12 grid gap-6 lg:grid-cols-2">
+            {supportSection.cards.map((card) => (
+              <li key={card.title} className="flex *:flex-1">
+                <SupportCard card={card} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    </>
   )
 }

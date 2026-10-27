@@ -1,0 +1,165 @@
+import {
+  ChartSpline,
+  CircleUserRound,
+  Factory,
+  LifeBuoy,
+  MessageSquareText,
+  Search,
+} from 'lucide-react'
+import { market } from '../config/demo'
+import type { ApplicationTeaser, AssetReadout, ImageRef, LinkCard, NavItem } from '../types'
+
+/*
+ * Copy and image references for the home page ("/").
+ * Image files go in _asset-source/images under the names below.
+ */
+
+export const hero = {
+  image: {
+    file: 'home-hero.jpg',
+    alt: 'Sulzer pumps installed in a water treatment plant',
+    tone: 'ocean',
+  } satisfies ImageRef,
+  eyebrow: 'Sulzer self-service',
+  title: 'Everything you need, whenever you need it',
+  subtitle:
+    'Find products, size solutions, order spare parts and follow your installed base – all in one place, around the clock.',
+  searchLabel: 'Find a Sulzer product',
+  searchButtonLabel: 'Search',
+  /** Scope options for the hero search; submitting goes to `to?q=<term>`. */
+  searchScopes: [
+    { label: 'Products', to: '/products' },
+    { label: 'Applications', to: '/applications' },
+    { label: 'Spare parts', to: '/spare-parts' },
+    { label: 'Documentation', to: '/support/documentation' },
+  ] satisfies NavItem[],
+  popularLabel: 'Popular',
+  popularSearches: ['Submersible pumps', 'Wastewater mixers', 'Spare parts', 'Pump sizing'],
+}
+
+export const finderSection = {
+  title: 'Find what you need',
+  subtitle: 'Start where it suits you – by application, by product or by your own requirements.',
+  cards: [
+    {
+      title: 'Application finder',
+      text: 'Explore proven Sulzer solutions for your industry and process.',
+      linkLabel: 'Find your application',
+      to: '/applications',
+      icon: Factory,
+    },
+    {
+      title: 'Product finder',
+      text: 'Search the full range by product name, model or part number.',
+      linkLabel: 'Find a product',
+      to: '/products',
+      icon: Search,
+    },
+    {
+      title: 'Sizing',
+      text: 'Enter your duty point and get the right pump in minutes.',
+      linkLabel: 'Start sizing',
+      to: '/sizing',
+      icon: ChartSpline,
+    },
+    {
+      title: 'mySulzer',
+      text: 'Your products, projects, orders and documents in one place.',
+      linkLabel: 'Go to mySulzer',
+      to: '/my-sulzer',
+      icon: CircleUserRound,
+    },
+  ] satisfies LinkCard[],
+}
+
+export const applicationsSection = {
+  title: 'Applications',
+  subtitle: "Solutions engineered for the world's most demanding fluid processes.",
+  linkLabel: 'Explore all applications',
+  to: '/applications',
+  items: [
+    {
+      title: 'Municipal water supply',
+      caption: 'Reliable intake, treatment and distribution of clean water.',
+      to: '/applications',
+      image: { file: 'app-municipal-water.jpg', alt: '', tone: 'ocean' },
+    },
+    {
+      title: 'Wastewater',
+      caption: 'Collection, transport and treatment of municipal wastewater.',
+      to: '/applications',
+      image: { file: 'app-wastewater.jpg', alt: '', tone: 'deep' },
+    },
+    {
+      title: 'Industrial processes',
+      caption: 'Process pumps and mixers built for continuous operation.',
+      to: '/applications',
+      image: { file: 'app-industrial-processes.jpg', alt: '', tone: 'steel' },
+    },
+    {
+      title: 'Building services',
+      caption: 'Drainage, sewage and water handling in buildings.',
+      to: '/applications',
+      image: { file: 'app-building-services.jpg', alt: '', tone: 'slate' },
+    },
+    {
+      title: 'Pulp & paper',
+      caption: 'Stock preparation, bleaching and chemical recovery.',
+      to: '/applications',
+      image: { file: 'app-pulp-paper.jpg', alt: '', tone: 'steel' },
+    },
+    {
+      title: 'Oil & gas',
+      caption: 'Upstream, midstream and downstream pumping solutions.',
+      to: '/applications',
+      image: { file: 'app-oil-gas.jpg', alt: '', tone: 'deep' },
+    },
+  ] satisfies ApplicationTeaser[],
+}
+
+export const connectPromo = {
+  eyebrow: 'Sulzer Connect',
+  title: 'Predict issues & protect assets with remote monitoring',
+  text: 'Sensors on your pumps and mixers stream condition data to the cloud, so you see problems coming and plan service before anything stops.',
+  features: [
+    'Round-the-clock monitoring of vibration, temperature and power',
+    'Early warnings before small issues become downtime',
+    'Service planned on real data from your assets',
+  ],
+  cta: { label: 'Discover Sulzer Connect', to: '/connect' } satisfies NavItem,
+  image: {
+    file: 'connect-promo.jpg',
+    alt: 'Sulzer pump station monitored with Sulzer Connect',
+    tone: 'deep',
+  } satisfies ImageRef,
+  readouts: [
+    { label: 'Lift station P-104', value: 'Running normally', status: 'ok' },
+    {
+      label: 'Bearing vibration',
+      value: '2.1 mm/s',
+      status: 'ok',
+      trend: [42, 46, 40, 44, 38, 41, 36, 39, 35, 37, 33, 34],
+    },
+  ] satisfies AssetReadout[],
+}
+
+export const supportSection = {
+  title: 'Support',
+  subtitle: "Expert help through every stage of your equipment's life.",
+  cards: [
+    {
+      title: 'Go to support',
+      text: 'Service requests, repairs, documentation and technical help from Sulzer specialists.',
+      linkLabel: 'Go to support',
+      to: '/support',
+      icon: LifeBuoy,
+    },
+    {
+      title: 'Contact us',
+      text: `Talk to your local Sulzer sales and service team in ${market.country}.`,
+      linkLabel: 'Contact us',
+      to: '/contact',
+      icon: MessageSquareText,
+    },
+  ] satisfies LinkCard[],
+}
