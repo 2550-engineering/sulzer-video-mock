@@ -7,11 +7,6 @@ import type { NavItem, PlaceholderRoute } from '../types'
  */
 export const placeholderRoutes: PlaceholderRoute[] = [
   {
-    path: '/products',
-    title: 'Product Center',
-    description: 'Search the full Sulzer range by product name, application or part number.',
-  },
-  {
     path: '/products/categories',
     title: 'Product categories',
     description: 'Browse pumps, mixers, aerators and compressors by product family.',
@@ -30,30 +25,14 @@ export const placeholderRoutes: PlaceholderRoute[] = [
     parent: '/products',
   },
   {
-    path: '/applications',
-    title: 'Applications',
-    description: 'Solutions for water, wastewater and industrial processes.',
-  },
-  {
     path: '/spare-parts',
     title: 'Spare parts',
     description: 'Identify, price and order genuine Sulzer spare parts.',
   },
   {
-    path: '/sizing',
-    title: 'Sizing & configuration',
-    description: 'Enter your duty point and get matching Sulzer pumps, curves and energy data.',
-  },
-  {
     path: '/digital-solutions',
     title: 'Digital solutions',
     description: 'Connected services that keep your equipment running at its best.',
-  },
-  {
-    path: '/connect',
-    title: 'Sulzer Connect',
-    description: 'Monitor the condition and performance of your assets in real time.',
-    parent: '/digital-solutions',
   },
   {
     path: '/eshop',
@@ -70,18 +49,6 @@ export const placeholderRoutes: PlaceholderRoute[] = [
     path: '/my-pages/recently-viewed',
     title: 'Recently viewed products',
     description: 'Pick up where you left off.',
-    parent: '/my-pages',
-  },
-  {
-    path: '/my-projects',
-    title: 'My projects',
-    description: 'Collect products, sizing results and documents per project and share them.',
-    parent: '/my-pages',
-  },
-  {
-    path: '/assets',
-    title: 'My assets',
-    description: 'Your installed base with live condition, alerts and service history.',
     parent: '/my-pages',
   },
   {
@@ -242,6 +209,8 @@ export const placeholderRoutes: PlaceholderRoute[] = [
 
 /** Real (built) pages that placeholder routes can name as their parent. */
 const builtPages: Pick<PlaceholderRoute, 'path' | 'title' | 'parent'>[] = [
+  { path: '/products', title: 'Product Center' },
+  { path: '/applications', title: 'Applications' },
   { path: '/my-sulzer', title: 'mySulzer' },
   { path: '/my-pages', title: 'My Pages', parent: '/my-sulzer' },
 ]

@@ -53,6 +53,8 @@
   /* Layout */
   --sz-content-max: 1440px;
   --sz-gutter: 2rem;
+  /* Sticky site header: market strip 32 + logo row 80 + main nav 56. Page tab bars stick below it. */
+  --sz-header-height: 168px;
 
   /* Radii */
   --sz-radius-sm: 6px;

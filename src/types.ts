@@ -117,3 +117,161 @@ export type ActivityItem = {
   to: string
   icon: LucideIcon
 }
+
+/* ── Catalogue (Phase 2 templates) ─────────────────────────────────────────── */
+
+/** Heading, paragraph and icon highlights shown on an "Explore" tab. */
+export type ExploreContent = {
+  title: string
+  text: string
+  highlights: IconItem[]
+}
+
+/** A node in the application finder tree. The root ("Applications") has `parentId: null`. */
+export type Application = {
+  /** Also the URL slug: /applications/<id>. */
+  id: string
+  name: string
+  parentId: string | null
+  heroImage: ImageRef
+  /** One line, for tiles and lists. */
+  summary: string
+  /** Paragraph under the hero title. */
+  intro: string
+  /** Ids of child applications, in display order. */
+  children: string[]
+  explore?: ExploreContent
+}
+
+/** Headline figures in the product header strip, pre-formatted with units. */
+export type KeySpecs = {
+  liquidTemp: string
+  maxFlow: string
+  maxHead: string
+  maxPressure: string
+}
+
+export type ProductTabsContent = {
+  explore: ExploreContent
+  services: IconItem[]
+}
+
+export type Product = {
+  /** Also the URL slug: /products/<id>. */
+  id: string
+  name: string
+  /** Construction type, shown as the tag above the product name. */
+  family: string
+  /** Range category, matching the mega menu "Categories" list. */
+  category: string
+  /** Ids of the applications this product is suitable for. */
+  applications: string[]
+  summary: string
+  keySpecs: KeySpecs
+  /** First image is the main product shot. */
+  images: ImageRef[]
+  tabs: ProductTabsContent
+}
+
+/** One size/variant of a product, as listed on the Models tab. */
+export type ProductModel = {
+  id: string
+  productId: string
+  name: string
+  /** Best-efficiency flow, m³/h. */
+  flow: number
+  /** Head at best-efficiency flow, m. */
+  head: number
+  /** Rated motor power, kW. */
+  power: number
+  /** Nominal speed, rpm. */
+  speed: number
+  /** Impeller diameter, mm. */
+  impeller: number
+}
+
+export type SparePart = {
+  id: string
+  partNumber: string
+  name: string
+  productId: string
+  /** e.g. "Wear parts", "Seals", "Bearings". */
+  group: string
+  /** Item number on the sectional drawing. */
+  position: number
+  availability: 'in-stock' | 'on-request'
+}
+
+export type DocumentType =
+  | 'Data sheet'
+  | 'Installation & operating instructions'
+  | 'Brochure'
+  | 'Spare parts list'
+  | 'BIM model'
+  | 'CAD drawing'
+
+export type Document = {
+  id: string
+  title: string
+  type: DocumentType
+  /** Sulzer document number. */
+  number: string
+  productIds: string[]
+  language: string
+  format: string
+  size: string
+  /** ISO date, e.g. "2026-03-12". */
+  date: string
+}
+
+export type ProjectStatus = 'Draft' | 'In progress' | 'Quoted'
+
+export type Project = {
+  id: string
+  name: string
+  applicationId: string
+  productIds: string[]
+  status: ProjectStatus
+  owner: string
+  /** Pre-formatted, e.g. "Today, 07:58". */
+  updated: string
+  sharedWith: number
+}
+
+export type AssetStatus = 'ok' | 'warning' | 'alarm'
+
+export type Asset = {
+  id: string
+  name: string
+  location: string
+  productId: string
+  status: AssetStatus
+  lastReading: {
+    metric: string
+    value: string
+    /** Pre-formatted, e.g. "Today, 08:42". */
+    time: string
+  }
+}
+
+/** A tab in a page's sticky tab bar. `id` is also the URL hash. */
+export type TabDef = {
+  id: string
+  label: string
+}
+
+/** Shown inside a tab whose content isn't built yet. */
+export type TabComingSoonCopy = {
+  title: string
+  text: string
+}
+
+/** Copy for a feature page that isn't built yet. */
+export type ComingSoonContent = {
+  title: string
+  description: string
+  panelTitle: string
+  panelText: string
+  /** What the finished page will offer, shown as a checklist. */
+  features: string[]
+}

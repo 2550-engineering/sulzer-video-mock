@@ -1,7 +1,9 @@
 import {
   Activity,
   CircleUserRound,
+  Factory,
   FolderKanban,
+  Gauge,
   GraduationCap,
   Headset,
   LayoutDashboard,
@@ -11,6 +13,7 @@ import {
   ShoppingCart,
   Wrench,
 } from 'lucide-react'
+import { applicationPath, childApplications, rootApplication } from '../lib/catalog'
 import type { FooterColumn, IconLink, MegaMenuItem, NavItem } from '../types'
 
 /** Main nav items after the "Products & services" mega menu trigger. */
@@ -22,34 +25,34 @@ export const mainNav: NavItem[] = [
   { label: 'Contact', to: '/contact' },
 ]
 
+const categories = [
+  'Submersible pumps',
+  'End suction pumps',
+  'Axial and mixed flow pumps',
+  'Multistage pumps',
+  'Dewatering pumps',
+  'Mixers and agitators',
+  'Aeration systems',
+  'Turbocompressors',
+]
+
 export const megaMenu: MegaMenuItem[] = [
   {
     label: 'Categories',
     to: '/products/categories',
-    children: [
-      { label: 'Submersible pumps', to: '/products/categories' },
-      { label: 'End suction pumps', to: '/products/categories' },
-      { label: 'Axial and mixed flow pumps', to: '/products/categories' },
-      { label: 'Multistage pumps', to: '/products/categories' },
-      { label: 'Dewatering pumps', to: '/products/categories' },
-      { label: 'Mixers and agitators', to: '/products/categories' },
-      { label: 'Aeration systems', to: '/products/categories' },
-      { label: 'Turbocompressors', to: '/products/categories' },
-    ],
+    // Each category opens the Product Center search for it.
+    children: categories.map((label) => ({
+      label,
+      to: `/products?q=${encodeURIComponent(label)}`,
+    })),
   },
   {
     label: 'Applications',
-    to: '/applications',
-    children: [
-      { label: 'Wastewater collection', to: '/applications' },
-      { label: 'Wastewater treatment', to: '/applications' },
-      { label: 'Clean water supply', to: '/applications' },
-      { label: 'Industrial process water', to: '/applications' },
-      { label: 'Pulp, paper and board', to: '/applications' },
-      { label: 'Mining and minerals', to: '/applications' },
-      { label: 'Food and beverage', to: '/applications' },
-      { label: 'Power generation', to: '/applications' },
-    ],
+    to: applicationPath(rootApplication),
+    children: childApplications(rootApplication).map((app) => ({
+      label: app.name,
+      to: applicationPath(app),
+    })),
   },
   { label: 'Products A–Z', to: '/products/a-z' },
   { label: 'Product replacement', to: '/products/replacement' },
@@ -60,7 +63,7 @@ export const megaMenu: MegaMenuItem[] = [
     to: '/digital-solutions',
     children: [
       { label: 'Sulzer Connect', to: '/connect' },
-      { label: 'Condition monitoring', to: '/connect' },
+      { label: 'Condition monitoring', to: '/assets' },
       { label: 'Sizing and selection', to: '/sizing' },
       { label: 'CAD and BIM downloads', to: '/digital-solutions' },
     ],
@@ -69,6 +72,8 @@ export const megaMenu: MegaMenuItem[] = [
 
 export const quickLinks: IconLink[] = [
   { label: 'Product Center', to: '/products', icon: Search },
+  { label: 'Applications', to: '/applications', icon: Factory },
+  { label: 'Sizing', to: '/sizing', icon: Ruler },
   { label: 'eShop', to: '/eshop', icon: ShoppingCart },
   { label: 'Sulzer Academy', to: '/learn', icon: GraduationCap },
   { label: 'mySulzer', to: '/my-sulzer', icon: CircleUserRound },
@@ -76,6 +81,7 @@ export const quickLinks: IconLink[] = [
 
 export const digitalOfferings: IconLink[] = [
   { label: 'Sulzer Connect', to: '/connect', icon: Activity },
+  { label: 'My assets', to: '/assets', icon: Gauge },
 ]
 
 export const popularSearches = [

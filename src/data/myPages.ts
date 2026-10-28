@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { demoUser, products } from '../config/demo'
 import type { ActivityItem, AssetStat, DashboardCard, NavItem } from '../types'
+import { projects } from './projects'
 
 /* Copy and demo data for the signed-in dashboard ("/my-pages"). Deterministic — no live values. */
 
@@ -63,7 +64,7 @@ export const dashboardCards = {
     icon: FolderKanban,
     links: [
       { label: 'My saved items', to: '/my-pages/saved', badge: { label: '12' } },
-      { label: 'My projects', to: '/my-projects', badge: { label: '4' } },
+      { label: 'My projects', to: '/my-projects', badge: { label: String(projects.length) } },
       { label: 'My recently viewed products', to: '/my-pages/recently-viewed' },
     ],
   },

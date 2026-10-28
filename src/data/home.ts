@@ -7,11 +7,13 @@ import {
   Search,
 } from 'lucide-react'
 import { market } from '../config/demo'
-import type { ApplicationTeaser, AssetReadout, ImageRef, LinkCard, NavItem } from '../types'
+import { applicationTeaser, childApplications, rootApplication } from '../lib/catalog'
+import type { AssetReadout, ImageRef, LinkCard, NavItem } from '../types'
 
 /*
  * Copy and image references for the home page ("/").
- * Image files go in _asset-source/images under the names below.
+ * Image files go in _asset-source/images under the names below
+ * (application tiles take theirs from data/applications.ts).
  */
 
 export const hero = {
@@ -77,44 +79,7 @@ export const applicationsSection = {
   subtitle: "Solutions engineered for the world's most demanding fluid processes.",
   linkLabel: 'Explore all applications',
   to: '/applications',
-  items: [
-    {
-      title: 'Municipal water supply',
-      caption: 'Reliable intake, treatment and distribution of clean water.',
-      to: '/applications',
-      image: { file: 'app-municipal-water.jpg', alt: '', tone: 'ocean' },
-    },
-    {
-      title: 'Wastewater',
-      caption: 'Collection, transport and treatment of municipal wastewater.',
-      to: '/applications',
-      image: { file: 'app-wastewater.jpg', alt: '', tone: 'deep' },
-    },
-    {
-      title: 'Industrial processes',
-      caption: 'Process pumps and mixers built for continuous operation.',
-      to: '/applications',
-      image: { file: 'app-industrial-processes.jpg', alt: '', tone: 'steel' },
-    },
-    {
-      title: 'Building services',
-      caption: 'Drainage, sewage and water handling in buildings.',
-      to: '/applications',
-      image: { file: 'app-building-services.jpg', alt: '', tone: 'slate' },
-    },
-    {
-      title: 'Pulp & paper',
-      caption: 'Stock preparation, bleaching and chemical recovery.',
-      to: '/applications',
-      image: { file: 'app-pulp-paper.jpg', alt: '', tone: 'steel' },
-    },
-    {
-      title: 'Oil & gas',
-      caption: 'Upstream, midstream and downstream pumping solutions.',
-      to: '/applications',
-      image: { file: 'app-oil-gas.jpg', alt: '', tone: 'deep' },
-    },
-  ] satisfies ApplicationTeaser[],
+  items: childApplications(rootApplication).map(applicationTeaser),
 }
 
 export const connectPromo = {

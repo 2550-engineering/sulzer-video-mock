@@ -28,3 +28,9 @@ export const products = {
   submersiblePump: 'Sulzer Submersible Wastewater Pump',
   iotOffering: 'Sulzer Smart Monitoring',
 } as const
+
+export const productSeries = {
+  // Placeholder model-name prefixes, e.g. "SES 150-125-315" — confirm with Sulzer.
+  mainEndSuctionPump: 'SES',
+  submersiblePump: 'SWP',
+} as const
