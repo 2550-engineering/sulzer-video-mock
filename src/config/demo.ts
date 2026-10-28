@@ -20,6 +20,8 @@ export const market = {
   country: 'Sweden',
   language: 'English',
   languageCode: 'EN',
+  // Placeholder — list prices on the Models tab are in this currency, excl. VAT.
+  currency: 'EUR',
 } as const
 
 export const products = {
@@ -28,8 +30,15 @@ export const products = {
   sns: 'SNS',
   smd: 'SMD',
   sjt: 'SJT',
+  sjm: 'SJM',
   xfp: 'XFP',
+  afp: 'AFP',
+  // Placeholder — confirm the name of Sulzer's submersible dewatering pump range.
+  jDewatering: 'J dewatering pump',
   connect: 'Sulzer Connect',
+  // Placeholder — confirm the pump controller's name.
+  pumpController: 'PC 441 pump controller',
+  blueBox: 'BLUE BOX',
   // Placeholder — confirm whether Sulzer sells a motor protection relay and what it is called.
   motorProtectionRelay: 'Motor protection relay',
   iotOffering: 'Sulzer Smart Monitoring',
@@ -40,6 +49,9 @@ export const productSeries = {
   ahlstar: 'AHLSTAR',
   xfp: 'XFP',
 } as const
+
+/** Reference shown after "Request service" is sent. Fixed, so every recording shows the same one. */
+export const serviceRequestReference = 'SR-2026-0142'
 
 /**
  * Show the expected file name on image placeholders, so missing images are easy to spot.

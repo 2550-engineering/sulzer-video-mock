@@ -1,5 +1,6 @@
 import { useCallback, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router'
+import { scrollToTabBar } from '../lib/scrollToTabBar'
 import type { TabDef } from '../types'
 
 /**
@@ -19,15 +20,7 @@ export function useHashTab(tabs: TabDef[]) {
   const select = useCallback(
     (id: string) => {
       navigate({ pathname, search, hash: id }, { replace: true })
-      const anchor = anchorRef.current
-      if (!anchor) return
-      const headerHeight =
-        parseFloat(
-          getComputedStyle(document.documentElement).getPropertyValue('--sz-header-height'),
-        ) || 0
-      const barTop = anchor.getBoundingClientRect().top + window.scrollY - headerHeight
-      if (Math.abs(window.scrollY - barTop) > 1)
-        window.scrollTo({ top: barTop, behavior: 'smooth' })
+      scrollToTabBar(anchorRef.current)
     },
     [navigate, pathname, search],
   )

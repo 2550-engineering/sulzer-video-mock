@@ -1,18 +1,12 @@
 import { applications, rootApplicationId } from '../data/applications'
-import { documents } from '../data/documents'
+import { cadFiles, cadPreviews } from '../data/cad'
+import { documents, serviceVideos } from '../data/documents'
 import { knowledgeItems } from '../data/knowledge'
 import { productModels } from '../data/productModels'
 import { products } from '../data/products'
 import { services } from '../data/services'
 import { spareParts } from '../data/spareParts'
-import type {
-  Application,
-  ApplicationTeaser,
-  Document,
-  DocumentType,
-  Product,
-  Service,
-} from '../types'
+import type { Application, ApplicationTeaser, Product, Service } from '../types'
 
 /* Lookups over the mock catalogue in src/data. */
 
@@ -124,6 +118,10 @@ export function productPath(product: Product) {
   return `/products/${product.id}`
 }
 
+export function getModel(id: string) {
+  return productModels.find((model) => model.id === id)
+}
+
 export function modelsFor(productId: string) {
   return productModels.filter((model) => model.productId === productId)
 }
@@ -136,31 +134,16 @@ export function documentsFor(productId: string) {
   return documents.filter((doc) => doc.productIds.includes(productId))
 }
 
-const modelFileTypes: DocumentType[] = ['BIM model', 'CAD drawing']
-
-/** BIM and CAD files (the BIM tab), as opposed to written documentation. */
-export function isModelFile(doc: Document) {
-  return modelFileTypes.includes(doc.type)
+export function videosFor(productId: string) {
+  return serviceVideos.filter((video) => video.productIds.includes(productId))
 }
 
-/**
- * Products where every word of the query appears in the name, family, category,
- * summary or a model name. An empty query matches everything.
- */
-export function searchProducts(query: string) {
-  const words = query.toLowerCase().split(/\s+/).filter(Boolean)
-  return products.filter((product) => {
-    const haystack = [
-      product.name,
-      product.family,
-      product.category,
-      product.summary,
-      ...modelsFor(product.id).map((model) => model.name),
-    ]
-      .join(' ')
-      .toLowerCase()
-    return words.every((word) => haystack.includes(word))
-  })
+export function cadFilesFor(productId: string) {
+  return cadFiles.filter((file) => file.productId === productId)
+}
+
+export function cadPreviewFor(productId: string) {
+  return cadPreviews[productId]
 }
 
 /** Group items by a key, keeping first-seen order. */

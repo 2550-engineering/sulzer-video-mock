@@ -1,25 +1,16 @@
-import { ArrowRight } from 'lucide-react'
-import { Link, useParams } from 'react-router'
-import { IconCardGrid } from '../components/IconCardGrid'
-import { DocumentList } from '../components/product/DocumentList'
-import { ModelsTable } from '../components/product/ModelsTable'
+import { useParams } from 'react-router'
+import { BimTab } from '../components/product/BimTab'
+import { DocumentationTab } from '../components/product/DocumentationTab'
+import { ModelsTab } from '../components/product/ModelsTab'
 import { ProductExploreTab } from '../components/product/ProductExploreTab'
 import { ProductHeader } from '../components/product/ProductHeader'
-import { SparePartList } from '../components/product/SparePartList'
+import { ServicesTab } from '../components/product/ServicesTab'
 import { TabBar } from '../components/TabBar'
 import { TabComingSoon } from '../components/TabComingSoon'
-import { TabHeading } from '../components/TabHeading'
 import { TabPanel } from '../components/TabPanel'
 import { productPage as copy } from '../data/catalogPages'
 import { useHashTab } from '../hooks/useHashTab'
-import {
-  documentsFor,
-  getProduct,
-  isModelFile,
-  modelsFor,
-  servicesFor,
-  sparePartsFor,
-} from '../lib/catalog'
+import { documentsFor, getProduct, modelsFor, servicesFor } from '../lib/catalog'
 import { NotFoundPage } from './NotFoundPage'
 
 /** Product page: /products/:id. */
@@ -30,15 +21,8 @@ export function ProductPage() {
   if (!product) return <NotFoundPage />
 
   const models = modelsFor(product.id)
-  const parts = sparePartsFor(product.id)
-  const docs = documentsFor(product.id)
-  const documentation = docs.filter((doc) => !isModelFile(doc))
-  const bim = docs.filter(isModelFile)
-  const services = servicesFor(product.serviceIds).map((service) => ({
-    label: service.name,
-    text: service.summary,
-    icon: service.icon,
-  }))
+  const documentation = documentsFor(product.id)
+  const services = servicesFor(product.serviceIds)
 
   return (
     <>
@@ -63,67 +47,30 @@ export function ProductPage() {
 
         {activeTab === 'models' &&
           (models.length > 0 ? (
-            <>
-              <TabHeading title={copy.modelsTitle(models.length)} />
-              <div className="mt-8">
-                <ModelsTable models={models} />
-              </div>
-            </>
+            <ModelsTab key={product.id} models={models} />
           ) : (
             <TabComingSoon copy={copy.tabEmpty} />
           ))}
 
         {activeTab === 'documentation' &&
           (documentation.length > 0 ? (
-            <>
-              <TabHeading title={copy.documentationTitle} />
-              <div className="mt-8">
-                <DocumentList documents={documentation} />
-              </div>
-            </>
+            <DocumentationTab key={product.id} product={product} documents={documentation} />
           ) : (
             <TabComingSoon copy={copy.tabEmpty} />
           ))}
 
         {activeTab === 'bim' &&
-          (bim.length > 0 ? (
-            <>
-              <TabHeading title={copy.bimTitle} />
-              <div className="mt-8">
-                <DocumentList documents={bim} />
-              </div>
-            </>
+          (models.length > 0 ? (
+            <BimTab key={product.id} product={product} models={models} />
           ) : (
             <TabComingSoon copy={copy.tabEmpty} />
           ))}
 
-        {activeTab === 'spare-parts' &&
-          (parts.length > 0 ? (
-            <>
-              <TabHeading title={copy.sparePartsTitle}>
-                <Link
-                  to={copy.sparePartsLink.to}
-                  className="group inline-flex items-center gap-2 text-[15px] font-semibold text-primary transition-colors hover:text-primary-hover"
-                >
-                  {copy.sparePartsLink.label}
-                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </TabHeading>
-              <div className="mt-8">
-                <SparePartList parts={parts} />
-              </div>
-            </>
-          ) : (
-            <TabComingSoon copy={copy.tabEmpty} />
-          ))}
+        {/* Spare parts arrive with the spare parts and eCommerce module. */}
+        {activeTab === 'spare-parts' && <TabComingSoon copy={copy.spareParts} />}
 
         {activeTab === 'services' && (
-          <>
-            <TabHeading title={copy.servicesTitle} />
-            <div className="mt-8">
-              <IconCardGrid items={services} columns="sm:grid-cols-2 lg:grid-cols-3" />
-            </div>
-          </>
+          <ServicesTab key={product.id} product={product} services={services} />
         )}
       </TabPanel>
     </>

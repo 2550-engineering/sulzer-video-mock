@@ -14,6 +14,8 @@ import {
   Wrench,
 } from 'lucide-react'
 import { applicationPath, childApplications, rootApplication } from '../lib/catalog'
+import { categoryPath, productCategories } from '../lib/productFilters'
+import { products } from './demo'
 import type { FooterColumn, IconLink, MegaMenuItem, NavItem } from '../types'
 
 /** Main nav items after the "Products & services" mega menu trigger. */
@@ -25,26 +27,12 @@ export const mainNav: NavItem[] = [
   { label: 'Contact', to: '/contact' },
 ]
 
-const categories = [
-  'Submersible pumps',
-  'End suction pumps',
-  'Axial and mixed flow pumps',
-  'Multistage pumps',
-  'Dewatering pumps',
-  'Mixers and agitators',
-  'Aeration systems',
-  'Turbocompressors',
-]
-
 export const megaMenu: MegaMenuItem[] = [
   {
     label: 'Categories',
-    to: '/products/categories',
-    // Each category opens the Product Center search for it.
-    children: categories.map((label) => ({
-      label,
-      to: `/products?q=${encodeURIComponent(label)}`,
-    })),
+    to: '/products',
+    // From the product data, so every category has products. Each opens Products A–Z filtered to it.
+    children: productCategories.map((label) => ({ label, to: categoryPath(label) })),
   },
   {
     label: 'Applications',
@@ -54,7 +42,7 @@ export const megaMenu: MegaMenuItem[] = [
       to: applicationPath(app),
     })),
   },
-  { label: 'Products A–Z', to: '/products/a-z' },
+  { label: 'Products A–Z', to: '/products' },
   { label: 'Product replacement', to: '/products/replacement' },
   { label: 'Spare parts', to: '/spare-parts' },
   { label: 'Sizing', to: '/sizing' },
@@ -84,12 +72,13 @@ export const digitalOfferings: IconLink[] = [
   { label: 'My assets', to: '/assets', icon: Gauge },
 ]
 
+/** Search chips in the header search and on "No results". Each one finds something. */
 export const popularSearches = [
+  products.ahlstar,
   'Submersible pumps',
-  'Spare parts',
-  'Mixers',
+  'Vertical turbine',
   'Condition monitoring',
-  'Pump sizing',
+  'Raw water',
 ]
 
 /** Links in the signed-in account menu, above "Sign out". */

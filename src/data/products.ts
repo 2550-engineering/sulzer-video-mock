@@ -2,14 +2,21 @@ import {
   Activity,
   ArrowDownToLine,
   Bell,
+  BrainCircuit,
   Cable,
+  ChartLine,
   Cog,
+  Cpu,
   Droplets,
   Gauge,
   Layers,
+  Leaf,
+  Mountain,
   Recycle,
   Ruler,
   ShieldCheck,
+  Smartphone,
+  Truck,
   Wrench,
   Zap,
 } from 'lucide-react'
@@ -94,7 +101,14 @@ export const products: Product[] = [
         storyIds: ['story-river-intake', 'story-paper-mill', 'story-desalination'],
       },
     },
-    serviceIds: ['commissioning', 'service-agreements', 'connect-asset-monitoring'],
+    serviceIds: [
+      'commissioning',
+      'inspection',
+      'vibration-analysis',
+      'repair-overhaul',
+      'service-agreements',
+      'connect-asset-monitoring',
+    ],
   },
   {
     id: 'sns',
@@ -382,5 +396,233 @@ export const products: Product[] = [
       },
     },
     serviceIds: ['commissioning', 'remote-expert-support'],
+  },
+  {
+    id: 'sjm',
+    name: productNames.sjm,
+    family: 'Vertical mixed-flow',
+    category: 'Axial and mixed flow pumps',
+    applications: ['raw-water-transfer', 'cooling-water', 'stormwater-flood-control'],
+    summary:
+      'Vertical mixed-flow pump for very large flows at low to medium head, from raw water transfer to cooling water and flood protection.',
+    keySpecs: {
+      liquidTemp: '0 .. 50 °C',
+      maxFlow: '30 000 m³/h',
+      maxHead: '60 m',
+      maxPressure: '10 bar',
+    },
+    images: [
+      {
+        src: '/images/products/sjm-main.png',
+        alt: `${productNames.sjm} vertical mixed-flow pump with discharge head and motor`,
+      },
+    ],
+    tabs: {
+      explore: {
+        intro: {
+          title: 'Large volumes, small footprint',
+          text: 'Mixed-flow hydraulics move very large volumes with a small footprint, so one station can do the work of many smaller pumps.',
+          more: [],
+        },
+        highlights: [
+          {
+            label: 'Very large flows',
+            text: 'Mixed-flow bowls sized to your station.',
+            icon: Droplets,
+          },
+          {
+            label: 'Compact station',
+            text: 'Vertical layout keeps the building small.',
+            icon: Layers,
+          },
+          {
+            label: 'Efficient at part load',
+            text: 'Flat efficiency curve when levels and demand change.',
+            icon: Zap,
+          },
+        ],
+      },
+    },
+    serviceIds: ['installation', 'inspection', 'energy-audit'],
+  },
+  {
+    id: 'afp',
+    name: productNames.afp,
+    family: 'Submersible, solids-handling',
+    category: 'Submersible pumps',
+    applications: ['wastewater-collection', 'stormwater-flood-control', 'building-wastewater'],
+    summary:
+      'Submersible sewage pump for municipal and building wastewater, with a solids-handling impeller and a compact, cooling-jacket-free design.',
+    keySpecs: {
+      liquidTemp: '0 .. 40 °C',
+      maxFlow: '1 200 m³/h',
+      maxHead: '60 m',
+      maxPressure: '6 bar',
+    },
+    images: [
+      {
+        src: '/images/products/afp-main.png',
+        alt: `${productNames.afp} submersible sewage pump`,
+      },
+    ],
+    tabs: {
+      explore: {
+        intro: {
+          title: 'Wastewater, handled',
+          text: 'A solids-handling impeller and a sealed premium-efficiency motor keep sewage moving in pump stations of every size.',
+          more: [],
+        },
+        highlights: [
+          {
+            label: 'Solids-handling',
+            text: 'Free passage for the solids found in sewage.',
+            icon: Recycle,
+          },
+          {
+            label: 'Efficient motor',
+            text: 'Premium-efficiency motor, sealed against water.',
+            icon: Zap,
+          },
+          {
+            label: 'Easy to lift out',
+            text: 'Guide rail installation for quick service.',
+            icon: Wrench,
+          },
+        ],
+      },
+    },
+    serviceIds: ['service-agreements', 'repair-overhaul', 'connect-asset-monitoring'],
+  },
+  {
+    id: 'j-dewatering',
+    name: productNames.jDewatering,
+    family: 'Submersible dewatering',
+    category: 'Dewatering pumps',
+    applications: ['mine-dewatering', 'building-drainage', 'stormwater-flood-control'],
+    summary:
+      'Portable submersible pump for construction sites, mines and emergency drainage, light enough to move by hand and tough enough for abrasive water.',
+    keySpecs: {
+      liquidTemp: '0 .. 40 °C',
+      maxFlow: '600 m³/h',
+      maxHead: '110 m',
+      maxPressure: '11 bar',
+    },
+    images: [
+      {
+        src: '/images/products/j-dewatering-main.png',
+        alt: `${productNames.jDewatering}, portable submersible pump with lifting handle`,
+      },
+    ],
+    tabs: {
+      explore: {
+        intro: {
+          title: 'Dry ground, fast',
+          text: 'Drop it in, plug it in and start pumping. Hard-wearing parts keep it running in water full of sand and grit.',
+          more: [],
+        },
+        highlights: [
+          {
+            label: 'Portable',
+            text: 'Light enough to move around site.',
+            icon: Truck,
+          },
+          {
+            label: 'Wear-resistant',
+            text: 'Hard-metal wear parts for abrasive water.',
+            icon: Mountain,
+          },
+          {
+            label: 'Runs dry safely',
+            text: 'Motor protection against overheating.',
+            icon: ShieldCheck,
+          },
+        ],
+      },
+    },
+    serviceIds: ['repair-overhaul', 'service-agreements'],
+  },
+  {
+    id: 'pump-controller',
+    name: productNames.pumpController,
+    family: 'Pump control',
+    category: 'Monitoring and connectivity',
+    applications: ['wastewater-collection', 'building-wastewater', 'stormwater-flood-control'],
+    summary:
+      'Level-based controller for pump stations: starts, stops and alternates pumps, logs every run and sends alarms to your phone or SCADA.',
+    images: [
+      {
+        src: '/images/products/pump-controller-main.png',
+        alt: `${productNames.pumpController} with display, in a control cabinet`,
+      },
+    ],
+    tabs: {
+      explore: {
+        intro: {
+          title: 'The brain of the pump station',
+          text: 'The controller runs the station on level, shares the load between pumps and tells you as soon as something needs attention.',
+          more: [],
+        },
+        highlights: [
+          {
+            label: 'Smart pump control',
+            text: 'Level control, alternation and pipe cleaning.',
+            icon: Cpu,
+          },
+          {
+            label: 'Alarms anywhere',
+            text: 'Text messages and SCADA alarms.',
+            icon: Smartphone,
+          },
+          {
+            label: 'Energy saving',
+            text: 'Runs pumps at their most efficient points.',
+            icon: Leaf,
+          },
+        ],
+      },
+    },
+    serviceIds: ['commissioning', 'remote-expert-support'],
+  },
+  {
+    id: 'blue-box',
+    name: productNames.blueBox,
+    family: 'Process analytics',
+    category: 'Digital solutions',
+    applications: ['wastewater-treatment', 'industrial-wastewater-treatment', 'water-reuse'],
+    summary:
+      'Analytics software for wastewater treatment plants that uses the data you already collect to optimise aeration and cut energy use.',
+    images: [
+      {
+        src: '/images/products/blue-box-main.png',
+        alt: `${productNames.blueBox} dashboard on a laptop in a treatment plant control room`,
+      },
+    ],
+    tabs: {
+      explore: {
+        intro: {
+          title: 'Your plant data, put to work',
+          text: 'Models trained on your own plant predict load and adjust aeration in real time, so you use the energy the process needs and no more.',
+          more: [],
+        },
+        highlights: [
+          {
+            label: 'Predictive control',
+            text: 'Learns how your plant behaves.',
+            icon: BrainCircuit,
+          },
+          {
+            label: 'Lower energy use',
+            text: 'Aeration matched to the real load.',
+            icon: Leaf,
+          },
+          {
+            label: 'Clear reporting',
+            text: 'Savings and process KPIs at a glance.',
+            icon: ChartLine,
+          },
+        ],
+      },
+    },
+    serviceIds: ['remote-expert-support', 'energy-audit'],
   },
 ]

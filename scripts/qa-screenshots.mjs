@@ -39,6 +39,11 @@ const routes = [
   ...applications.filter((app) => app.id !== rootApplicationId).map(applicationPath),
   '/products',
   '/products?q=pump',
+  '/products?q=ahlstar',
+  '/products?q=ahlstar&tab=documents',
+  '/products?q=water&tab=applications',
+  '/products?category=submersible-pumps&flow=1000-5000',
+  '/products?q=zzzz',
   ...products.flatMap((product) => [
     `/products/${product.id}`,
     ...productPage.tabs.slice(1).map((tab) => `/products/${product.id}#${tab.id}`),

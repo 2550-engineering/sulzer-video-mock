@@ -271,21 +271,46 @@ export type Product = {
   serviceIds: string[]
 }
 
+export type CasingMaterial = 'Grey cast iron' | 'Ductile iron' | 'Duplex stainless steel'
+export type ShaftSeal = 'Packing' | 'Single mechanical seal' | 'Double mechanical seal'
+
+/** How fast a model ships. Shown with the price, to signed-in users only. */
+export type ModelAvailability = 'In stock' | 'Fast delivery' | 'Made to order'
+
 /** One size/variant of a product, as listed on the Models tab. */
 export type ProductModel = {
   id: string
   productId: string
+  /** e.g. "AHLSTAR 100-80-250". */
   name: string
-  /** Best-efficiency flow, m³/h. */
+  /** Sulzer article number, shown as "Product no.". */
+  productNumber: string
+  frequency: 50 | 60
+  /** Rated (best-efficiency) flow, m³/h. */
   flow: number
-  /** Head at best-efficiency flow, m. */
+  /** Rated head at that flow, m. */
   head: number
-  /** Rated motor power, kW. */
+  /** Rated motor power P2, kW. */
   power: number
   /** Nominal speed, rpm. */
   speed: number
   /** Impeller diameter, mm. */
   impeller: number
+  /** Nominal connection sizes, DN. Submersible pumps have no suction flange. */
+  connection: { suction?: number; discharge: number }
+  casingMaterial: CasingMaterial
+  shaftSeal: ShaftSeal
+  /** Max. operating pressure, bar. */
+  maxPressure: number
+  /** Efficiency at the rated point, %. */
+  efficiency: number
+  /** Pump with motor (and base frame, where there is one), kg. */
+  weight: number
+  /** List price in `market.currency`, excl. VAT. Signed-in users only. */
+  listPrice: number
+  availability: ModelAvailability
+  /** e.g. "2 weeks". Signed-in users only. */
+  leadTime: string
 }
 
 export type SparePart = {
@@ -303,10 +328,13 @@ export type SparePart = {
 export type DocumentType =
   | 'Data sheet'
   | 'Installation & operating instructions'
+  | 'Quick guide'
   | 'Brochure'
+  | 'Performance curves'
   | 'Spare parts list'
-  | 'BIM model'
-  | 'CAD drawing'
+  | 'Declaration of conformity'
+  | 'Certificate'
+  | 'Service video'
 
 export type Document = {
   id: string
@@ -315,12 +343,51 @@ export type Document = {
   /** Sulzer document number. */
   number: string
   productIds: string[]
-  language: string
+  /** Languages it is available in. The first is the one listed. */
+  languages: string[]
+  /** "PDF", or "MP4" for videos. */
   format: string
   size: string
   /** ISO date, e.g. "2026-03-12". */
   date: string
+  /** Shown as "Rev. C". */
+  revision?: string
+  /** The file behind the download button; null while there is no file in public/docs. */
+  href: string | null
+  /** Service videos only. */
+  video?: { duration: string; thumbnail: ImageSource }
 }
+
+export type CadKind = 'BIM object' | '3D model' | '2D drawing'
+export type CadFormat = 'Revit' | 'IFC' | 'STEP' | 'DWG' | 'DXF' | 'PDF'
+
+/** A downloadable BIM or CAD file for one model, on the product BIM tab. */
+export type CadFile = {
+  id: string
+  productId: string
+  modelId: string
+  kind: CadKind
+  format: CadFormat
+  /** e.g. "Revit 2024", "IFC 4", "AP242". */
+  version: string
+  /** BIM objects only, e.g. "LOD 300". */
+  lod?: string
+  /** e.g. "AHLSTAR_100-80-250_50Hz.rfa". */
+  fileName: string
+  size: string
+  date: string
+}
+
+export type SearchKind = 'product' | 'model' | 'document' | 'service' | 'application'
+
+/** One search hit. Carries the matched object, so each kind renders with its usual component. */
+export type SearchResult = { score: number } & (
+  | { kind: 'product'; product: Product }
+  | { kind: 'model'; model: ProductModel; product: Product }
+  | { kind: 'document'; document: Document }
+  | { kind: 'service'; service: Service }
+  | { kind: 'application'; application: Application }
+)
 
 export type ProjectStatus = 'Draft' | 'In progress' | 'Quoted'
 

@@ -42,6 +42,12 @@ const specs = [
     minSize: '1200 × 1500',
   },
   {
+    match: /^\/images\/videos\//,
+    kind: 'Service video thumbnail',
+    aspect: '16:9',
+    minSize: '1280 × 720',
+  },
+  {
     match: /^\/images\/services\//,
     kind: 'Service thumbnail',
     aspect: '4:3',
@@ -55,18 +61,20 @@ const { applications, rootApplicationId } = await load('/src/data/applications.t
 const { products } = await load('/src/data/products.ts')
 const { services } = await load('/src/data/services.ts')
 const { knowledgeItems } = await load('/src/data/knowledge.ts')
+const { serviceVideos } = await load('/src/data/documents.ts')
+const { cadPreviews } = await load('/src/data/cad.ts')
 await server.close()
 
 const byId = (items) => new Map(items.map((item) => [item.id, item]))
 const apps = byId(applications)
 
-// Images seen on the recording path: overview → Municipal water supply → Surface water intake → product.
+// Application finder recording: overview → Municipal water supply → Surface water intake → product.
 const root = apps.get(rootApplicationId)
 const municipal = apps.get('municipal-water-supply')
 const intake = apps.get('surface-water-intake')
 const groups = intake.productGroups ?? []
 const ahlstar = byId(products).get('ahlstar')
-const onRecordingPath = new Set([
+const onApplicationFinder = new Set([
   root.heroImage.src,
   ...root.children.map((id) => apps.get(id).cardImage.src),
   municipal.heroImage.src,
@@ -82,6 +90,20 @@ const onRecordingPath = new Set([
   ),
 ])
 
+// Product finder recording: search → results → AHLSTAR Models, Documentation, BIM and Services tabs.
+// (Service video thumbnails are in the data but not shown on any page yet.)
+const onProductFinder = new Set([
+  ahlstar.images[0].src,
+  cadPreviews.ahlstar.src,
+  ...ahlstar.serviceIds.map((id) => byId(services).get(id).image.src),
+])
+
+const recordings = (src) =>
+  [
+    onApplicationFinder.has(src) && 'application finder',
+    onProductFinder.has(src) && 'product finder',
+  ].filter(Boolean)
+
 const images = [
   ...applications.flatMap((app) => [app.heroImage, app.cardImage]),
   ...products.flatMap((product) => [
@@ -90,6 +112,8 @@ const images = [
   ]),
   ...knowledgeItems.map((item) => item.image),
   ...services.map((service) => service.image),
+  ...serviceVideos.map((video) => video.video.thumbnail),
+  ...Object.values(cadPreviews),
 ]
 
 const rows = images.map(({ src, alt }) => {
@@ -101,7 +125,7 @@ const rows = images.map(({ src, alt }) => {
     folder: `public${src.slice(0, slash + 1)}`,
     spec,
     shows: alt,
-    priority: onRecordingPath.has(src) ? '1 · recording' : '2',
+    priority: recordings(src).length ? `1 · ${recordings(src).join(', ')}` : '2',
     present: existsSync(`public${src}`),
   }
 })
@@ -121,7 +145,8 @@ with the file name (hide the labels with \`showPlaceholderLabels\` in \`src/conf
 
 - **Sources:** Sulzer media (sulzer.com, media bank, product photography) or licensed stock.
   Never Grundfos images.
-- **Priority 1** images are visible on the application finder recording path.
+- **Priority 1** images are visible in a recording; the column says which (application finder,
+  product finder).
 - **Formats:** JPG for photos (quality 80–85), PNG for product cut-outs.
 
 ${rows.length} images, ${missing} missing.
