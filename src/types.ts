@@ -36,6 +36,16 @@ export type ImageRef = {
   tone: PlaceholderTone
 }
 
+/**
+ * An image in `public/images`, by its fixed URL path, e.g. "/images/products/ahlstar-main.png".
+ * Rendered by <SmartImage>, which shows a placeholder until the file exists.
+ * `alt` also describes what the photo should show (see docs/images-needed.md).
+ */
+export type ImageSource = {
+  src: string
+  alt: string
+}
+
 /** Card with an icon, title, one line of text and an arrow link. */
 export type LinkCard = {
   title: string
@@ -57,7 +67,7 @@ export type ApplicationTeaser = {
   title: string
   caption: string
   to: string
-  image: ImageRef
+  image: ImageSource
 }
 
 /** A live-looking reading shown on the Sulzer Connect promo. Deterministic demo data. */
@@ -120,27 +130,78 @@ export type ActivityItem = {
 
 /* ── Catalogue (Phase 2 templates) ─────────────────────────────────────────── */
 
-/** Heading, paragraph and icon highlights shown on an "Explore" tab. */
-export type ExploreContent = {
+/** Opening block of an Explore tab: heading, lead paragraph and text behind "Show more". */
+export type ExploreIntro = {
   title: string
   text: string
-  highlights: IconItem[]
+  /** Paragraphs shown after "Show more". */
+  more: string[]
 }
 
-/** A node in the application finder tree. The root ("Applications") has `parentId: null`. */
-export type Application = {
-  /** Also the URL slug: /applications/<id>. */
+/** Card with an icon, title, text and a button, e.g. "How can we help you?". */
+export type HelpCard = {
+  title: string
+  text: string
+  icon: LucideIcon
+  actionLabel: string
+  to: string
+}
+
+export type KnowledgeType = 'Engineering manual' | 'Expert video' | 'Handbook' | 'Customer story'
+
+/** Learning material: a manual, video, handbook or article. */
+export type KnowledgeItem = {
+  id: string
+  type: KnowledgeType
+  title: string
+  /** One line. */
+  teaser: string
+  image: ImageSource
+  to: string
+}
+
+/** A Sulzer service, listed next to products on Products & solutions and on product Services tabs. */
+export type Service = {
   id: string
   name: string
-  parentId: string | null
-  heroImage: ImageRef
-  /** One line, for tiles and lists. */
   summary: string
-  /** Paragraph under the hero title. */
-  intro: string
+  icon: LucideIcon
+  image: ImageSource
+  to: string
+}
+
+/** A heading on an application's Products & solutions tab and the products and services under it. */
+export type ProductGroup = {
+  id: string
+  title: string
+  productIds?: string[]
+  serviceIds?: string[]
+}
+
+/**
+ * A node in the application finder tree. The root ("Applications") has `parentId: null`,
+ * nodes with children are categories and nodes without children are applications.
+ */
+export type Application = {
+  /** Unique across the tree. */
+  id: string
+  /** This node's URL segment: /applications/<parent slug>/<slug>. */
+  slug: string
+  name: string
+  parentId: string | null
+  /** One sentence, for cards, tiles and the hero. */
+  summary: string
+  heroImage: ImageSource
+  cardImage: ImageSource
   /** Ids of child applications, in display order. */
   children: string[]
-  explore?: ExploreContent
+  /** Explore tab: lead paragraph plus text behind "Show more". */
+  intro?: ExploreIntro
+  /** Ids from data/knowledge.ts. */
+  knowledgeItemIds?: string[]
+  helpCards?: HelpCard[]
+  /** Products & solutions tab, in display order. */
+  productGroups?: ProductGroup[]
 }
 
 /** Headline figures in the product header strip, pre-formatted with units. */
@@ -151,9 +212,39 @@ export type KeySpecs = {
   maxPressure: string
 }
 
+/** Round badge drawn in SVG on a product promo, e.g. a delivery programme seal. */
+export type PromoBadge = {
+  /** Runs around the ring. */
+  ring: string
+  /** Big text in the centre, e.g. "2 weeks". */
+  value: string
+  /** Small text under the value. */
+  caption: string
+}
+
+/** Band on a product Explore tab: text and a button on the left, a badge on the right. */
+export type ProductPromo = {
+  title: string
+  text: string
+  actionLabel: string
+  to: string
+  badge: PromoBadge
+}
+
+/** A product's Explore tab. Only `intro` and `highlights` are required. */
+export type ProductExplore = {
+  intro: ExploreIntro
+  /** Large grey panel: headline and text on the left, product image on the right. */
+  feature?: { title: string; text: string; image: ImageSource }
+  /** Columns under the feature panel. */
+  highlights: IconItem[]
+  promo?: ProductPromo
+  /** Ids of "Customer story" items in data/knowledge.ts. */
+  storyIds?: string[]
+}
+
 export type ProductTabsContent = {
-  explore: ExploreContent
-  services: IconItem[]
+  explore: ProductExplore
 }
 
 export type Product = {
@@ -167,10 +258,17 @@ export type Product = {
   /** Ids of the applications this product is suitable for. */
   applications: string[]
   summary: string
-  keySpecs: KeySpecs
+  /** One line under "Suitable for", e.g. the standards the pump is built to. */
+  standard?: string
+  /** Pumps only. Sensors, controllers and software have none. */
+  keySpecs?: KeySpecs
+  /** Where "View" in product lists goes, when not the product page, e.g. "/connect". */
+  viewTo?: string
   /** First image is the main product shot. */
-  images: ImageRef[]
+  images: ImageSource[]
   tabs: ProductTabsContent
+  /** Ids from data/services.ts, for the Services tab. */
+  serviceIds: string[]
 }
 
 /** One size/variant of a product, as listed on the Models tab. */

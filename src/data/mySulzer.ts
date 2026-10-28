@@ -44,7 +44,7 @@ export const intro = {
 export const portalPreview = {
   price: {
     label: 'List price & availability',
-    product: products.submersiblePump,
+    product: products.xfp,
     value: 'SEK 48 900',
     stock: 'In stock · ships in 2 days',
   },

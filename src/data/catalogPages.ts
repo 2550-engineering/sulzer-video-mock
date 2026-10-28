@@ -9,8 +9,14 @@ export const applicationPage = {
     { id: 'learn', label: 'Learn' },
   ] satisfies TabDef[],
   sizeLabel: 'Size application',
-  childrenTitle: (name: string) => `Applications in ${name.toLowerCase()}`,
-  rootChildrenTitle: 'Choose your application',
+  /** First breadcrumb level after Home on every application page. */
+  breadcrumbParent: { label: 'Products & services', to: '/products' } satisfies NavItem,
+  overview: {
+    title: 'Select your area of interest or application',
+    /** Sub-applications listed on a card before "Show all". */
+    maxLinks: 6,
+    showAllLabel: 'Show all',
+  },
   productsCallout: {
     title: (name: string) => `Products & solutions for ${name.toLowerCase()}`,
     text: (count: number) =>
@@ -25,10 +31,31 @@ export const applicationPage = {
     title: 'Application guide coming soon',
     text: 'We are writing an in-depth guide for this application. In the meantime, see the products and solutions that fit.',
   } satisfies TabComingSoonCopy,
+  knowledge: {
+    title: 'Want to know more about this application?',
+    text: 'Engineering manuals, expert videos and customer stories that help you plan, size and run your system with confidence.',
+  },
+  help: {
+    title: 'How can we help you?',
+    text: 'Whether you are ready to buy, prefer to order online or need help with equipment you already run, our team is here for you.',
+  },
   learn: {
+    eyebrow: 'Sulzer Academy',
     title: 'Learning for this application is on its way',
-    text: 'Courses, webinars and case stories from Sulzer Academy will appear here.',
-  } satisfies TabComingSoonCopy,
+    text: 'Soon you will find courses, webinars and in-depth guides for this application here, created by Sulzer application engineers.',
+    features: [
+      'Self-paced courses with certificates',
+      'Live and on-demand webinars',
+      'Design guides and best practices',
+    ],
+    back: { label: 'Visit Sulzer Academy', to: '/learn' } satisfies NavItem,
+  },
+}
+
+/** "Show more" toggle on Explore tabs. */
+export const exploreIntroBand = {
+  showMore: 'Show more',
+  showLess: 'Show less',
 }
 
 export const productPage = {
@@ -40,19 +67,27 @@ export const productPage = {
     { id: 'spare-parts', label: 'Spare parts' },
     { id: 'services', label: 'Services' },
   ] satisfies TabDef[],
-  breadcrumbParent: { label: 'Product Center', to: '/products' } satisfies NavItem,
+  breadcrumb: [
+    { label: 'Products & services', to: '/products' },
+    { label: 'Products A–Z', to: '/products/a-z' },
+  ] satisfies NavItem[],
   suitableForLabel: 'Suitable for:',
+  /** "Suitable for" links shown before "View more". */
+  suitableForMax: 3,
+  viewMoreLabel: 'View more',
+  viewLessLabel: 'View less',
+  documentationLink: 'Product documentation',
+  stories: {
+    title: 'See how customers benefit',
+    text: 'Plants around the world run on Sulzer pumps every day. Here is what that means for them.',
+    label: 'Case',
+  },
   sizeLabel: 'Size product',
   keySpecLabels: {
     liquidTemp: 'Liquid temperature',
     maxFlow: 'Max. flow',
     maxHead: 'Max. head',
     maxPressure: 'Max. pressure',
-  },
-  modelsCallout: {
-    title: 'Find the right size',
-    text: (count: number) => `Compare ${count} models by flow, head and motor power.`,
-    actionLabel: 'See all models',
   },
   modelsTitle: (count: number) => `${count} models`,
   documentationTitle: 'Documentation',
@@ -76,7 +111,12 @@ export const productSearchPage = {
     `${count} ${count === 1 ? 'result' : 'results'} for “${query}”`,
   noResultsTitle: (query: string) => `No products match “${query}”`,
   noResultsText: 'Check the spelling or try a broader term. Here are our most popular products.',
+}
+
+/** Buttons on product and service rows (Products & solutions tab, Product Center results). */
+export const catalogList = {
   viewLabel: 'View',
+  sizeRangeLabel: 'Size range',
 }
 
 /** Copy for feature pages that aren't built yet. */

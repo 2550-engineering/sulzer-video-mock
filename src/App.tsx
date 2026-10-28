@@ -28,7 +28,8 @@ export default function App() {
             <Route path="/my-sulzer" element={<MySulzerPage />} />
             <Route path="/my-pages" element={<MyPagesPage />} />
             <Route path="/applications" element={<ApplicationPage />} />
-            <Route path="/applications/:slug" element={<ApplicationPage />} />
+            <Route path="/applications/:areaSlug" element={<ApplicationPage />} />
+            <Route path="/applications/:areaSlug/:appSlug" element={<ApplicationPage />} />
             <Route path="/products" element={<ProductSearchPage />} />
             <Route path="/products/:id" element={<ProductPage />} />
             <Route path="/sizing" element={<SizingPage />} />

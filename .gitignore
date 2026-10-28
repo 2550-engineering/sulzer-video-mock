@@ -26,5 +26,7 @@ dist-ssr
 # Large source media
 *.mp4
 
-# QA screenshots (regenerate with npm run qa)
+# QA output (regenerate with npm run qa / npm run flow)
 _qa/screenshots*/
+_qa/videos/
+_qa/test-results/

@@ -1,35 +1,24 @@
-import { ArrowRight } from 'lucide-react'
-import { Link } from 'react-router'
-import { productSearchPage } from '../../data/catalogPages'
 import { productPath } from '../../lib/catalog'
 import type { Product } from '../../types'
-import { ImageSlot } from '../ImageSlot'
+import { CatalogListRow } from './CatalogListRow'
+import { KeySpecTable } from './KeySpecTable'
 
-/** Row card: product image, family tag, name, summary and a "View" button. Links to the product page. */
+/**
+ * Product row. Pumps (with key specs) show the family badge, spec table and
+ * "Size range"; other products show only the description and "View".
+ */
 export function ProductListItem({ product }: { product: Product }) {
+  const { keySpecs } = product
   return (
-    <Link
-      to={productPath(product)}
-      className="group flex items-center gap-8 rounded-lg border border-border bg-surface p-5 pr-8 transition-[border-color,box-shadow] duration-200 hover:border-primary-border hover:shadow-card"
-    >
-      <div className="relative size-28 shrink-0 overflow-hidden rounded-md bg-surface-muted">
-        <ImageSlot image={product.images[0]} fit="contain" />
-      </div>
-      <div className="min-w-0 flex-1">
-        <p className="text-xs font-semibold tracking-wide text-text-muted uppercase">
-          {product.family}
-        </p>
-        <h3 className="mt-1 text-xl font-bold tracking-tight text-brand group-hover:text-primary">
-          {product.name}
-        </h3>
-        <p className="mt-1.5 line-clamp-2 max-w-3xl text-[15px] leading-relaxed text-text-muted">
-          {product.summary}
-        </p>
-      </div>
-      <span className="hidden h-11 shrink-0 items-center gap-2 rounded-pill border-2 border-primary px-7 text-sm font-semibold text-primary transition-colors group-hover:bg-primary group-hover:text-white sm:inline-flex">
-        {productSearchPage.viewLabel}
-        <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-      </span>
-    </Link>
+    <CatalogListRow
+      image={product.images[0]}
+      imageFit="contain"
+      name={product.name}
+      text={product.summary}
+      to={product.viewTo ?? productPath(product)}
+      badge={keySpecs && product.family}
+      details={keySpecs && <KeySpecTable specs={keySpecs} />}
+      sizeTo={keySpecs && `/sizing?product=${product.id}`}
+    />
   )
 }

@@ -1,188 +1,552 @@
-import { Fish, Gauge, Leaf, ShieldCheck, Waves, Zap } from 'lucide-react'
-import type { Application } from '../types'
+import { Handshake, ShoppingCart, Wrench } from 'lucide-react'
+import type { Application, HelpCard } from '../types'
 
 /*
  * Application finder tree. The deck demo follows
  * Applications → Municipal water supply → Surface water intake.
- * Image files go in _asset-source/images under the names below.
+ * Every node has two images in public/images/applications:
+ * <slug>-hero.jpg (page hero) and <slug>-card.jpg (overview card / category tile).
  */
 
 export const rootApplicationId = 'applications'
 
+/** Hero and card image for a node. `shows` is the alt text and the brief for the photo. */
+function images(slug: string, shows: string) {
+  return {
+    heroImage: { src: `/images/applications/${slug}-hero.jpg`, alt: shows },
+    cardImage: { src: `/images/applications/${slug}-card.jpg`, alt: shows },
+  }
+}
+
+/** "How can we help you?" cards at the end of an application's Explore tab. */
+const helpCards: HelpCard[] = [
+  {
+    title: 'Ready to buy?',
+    text: 'Tell us about your project and a Sulzer sales engineer will help you with the next steps.',
+    icon: Handshake,
+    actionLabel: 'Contact sales',
+    to: '/contact/quote',
+  },
+  {
+    title: 'Looking for our eShop?',
+    text: 'Order pumps and genuine spare parts online, with your own prices and delivery times.',
+    icon: ShoppingCart,
+    actionLabel: 'Go to eShop',
+    to: '/eshop',
+  },
+  {
+    title: 'Need service?',
+    text: 'Book a service visit, request a repair or get remote help from a Sulzer expert.',
+    icon: Wrench,
+    actionLabel: 'Request service',
+    to: '/self-service/requests',
+  },
+]
+
 export const applications: Application[] = [
   {
     id: rootApplicationId,
+    slug: 'applications',
     name: 'Applications',
     parentId: null,
-    heroImage: {
-      file: 'applications-hero.jpg',
-      alt: 'Sulzer pumps in a municipal water plant',
-      tone: 'deep',
-    },
-    summary: "Solutions engineered for the world's most demanding fluid processes.",
-    intro:
-      'From raw water intake to industrial process lines, find proven Sulzer solutions for your application – with the products, sizing tools and know-how to match.',
+    summary:
+      'Choose an application to see how Sulzer helps you design, run and optimise your pumping system.',
+    ...images('applications', 'Row of large Sulzer pumps in a bright, modern pump hall'),
     children: [
       'municipal-water-supply',
       'wastewater',
+      'water-treatment',
       'industrial-processes',
       'building-services',
       'pulp-paper',
       'oil-gas',
+      'mining-minerals',
+    ],
+  },
+
+  /* ── Municipal water supply ──────────────────────────────────────────────── */
+  {
+    id: 'municipal-water-supply',
+    slug: 'municipal-water-supply',
+    name: 'Municipal water supply',
+    parentId: rootApplicationId,
+    summary: 'Reliable intake, treatment and distribution of clean water, from source to tap.',
+    ...images('municipal-water-supply', 'Municipal waterworks next to a river, seen from above'),
+    children: [
+      'surface-water-intake',
+      'groundwater-intake',
+      'drinking-water-treatment',
+      'water-distribution',
+      'desalination',
+      'raw-water-transfer',
     ],
   },
   {
-    id: 'municipal-water-supply',
-    name: 'Municipal water supply',
-    parentId: rootApplicationId,
-    heroImage: {
-      file: 'app-municipal-water.jpg',
-      alt: 'Municipal water treatment plant',
-      tone: 'ocean',
-    },
-    summary: 'Reliable intake, treatment and distribution of clean water.',
-    intro:
-      'Secure a safe, efficient water supply for your community. Sulzer pumps, mixers and monitoring cover every step from the source to the tap.',
-    children: ['surface-water-intake', 'groundwater-intake', 'water-distribution'],
-    explore: {
-      title: 'From source to tap',
-      text: 'Water utilities need equipment that runs around the clock, uses as little energy as possible and is easy to service. Choose your stage of the water cycle to see the solutions that fit.',
-      highlights: [
-        {
-          label: 'Energy-optimised',
-          text: 'High-efficiency hydraulics and IE4 motors cut lifetime energy costs.',
-          icon: Zap,
-        },
-        {
-          label: 'Proven reliability',
-          text: 'Designed for continuous duty in critical water infrastructure.',
-          icon: ShieldCheck,
-        },
-        {
-          label: 'Connected',
-          text: 'Remote monitoring shows problems coming before supply is at risk.',
-          icon: Gauge,
-        },
-      ],
-    },
-  },
-  {
     id: 'surface-water-intake',
+    slug: 'surface-water-intake',
     name: 'Surface water intake',
     parentId: 'municipal-water-supply',
-    heroImage: {
-      file: 'app-surface-water-intake.jpg',
-      alt: 'Raw water intake pumping station on a river',
-      tone: 'ocean',
-    },
-    summary: 'Raw water pumping from rivers, lakes and reservoirs.',
-    intro:
-      'You need a cost-effective, reliable and energy-optimised raw water pumping solution for surface water sources. Sulzer supplies pumps, monitoring and connectivity for river, lake and reservoir extraction.',
+    summary:
+      'Reliable, energy-efficient raw water pumping from rivers, lakes and reservoirs, whatever the season brings.',
+    ...images(
+      'surface-water-intake',
+      'Raw water intake pumping station with large vertical pumps and blue pipework',
+    ),
     children: [],
-    explore: {
-      title: 'Raw water intake, done right',
-      text: 'Surface water varies with the seasons – in level, temperature and solids content. Sulzer intake solutions handle that variation while protecting both the pumps and the environment around the intake.',
-      highlights: [
-        {
-          label: 'Handles changing conditions',
-          text: 'Wide operating range for seasonal swings in level and flow.',
-          icon: Waves,
-        },
-        {
-          label: 'Low lifetime cost',
-          text: 'Best-in-class efficiency at the duty point where you actually run.',
-          icon: Zap,
-        },
-        {
-          label: 'Gentle on the environment',
-          text: 'Low-velocity intake designs that protect fish and aquatic life.',
-          icon: Fish,
-        },
-        {
-          label: 'Built to last',
-          text: 'Wear-resistant materials for water carrying sand and silt.',
-          icon: Leaf,
-        },
+    intro: {
+      title: 'Raw water you can count on, whatever the river does',
+      text: 'Surface water changes with the seasons – in level, temperature and the sand, silt and debris it carries. Sulzer intake solutions are built for that variation, keeping supply steady while using as little energy as possible.',
+      more: [
+        'From vertical turbine and split case pumps to monitoring and service, Sulzer covers the whole intake: pumps sized for the duty points you actually run at, low-velocity designs that are gentle on fish and aquatic life, and connected monitoring that flags wear before it puts supply at risk.',
       ],
     },
+    knowledgeItemIds: [
+      'intake-engineering-manual',
+      'expert-video-sump-design',
+      'centrifugal-pump-handbook',
+      'river-intake-customer-story',
+    ],
+    helpCards,
+    productGroups: [
+      {
+        id: 'monitoring-connectivity',
+        title: 'Monitoring and connectivity',
+        productIds: ['sulzer-connect', 'motor-protection-relay'],
+      },
+      { id: 'vertical-turbine-pumps', title: 'Vertical turbine pumps', productIds: ['sjt'] },
+      { id: 'split-case-pumps', title: 'Split case pumps', productIds: ['smd'] },
+      {
+        id: 'end-suction-pumps',
+        title: 'End-suction single-stage pumps',
+        productIds: ['ahlstar', 'sns'],
+      },
+      { id: 'submersible-pumps', title: 'Submersible pumps', productIds: ['xfp'] },
+      {
+        id: 'digital-services',
+        title: 'Digital services',
+        serviceIds: ['connect-asset-monitoring', 'remote-expert-support'],
+      },
+      {
+        id: 'operation-services',
+        title: 'Operation services',
+        serviceIds: ['commissioning', 'inspection', 'installation', 'vibration-analysis'],
+      },
+    ],
   },
   {
     id: 'groundwater-intake',
+    slug: 'groundwater-intake',
     name: 'Groundwater intake',
     parentId: 'municipal-water-supply',
-    heroImage: { file: 'app-groundwater-intake.jpg', alt: 'Groundwater well field', tone: 'steel' },
-    summary: 'Efficient pumping from boreholes and well fields.',
-    intro:
-      'Lift groundwater from boreholes and well fields with pumps built for decades of efficient, low-maintenance service.',
+    summary: 'Efficient, low-maintenance pumping from boreholes and well fields.',
+    ...images('groundwater-intake', 'Well field with borehole wellheads in green countryside'),
+    children: [],
+  },
+  {
+    id: 'drinking-water-treatment',
+    slug: 'drinking-water-treatment',
+    name: 'Drinking water treatment',
+    parentId: 'municipal-water-supply',
+    summary: 'Pumps and mixers for every treatment step, from coagulation to filtration.',
+    ...images('drinking-water-treatment', 'Open filtration basins in a drinking water plant'),
     children: [],
   },
   {
     id: 'water-distribution',
+    slug: 'water-distribution',
     name: 'Water distribution',
     parentId: 'municipal-water-supply',
-    heroImage: {
-      file: 'app-water-distribution.jpg',
-      alt: 'Water distribution pumping station',
-      tone: 'slate',
-    },
-    summary: 'Stable pressure across the network, at the lowest energy cost.',
-    intro:
-      'Keep pressure stable across your distribution network while cutting energy use and leakage.',
+    summary: 'Stable network pressure at the lowest possible energy cost.',
+    ...images('water-distribution', 'Distribution pumping station with a row of horizontal pumps'),
     children: [],
   },
+  {
+    id: 'desalination',
+    slug: 'desalination',
+    name: 'Desalination',
+    parentId: 'municipal-water-supply',
+    summary: 'High-pressure and seawater intake pumps for reverse osmosis plants.',
+    ...images('desalination', 'Coastal desalination plant with rows of membrane vessels'),
+    children: [],
+  },
+  {
+    id: 'raw-water-transfer',
+    slug: 'raw-water-transfer',
+    name: 'Raw water transfer',
+    parentId: 'municipal-water-supply',
+    summary: 'Moving large volumes of raw water over long distances, efficiently.',
+    ...images('raw-water-transfer', 'Large raw water pipeline running across open landscape'),
+    children: [],
+  },
+
+  /* ── Wastewater ──────────────────────────────────────────────────────────── */
   {
     id: 'wastewater',
+    slug: 'wastewater',
     name: 'Wastewater',
     parentId: rootApplicationId,
-    heroImage: { file: 'app-wastewater.jpg', alt: 'Wastewater treatment basins', tone: 'deep' },
     summary: 'Collection, transport and treatment of municipal wastewater.',
-    intro:
-      'Clog-resistant pumps, mixers and aeration for every stage from the sewer network to the treatment plant outlet.',
+    ...images('wastewater', 'Round clarifier basins at a wastewater treatment plant, from above'),
+    children: [
+      'wastewater-collection',
+      'stormwater-flood-control',
+      'wastewater-treatment',
+      'sludge-handling',
+    ],
+  },
+  {
+    id: 'wastewater-collection',
+    slug: 'wastewater-collection',
+    name: 'Wastewater collection and transport',
+    parentId: 'wastewater',
+    summary: 'Clog-resistant pumping for sewer networks and lift stations.',
+    ...images(
+      'wastewater-collection',
+      'Submersible pumps being lifted out of a wastewater lift station',
+    ),
     children: [],
   },
+  {
+    id: 'stormwater-flood-control',
+    slug: 'stormwater-flood-control',
+    name: 'Stormwater and flood control',
+    parentId: 'wastewater',
+    summary: 'High-flow pumping that keeps cities dry when the rain comes.',
+    ...images('stormwater-flood-control', 'Stormwater pumping station beside a city canal'),
+    children: [],
+  },
+  {
+    id: 'wastewater-treatment',
+    slug: 'wastewater-treatment',
+    name: 'Wastewater treatment',
+    parentId: 'wastewater',
+    summary: 'Mixing, aeration and pumping for every stage of the treatment plant.',
+    ...images('wastewater-treatment', 'Aeration basin with fine bubbles rising to the surface'),
+    children: [],
+  },
+  {
+    id: 'sludge-handling',
+    slug: 'sludge-handling',
+    name: 'Sludge handling',
+    parentId: 'wastewater',
+    summary: 'Reliable pumping and mixing of thick sludge and digester contents.',
+    ...images('sludge-handling', 'Sludge digesters at a wastewater treatment plant'),
+    children: [],
+  },
+
+  /* ── Water treatment ─────────────────────────────────────────────────────── */
+  {
+    id: 'water-treatment',
+    slug: 'water-treatment',
+    name: 'Water treatment',
+    parentId: rootApplicationId,
+    summary: 'Clean process water and responsible discharge for industry.',
+    ...images(
+      'water-treatment',
+      'Industrial water treatment hall with filters and stainless pipework',
+    ),
+    children: [
+      'industrial-water-supply',
+      'industrial-wastewater-treatment',
+      'process-water-treatment',
+      'cooling-water',
+      'boiler-feed-water',
+      'reverse-osmosis',
+      'ultrafiltration',
+      'water-reuse',
+    ],
+  },
+  {
+    id: 'industrial-water-supply',
+    slug: 'industrial-water-supply',
+    name: 'Industrial water supply and transfer',
+    parentId: 'water-treatment',
+    summary: 'Dependable raw and process water supply for industrial sites.',
+    ...images('industrial-water-supply', 'Industrial water intake pumps at a riverside plant'),
+    children: [],
+  },
+  {
+    id: 'industrial-wastewater-treatment',
+    slug: 'industrial-wastewater-treatment',
+    name: 'Industrial wastewater treatment',
+    parentId: 'water-treatment',
+    summary: 'Treat process effluent so it can be reused or safely discharged.',
+    ...images('industrial-wastewater-treatment', 'Effluent treatment tanks at an industrial site'),
+    children: [],
+  },
+  {
+    id: 'process-water-treatment',
+    slug: 'process-water-treatment',
+    name: 'Process water treatment',
+    parentId: 'water-treatment',
+    summary: 'Water at the exact quality your process needs.',
+    ...images('process-water-treatment', 'Process water treatment skid with pumps and filters'),
+    children: [],
+  },
+  {
+    id: 'cooling-water',
+    slug: 'cooling-water',
+    name: 'Cooling water',
+    parentId: 'water-treatment',
+    summary: 'Efficient circulation for cooling towers and heat exchangers.',
+    ...images('cooling-water', 'Industrial cooling towers against a blue sky'),
+    children: [],
+  },
+  {
+    id: 'boiler-feed-water',
+    slug: 'boiler-feed-water',
+    name: 'Boiler feed water',
+    parentId: 'water-treatment',
+    summary: 'High-pressure feed pumps for steam generation.',
+    ...images('boiler-feed-water', 'Multistage boiler feed pumps in a power plant'),
+    children: [],
+  },
+  {
+    id: 'reverse-osmosis',
+    slug: 'reverse-osmosis',
+    name: 'Reverse osmosis',
+    parentId: 'water-treatment',
+    summary: 'High-pressure pumping for membrane filtration.',
+    ...images('reverse-osmosis', 'Racks of reverse osmosis membrane vessels'),
+    children: [],
+  },
+  {
+    id: 'ultrafiltration',
+    slug: 'ultrafiltration',
+    name: 'Ultrafiltration',
+    parentId: 'water-treatment',
+    summary: 'Gentle, steady feed and backwash for ultrafiltration units.',
+    ...images('ultrafiltration', 'Ultrafiltration modules in a water treatment hall'),
+    children: [],
+  },
+  {
+    id: 'water-reuse',
+    slug: 'water-reuse',
+    name: 'Water reuse',
+    parentId: 'water-treatment',
+    summary: 'Close the loop by treating and reusing process water.',
+    ...images('water-reuse', 'Clean treated water flowing out of a reuse plant'),
+    children: [],
+  },
+
+  /* ── Industrial processes ────────────────────────────────────────────────── */
   {
     id: 'industrial-processes',
+    slug: 'industrial-processes',
     name: 'Industrial processes',
     parentId: rootApplicationId,
-    heroImage: {
-      file: 'app-industrial-processes.jpg',
-      alt: 'Process pumps in an industrial plant',
-      tone: 'steel',
-    },
     summary: 'Process pumps and mixers built for continuous operation.',
-    intro:
-      'Pumps and mixers for demanding process duties, engineered for uptime and easy maintenance.',
+    ...images('industrial-processes', 'Process pumps and pipework in an industrial plant'),
+    children: ['process-liquid-transfer', 'chemical-processing', 'food-beverage'],
+  },
+  {
+    id: 'process-liquid-transfer',
+    slug: 'process-liquid-transfer',
+    name: 'Process liquid transfer',
+    parentId: 'industrial-processes',
+    summary: 'Moving process liquids between tanks, reactors and lines, around the clock.',
+    ...images('process-liquid-transfer', 'Row of end suction process pumps in a plant'),
     children: [],
   },
+  {
+    id: 'chemical-processing',
+    slug: 'chemical-processing',
+    name: 'Chemical processing',
+    parentId: 'industrial-processes',
+    summary: 'Safe handling of corrosive and hazardous liquids.',
+    ...images('chemical-processing', 'Chemical plant with stainless steel reactors and pumps'),
+    children: [],
+  },
+  {
+    id: 'food-beverage',
+    slug: 'food-beverage',
+    name: 'Food and beverage',
+    parentId: 'industrial-processes',
+    summary: 'Hygienic pumping and mixing for food and drink production.',
+    ...images('food-beverage', 'Stainless steel tanks in a food processing plant'),
+    children: [],
+  },
+
+  /* ── Building services ───────────────────────────────────────────────────── */
   {
     id: 'building-services',
+    slug: 'building-services',
     name: 'Building services',
     parentId: rootApplicationId,
-    heroImage: {
-      file: 'app-building-services.jpg',
-      alt: 'Pump room in a commercial building',
-      tone: 'slate',
-    },
-    summary: 'Drainage, sewage and water handling in buildings.',
-    intro: 'Compact, quiet solutions for drainage, sewage and water handling in buildings.',
+    summary: 'Drainage, sewage and water handling for buildings of every size.',
+    ...images('building-services', 'Compact pump room in the basement of a commercial building'),
+    children: ['building-drainage', 'building-wastewater', 'water-pressure-boosting'],
+  },
+  {
+    id: 'building-drainage',
+    slug: 'building-drainage',
+    name: 'Building drainage',
+    parentId: 'building-services',
+    summary: 'Keep basements, car parks and tunnels dry.',
+    ...images(
+      'building-drainage',
+      'Drainage pit with a submersible pump in an underground car park',
+    ),
     children: [],
   },
+  {
+    id: 'building-wastewater',
+    slug: 'building-wastewater',
+    name: 'Building wastewater',
+    parentId: 'building-services',
+    summary: 'Compact lifting stations for sewage below the sewer line.',
+    ...images('building-wastewater', 'Compact sewage lifting station in a building plant room'),
+    children: [],
+  },
+  {
+    id: 'water-pressure-boosting',
+    slug: 'water-pressure-boosting',
+    name: 'Water pressure boosting',
+    parentId: 'building-services',
+    summary: 'Steady water pressure on every floor.',
+    ...images('water-pressure-boosting', 'Pressure boosting set with three vertical pumps'),
+    children: [],
+  },
+
+  /* ── Pulp & paper ────────────────────────────────────────────────────────── */
   {
     id: 'pulp-paper',
+    slug: 'pulp-paper',
     name: 'Pulp & paper',
     parentId: rootApplicationId,
-    heroImage: { file: 'app-pulp-paper.jpg', alt: 'Paper machine', tone: 'steel' },
-    summary: 'Stock preparation, bleaching and chemical recovery.',
-    intro: 'Process pumps and mixers for every step of pulp, paper and board production.',
+    summary: 'Pumps and mixers for every step of pulp, paper and board production.',
+    ...images('pulp-paper', 'Paper machine running at speed in a paper mill'),
+    children: [
+      'stock-preparation',
+      'pulp-bleaching',
+      'chemical-recovery',
+      'paper-machine-approach',
+    ],
+  },
+  {
+    id: 'stock-preparation',
+    slug: 'stock-preparation',
+    name: 'Stock preparation',
+    parentId: 'pulp-paper',
+    summary: 'Pumping and mixing pulp suspensions at high consistency.',
+    ...images('stock-preparation', 'Stock preparation area with pulp chests and pumps'),
     children: [],
   },
   {
+    id: 'pulp-bleaching',
+    slug: 'pulp-bleaching',
+    name: 'Pulp bleaching',
+    parentId: 'pulp-paper',
+    summary: 'Medium-consistency pumping and chemical mixing for bleaching.',
+    ...images('pulp-bleaching', 'Bleaching towers at a pulp mill'),
+    children: [],
+  },
+  {
+    id: 'chemical-recovery',
+    slug: 'chemical-recovery',
+    name: 'Chemical recovery',
+    parentId: 'pulp-paper',
+    summary: 'Reliable pumping of liquors through the recovery cycle.',
+    ...images('chemical-recovery', 'Recovery boiler building at a pulp mill'),
+    children: [],
+  },
+  {
+    id: 'paper-machine-approach',
+    slug: 'paper-machine-approach',
+    name: 'Paper machine approach',
+    parentId: 'pulp-paper',
+    summary: 'Pulsation-free feed to the headbox for an even sheet.',
+    ...images('paper-machine-approach', 'Fan pump feeding the headbox of a paper machine'),
+    children: [],
+  },
+
+  /* ── Oil & gas ───────────────────────────────────────────────────────────── */
+  {
     id: 'oil-gas',
+    slug: 'oil-gas',
     name: 'Oil & gas',
     parentId: rootApplicationId,
-    heroImage: { file: 'app-oil-gas.jpg', alt: 'Oil and gas processing facility', tone: 'deep' },
-    summary: 'Upstream, midstream and downstream pumping solutions.',
-    intro: 'Engineered pumps for upstream, midstream and downstream oil and gas operations.',
+    summary: 'Engineered pumps for upstream, midstream and downstream operations.',
+    ...images('oil-gas', 'Oil and gas processing facility at dusk'),
+    children: [
+      'upstream-production',
+      'water-injection',
+      'pipeline-transport',
+      'refinery-processes',
+    ],
+  },
+  {
+    id: 'upstream-production',
+    slug: 'upstream-production',
+    name: 'Upstream production',
+    parentId: 'oil-gas',
+    summary: 'Pumps for offshore and onshore production facilities.',
+    ...images('upstream-production', 'Offshore production platform at sea'),
+    children: [],
+  },
+  {
+    id: 'water-injection',
+    slug: 'water-injection',
+    name: 'Water injection',
+    parentId: 'oil-gas',
+    summary: 'High-pressure injection pumps for reservoir pressure support.',
+    ...images('water-injection', 'High-pressure injection pump train on a skid'),
+    children: [],
+  },
+  {
+    id: 'pipeline-transport',
+    slug: 'pipeline-transport',
+    name: 'Pipeline transport',
+    parentId: 'oil-gas',
+    summary: 'Efficient pipeline pumping over long distances.',
+    ...images('pipeline-transport', 'Crude oil pipeline pumping station'),
+    children: [],
+  },
+  {
+    id: 'refinery-processes',
+    slug: 'refinery-processes',
+    name: 'Refinery processes',
+    parentId: 'oil-gas',
+    summary: 'API process pumps for demanding refinery services.',
+    ...images('refinery-processes', 'Refinery process units with pumps in the foreground'),
+    children: [],
+  },
+
+  /* ── Mining & minerals ───────────────────────────────────────────────────── */
+  {
+    id: 'mining-minerals',
+    slug: 'mining-minerals',
+    name: 'Mining & minerals',
+    parentId: rootApplicationId,
+    summary: 'Dewatering, slurry and process pumping for mines and mineral plants.',
+    ...images('mining-minerals', 'Open-pit mine with haul road and dewatering pipeline'),
+    children: ['mine-dewatering', 'slurry-transfer', 'mineral-processing'],
+  },
+  {
+    id: 'mine-dewatering',
+    slug: 'mine-dewatering',
+    name: 'Mine dewatering',
+    parentId: 'mining-minerals',
+    summary: 'Keep pits and tunnels dry with robust dewatering pumps.',
+    ...images('mine-dewatering', 'Dewatering pump at the bottom of an open-pit mine'),
+    children: [],
+  },
+  {
+    id: 'slurry-transfer',
+    slug: 'slurry-transfer',
+    name: 'Slurry transfer',
+    parentId: 'mining-minerals',
+    summary: 'Wear-resistant pumping of abrasive slurries.',
+    ...images('slurry-transfer', 'Slurry pipeline and pumps at a mineral processing plant'),
+    children: [],
+  },
+  {
+    id: 'mineral-processing',
+    slug: 'mineral-processing',
+    name: 'Mineral processing',
+    parentId: 'mining-minerals',
+    summary: 'Process pumps and mixers for flotation and leaching.',
+    ...images('mineral-processing', 'Flotation cells in a mineral processing plant'),
     children: [],
   },
 ]

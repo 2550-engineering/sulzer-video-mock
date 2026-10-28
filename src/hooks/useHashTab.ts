@@ -4,8 +4,8 @@ import type { TabDef } from '../types'
 
 /**
  * Active tab taken from the URL hash (e.g. `#models`), falling back to the first tab.
- * `select` swaps the hash in place — no reload, no new history entry. If the page is
- * scrolled past the tab bar, it scrolls back so the new tab starts right under the bar.
+ * `select` swaps the hash in place — no reload, no new history entry — and smoothly
+ * scrolls the tab bar up to just under the site header, so the new tab starts in view.
  * Pass `anchorRef` to <TabBar>.
  */
 export function useHashTab(tabs: TabDef[]) {
@@ -26,7 +26,8 @@ export function useHashTab(tabs: TabDef[]) {
           getComputedStyle(document.documentElement).getPropertyValue('--sz-header-height'),
         ) || 0
       const barTop = anchor.getBoundingClientRect().top + window.scrollY - headerHeight
-      if (window.scrollY > barTop) window.scrollTo({ top: barTop, behavior: 'smooth' })
+      if (Math.abs(window.scrollY - barTop) > 1)
+        window.scrollTo({ top: barTop, behavior: 'smooth' })
     },
     [navigate, pathname, search],
   )

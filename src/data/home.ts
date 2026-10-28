@@ -79,7 +79,8 @@ export const applicationsSection = {
   subtitle: "Solutions engineered for the world's most demanding fluid processes.",
   linkLabel: 'Explore all applications',
   to: '/applications',
-  items: childApplications(rootApplication).map(applicationTeaser),
+  // Two rows of three on the home page; the Applications page lists them all.
+  items: childApplications(rootApplication).slice(0, 6).map(applicationTeaser),
 }
 
 export const connectPromo = {

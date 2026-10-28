@@ -23,14 +23,26 @@ export const market = {
 } as const
 
 export const products = {
-  // Placeholder product names — confirm exact product names and models with Sulzer.
-  mainEndSuctionPump: 'Sulzer End Suction Pump',
-  submersiblePump: 'Sulzer Submersible Wastewater Pump',
+  // Sulzer product names — confirm the exact names and that each fits its application with Sulzer.
+  ahlstar: 'AHLSTAR',
+  sns: 'SNS',
+  smd: 'SMD',
+  sjt: 'SJT',
+  xfp: 'XFP',
+  connect: 'Sulzer Connect',
+  // Placeholder — confirm whether Sulzer sells a motor protection relay and what it is called.
+  motorProtectionRelay: 'Motor protection relay',
   iotOffering: 'Sulzer Smart Monitoring',
 } as const
 
 export const productSeries = {
-  // Placeholder model-name prefixes, e.g. "SES 150-125-315" — confirm with Sulzer.
-  mainEndSuctionPump: 'SES',
-  submersiblePump: 'SWP',
+  // Placeholder model-name prefixes, e.g. "AHLSTAR 150-125-315" — confirm with Sulzer.
+  ahlstar: 'AHLSTAR',
+  xfp: 'XFP',
 } as const
+
+/**
+ * Show the expected file name on image placeholders, so missing images are easy to spot.
+ * Set to false before recording.
+ */
+export const showPlaceholderLabels = true

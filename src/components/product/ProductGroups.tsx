@@ -1,18 +1,25 @@
-import { groupBy } from '../../lib/catalog'
-import type { Product } from '../../types'
+import type { ResolvedProductGroup } from '../../lib/catalog'
 import { ProductListItem } from './ProductListItem'
+import { ServiceListItem } from './ServiceListItem'
 
-/** Products listed under one heading per category. */
-export function ProductGroups({ products }: { products: Product[] }) {
+/** Products & solutions: a small grey heading per group, then its product and service rows. */
+export function ProductGroups({ groups }: { groups: ResolvedProductGroup[] }) {
   return (
-    <div className="space-y-14">
-      {groupBy(products, (product) => product.category).map(([category, items]) => (
-        <section key={category}>
-          <h2 className="text-xl font-semibold text-text-muted">{category}</h2>
-          <ul className="mt-5 space-y-4">
-            {items.map((product) => (
+    <div className="space-y-12">
+      {groups.map((group) => (
+        <section key={group.id} aria-labelledby={`group-${group.id}`}>
+          <h2 id={`group-${group.id}`} className="text-lg font-semibold text-text-muted">
+            {group.title}
+          </h2>
+          <ul className="mt-4 space-y-3">
+            {group.products.map((product) => (
               <li key={product.id}>
                 <ProductListItem product={product} />
+              </li>
+            ))}
+            {group.services.map((service) => (
+              <li key={service.id}>
+                <ServiceListItem service={service} />
               </li>
             ))}
           </ul>

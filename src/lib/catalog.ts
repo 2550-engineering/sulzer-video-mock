@@ -1,9 +1,18 @@
 import { applications, rootApplicationId } from '../data/applications'
 import { documents } from '../data/documents'
+import { knowledgeItems } from '../data/knowledge'
 import { productModels } from '../data/productModels'
 import { products } from '../data/products'
+import { services } from '../data/services'
 import { spareParts } from '../data/spareParts'
-import type { Application, ApplicationTeaser, Document, DocumentType, Product } from '../types'
+import type {
+  Application,
+  ApplicationTeaser,
+  Document,
+  DocumentType,
+  Product,
+  Service,
+} from '../types'
 
 /* Lookups over the mock catalogue in src/data. */
 
@@ -13,8 +22,21 @@ export function getApplication(id: string) {
 
 export const rootApplication = getApplication(rootApplicationId)!
 
+/** Nested URL from the slugs of the application and its ancestors, e.g. /applications/<area>/<app>. */
 export function applicationPath(app: Application) {
-  return app.id === rootApplicationId ? '/applications' : `/applications/${app.id}`
+  const slugs = applicationTrail(app)
+    .slice(1)
+    .map((node) => node.slug)
+  return ['/applications', ...slugs].join('/')
+}
+
+/** The application at a URL: follows each slug down from the root. Undefined if any step doesn't match. */
+export function findApplication(slugs: string[]) {
+  let node: Application | undefined = rootApplication
+  for (const slug of slugs) {
+    node = node && childApplications(node).find((child) => child.slug === slug)
+  }
+  return node
 }
 
 /** The application and its ancestors, outermost first. */
@@ -35,7 +57,7 @@ export function applicationTeaser(app: Application): ApplicationTeaser {
     caption: app.summary,
     to: applicationPath(app),
     // The tile shows the title, so the image is decorative.
-    image: { ...app.heroImage, alt: '' },
+    image: { ...app.cardImage, alt: '' },
   }
 }
 
@@ -52,6 +74,46 @@ export function productsForApplication(app: Application) {
   if (app.id === rootApplicationId) return products
   const ids = new Set(descendantIds(app))
   return products.filter((product) => product.applications.some((id) => ids.has(id)))
+}
+
+export function getService(id: string) {
+  return services.find((service) => service.id === id)
+}
+
+export function servicesFor(ids: string[]) {
+  return ids.map(getService).filter((service) => service !== undefined)
+}
+
+export function knowledgeFor(ids: string[]) {
+  return ids
+    .map((id) => knowledgeItems.find((item) => item.id === id))
+    .filter((item) => item !== undefined)
+}
+
+/** A Products & solutions group with its products and services looked up. */
+export type ResolvedProductGroup = {
+  id: string
+  title: string
+  products: Product[]
+  services: Service[]
+}
+
+/**
+ * Groups for an application's Products & solutions tab: its `productGroups` in
+ * order, or (without them) the matching products grouped by category.
+ */
+export function productGroupsFor(app: Application): ResolvedProductGroup[] {
+  if (app.productGroups) {
+    return app.productGroups.map((group) => ({
+      id: group.id,
+      title: group.title,
+      products: (group.productIds ?? []).map(getProduct).filter((p) => p !== undefined),
+      services: servicesFor(group.serviceIds ?? []),
+    }))
+  }
+  return groupBy(productsForApplication(app), (product) => product.category).map(
+    ([category, products]) => ({ id: category, title: category, products, services: [] }),
+  )
 }
 
 export function getProduct(id: string) {

@@ -1,7 +1,7 @@
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router'
 import type { ApplicationTeaser } from '../../types'
-import { ImageSlot } from '../ImageSlot'
+import { SmartImage } from '../SmartImage'
 
 /** Image tile with caption for the Applications teaser grid. */
 export function ApplicationTile({ item }: { item: ApplicationTeaser }) {
@@ -10,8 +10,9 @@ export function ApplicationTile({ item }: { item: ApplicationTeaser }) {
       to={item.to}
       className="group relative block aspect-[16/10] overflow-hidden rounded-lg bg-navy-900"
     >
-      <ImageSlot
-        image={item.image}
+      <SmartImage
+        src={item.image.src}
+        alt={item.image.alt}
         className="transition-transform duration-[250ms] ease-sz group-hover:scale-[1.04]"
       />
       <div

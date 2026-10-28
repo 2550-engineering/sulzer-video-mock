@@ -1,19 +1,25 @@
 import { ArrowRight } from 'lucide-react'
 import { Link, useParams } from 'react-router'
-import { ExploreSection } from '../components/ExploreSection'
 import { IconCardGrid } from '../components/IconCardGrid'
 import { DocumentList } from '../components/product/DocumentList'
 import { ModelsTable } from '../components/product/ModelsTable'
+import { ProductExploreTab } from '../components/product/ProductExploreTab'
 import { ProductHeader } from '../components/product/ProductHeader'
 import { SparePartList } from '../components/product/SparePartList'
 import { TabBar } from '../components/TabBar'
-import { TabCallout } from '../components/TabCallout'
 import { TabComingSoon } from '../components/TabComingSoon'
 import { TabHeading } from '../components/TabHeading'
 import { TabPanel } from '../components/TabPanel'
 import { productPage as copy } from '../data/catalogPages'
 import { useHashTab } from '../hooks/useHashTab'
-import { documentsFor, getProduct, isModelFile, modelsFor, sparePartsFor } from '../lib/catalog'
+import {
+  documentsFor,
+  getProduct,
+  isModelFile,
+  modelsFor,
+  servicesFor,
+  sparePartsFor,
+} from '../lib/catalog'
 import { NotFoundPage } from './NotFoundPage'
 
 /** Product page: /products/:id. */
@@ -28,12 +34,21 @@ export function ProductPage() {
   const docs = documentsFor(product.id)
   const documentation = docs.filter((doc) => !isModelFile(doc))
   const bim = docs.filter(isModelFile)
+  const services = servicesFor(product.serviceIds).map((service) => ({
+    label: service.name,
+    text: service.summary,
+    icon: service.icon,
+  }))
 
   return (
     <>
       <title>{`${product.name} | Sulzer`}</title>
 
-      <ProductHeader product={product} />
+      <ProductHeader
+        key={product.id}
+        product={product}
+        onShowDocumentation={() => selectTab('documentation')}
+      />
 
       <TabBar
         tabs={copy.tabs}
@@ -43,20 +58,8 @@ export function ProductPage() {
         idPrefix="product"
       />
 
-      <TabPanel idPrefix="product" tabId={activeTab}>
-        {activeTab === 'explore' && (
-          <div className="space-y-20">
-            <ExploreSection content={product.tabs.explore} />
-            {models.length > 0 && (
-              <TabCallout
-                title={copy.modelsCallout.title}
-                text={copy.modelsCallout.text(models.length)}
-                actionLabel={copy.modelsCallout.actionLabel}
-                onAction={() => selectTab('models')}
-              />
-            )}
-          </div>
-        )}
+      <TabPanel idPrefix="product" tabId={activeTab} bleed={activeTab === 'explore'}>
+        {activeTab === 'explore' && <ProductExploreTab explore={product.tabs.explore} />}
 
         {activeTab === 'models' &&
           (models.length > 0 ? (
@@ -118,7 +121,7 @@ export function ProductPage() {
           <>
             <TabHeading title={copy.servicesTitle} />
             <div className="mt-8">
-              <IconCardGrid items={product.tabs.services} columns="sm:grid-cols-2 lg:grid-cols-3" />
+              <IconCardGrid items={services} columns="sm:grid-cols-2 lg:grid-cols-3" />
             </div>
           </>
         )}
