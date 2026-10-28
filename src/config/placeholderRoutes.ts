@@ -7,18 +7,6 @@ import type { NavItem, PlaceholderRoute } from '../types'
  */
 export const placeholderRoutes: PlaceholderRoute[] = [
   {
-    path: '/products/categories',
-    title: 'Product categories',
-    description: 'Browse pumps, mixers, aerators and compressors by product family.',
-    parent: '/products',
-  },
-  {
-    path: '/products/a-z',
-    title: 'Products A–Z',
-    description: 'Every Sulzer product in one alphabetical list.',
-    parent: '/products',
-  },
-  {
     path: '/products/replacement',
     title: 'Product replacement',
     description: 'Find the right Sulzer replacement for your existing pump in a few steps.',
@@ -209,7 +197,7 @@ export const placeholderRoutes: PlaceholderRoute[] = [
 
 /** Real (built) pages that placeholder routes can name as their parent. */
 const builtPages: Pick<PlaceholderRoute, 'path' | 'title' | 'parent'>[] = [
-  { path: '/products', title: 'Product Center' },
+  { path: '/products', title: 'Products & services' },
   { path: '/applications', title: 'Applications' },
   { path: '/my-sulzer', title: 'mySulzer' },
   { path: '/my-pages', title: 'My Pages', parent: '/my-sulzer' },

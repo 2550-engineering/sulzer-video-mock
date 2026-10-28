@@ -28,19 +28,22 @@ const base = 'http://localhost:5199'
 const { placeholderRoutes } = await server.ssrLoadModule('/src/config/placeholderRoutes.ts')
 const { applications, rootApplicationId } = await server.ssrLoadModule('/src/data/applications.ts')
 const { products } = await server.ssrLoadModule('/src/data/products.ts')
-const { applicationPage, productPage } = await server.ssrLoadModule('/src/data/catalogPages.ts')
+const { applicationPath } = await server.ssrLoadModule('/src/lib/catalog.ts')
+const { productPage } = await server.ssrLoadModule('/src/data/catalogPages.ts')
 
 const routes = [
   '/',
   '/my-sulzer',
   '/my-pages',
   '/applications',
-  ...applicationPage.tabs.slice(1).map((tab) => `/applications#${tab.id}`),
-  ...applications
-    .filter((app) => app.id !== rootApplicationId)
-    .map((app) => `/applications/${app.id}`),
+  ...applications.filter((app) => app.id !== rootApplicationId).map(applicationPath),
   '/products',
   '/products?q=pump',
+  '/products?q=ahlstar',
+  '/products?q=ahlstar&tab=documents',
+  '/products?q=water&tab=applications',
+  '/products?category=submersible-pumps&flow=1000-5000',
+  '/products?q=zzzz',
   ...products.flatMap((product) => [
     `/products/${product.id}`,
     ...productPage.tabs.slice(1).map((tab) => `/products/${product.id}#${tab.id}`),

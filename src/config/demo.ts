@@ -20,17 +20,41 @@ export const market = {
   country: 'Sweden',
   language: 'English',
   languageCode: 'EN',
+  // Placeholder — list prices on the Models tab are in this currency, excl. VAT.
+  currency: 'EUR',
 } as const
 
 export const products = {
-  // Placeholder product names — confirm exact product names and models with Sulzer.
-  mainEndSuctionPump: 'Sulzer End Suction Pump',
-  submersiblePump: 'Sulzer Submersible Wastewater Pump',
+  // Sulzer product names — confirm the exact names and that each fits its application with Sulzer.
+  ahlstar: 'AHLSTAR',
+  sns: 'SNS',
+  smd: 'SMD',
+  sjt: 'SJT',
+  sjm: 'SJM',
+  xfp: 'XFP',
+  afp: 'AFP',
+  // Placeholder — confirm the name of Sulzer's submersible dewatering pump range.
+  jDewatering: 'J dewatering pump',
+  connect: 'Sulzer Connect',
+  // Placeholder — confirm the pump controller's name.
+  pumpController: 'PC 441 pump controller',
+  blueBox: 'BLUE BOX',
+  // Placeholder — confirm whether Sulzer sells a motor protection relay and what it is called.
+  motorProtectionRelay: 'Motor protection relay',
   iotOffering: 'Sulzer Smart Monitoring',
 } as const
 
 export const productSeries = {
-  // Placeholder model-name prefixes, e.g. "SES 150-125-315" — confirm with Sulzer.
-  mainEndSuctionPump: 'SES',
-  submersiblePump: 'SWP',
+  // Placeholder model-name prefixes, e.g. "AHLSTAR 150-125-315" — confirm with Sulzer.
+  ahlstar: 'AHLSTAR',
+  xfp: 'XFP',
 } as const
+
+/** Reference shown after "Request service" is sent. Fixed, so every recording shows the same one. */
+export const serviceRequestReference = 'SR-2026-0142'
+
+/**
+ * Show the expected file name on image placeholders, so missing images are easy to spot.
+ * Set to false before recording.
+ */
+export const showPlaceholderLabels = true

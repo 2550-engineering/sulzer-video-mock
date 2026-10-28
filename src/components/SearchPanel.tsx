@@ -1,8 +1,11 @@
 import { Search } from 'lucide-react'
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router'
-import { popoverClasses } from '../lib/popover'
 import { popularSearches } from '../config/navigation'
+import { useSearchSuggest } from '../hooks/useSearchSuggest'
+import { popoverClasses } from '../lib/popover'
+import { searchPath } from '../lib/search'
+import { SearchSuggestions } from './search/SearchSuggestions'
 
 type SearchPanelProps = {
   open: boolean
@@ -14,14 +17,14 @@ export function SearchPanel({ open, onClose }: SearchPanelProps) {
   const navigate = useNavigate()
   const inputRef = useRef<HTMLInputElement>(null)
   const [term, setTerm] = useState('')
+  const { inputProps, panelProps } = useSearchSuggest(term, onClose)
 
   useEffect(() => {
     if (open) inputRef.current?.focus()
   }, [open])
 
   function search(value: string) {
-    const q = value.trim()
-    navigate(q ? `/products?q=${encodeURIComponent(q)}` : '/products')
+    navigate(searchPath(value))
     onClose()
   }
 
@@ -44,6 +47,7 @@ export function SearchPanel({ open, onClose }: SearchPanelProps) {
               aria-hidden
             />
             <input
+              {...inputProps}
               ref={inputRef}
               type="search"
               value={term}
@@ -52,6 +56,7 @@ export function SearchPanel({ open, onClose }: SearchPanelProps) {
               placeholder="Search products, applications, part numbers…"
               className="h-14 w-full rounded-md border border-border-strong bg-white pr-4 pl-14 text-lg text-text transition-[border-color,box-shadow] placeholder:text-text-subtle focus:border-primary focus:shadow-[0_0_0_4px_var(--sz-color-primary-tint-strong)] focus-visible:outline-none"
             />
+            <SearchSuggestions {...panelProps} className="inset-x-0 top-[calc(100%+8px)]" />
           </div>
           <button
             type="submit"
