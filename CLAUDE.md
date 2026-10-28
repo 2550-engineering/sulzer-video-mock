@@ -43,6 +43,8 @@ Goal: viewers should go "Wow!" It must look like a real, polished, production Su
 - **Nothing that looks like a prototype:** no visible lorem ipsum on Phase 1 pages that are "done", no "TODO" text on screen.
 - **Stub pages** for future flows show a tasteful "Coming soon" state inside the real layout.
 - **Demo content** (user name, company, product names, market) lives in `src/config/demo.ts`.
+- **Demo controls:** Shift+D opens a hidden presenter panel (Reset demo / Sign in as demo user). It renders nothing while closed.
+- **Recording QA:** `npm run qa` screenshots every route logged out and logged in to `_qa/screenshots/` (gitignored) and writes `_qa/report.md` (console errors, failed requests, broken images, overflow, placeholder text). Add `-- --viewport=1440x900` for the secondary size. New routes are picked up from `placeholderRoutes` and `src/data`, but add new top-level pages to the list in `scripts/qa-screenshots.mjs`.
 
 ## Phases
 

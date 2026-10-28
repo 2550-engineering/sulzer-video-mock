@@ -6,7 +6,7 @@ import { HeroSearch } from './HeroSearch'
 export function HomeHero() {
   return (
     // z-10 keeps the scope dropdown above the next section.
-    <section className="relative z-10 bg-navy-900">
+    <section className="relative z-10 bg-navy-900 on-dark">
       <ImageSlot image={hero.image} />
       <div
         aria-hidden

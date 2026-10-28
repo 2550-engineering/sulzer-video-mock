@@ -1,0 +1,150 @@
+# Recording QA — 1920×1080
+
+153 captures, 0 with issues. Screenshots in `_qa/screenshots/`.
+
+| Auth | Route | Lands on | Title |
+| --- | --- | --- | --- |
+| logged-out | `/` | `/` | Sulzer | Everything you need, whenever you need it |
+| logged-out | `/my-sulzer` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/my-pages` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/applications` | `/applications` | Applications | Sulzer |
+| logged-out | `/applications#products` | `/applications` | Applications | Sulzer |
+| logged-out | `/applications#learn` | `/applications` | Applications | Sulzer |
+| logged-out | `/applications/municipal-water-supply` | `/applications/municipal-water-supply` | Municipal water supply | Sulzer |
+| logged-out | `/applications/surface-water-intake` | `/applications/surface-water-intake` | Surface water intake | Sulzer |
+| logged-out | `/applications/groundwater-intake` | `/applications/groundwater-intake` | Groundwater intake | Sulzer |
+| logged-out | `/applications/water-distribution` | `/applications/water-distribution` | Water distribution | Sulzer |
+| logged-out | `/applications/wastewater` | `/applications/wastewater` | Wastewater | Sulzer |
+| logged-out | `/applications/industrial-processes` | `/applications/industrial-processes` | Industrial processes | Sulzer |
+| logged-out | `/applications/building-services` | `/applications/building-services` | Building services | Sulzer |
+| logged-out | `/applications/pulp-paper` | `/applications/pulp-paper` | Pulp & paper | Sulzer |
+| logged-out | `/applications/oil-gas` | `/applications/oil-gas` | Oil & gas | Sulzer |
+| logged-out | `/products` | `/products` | Product Center | Sulzer |
+| logged-out | `/products?q=pump` | `/products?q=pump` | “pump” | Product Center | Sulzer |
+| logged-out | `/products/end-suction-pump` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
+| logged-out | `/products/end-suction-pump#models` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
+| logged-out | `/products/end-suction-pump#documentation` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
+| logged-out | `/products/end-suction-pump#bim` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
+| logged-out | `/products/end-suction-pump#spare-parts` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
+| logged-out | `/products/end-suction-pump#services` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
+| logged-out | `/products/submersible-wastewater-pump` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
+| logged-out | `/products/submersible-wastewater-pump#models` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
+| logged-out | `/products/submersible-wastewater-pump#documentation` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
+| logged-out | `/products/submersible-wastewater-pump#bim` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
+| logged-out | `/products/submersible-wastewater-pump#spare-parts` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
+| logged-out | `/products/submersible-wastewater-pump#services` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
+| logged-out | `/sizing` | `/sizing` | Sizing & configuration | Sulzer |
+| logged-out | `/sizing?product=end-suction-pump` | `/sizing?product=end-suction-pump` | Sizing & configuration | Sulzer |
+| logged-out | `/my-projects` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/connect` | `/connect` | Sulzer Connect | Sulzer |
+| logged-out | `/products/categories` | `/products/categories` | Product categories | Sulzer |
+| logged-out | `/products/a-z` | `/products/a-z` | Products A–Z | Sulzer |
+| logged-out | `/products/replacement` | `/products/replacement` | Product replacement | Sulzer |
+| logged-out | `/spare-parts` | `/spare-parts` | Spare parts | Sulzer |
+| logged-out | `/digital-solutions` | `/digital-solutions` | Digital solutions | Sulzer |
+| logged-out | `/eshop` | `/eshop` | eShop | Sulzer |
+| logged-out | `/my-pages/saved` | `/my-pages/saved` | My saved items | Sulzer |
+| logged-out | `/my-pages/recently-viewed` | `/my-pages/recently-viewed` | Recently viewed products | Sulzer |
+| logged-out | `/settings` | `/settings` | Account settings | Sulzer |
+| logged-out | `/self-service/list-price` | `/self-service/list-price` | List price & availability | Sulzer |
+| logged-out | `/self-service/export` | `/self-service/export` | Export information | Sulzer |
+| logged-out | `/self-service/quotations` | `/self-service/quotations` | Quotations | Sulzer |
+| logged-out | `/self-service/requests` | `/self-service/requests` | Requests | Sulzer |
+| logged-out | `/self-service/orders` | `/self-service/orders` | Order status | Sulzer |
+| logged-out | `/register` | `/register` | Create a Sulzer account | Sulzer |
+| logged-out | `/support` | `/support` | Support | Sulzer |
+| logged-out | `/support/service-centers` | `/support/service-centers` | Service centers | Sulzer |
+| logged-out | `/support/service-portal` | `/support/service-portal` | Service portal | Sulzer |
+| logged-out | `/support/documentation` | `/support/documentation` | Documentation | Sulzer |
+| logged-out | `/learn` | `/learn` | Sulzer Academy | Sulzer |
+| logged-out | `/learn/completed` | `/learn/completed` | My completed courses | Sulzer |
+| logged-out | `/learn/in-progress` | `/learn/in-progress` | My courses in progress | Sulzer |
+| logged-out | `/learn/certificates` | `/learn/certificates` | My certificates | Sulzer |
+| logged-out | `/learn/bookmarks` | `/learn/bookmarks` | My bookmarks | Sulzer |
+| logged-out | `/about` | `/about` | About us | Sulzer |
+| logged-out | `/about/sustainability` | `/about/sustainability` | Sustainability | Sulzer |
+| logged-out | `/about/news` | `/about/news` | News | Sulzer |
+| logged-out | `/about/careers` | `/about/careers` | Careers | Sulzer |
+| logged-out | `/contact` | `/contact` | Contact | Sulzer |
+| logged-out | `/contact/locations` | `/contact/locations` | Local offices | Sulzer |
+| logged-out | `/contact/quote` | `/contact/quote` | Request a quote | Sulzer |
+| logged-out | `/legal-notice` | `/legal-notice` | Legal notice | Sulzer |
+| logged-out | `/privacy` | `/privacy` | Privacy | Sulzer |
+| logged-out | `/cookies` | `/cookies` | Cookies | Sulzer |
+| logged-out | `/terms-of-sale` | `/terms-of-sale` | Terms of sale | Sulzer |
+| logged-out | `/this-page-does-not-exist` | `/this-page-does-not-exist` | Page not found | Sulzer |
+| logged-in | `/` | `/` | Sulzer | Everything you need, whenever you need it |
+| logged-in | `/my-sulzer` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-in | `/my-pages` | `/my-pages` | My Pages | mySulzer | Sulzer |
+| logged-in | `/applications` | `/applications` | Applications | Sulzer |
+| logged-in | `/applications#products` | `/applications` | Applications | Sulzer |
+| logged-in | `/applications#learn` | `/applications` | Applications | Sulzer |
+| logged-in | `/applications/municipal-water-supply` | `/applications/municipal-water-supply` | Municipal water supply | Sulzer |
+| logged-in | `/applications/surface-water-intake` | `/applications/surface-water-intake` | Surface water intake | Sulzer |
+| logged-in | `/applications/groundwater-intake` | `/applications/groundwater-intake` | Groundwater intake | Sulzer |
+| logged-in | `/applications/water-distribution` | `/applications/water-distribution` | Water distribution | Sulzer |
+| logged-in | `/applications/wastewater` | `/applications/wastewater` | Wastewater | Sulzer |
+| logged-in | `/applications/industrial-processes` | `/applications/industrial-processes` | Industrial processes | Sulzer |
+| logged-in | `/applications/building-services` | `/applications/building-services` | Building services | Sulzer |
+| logged-in | `/applications/pulp-paper` | `/applications/pulp-paper` | Pulp & paper | Sulzer |
+| logged-in | `/applications/oil-gas` | `/applications/oil-gas` | Oil & gas | Sulzer |
+| logged-in | `/products` | `/products` | Product Center | Sulzer |
+| logged-in | `/products?q=pump` | `/products?q=pump` | “pump” | Product Center | Sulzer |
+| logged-in | `/products/end-suction-pump` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
+| logged-in | `/products/end-suction-pump#models` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
+| logged-in | `/products/end-suction-pump#documentation` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
+| logged-in | `/products/end-suction-pump#bim` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
+| logged-in | `/products/end-suction-pump#spare-parts` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
+| logged-in | `/products/end-suction-pump#services` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
+| logged-in | `/products/submersible-wastewater-pump` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
+| logged-in | `/products/submersible-wastewater-pump#models` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
+| logged-in | `/products/submersible-wastewater-pump#documentation` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
+| logged-in | `/products/submersible-wastewater-pump#bim` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
+| logged-in | `/products/submersible-wastewater-pump#spare-parts` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
+| logged-in | `/products/submersible-wastewater-pump#services` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
+| logged-in | `/sizing` | `/sizing` | Sizing & configuration | Sulzer |
+| logged-in | `/sizing?product=end-suction-pump` | `/sizing?product=end-suction-pump` | Sizing & configuration | Sulzer |
+| logged-in | `/my-projects` | `/my-projects` | My projects | Sulzer |
+| logged-in | `/assets` | `/assets` | My assets | Sulzer |
+| logged-in | `/connect` | `/connect` | Sulzer Connect | Sulzer |
+| logged-in | `/products/categories` | `/products/categories` | Product categories | Sulzer |
+| logged-in | `/products/a-z` | `/products/a-z` | Products A–Z | Sulzer |
+| logged-in | `/products/replacement` | `/products/replacement` | Product replacement | Sulzer |
+| logged-in | `/spare-parts` | `/spare-parts` | Spare parts | Sulzer |
+| logged-in | `/digital-solutions` | `/digital-solutions` | Digital solutions | Sulzer |
+| logged-in | `/eshop` | `/eshop` | eShop | Sulzer |
+| logged-in | `/my-pages/saved` | `/my-pages/saved` | My saved items | Sulzer |
+| logged-in | `/my-pages/recently-viewed` | `/my-pages/recently-viewed` | Recently viewed products | Sulzer |
+| logged-in | `/settings` | `/settings` | Account settings | Sulzer |
+| logged-in | `/self-service/list-price` | `/self-service/list-price` | List price & availability | Sulzer |
+| logged-in | `/self-service/export` | `/self-service/export` | Export information | Sulzer |
+| logged-in | `/self-service/quotations` | `/self-service/quotations` | Quotations | Sulzer |
+| logged-in | `/self-service/requests` | `/self-service/requests` | Requests | Sulzer |
+| logged-in | `/self-service/orders` | `/self-service/orders` | Order status | Sulzer |
+| logged-in | `/register` | `/register` | Create a Sulzer account | Sulzer |
+| logged-in | `/support` | `/support` | Support | Sulzer |
+| logged-in | `/support/service-centers` | `/support/service-centers` | Service centers | Sulzer |
+| logged-in | `/support/service-portal` | `/support/service-portal` | Service portal | Sulzer |
+| logged-in | `/support/documentation` | `/support/documentation` | Documentation | Sulzer |
+| logged-in | `/learn` | `/learn` | Sulzer Academy | Sulzer |
+| logged-in | `/learn/completed` | `/learn/completed` | My completed courses | Sulzer |
+| logged-in | `/learn/in-progress` | `/learn/in-progress` | My courses in progress | Sulzer |
+| logged-in | `/learn/certificates` | `/learn/certificates` | My certificates | Sulzer |
+| logged-in | `/learn/bookmarks` | `/learn/bookmarks` | My bookmarks | Sulzer |
+| logged-in | `/about` | `/about` | About us | Sulzer |
+| logged-in | `/about/sustainability` | `/about/sustainability` | Sustainability | Sulzer |
+| logged-in | `/about/news` | `/about/news` | News | Sulzer |
+| logged-in | `/about/careers` | `/about/careers` | Careers | Sulzer |
+| logged-in | `/contact` | `/contact` | Contact | Sulzer |
+| logged-in | `/contact/locations` | `/contact/locations` | Local offices | Sulzer |
+| logged-in | `/contact/quote` | `/contact/quote` | Request a quote | Sulzer |
+| logged-in | `/legal-notice` | `/legal-notice` | Legal notice | Sulzer |
+| logged-in | `/privacy` | `/privacy` | Privacy | Sulzer |
+| logged-in | `/cookies` | `/cookies` | Cookies | Sulzer |
+| logged-in | `/terms-of-sale` | `/terms-of-sale` | Terms of sale | Sulzer |
+| logged-in | `/this-page-does-not-exist` | `/this-page-does-not-exist` | Page not found | Sulzer |
+
+## Issues
+
+None.

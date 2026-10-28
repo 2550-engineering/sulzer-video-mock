@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router'
 import { ChatWidget } from './ChatWidget'
 import { SiteFooter } from './SiteFooter'
@@ -8,15 +7,14 @@ import { SiteHeader } from './SiteHeader'
 export function SiteLayout() {
   const { pathname } = useLocation()
 
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [pathname])
-
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
       <main className="flex-1">
-        <Outlet />
+        {/* Keyed by path so each new page fades in; tab and hash changes don't. */}
+        <div key={pathname} className="animate-page-in">
+          <Outlet />
+        </div>
       </main>
       <SiteFooter />
       <ChatWidget />

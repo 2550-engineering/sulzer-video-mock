@@ -14,7 +14,7 @@ const toolTones: PlaceholderTone[] = ['ocean', 'deep', 'slate']
 export function MySulzerPage() {
   return (
     <>
-      <title>mySulzer – your 24/7 self-service | Sulzer</title>
+      <title>mySulzer | Sulzer</title>
 
       <div className="site-container py-5">
         <Breadcrumb items={[{ label: 'mySulzer' }]} />

@@ -14,7 +14,7 @@ type ApplicationHeroProps = {
 /** Full-width image hero with breadcrumb, title, intro and an optional primary button. */
 export function ApplicationHero({ application, breadcrumb, action }: ApplicationHeroProps) {
   return (
-    <section className="relative isolate overflow-hidden bg-navy-900">
+    <section className="relative isolate overflow-hidden bg-navy-900 on-dark">
       <ImageSlot image={application.heroImage} />
       <div
         aria-hidden

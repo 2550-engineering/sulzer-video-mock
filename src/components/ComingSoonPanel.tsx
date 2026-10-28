@@ -63,7 +63,7 @@ export function ComingSoonPanel({
         <img
           src={brandImage}
           alt=""
-          className="absolute inset-0 size-full object-cover"
+          className="absolute inset-0 size-full object-cover lg:[mask-image:linear-gradient(to_right,transparent,black_35%)]"
           draggable={false}
         />
       </div>

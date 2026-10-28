@@ -52,7 +52,7 @@ export function SiteHeader() {
   return (
     <header ref={headerRef} className="sticky top-0 z-50">
       <div className="relative z-20">
-        <div className="bg-navy-900">
+        <div className="bg-navy-900 on-dark">
           <div className="site-container flex h-8 items-center gap-2.5 text-[13px]">
             <button type="button" className={marketButton}>
               {market.country}
@@ -99,7 +99,7 @@ export function SiteHeader() {
           </div>
         </div>
 
-        <nav aria-label="Main" className="bg-navy-900 text-white">
+        <nav aria-label="Main" className="bg-navy-900 text-white on-dark">
           <div className="site-container flex h-14 items-stretch">
             <ul className="-ml-4 flex items-stretch">
               <li className="flex">

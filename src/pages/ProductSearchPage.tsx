@@ -22,7 +22,7 @@ export function ProductSearchPage() {
     <>
       <title>{query ? `“${query}” | ${copy.title} | Sulzer` : `${copy.title} | Sulzer`}</title>
 
-      <section className="relative isolate overflow-hidden bg-navy-900">
+      <section className="relative isolate overflow-hidden bg-navy-900 on-dark">
         <GradientBackdrop tone="deep" />
         <div className="relative site-container pt-6 pb-16">
           <Breadcrumb tone="dark" items={[{ label: copy.title }]} />

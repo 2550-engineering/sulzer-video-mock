@@ -1,5 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router'
 import { AuthProvider } from './auth/AuthProvider'
+import { DemoControls } from './components/DemoControls'
+import { ScrollToTop } from './components/ScrollToTop'
 import { SiteLayout } from './components/SiteLayout'
 import { placeholderRoutes } from './config/placeholderRoutes'
 import { ApplicationPage } from './pages/ApplicationPage'
@@ -19,6 +21,7 @@ export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route element={<SiteLayout />}>
             <Route path="/" element={<HomePage />} />
@@ -43,6 +46,7 @@ export default function App() {
           {/* Sulzer Connect is its own app, outside the website header and footer. */}
           <Route path="/connect" element={<ConnectPage />} />
         </Routes>
+        <DemoControls />
       </BrowserRouter>
     </AuthProvider>
   )

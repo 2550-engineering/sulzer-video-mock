@@ -20,7 +20,7 @@ export function ChatWidget() {
         inert={!open}
         className={`absolute right-0 bottom-[calc(100%+16px)] w-[344px] origin-bottom-right overflow-hidden rounded-lg bg-white shadow-card ring-1 ring-navy-900/5 ${popoverClasses(open)}`}
       >
-        <div className="bg-navy-900 px-6 pt-5 pb-6 text-white">
+        <div className="bg-navy-900 px-6 pt-5 pb-6 text-white on-dark">
           <SulzerLogo variant="white" className="h-4" />
           <p className="mt-5 text-xl font-bold tracking-tight">How can we help?</p>
           <p className="mt-1.5 flex items-center gap-2 text-sm text-text-on-dark">

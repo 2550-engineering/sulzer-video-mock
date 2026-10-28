@@ -56,6 +56,8 @@
   --default-transition-timing-function: var(--sz-ease);
 
   --animate-fade-in: sz-fade-in var(--sz-duration-base) var(--sz-ease);
+  /* Route change. Opacity only: a transform would break sticky/fixed elements inside the page. */
+  --animate-page-in: sz-page-in var(--sz-duration-page) var(--sz-ease);
 
   @keyframes sz-fade-in {
     from {
@@ -63,6 +65,17 @@
       translate: 0 4px;
     }
   }
+
+  @keyframes sz-page-in {
+    from {
+      opacity: 0;
+    }
+  }
+}
+
+/* Dark (navy) surfaces: switch the focus ring to the light blue so it stays visible. */
+@utility on-dark {
+  --sz-focus-ring: var(--sz-color-primary-on-dark);
 }
 
 /* Centred content column used by header, footer and every page section. */
@@ -81,6 +94,9 @@
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* In-page anchors glide, and land below the sticky header. */
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--sz-header-height);
   }
 
   body {
@@ -88,7 +104,20 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--sz-color-primary);
+    outline: 2px solid var(--sz-focus-ring);
     outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    ::before,
+    ::after {
+      animation-duration: 1ms !important;
+      transition-duration: 1ms !important;
+    }
   }
 }

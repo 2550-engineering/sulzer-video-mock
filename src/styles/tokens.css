@@ -47,6 +47,9 @@
   --sz-color-warning-tint: #fdf4e6;
   --sz-color-danger: #b4341f;
 
+  /* Focus ring. Navy sections switch it to primary-on-dark with the `on-dark` utility. */
+  --sz-focus-ring: var(--sz-color-primary);
+
   /* Typography */
   --sz-font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
@@ -70,5 +73,6 @@
   --sz-duration-fast: 150ms;
   --sz-duration-base: 200ms;
   --sz-duration-slow: 250ms;
+  --sz-duration-page: 180ms; /* route-change fade */
   --sz-ease: cubic-bezier(0.2, 0, 0, 1);
 }

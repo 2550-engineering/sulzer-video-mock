@@ -5,7 +5,7 @@ import { accountSection } from '../../data/mySulzer'
 /** Navy "Create a Sulzer account" band. The intro's secondary button scrolls here. */
 export function AccountBand() {
   return (
-    <section id="create-account" className="scroll-mt-[168px] bg-navy-900 text-white">
+    <section id="create-account" className="bg-navy-900 text-white on-dark">
       <div className="site-container grid items-center gap-16 py-24 lg:grid-cols-[1fr_1.3fr]">
         <div>
           <p className="text-sm font-semibold tracking-[0.16em] text-primary-on-dark uppercase">

@@ -16,7 +16,7 @@ const year = new Date().getFullYear()
 
 export function SiteFooter() {
   return (
-    <footer className="bg-navy-900 text-text-on-dark">
+    <footer className="bg-navy-900 text-text-on-dark on-dark">
       <div className="site-container grid grid-cols-12 gap-x-8 gap-y-12 pt-16 pb-14">
         <div className="col-span-12 lg:col-span-4">
           <Link to="/" aria-label="Sulzer home" className="inline-block rounded-sm">

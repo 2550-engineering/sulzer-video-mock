@@ -16,7 +16,7 @@ export function ConnectShell({ children }: { children: ReactNode }) {
   const SettingsIcon = settings.icon
 
   return (
-    <div className="flex h-screen flex-col bg-navy-800 text-text-on-dark">
+    <div className="flex h-screen flex-col bg-navy-800 text-text-on-dark on-dark">
       <header className="flex h-16 shrink-0 items-center justify-between border-b border-white/10 bg-navy-900 pr-6">
         <div className="flex items-center">
           <Link
