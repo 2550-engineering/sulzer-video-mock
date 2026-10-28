@@ -3,29 +3,27 @@ import { Link } from 'react-router'
 import type { ApplicationTeaser } from '../../types'
 import { ImageSlot } from '../ImageSlot'
 
-/** Image tile with caption for the Applications teaser grid. */
+/** Teaser for the Applications grid: image, then title, caption and an arrow. */
 export function ApplicationTile({ item }: { item: ApplicationTeaser }) {
   return (
     <Link
       to={item.to}
-      className="group relative block aspect-[16/10] overflow-hidden rounded-lg bg-navy-900"
+      className="group flex h-full flex-col overflow-hidden rounded-lg border border-border bg-surface transition-[border-color,box-shadow] duration-200 hover:border-primary-border hover:shadow-card"
     >
-      <ImageSlot
-        image={item.image}
-        className="transition-transform duration-[250ms] ease-sz group-hover:scale-[1.04]"
-      />
-      <div
-        aria-hidden
-        className="absolute inset-0 bg-linear-to-t from-navy-900/90 via-navy-900/25 to-transparent"
-      />
-      <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6">
+      <div className="relative aspect-[16/9] overflow-hidden">
+        <ImageSlot
+          image={item.image}
+          className="transition-transform duration-[250ms] ease-sz group-hover:scale-[1.04]"
+        />
+      </div>
+      <div className="flex flex-1 items-start justify-between gap-4 px-6 pt-5 pb-6">
         <div>
-          <h3 className="text-xl font-bold tracking-tight text-white">{item.title}</h3>
-          <p className="mt-1 text-sm text-text-on-dark">{item.caption}</p>
+          <h3 className="text-xl font-bold tracking-tight text-heading group-hover:text-primary">
+            {item.title}
+          </h3>
+          <p className="mt-1.5 text-[15px] leading-relaxed text-text-muted">{item.caption}</p>
         </div>
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm transition-colors duration-200 group-hover:bg-primary">
-          <ArrowRight className="size-[18px]" />
-        </span>
+        <ArrowRight className="mt-1 size-5 shrink-0 text-primary transition-transform duration-200 group-hover:translate-x-1" />
       </div>
     </Link>
   )

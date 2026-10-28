@@ -1,4 +1,4 @@
-import { ChevronDown, LayoutGrid, Search, X } from 'lucide-react'
+import { ChevronDown, Globe, LayoutGrid, Search, X } from 'lucide-react'
 import { useCallback, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router'
 import { market } from '../config/demo'
@@ -15,9 +15,6 @@ type Panel = 'products' | 'quick-links' | 'search' | 'account'
 const utilityButton =
   'flex h-10 items-center gap-2 rounded-sm px-3 text-navy-900 transition-colors hover:bg-surface-muted hover:text-primary'
 
-const marketButton =
-  'flex items-center gap-1 rounded-sm text-white/85 transition-colors hover:text-white'
-
 function navItemClass(active: boolean) {
   return [
     'relative flex items-center gap-1.5 px-4 text-[15px] font-medium transition-colors',
@@ -28,7 +25,7 @@ function navItemClass(active: boolean) {
   ].join(' ')
 }
 
-/** Sticky header: navy market strip, white logo row (quick links, account) and navy main nav. */
+/** Sticky header: white logo row (market, quick links, account) and navy main nav. */
 export function SiteHeader() {
   const { pathname } = useLocation()
   const headerRef = useRef<HTMLElement>(null)
@@ -52,22 +49,6 @@ export function SiteHeader() {
   return (
     <header ref={headerRef} className="sticky top-0 z-50">
       <div className="relative z-20">
-        <div className="bg-navy-900 on-dark">
-          <div className="site-container flex h-8 items-center gap-2.5 text-[13px]">
-            <button type="button" className={marketButton}>
-              {market.country}
-              <ChevronDown className="size-3.5" strokeWidth={2} />
-            </button>
-            <span aria-hidden className="text-white/40">
-              ·
-            </span>
-            <button type="button" className={marketButton}>
-              {market.language}
-              <ChevronDown className="size-3.5" strokeWidth={2} />
-            </button>
-          </div>
-        </div>
-
         <div className="border-b border-border bg-white">
           <div className="site-container flex h-20 items-center justify-between">
             <Link to="/" aria-label="Sulzer home" className="-m-1 rounded-sm p-1">
@@ -75,6 +56,10 @@ export function SiteHeader() {
             </Link>
 
             <div className="-mr-3 flex items-center gap-1 text-sm font-medium">
+              <button type="button" className={utilityButton}>
+                <Globe className="size-[18px] text-primary" strokeWidth={1.75} />
+                {market.country} – {market.languageCode}
+              </button>
               <div className="relative">
                 <button
                   type="button"

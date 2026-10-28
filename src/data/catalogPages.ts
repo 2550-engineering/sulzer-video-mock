@@ -1,4 +1,11 @@
-import type { ComingSoonContent, NavItem, TabComingSoonCopy, TabDef } from '../types'
+import type {
+  ComingSoonContent,
+  ImageRef,
+  ModelFilterGroup,
+  NavItem,
+  TabComingSoonCopy,
+  TabDef,
+} from '../types'
 
 /* Copy for the application, product and product search templates. */
 
@@ -54,7 +61,36 @@ export const productPage = {
     text: (count: number) => `Compare ${count} models by flow, head and motor power.`,
     actionLabel: 'See all models',
   },
-  modelsTitle: (count: number) => `${count} models`,
+  modelsTitle: (count: number) => `${count} ${count === 1 ? 'model' : 'models'}`,
+  modelFilters: {
+    title: 'Filter list',
+    resetLabel: 'Reset',
+    noMatches: 'No models match these filters.',
+    groups: [
+      {
+        id: 'speed',
+        label: 'Motor speed',
+        options: [
+          { id: '2-pole', label: '2-pole, 2 900 rpm', matches: (m) => m.speed >= 2500 },
+          {
+            id: '4-pole',
+            label: '4-pole, 1 450 rpm',
+            matches: (m) => m.speed >= 1300 && m.speed < 2500,
+          },
+          { id: 'slow', label: '6-pole and slower', matches: (m) => m.speed < 1300 },
+        ],
+      },
+      {
+        id: 'power',
+        label: 'Motor power (P2)',
+        options: [
+          { id: 'small', label: 'Up to 7.5 kW', matches: (m) => m.power <= 7.5 },
+          { id: 'medium', label: '7.5 – 37 kW', matches: (m) => m.power > 7.5 && m.power <= 37 },
+          { id: 'large', label: 'Over 37 kW', matches: (m) => m.power > 37 },
+        ],
+      },
+    ] satisfies ModelFilterGroup[],
+  },
   documentationTitle: 'Documentation',
   bimTitle: 'BIM & CAD downloads',
   sparePartsTitle: 'Genuine spare parts',
@@ -69,6 +105,7 @@ export const productPage = {
 export const productSearchPage = {
   title: 'Product Center',
   subtitle: 'Search the full Sulzer range by product name, model or application.',
+  heroImage: { file: 'product-center-hero.jpg', alt: '', art: 9 } satisfies ImageRef,
   searchLabel: 'Find a Sulzer product',
   searchButtonLabel: 'Search',
   allProductsTitle: 'All products',

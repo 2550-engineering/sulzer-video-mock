@@ -32,7 +32,7 @@ export function MyPagesPage() {
       <div className="site-container pt-6 pb-24">
         <header className="flex flex-wrap items-end justify-between gap-6">
           <div>
-            <h1 className="text-[2.75rem] leading-tight font-bold tracking-tight text-brand">
+            <h1 className="text-[2.75rem] leading-tight font-bold tracking-tight text-heading">
               {welcome.title}
             </h1>
             <p className="mt-2 text-lg text-text-muted">{welcome.subtitle}</p>

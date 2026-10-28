@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router'
 import { ExploreSection } from '../components/ExploreSection'
 import { IconCardGrid } from '../components/IconCardGrid'
 import { DocumentList } from '../components/product/DocumentList'
-import { ModelsTable } from '../components/product/ModelsTable'
+import { ModelsBrowser } from '../components/product/ModelsBrowser'
 import { ProductHeader } from '../components/product/ProductHeader'
 import { SparePartList } from '../components/product/SparePartList'
 import { TabBar } from '../components/TabBar'
@@ -60,12 +60,7 @@ export function ProductPage() {
 
         {activeTab === 'models' &&
           (models.length > 0 ? (
-            <>
-              <TabHeading title={copy.modelsTitle(models.length)} />
-              <div className="mt-8">
-                <ModelsTable models={models} />
-              </div>
-            </>
+            <ModelsBrowser key={product.id} models={models} />
           ) : (
             <TabComingSoon copy={copy.tabEmpty} />
           ))}

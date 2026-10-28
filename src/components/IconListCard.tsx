@@ -12,7 +12,7 @@ type IconListCardProps = {
 export function IconListCard({ title, items }: IconListCardProps) {
   return (
     <div className="h-full rounded-lg border border-border bg-surface shadow-card">
-      <h3 className="border-b border-border px-8 py-5 text-xl font-bold tracking-tight text-brand">
+      <h3 className="border-b border-border px-8 py-5 text-xl font-bold tracking-tight text-heading">
         {title}
       </h3>
       <ul className="space-y-1 px-5 py-5">

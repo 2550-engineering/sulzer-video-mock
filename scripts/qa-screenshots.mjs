@@ -101,6 +101,22 @@ async function settle(page) {
 /** Layout problems visible in the DOM: overflow, broken images, suspect text. */
 function inspectPage(pattern) {
   const viewportWidth = document.documentElement.clientWidth
+  // Overflow is harmless when an ancestor that fits the viewport clips it (e.g. a zoomed image).
+  const clipped = (el) => {
+    for (
+      let parent = el.parentElement;
+      parent && parent !== document.body;
+      parent = parent.parentElement
+    ) {
+      const overflow = getComputedStyle(parent).overflowX
+      if (
+        (overflow === 'hidden' || overflow === 'clip') &&
+        parent.getBoundingClientRect().right <= viewportWidth + 1
+      )
+        return true
+    }
+    return false
+  }
   const overflowing = [...document.querySelectorAll('body *')]
     .filter((el) => {
       const rect = el.getBoundingClientRect()
@@ -110,7 +126,8 @@ function inspectPage(pattern) {
         rect.right > viewportWidth + 1 &&
         style.visibility !== 'hidden' &&
         style.opacity !== '0' &&
-        !el.closest('[inert]')
+        !el.closest('[inert]') &&
+        !clipped(el)
       )
     })
     .slice(0, 5)

@@ -26,6 +26,8 @@ export const products = {
   // Placeholder product names — confirm exact product names and models with Sulzer.
   mainEndSuctionPump: 'Sulzer End Suction Pump',
   submersiblePump: 'Sulzer Submersible Wastewater Pump',
+  grinderPump: 'Sulzer Submersible Grinder Pump',
+  highCapacityPump: 'Sulzer High-Capacity Submersible Pump',
   iotOffering: 'Sulzer Smart Monitoring',
 } as const
 
@@ -33,4 +35,6 @@ export const productSeries = {
   // Placeholder model-name prefixes, e.g. "SES 150-125-315" — confirm with Sulzer.
   mainEndSuctionPump: 'SES',
   submersiblePump: 'SWP',
+  grinderPump: 'SGP',
+  highCapacityPump: 'SHC',
 } as const

@@ -16,7 +16,7 @@ export function SectionHeading({ title, subtitle, action, tone = 'light' }: Sect
     <div className="flex flex-wrap items-end justify-between gap-6">
       <div>
         <h2
-          className={`text-[2.5rem] leading-tight font-bold tracking-tight ${dark ? 'text-white' : 'text-brand'}`}
+          className={`text-[2.5rem] leading-tight font-bold tracking-tight ${dark ? 'text-white' : 'text-heading'}`}
         >
           {title}
         </h2>

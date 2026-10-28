@@ -12,10 +12,7 @@ export function ConnectPromo() {
     <section className="bg-navy-900 text-white on-dark">
       <div className="site-container grid items-center gap-16 py-28 lg:grid-cols-2">
         <div>
-          <p className="text-sm font-semibold tracking-[0.16em] text-primary-on-dark uppercase">
-            {connectPromo.eyebrow}
-          </p>
-          <h2 className="mt-4 max-w-xl text-[2.75rem] leading-[1.1] font-bold tracking-tight">
+          <h2 className="max-w-xl text-[2.75rem] leading-[1.1] font-bold tracking-tight">
             {connectPromo.title}
           </h2>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-text-on-dark">

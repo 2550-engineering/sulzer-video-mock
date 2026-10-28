@@ -1,6 +1,6 @@
 # Recording QA — 1920×1080
 
-153 captures, 0 with issues. Screenshots in `_qa/screenshots/`.
+177 captures, 0 with issues. Screenshots in `_qa/screenshots/`.
 
 | Auth | Route | Lands on | Title |
 | --- | --- | --- | --- |
@@ -33,6 +33,18 @@
 | logged-out | `/products/submersible-wastewater-pump#bim` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
 | logged-out | `/products/submersible-wastewater-pump#spare-parts` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
 | logged-out | `/products/submersible-wastewater-pump#services` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
+| logged-out | `/products/submersible-grinder-pump` | `/products/submersible-grinder-pump` | Sulzer Submersible Grinder Pump | Sulzer |
+| logged-out | `/products/submersible-grinder-pump#models` | `/products/submersible-grinder-pump` | Sulzer Submersible Grinder Pump | Sulzer |
+| logged-out | `/products/submersible-grinder-pump#documentation` | `/products/submersible-grinder-pump` | Sulzer Submersible Grinder Pump | Sulzer |
+| logged-out | `/products/submersible-grinder-pump#bim` | `/products/submersible-grinder-pump` | Sulzer Submersible Grinder Pump | Sulzer |
+| logged-out | `/products/submersible-grinder-pump#spare-parts` | `/products/submersible-grinder-pump` | Sulzer Submersible Grinder Pump | Sulzer |
+| logged-out | `/products/submersible-grinder-pump#services` | `/products/submersible-grinder-pump` | Sulzer Submersible Grinder Pump | Sulzer |
+| logged-out | `/products/high-capacity-submersible-pump` | `/products/high-capacity-submersible-pump` | Sulzer High-Capacity Submersible Pump | Sulzer |
+| logged-out | `/products/high-capacity-submersible-pump#models` | `/products/high-capacity-submersible-pump` | Sulzer High-Capacity Submersible Pump | Sulzer |
+| logged-out | `/products/high-capacity-submersible-pump#documentation` | `/products/high-capacity-submersible-pump` | Sulzer High-Capacity Submersible Pump | Sulzer |
+| logged-out | `/products/high-capacity-submersible-pump#bim` | `/products/high-capacity-submersible-pump` | Sulzer High-Capacity Submersible Pump | Sulzer |
+| logged-out | `/products/high-capacity-submersible-pump#spare-parts` | `/products/high-capacity-submersible-pump` | Sulzer High-Capacity Submersible Pump | Sulzer |
+| logged-out | `/products/high-capacity-submersible-pump#services` | `/products/high-capacity-submersible-pump` | Sulzer High-Capacity Submersible Pump | Sulzer |
 | logged-out | `/sizing` | `/sizing` | Sizing & configuration | Sulzer |
 | logged-out | `/sizing?product=end-suction-pump` | `/sizing?product=end-suction-pump` | Sizing & configuration | Sulzer |
 | logged-out | `/my-projects` | `/my-sulzer` | mySulzer | Sulzer |
@@ -103,6 +115,18 @@
 | logged-in | `/products/submersible-wastewater-pump#bim` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
 | logged-in | `/products/submersible-wastewater-pump#spare-parts` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
 | logged-in | `/products/submersible-wastewater-pump#services` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
+| logged-in | `/products/submersible-grinder-pump` | `/products/submersible-grinder-pump` | Sulzer Submersible Grinder Pump | Sulzer |
+| logged-in | `/products/submersible-grinder-pump#models` | `/products/submersible-grinder-pump` | Sulzer Submersible Grinder Pump | Sulzer |
+| logged-in | `/products/submersible-grinder-pump#documentation` | `/products/submersible-grinder-pump` | Sulzer Submersible Grinder Pump | Sulzer |
+| logged-in | `/products/submersible-grinder-pump#bim` | `/products/submersible-grinder-pump` | Sulzer Submersible Grinder Pump | Sulzer |
+| logged-in | `/products/submersible-grinder-pump#spare-parts` | `/products/submersible-grinder-pump` | Sulzer Submersible Grinder Pump | Sulzer |
+| logged-in | `/products/submersible-grinder-pump#services` | `/products/submersible-grinder-pump` | Sulzer Submersible Grinder Pump | Sulzer |
+| logged-in | `/products/high-capacity-submersible-pump` | `/products/high-capacity-submersible-pump` | Sulzer High-Capacity Submersible Pump | Sulzer |
+| logged-in | `/products/high-capacity-submersible-pump#models` | `/products/high-capacity-submersible-pump` | Sulzer High-Capacity Submersible Pump | Sulzer |
+| logged-in | `/products/high-capacity-submersible-pump#documentation` | `/products/high-capacity-submersible-pump` | Sulzer High-Capacity Submersible Pump | Sulzer |
+| logged-in | `/products/high-capacity-submersible-pump#bim` | `/products/high-capacity-submersible-pump` | Sulzer High-Capacity Submersible Pump | Sulzer |
+| logged-in | `/products/high-capacity-submersible-pump#spare-parts` | `/products/high-capacity-submersible-pump` | Sulzer High-Capacity Submersible Pump | Sulzer |
+| logged-in | `/products/high-capacity-submersible-pump#services` | `/products/high-capacity-submersible-pump` | Sulzer High-Capacity Submersible Pump | Sulzer |
 | logged-in | `/sizing` | `/sizing` | Sizing & configuration | Sulzer |
 | logged-in | `/sizing?product=end-suction-pump` | `/sizing?product=end-suction-pump` | Sizing & configuration | Sulzer |
 | logged-in | `/my-projects` | `/my-projects` | My projects | Sulzer |

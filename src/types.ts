@@ -26,14 +26,12 @@ export type FooterColumn = {
   links: NavItem[]
 }
 
-/** Gradient shown while an image file hasn't been supplied yet. */
-export type PlaceholderTone = 'ocean' | 'deep' | 'steel' | 'slate'
-
 /** An image from `_asset-source/images`, referenced by file name. */
 export type ImageRef = {
   file: string
   alt: string
-  tone: PlaceholderTone
+  /** Brand-art crop (see BrandArt) shown until the file is supplied. Set it so neighbours differ. */
+  art?: number
 }
 
 /** Card with an icon, title, one line of text and an arrow link. */
@@ -188,6 +186,13 @@ export type ProductModel = {
   speed: number
   /** Impeller diameter, mm. */
   impeller: number
+}
+
+/** A checkbox group in the Models tab filter list. Options in a group combine with OR, groups with AND. */
+export type ModelFilterGroup = {
+  id: string
+  label: string
+  options: { id: string; label: string; matches: (model: ProductModel) => boolean }[]
 }
 
 export type SparePart = {

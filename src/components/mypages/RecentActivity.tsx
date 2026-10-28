@@ -6,7 +6,7 @@ import { recentActivity } from '../../data/myPages'
 export function RecentActivity() {
   return (
     <section className="overflow-hidden rounded-lg border border-border bg-surface shadow-card">
-      <h2 className="flex items-center gap-2.5 border-b border-border px-7 py-4 text-base font-bold tracking-tight text-brand">
+      <h2 className="flex items-center gap-2.5 border-b border-border px-7 py-4 text-base font-bold tracking-tight text-heading">
         <History className="size-[18px] text-primary" strokeWidth={2} />
         {recentActivity.title}
       </h2>
@@ -17,9 +17,7 @@ export function RecentActivity() {
               to={to}
               className="group flex items-center gap-4 px-7 py-3.5 transition-colors hover:bg-surface-subtle"
             >
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary-tint text-primary">
-                <Icon className="size-4" strokeWidth={1.75} />
-              </span>
+              <Icon className="size-5 shrink-0 text-primary" strokeWidth={1.5} />
               <p className="min-w-0 flex-1 truncate text-[15px] text-text-muted">
                 <span className="font-semibold text-navy-900 transition-colors group-hover:text-primary">
                   {subject}

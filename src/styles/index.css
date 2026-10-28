@@ -5,6 +5,7 @@
 @theme inline {
   --color-brand: var(--sz-color-brand);
   --color-primary: var(--sz-color-primary);
+  --color-heading: var(--sz-color-heading);
   --color-primary-hover: var(--sz-color-primary-hover);
   --color-primary-tint: var(--sz-color-primary-tint);
   --color-primary-tint-strong: var(--sz-color-primary-tint-strong);

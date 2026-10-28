@@ -25,7 +25,7 @@ export function ProductHeader({ product }: { product: Product }) {
           <span className="self-start rounded-sm bg-surface-sunken px-2.5 py-1 text-xs font-semibold text-navy-700">
             {product.family}
           </span>
-          <h1 className="mt-4 text-[2.75rem] leading-tight font-bold tracking-tight text-brand">
+          <h1 className="mt-4 text-[2.75rem] leading-tight font-bold tracking-tight text-heading">
             {product.name}
           </h1>
 
@@ -58,7 +58,9 @@ export function ProductHeader({ product }: { product: Product }) {
 
         <div className="flex flex-col gap-10">
           <div className="relative aspect-[16/10] overflow-hidden rounded-lg bg-surface-muted">
-            <ImageSlot image={product.images[0]} fit="contain" />
+            <div className="absolute inset-8">
+              <ImageSlot image={product.images[0]} fit="contain" />
+            </div>
           </div>
           <KeySpecStrip specs={product.keySpecs} />
         </div>

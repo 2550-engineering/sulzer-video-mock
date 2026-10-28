@@ -10,7 +10,7 @@ type TabHeadingProps = {
 export function TabHeading({ title, children }: TabHeadingProps) {
   return (
     <div className="flex flex-wrap items-end justify-between gap-4">
-      <h2 className="text-[2rem] leading-tight font-bold tracking-tight text-brand">{title}</h2>
+      <h2 className="text-[2rem] leading-tight font-bold tracking-tight text-heading">{title}</h2>
       {children}
     </div>
   )

@@ -17,12 +17,6 @@ import type { AssetReadout, ImageRef, LinkCard, NavItem } from '../types'
  */
 
 export const hero = {
-  image: {
-    file: 'home-hero.jpg',
-    alt: 'Sulzer pumps installed in a water treatment plant',
-    tone: 'ocean',
-  } satisfies ImageRef,
-  eyebrow: 'Sulzer self-service',
   title: 'Everything you need, whenever you need it',
   subtitle:
     'Find products, size solutions, order spare parts and follow your installed base – all in one place, around the clock.',
@@ -83,7 +77,6 @@ export const applicationsSection = {
 }
 
 export const connectPromo = {
-  eyebrow: 'Sulzer Connect',
   title: 'Predict issues & protect assets with remote monitoring',
   text: 'Sensors on your pumps and mixers stream condition data to the cloud, so you see problems coming and plan service before anything stops.',
   features: [
@@ -95,7 +88,7 @@ export const connectPromo = {
   image: {
     file: 'connect-promo.jpg',
     alt: 'Sulzer pump station monitored with Sulzer Connect',
-    tone: 'deep',
+    art: 3,
   } satisfies ImageRef,
   readouts: [
     { label: 'Lift station P-104', value: 'Running normally', status: 'ok' },

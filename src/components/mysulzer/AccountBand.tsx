@@ -8,10 +8,7 @@ export function AccountBand() {
     <section id="create-account" className="bg-navy-900 text-white on-dark">
       <div className="site-container grid items-center gap-16 py-24 lg:grid-cols-[1fr_1.3fr]">
         <div>
-          <p className="text-sm font-semibold tracking-[0.16em] text-primary-on-dark uppercase">
-            {accountSection.eyebrow}
-          </p>
-          <h2 className="mt-4 text-[2.75rem] leading-[1.1] font-bold tracking-tight">
+          <h2 className="text-[2.75rem] leading-[1.1] font-bold tracking-tight">
             {accountSection.title}
           </h2>
           <p className="mt-5 max-w-lg text-lg leading-relaxed text-text-on-dark">

@@ -8,13 +8,11 @@ export function SupportCard({ card }: { card: LinkCard }) {
   return (
     <Link
       to={to}
-      className="group flex items-start gap-7 rounded-lg border border-border bg-surface p-9 shadow-card transition-[border-color,box-shadow] duration-200 hover:border-primary-border hover:shadow-raised"
+      className="group flex items-start gap-7 rounded-lg border border-border bg-surface p-9 transition-[border-color,box-shadow] duration-200 hover:border-primary-border hover:shadow-card"
     >
-      <span className="flex size-16 shrink-0 items-center justify-center rounded-full bg-primary-tint text-primary transition-colors duration-200 group-hover:bg-primary group-hover:text-white">
-        <Icon className="size-8" strokeWidth={1.75} />
-      </span>
+      <Icon className="size-10 shrink-0 text-primary" strokeWidth={1.5} />
       <div>
-        <h3 className="text-2xl font-bold tracking-tight text-brand">{title}</h3>
+        <h3 className="text-2xl font-bold tracking-tight text-heading">{title}</h3>
         <p className="mt-2 max-w-md text-[15px] leading-relaxed text-text-muted">{text}</p>
         <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary">
           {linkLabel}

@@ -8,6 +8,7 @@
   /* Brand */
   --sz-color-brand: #003da5; /* logo blue */
   --sz-color-primary: #1d59af; /* buttons, links, accents */
+  --sz-color-heading: #0d3570; /* page and section headings: calmer than the logo blue */
   --sz-color-primary-hover: #174a93;
   --sz-color-primary-tint: #eef4fb;
   --sz-color-primary-tint-strong: #dce8f8;
@@ -25,8 +26,8 @@
 
   /* Text */
   --sz-color-text: #0c1c2e;
-  --sz-color-text-muted: #5d6b7a;
-  --sz-color-text-subtle: #8a97a5;
+  --sz-color-text-muted: #4a5765;
+  --sz-color-text-subtle: #76838f;
   --sz-color-text-on-dark: #cdd7e2;
   --sz-color-text-on-dark-muted: #9fb3c7;
 
@@ -56,17 +57,17 @@
   /* Layout */
   --sz-content-max: 1440px;
   --sz-gutter: 2rem;
-  /* Sticky site header: market strip 32 + logo row 80 + main nav 56. Page tab bars stick below it. */
-  --sz-header-height: 168px;
+  /* Sticky site header: logo row 80 + main nav 56. Page tab bars stick below it. */
+  --sz-header-height: 136px;
 
-  /* Radii */
-  --sz-radius-sm: 6px;
-  --sz-radius-md: 9px;
-  --sz-radius-lg: 14px;
+  /* Radii: crisp, industrial corners. Buttons and chips stay pill-shaped. */
+  --sz-radius-sm: 4px;
+  --sz-radius-md: 6px;
+  --sz-radius-lg: 8px;
   --sz-radius-pill: 999px;
 
   /* Shadows */
-  --sz-shadow-card: 0 1px 2px rgba(12, 28, 46, 0.06), 0 8px 24px -12px rgba(12, 28, 46, 0.18);
+  --sz-shadow-card: 0 1px 2px rgba(12, 28, 46, 0.05), 0 6px 16px -10px rgba(12, 28, 46, 0.14);
   --sz-shadow-raised: 0 20px 44px -28px rgba(29, 89, 175, 0.6);
 
   /* Motion */

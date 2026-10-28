@@ -1,11 +1,11 @@
 import { assetImage } from '../lib/assetImage'
 import type { ImageRef } from '../types'
-import { GradientBackdrop } from './GradientBackdrop'
+import { BrandArt } from './BrandArt'
 
 const fits = {
   cover: 'object-cover',
-  /** For product cut-outs on a light background. */
-  contain: 'object-contain',
+  /** For product shots on a white background: centred, and blended into a light stage. */
+  contain: 'object-contain mix-blend-multiply',
 } as const
 
 type ImageSlotProps = {
@@ -14,7 +14,7 @@ type ImageSlotProps = {
   className?: string
 }
 
-/** Fills its (positioned) parent with the image, or a branded gradient if the file is missing. */
+/** Fills its (positioned) parent with the image, or Sulzer brand art if the file is missing. */
 export function ImageSlot({ image, fit = 'cover', className = '' }: ImageSlotProps) {
   const src = assetImage(image.file)
 
@@ -29,5 +29,5 @@ export function ImageSlot({ image, fit = 'cover', className = '' }: ImageSlotPro
     )
   }
 
-  return <GradientBackdrop tone={image.tone} label={image.alt} className={className} />
+  return <BrandArt seed={image.file} index={image.art} label={image.alt} className={className} />
 }

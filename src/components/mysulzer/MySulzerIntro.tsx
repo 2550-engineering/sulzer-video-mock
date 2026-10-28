@@ -20,7 +20,7 @@ export function MySulzerIntro() {
   return (
     <div className="grid items-center gap-20 lg:grid-cols-[1.05fr_1fr]">
       <div>
-        <h1 className="text-[3.25rem] leading-[1.08] font-bold tracking-tight text-balance text-brand">
+        <h1 className="text-[3.25rem] leading-[1.08] font-bold tracking-tight text-balance text-heading">
           {intro.title}
         </h1>
         <p className="mt-6 max-w-xl text-lg leading-relaxed text-text-muted">{intro.text}</p>

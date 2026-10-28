@@ -1,27 +1,50 @@
+import poster from '../../../_asset-source/video/sulzer-dynamical-corporate-poster.jpg'
 import { hero } from '../../data/home'
-import { ImageSlot } from '../ImageSlot'
 import { HeroSearch } from './HeroSearch'
 
-/** Full-width image hero with headline and scoped product search. */
+// The brand video is gitignored (large media), so it's optional: without it the poster shows.
+const videos = import.meta.glob<string>('../../../_asset-source/video/*.mp4', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+})
+const video = Object.values(videos)[0]
+
+/** White hero on the Sulzer fluid brand film, with headline and scoped product search. */
 export function HomeHero() {
   return (
     // z-10 keeps the scope dropdown above the next section.
-    <section className="relative z-10 bg-navy-900 on-dark">
-      <ImageSlot image={hero.image} />
+    <section className="relative z-10 overflow-hidden bg-white">
+      <img
+        src={poster}
+        alt=""
+        draggable={false}
+        className="absolute inset-0 size-full object-cover object-[50%_85%]"
+      />
+      {video && (
+        <video
+          src={video}
+          poster={poster}
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-hidden
+          className="absolute inset-0 size-full object-cover object-[50%_85%] motion-reduce:hidden"
+        />
+      )}
+      {/* White wash at the top keeps the headline clear whatever frame the film is on. */}
       <div
         aria-hidden
-        className="absolute inset-0 bg-linear-to-b from-navy-900/45 via-navy-900/60 to-navy-900/85"
+        className="absolute inset-0 bg-linear-to-b from-white from-10% via-white/55 via-40% to-white/0 to-65%"
       />
 
-      <div className="relative site-container flex min-h-[580px] flex-col items-center justify-center py-24 text-center">
-        <p className="text-sm font-semibold tracking-[0.16em] text-primary-on-dark uppercase">
-          {hero.eyebrow}
-        </p>
-        <h1 className="mt-5 max-w-4xl text-[4rem] leading-[1.05] font-bold tracking-tight text-white">
+      <div className="relative site-container flex min-h-[660px] flex-col items-center justify-start pt-24 pb-40 text-center">
+        <h1 className="max-w-4xl text-[3.5rem] leading-[1.05] font-bold tracking-tight text-heading">
           {hero.title}
         </h1>
-        <p className="mt-6 max-w-2xl text-xl leading-relaxed text-text-on-dark">{hero.subtitle}</p>
-        <div className="mt-11 flex w-full justify-center">
+        <p className="mt-5 max-w-2xl text-xl leading-relaxed text-text">{hero.subtitle}</p>
+        <div className="mt-10 flex w-full justify-center">
           <HeroSearch />
         </div>
       </div>

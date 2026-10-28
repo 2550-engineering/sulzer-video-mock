@@ -10,9 +10,7 @@ export function DocumentList({ documents }: { documents: Document[] }) {
         const Icon = isModelFile(doc) ? Box : FileText
         return (
           <li key={doc.id} className="flex items-center gap-5 px-6 py-5">
-            <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-primary-tint text-primary">
-              <Icon className="size-5" strokeWidth={1.75} />
-            </span>
+            <Icon className="size-6 shrink-0 text-primary" strokeWidth={1.5} />
             <div className="min-w-0 flex-1">
               <p className="text-xs text-text-muted">
                 {doc.number} <span className="text-text-subtle">/</span> {doc.type}

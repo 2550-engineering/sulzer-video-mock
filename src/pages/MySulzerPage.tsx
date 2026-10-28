@@ -6,9 +6,6 @@ import { ToolCard } from '../components/mysulzer/ToolCard'
 import { SectionHeading } from '../components/SectionHeading'
 import { SupportCard } from '../components/SupportCard'
 import { exploreSection, questionsSection, tailoredSection } from '../data/mySulzer'
-import type { PlaceholderTone } from '../types'
-
-const toolTones: PlaceholderTone[] = ['ocean', 'deep', 'slate']
 
 /** Public landing page for the mySulzer self-service portal. */
 export function MySulzerPage() {
@@ -41,9 +38,9 @@ export function MySulzerPage() {
         <div className="site-container py-24">
           <SectionHeading title={exploreSection.title} subtitle={exploreSection.subtitle} />
           <ul className="mt-12 grid gap-6 md:grid-cols-3">
-            {exploreSection.cards.map((card, i) => (
+            {exploreSection.cards.map((card) => (
               <li key={card.title}>
-                <ToolCard card={card} tone={toolTones[i % toolTones.length]} />
+                <ToolCard card={card} />
               </li>
             ))}
           </ul>

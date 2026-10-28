@@ -37,7 +37,7 @@ export const intro = {
   createAccountLabel: 'Create an account',
   /** Where "Sign in" and "Go to My Pages" lead. */
   myPagesPath: '/my-pages',
-  image: { file: 'mysulzer-intro.jpg', alt: '', tone: 'ocean' } satisfies ImageRef,
+  image: { file: 'mysulzer-intro.jpg', alt: '', art: 1 } satisfies ImageRef,
 }
 
 /** Mock portal snippets floating over the intro image. Deterministic demo values. */
@@ -152,7 +152,6 @@ export const exploreSection = {
 }
 
 export const accountSection = {
-  eyebrow: 'New to mySulzer?',
   title: 'Create a Sulzer account',
   text: 'Register once and get a workspace that remembers your products, your projects and your team.',
   benefits: [

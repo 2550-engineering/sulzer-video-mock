@@ -1,4 +1,5 @@
 import type { ProductModel } from '../../types'
+import { CurveThumbnail } from './CurveThumbnail'
 
 type Column = {
   label: string
@@ -14,13 +15,16 @@ const columns: Column[] = [
   { label: 'Impeller', unit: 'mm', value: (m) => m.impeller },
 ]
 
-/** Models tab: one row per model with its rated duty and motor data. */
+/** Models tab: one row per model with its curve, rated duty and motor data. */
 export function ModelsTable({ models }: { models: ProductModel[] }) {
   return (
     <div className="overflow-x-auto rounded-lg border border-border">
       <table className="w-full text-left text-[15px]">
         <thead className="bg-surface-sunken text-sm text-navy-900">
           <tr>
+            <th scope="col" className="w-24 px-6 py-4 font-semibold">
+              Curve
+            </th>
             <th scope="col" className="px-6 py-4 font-semibold">
               Model
             </th>
@@ -37,11 +41,14 @@ export function ModelsTable({ models }: { models: ProductModel[] }) {
         <tbody className="divide-y divide-border">
           {models.map((model) => (
             <tr key={model.id} className="transition-colors hover:bg-surface-muted">
-              <th scope="row" className="px-6 py-4 font-semibold text-primary">
+              <td className="px-6 py-3">
+                <CurveThumbnail model={model} />
+              </td>
+              <th scope="row" className="px-6 py-3 font-semibold text-primary">
                 {model.name}
               </th>
               {columns.map((col) => (
-                <td key={col.label} className="px-6 py-4 text-right text-text tabular-nums">
+                <td key={col.label} className="px-6 py-3 text-right text-text tabular-nums">
                   {col.value(model)}
                 </td>
               ))}

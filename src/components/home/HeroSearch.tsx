@@ -25,7 +25,7 @@ export function HeroSearch() {
       <form
         role="search"
         onSubmit={handleSubmit}
-        className="flex h-16 items-center rounded-lg bg-white p-2 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.55)] transition-shadow focus-within:shadow-[0_0_0_4px_rgba(110,168,240,0.45),0_24px_60px_-20px_rgba(0,0,0,0.55)]"
+        className="flex h-16 items-center rounded-lg bg-white p-2 shadow-[0_20px_50px_-20px_rgba(12,28,46,0.4)] ring-1 ring-border transition-shadow focus-within:shadow-[0_0_0_4px_var(--sz-color-primary-tint-strong),0_20px_50px_-20px_rgba(12,28,46,0.4)]"
       >
         <ScopeSelect options={hero.searchScopes} value={scope} onChange={setScope} />
         <input
@@ -46,13 +46,13 @@ export function HeroSearch() {
       </form>
 
       <div className="mt-5 flex flex-wrap items-center justify-center gap-2 text-sm">
-        <span className="mr-1 text-text-on-dark-muted">{hero.popularLabel}</span>
+        <span className="mr-1 font-medium text-text">{hero.popularLabel}</span>
         {hero.popularSearches.map((suggestion) => (
           <button
             key={suggestion}
             type="button"
             onClick={() => search(suggestion)}
-            className="rounded-pill border border-white/20 bg-white/10 px-3.5 py-1.5 font-medium text-white backdrop-blur-sm transition-colors hover:border-white/40 hover:bg-white/20"
+            className="rounded-pill border border-border-strong bg-white/85 px-3.5 py-1.5 font-medium text-navy-900 backdrop-blur-sm transition-colors hover:border-primary hover:text-primary"
           >
             {suggestion}
           </button>

@@ -24,7 +24,7 @@ export function PortalPreview() {
           {price.label}
         </p>
         <p className="mt-2 text-sm font-semibold text-navy-900">{price.product}</p>
-        <p className="mt-1 text-2xl font-bold tracking-tight text-brand">{price.value}</p>
+        <p className="mt-1 text-2xl font-bold tracking-tight text-heading">{price.value}</p>
         <p className="mt-2 flex items-center gap-2 text-sm font-medium text-success-strong">
           <span aria-hidden className="size-2 rounded-full bg-success" />
           {price.stock}

@@ -17,7 +17,7 @@ export const applications: Application[] = [
     heroImage: {
       file: 'applications-hero.jpg',
       alt: 'Sulzer pumps in a municipal water plant',
-      tone: 'deep',
+      art: 0,
     },
     summary: "Solutions engineered for the world's most demanding fluid processes.",
     intro:
@@ -38,7 +38,7 @@ export const applications: Application[] = [
     heroImage: {
       file: 'app-municipal-water.jpg',
       alt: 'Municipal water treatment plant',
-      tone: 'ocean',
+      art: 1,
     },
     summary: 'Reliable intake, treatment and distribution of clean water.',
     intro:
@@ -73,7 +73,7 @@ export const applications: Application[] = [
     heroImage: {
       file: 'app-surface-water-intake.jpg',
       alt: 'Raw water intake pumping station on a river',
-      tone: 'ocean',
+      art: 7,
     },
     summary: 'Raw water pumping from rivers, lakes and reservoirs.',
     intro:
@@ -110,7 +110,7 @@ export const applications: Application[] = [
     id: 'groundwater-intake',
     name: 'Groundwater intake',
     parentId: 'municipal-water-supply',
-    heroImage: { file: 'app-groundwater-intake.jpg', alt: 'Groundwater well field', tone: 'steel' },
+    heroImage: { file: 'app-groundwater-intake.jpg', alt: 'Groundwater well field', art: 6 },
     summary: 'Efficient pumping from boreholes and well fields.',
     intro:
       'Lift groundwater from boreholes and well fields with pumps built for decades of efficient, low-maintenance service.',
@@ -123,7 +123,7 @@ export const applications: Application[] = [
     heroImage: {
       file: 'app-water-distribution.jpg',
       alt: 'Water distribution pumping station',
-      tone: 'slate',
+      art: 10,
     },
     summary: 'Stable pressure across the network, at the lowest energy cost.',
     intro:
@@ -134,7 +134,7 @@ export const applications: Application[] = [
     id: 'wastewater',
     name: 'Wastewater',
     parentId: rootApplicationId,
-    heroImage: { file: 'app-wastewater.jpg', alt: 'Wastewater treatment basins', tone: 'deep' },
+    heroImage: { file: 'app-wastewater.jpg', alt: 'Wastewater treatment basins', art: 2 },
     summary: 'Collection, transport and treatment of municipal wastewater.',
     intro:
       'Clog-resistant pumps, mixers and aeration for every stage from the sewer network to the treatment plant outlet.',
@@ -147,7 +147,7 @@ export const applications: Application[] = [
     heroImage: {
       file: 'app-industrial-processes.jpg',
       alt: 'Process pumps in an industrial plant',
-      tone: 'steel',
+      art: 4,
     },
     summary: 'Process pumps and mixers built for continuous operation.',
     intro:
@@ -161,7 +161,7 @@ export const applications: Application[] = [
     heroImage: {
       file: 'app-building-services.jpg',
       alt: 'Pump room in a commercial building',
-      tone: 'slate',
+      art: 8,
     },
     summary: 'Drainage, sewage and water handling in buildings.',
     intro: 'Compact, quiet solutions for drainage, sewage and water handling in buildings.',
@@ -171,7 +171,7 @@ export const applications: Application[] = [
     id: 'pulp-paper',
     name: 'Pulp & paper',
     parentId: rootApplicationId,
-    heroImage: { file: 'app-pulp-paper.jpg', alt: 'Paper machine', tone: 'steel' },
+    heroImage: { file: 'app-pulp-paper.jpg', alt: 'Paper machine', art: 11 },
     summary: 'Stock preparation, bleaching and chemical recovery.',
     intro: 'Process pumps and mixers for every step of pulp, paper and board production.',
     children: [],
@@ -180,7 +180,7 @@ export const applications: Application[] = [
     id: 'oil-gas',
     name: 'Oil & gas',
     parentId: rootApplicationId,
-    heroImage: { file: 'app-oil-gas.jpg', alt: 'Oil and gas processing facility', tone: 'deep' },
+    heroImage: { file: 'app-oil-gas.jpg', alt: 'Oil and gas processing facility', art: 5 },
     summary: 'Upstream, midstream and downstream pumping solutions.',
     intro: 'Engineered pumps for upstream, midstream and downstream oil and gas operations.',
     children: [],

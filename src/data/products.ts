@@ -1,10 +1,13 @@
 import {
+  Boxes,
   CalendarCheck,
   Cog,
   Droplets,
   Gauge,
   Recycle,
+  Scissors,
   ShieldCheck,
+  Waves,
   Wrench,
   Zap,
 } from 'lucide-react'
@@ -40,7 +43,6 @@ export const products: Product[] = [
       {
         file: 'product-end-suction-pump.png',
         alt: `${productNames.mainEndSuctionPump} on base frame with motor`,
-        tone: 'steel',
       },
     ],
     tabs: {
@@ -102,7 +104,6 @@ export const products: Product[] = [
       {
         file: 'product-submersible-pump.png',
         alt: productNames.submersiblePump,
-        tone: 'slate',
       },
     ],
     tabs: {
@@ -142,6 +143,113 @@ export const products: Product[] = [
           label: 'Service agreements',
           text: 'Planned maintenance at a fixed annual cost.',
           icon: ShieldCheck,
+        },
+      ],
+    },
+  },
+  {
+    id: 'submersible-grinder-pump',
+    name: productNames.grinderPump,
+    family: 'Submersible, grinder',
+    category: 'Submersible pumps',
+    applications: ['wastewater', 'building-services'],
+    summary:
+      'Compact grinder pump that cuts solids before pumping, for pressure sewers and small pumping stations with narrow discharge pipes.',
+    keySpecs: {
+      liquidTemp: '0 .. 40 °C',
+      maxFlow: '15 m³/h',
+      maxHead: '50 m',
+      maxPressure: '6 bar',
+    },
+    images: [{ file: 'product-grinder-pump.png', alt: productNames.grinderPump }],
+    tabs: {
+      explore: {
+        title: 'Pressure sewers made simple',
+        text: 'A hardened cutting system reduces solids to a fine slurry, so the pump can push wastewater through small-diameter pipes over long distances – ideal where gravity sewers are impractical.',
+        highlights: [
+          {
+            label: 'Hardened cutter',
+            text: 'Shreds wipes, fibres and solids before they reach the impeller.',
+            icon: Scissors,
+          },
+          {
+            label: 'Small pipes, long runs',
+            text: 'High head lets you use DN 32–50 pressure pipes.',
+            icon: Waves,
+          },
+          {
+            label: 'Compact station',
+            text: 'Fits prefabricated pump chambers for single or multiple houses.',
+            icon: Boxes,
+          },
+        ],
+      },
+      services: [
+        {
+          label: 'Station commissioning',
+          text: 'Start-up and controls set-up by Sulzer technicians.',
+          icon: CalendarCheck,
+        },
+        {
+          label: 'Repair & overhaul',
+          text: 'Exchange units and workshop repairs with genuine parts.',
+          icon: Wrench,
+        },
+      ],
+    },
+  },
+  {
+    id: 'high-capacity-submersible-pump',
+    name: productNames.highCapacityPump,
+    family: 'Submersible, high-capacity',
+    category: 'Submersible pumps',
+    applications: ['wastewater', 'industrial-processes', 'pulp-paper'],
+    summary:
+      'Large submersible pump for main sewage stations, stormwater and industrial effluent, with premium-efficiency motors up to 250 kW.',
+    keySpecs: {
+      liquidTemp: '0 .. 40 °C',
+      maxFlow: '4 000 m³/h',
+      maxHead: '30 m',
+      maxPressure: '6 bar',
+    },
+    images: [{ file: 'product-high-capacity-pump.png', alt: productNames.highCapacityPump }],
+    tabs: {
+      explore: {
+        title: 'High flows, low lifetime cost',
+        text: 'Built for the biggest stations in the network: high-efficiency hydraulics and IE3 motors keep energy use down, while the cooling jacket allows dry or wet installation.',
+        highlights: [
+          {
+            label: 'Premium efficiency',
+            text: 'IE3 motors and optimised hydraulics up to 250 kW.',
+            icon: Zap,
+          },
+          {
+            label: 'Wet or dry installation',
+            text: 'Closed-loop cooling lets the pump run outside the liquid.',
+            icon: Droplets,
+          },
+          {
+            label: 'Built-in monitoring',
+            text: `Ready for ${productNames.iotOffering} out of the box.`,
+            icon: Gauge,
+          },
+        ],
+      },
+      services: [
+        {
+          label: 'Pump station audits',
+          text: 'Find energy savings and reliability risks in your network.',
+          icon: Gauge,
+        },
+        {
+          label: 'Service agreements',
+          text: 'Planned maintenance at a fixed annual cost.',
+          icon: ShieldCheck,
+        },
+        {
+          label: 'Condition monitoring',
+          text: `Track vibration and temperature with ${productNames.iotOffering}.`,
+          icon: Cog,
         },
       ],
     },
