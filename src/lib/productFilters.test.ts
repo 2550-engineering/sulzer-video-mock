@@ -45,7 +45,7 @@ describe('filterProducts', () => {
   })
 
   it('filters by application area', () => {
-    expect(ids(select({ application: ['mining-minerals'] }))).toEqual(['j-dewatering'])
+    expect(ids(select({ application: ['pulp-paper'] }))).toEqual(['ahlstar'])
   })
 
   it('ignores unknown values', () => {

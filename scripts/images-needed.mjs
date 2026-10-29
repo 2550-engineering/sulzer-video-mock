@@ -48,6 +48,12 @@ const specs = [
     minSize: '1280 × 720',
   },
   {
+    match: /^\/images\/documents\//,
+    kind: 'Document page preview',
+    aspect: '4:3 (shown on a white page)',
+    minSize: '1200 × 900',
+  },
+  {
     match: /^\/images\/services\//,
     kind: 'Service thumbnail',
     aspect: '4:3',
@@ -61,7 +67,7 @@ const { applications, rootApplicationId } = await load('/src/data/applications.t
 const { products } = await load('/src/data/products.ts')
 const { services } = await load('/src/data/services.ts')
 const { knowledgeItems } = await load('/src/data/knowledge.ts')
-const { serviceVideos } = await load('/src/data/documents.ts')
+const { documents, serviceVideos } = await load('/src/data/documents.ts')
 const { cadPreviews } = await load('/src/data/cad.ts')
 await server.close()
 
@@ -113,6 +119,7 @@ const images = [
   ...knowledgeItems.map((item) => item.image),
   ...services.map((service) => service.image),
   ...serviceVideos.map((video) => video.video.thumbnail),
+  ...documents.flatMap((document) => (document.preview ? [document.preview] : [])),
   ...Object.values(cadPreviews),
 ]
 

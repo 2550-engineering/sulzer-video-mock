@@ -16,6 +16,10 @@ export const placeholderRoutes: PlaceholderRoute[] = [
     path: '/spare-parts',
     title: 'Spare parts',
     description: 'Identify, price and order genuine Sulzer spare parts.',
+    image: {
+      src: '/images/spare-parts/service-kits.jpg',
+      alt: 'Sulzer genuine spare parts kits with bearings, seals and O-rings',
+    },
   },
   {
     path: '/digital-solutions',
@@ -26,6 +30,10 @@ export const placeholderRoutes: PlaceholderRoute[] = [
     path: '/eshop',
     title: 'eShop',
     description: 'Order products and spare parts online with your account pricing.',
+    image: {
+      src: '/images/spare-parts/original-spare-parts.jpg',
+      alt: 'Original Sulzer pump casing parts, machined and ready to ship',
+    },
   },
   {
     path: '/my-pages/saved',
@@ -50,6 +58,10 @@ export const placeholderRoutes: PlaceholderRoute[] = [
     title: 'List price & availability',
     description: 'Check your prices, stock levels and delivery times for any Sulzer product.',
     parent: '/my-sulzer',
+    image: {
+      src: '/images/spare-parts/mechanical-seals-and-accessories.jpg',
+      alt: 'Rows of machined mechanical seal parts in stock',
+    },
   },
   {
     path: '/self-service/export',

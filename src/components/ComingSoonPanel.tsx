@@ -2,7 +2,8 @@ import { ArrowRight, Check } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Link } from 'react-router'
 import brandImage from '../assets/images/sulzer-dynamical-still.jpg'
-import type { NavItem } from '../types'
+import type { ImageSource, NavItem } from '../types'
+import { SmartImage } from './SmartImage'
 
 type ComingSoonPanelProps = {
   eyebrow: string
@@ -12,7 +13,11 @@ type ComingSoonPanelProps = {
   features?: string[]
   /** Secondary button. Defaults to "Back to home". */
   back?: NavItem
+  /** Photo on the right. Defaults to the Sulzer brand image. */
+  image?: ImageSource
 }
+
+const fadeIn = 'lg:[mask-image:linear-gradient(to_right,transparent,black_35%)]'
 
 /** Card with copy, two actions and Sulzer brand imagery, for pages that aren't built yet. */
 export function ComingSoonPanel({
@@ -21,6 +26,7 @@ export function ComingSoonPanel({
   children,
   features,
   back = { label: 'Back to home', to: '/' },
+  image,
 }: ComingSoonPanelProps) {
   return (
     <div className="grid overflow-hidden rounded-lg border border-border bg-surface shadow-card lg:grid-cols-[1.15fr_1fr]">
@@ -60,12 +66,16 @@ export function ComingSoonPanel({
         </div>
       </div>
       <div className="relative min-h-64">
-        <img
-          src={brandImage}
-          alt=""
-          className="absolute inset-0 size-full object-cover lg:[mask-image:linear-gradient(to_right,transparent,black_35%)]"
-          draggable={false}
-        />
+        {image ? (
+          <SmartImage src={image.src} alt={image.alt} className={fadeIn} />
+        ) : (
+          <img
+            src={brandImage}
+            alt=""
+            className={`absolute inset-0 size-full object-cover ${fadeIn}`}
+            draggable={false}
+          />
+        )}
       </div>
     </div>
   )

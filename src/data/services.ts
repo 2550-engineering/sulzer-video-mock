@@ -110,7 +110,7 @@ export const services: Service[] = [
     icon: Wrench,
     image: {
       src: '/images/services/repair-overhaul.jpg',
-      alt: 'Pump casing opened up on a workbench in a Sulzer service center',
+      alt: 'Sulzer technician restoring a pump part with a laser cladding robot in a service center',
     },
     to: '/support/service-centers',
   },

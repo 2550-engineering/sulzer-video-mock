@@ -86,6 +86,8 @@ export type PlaceholderRoute = {
   description: string
   /** Path of the parent page, used to build the breadcrumb trail. */
   parent?: string
+  /** Photo on the "Coming soon" card. Defaults to the Sulzer brand image. */
+  image?: ImageSource
 }
 
 /** Colour of a count badge or stat: plain, Sulzer blue, or amber for things that need a look. */
@@ -354,6 +356,8 @@ export type Document = {
   revision?: string
   /** The file behind the download button; null while there is no file in public/docs. */
   href: string | null
+  /** A page from the document, shown in the preview dialog while there is no file. */
+  preview?: ImageSource
   /** Service videos only. */
   video?: { duration: string; thumbnail: ImageSource }
 }

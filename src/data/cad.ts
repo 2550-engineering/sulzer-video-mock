@@ -98,6 +98,6 @@ export const cadFiles: CadFile[] = productModels.flatMap((model) =>
 export const cadPreviews: Record<string, ImageSource> = {
   ahlstar: {
     src: '/images/products/ahlstar-bim-preview.png',
-    alt: `Grey-shaded 3D CAD render of an ${products.ahlstar} pump on its base frame, isometric view`,
+    alt: `3D render of an ${products.ahlstar} end-suction pump, isometric view`,
   },
 }

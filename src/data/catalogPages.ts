@@ -201,7 +201,7 @@ export const productPage = {
       close: 'Close preview',
       revision: (rev: string) => `Rev. ${rev}`,
       languages: 'Available in',
-      placeholderNote: 'Preview of the cover page. Download the document to read it in full.',
+      placeholderNote: 'This is a preview. Download the document to read it in full.',
     },
     cover: { languages: 'Languages' },
   },

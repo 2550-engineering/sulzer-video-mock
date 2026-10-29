@@ -68,6 +68,10 @@ export const documents: Document[] = [
     date: '2026-01-27',
     revision: 'D',
     href: sampleFile,
+    preview: {
+      src: '/images/documents/ahlstar-materials.png',
+      alt: 'Data sheet page with the material options and their chemical composition',
+    },
   },
   {
     id: 'doc-ahlstar-datasheet-60hz',
@@ -94,6 +98,10 @@ export const documents: Document[] = [
     date: '2025-12-09',
     revision: 'E',
     href: sampleFile,
+    preview: {
+      src: '/images/documents/ahlstar-performance-range.jpg',
+      alt: `Performance range of the ${products.ahlstar} A range, head against flow`,
+    },
   },
   {
     id: 'doc-ahlstar-parts',
@@ -143,6 +151,10 @@ export const documents: Document[] = [
     size: '5.2 MB',
     date: '2026-04-08',
     href: sampleFile,
+    preview: {
+      src: '/images/documents/ahlstar-modular-range.png',
+      alt: `Brochure page showing the modular ${products.ahlstar} hydraulics and shaft seals`,
+    },
   },
   {
     id: 'doc-water-brochure',

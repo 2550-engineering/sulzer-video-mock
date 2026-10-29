@@ -3,6 +3,7 @@ import { productPage } from '../../data/catalogPages'
 import type { Document, Product } from '../../types'
 import { Modal } from '../Modal'
 import { DocumentCover } from './DocumentCover'
+import { DocumentPage } from './DocumentPage'
 
 const copy = productPage.documentation
 
@@ -15,7 +16,10 @@ type DocumentPreviewProps = {
   onDownload: (document: Document) => void
 }
 
-/** Preview dialog: the file in an iframe when there is one, otherwise a designed cover page. */
+/**
+ * Preview dialog: the file in an iframe when there is one, otherwise a page from
+ * the document, otherwise a designed cover page.
+ */
 export function DocumentPreview({
   open,
   document,
@@ -40,6 +44,8 @@ export function DocumentPreview({
                 title={document.title}
                 className="h-[70vh] w-full rounded-sm border border-border bg-white"
               />
+            ) : document.preview ? (
+              <DocumentPage document={document} page={document.preview} />
             ) : (
               <DocumentCover document={document} product={product} />
             )}

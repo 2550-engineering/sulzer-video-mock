@@ -1,6 +1,6 @@
 # Recording QA — 1920×1080
 
-153 captures, 0 with issues. Screenshots in `_qa/screenshots/`.
+337 captures, 0 with issues. Screenshots in `_qa/screenshots/`.
 
 | Auth | Route | Lands on | Title |
 | --- | --- | --- | --- |
@@ -8,38 +8,130 @@
 | logged-out | `/my-sulzer` | `/my-sulzer` | mySulzer | Sulzer |
 | logged-out | `/my-pages` | `/my-sulzer` | mySulzer | Sulzer |
 | logged-out | `/applications` | `/applications` | Applications | Sulzer |
-| logged-out | `/applications#products` | `/applications` | Applications | Sulzer |
-| logged-out | `/applications#learn` | `/applications` | Applications | Sulzer |
 | logged-out | `/applications/municipal-water-supply` | `/applications/municipal-water-supply` | Municipal water supply | Sulzer |
-| logged-out | `/applications/surface-water-intake` | `/applications/surface-water-intake` | Surface water intake | Sulzer |
-| logged-out | `/applications/groundwater-intake` | `/applications/groundwater-intake` | Groundwater intake | Sulzer |
-| logged-out | `/applications/water-distribution` | `/applications/water-distribution` | Water distribution | Sulzer |
+| logged-out | `/applications/municipal-water-supply/surface-water-intake` | `/applications/municipal-water-supply/surface-water-intake` | Surface water intake | Sulzer |
+| logged-out | `/applications/municipal-water-supply/groundwater-intake` | `/applications/municipal-water-supply/groundwater-intake` | Groundwater intake | Sulzer |
+| logged-out | `/applications/municipal-water-supply/drinking-water-treatment` | `/applications/municipal-water-supply/drinking-water-treatment` | Drinking water treatment | Sulzer |
+| logged-out | `/applications/municipal-water-supply/water-distribution` | `/applications/municipal-water-supply/water-distribution` | Water distribution | Sulzer |
+| logged-out | `/applications/municipal-water-supply/desalination` | `/applications/municipal-water-supply/desalination` | Desalination | Sulzer |
+| logged-out | `/applications/municipal-water-supply/raw-water-transfer` | `/applications/municipal-water-supply/raw-water-transfer` | Raw water transfer | Sulzer |
 | logged-out | `/applications/wastewater` | `/applications/wastewater` | Wastewater | Sulzer |
-| logged-out | `/applications/industrial-processes` | `/applications/industrial-processes` | Industrial processes | Sulzer |
-| logged-out | `/applications/building-services` | `/applications/building-services` | Building services | Sulzer |
+| logged-out | `/applications/wastewater/wastewater-collection` | `/applications/wastewater/wastewater-collection` | Wastewater collection and transport | Sulzer |
+| logged-out | `/applications/wastewater/stormwater-flood-control` | `/applications/wastewater/stormwater-flood-control` | Stormwater and flood control | Sulzer |
+| logged-out | `/applications/wastewater/wastewater-treatment` | `/applications/wastewater/wastewater-treatment` | Wastewater treatment | Sulzer |
+| logged-out | `/applications/wastewater/sludge-handling` | `/applications/wastewater/sludge-handling` | Sludge handling | Sulzer |
+| logged-out | `/applications/water-treatment` | `/applications/water-treatment` | Water treatment | Sulzer |
+| logged-out | `/applications/water-treatment/industrial-water-supply` | `/applications/water-treatment/industrial-water-supply` | Industrial water supply and transfer | Sulzer |
+| logged-out | `/applications/water-treatment/industrial-wastewater-treatment` | `/applications/water-treatment/industrial-wastewater-treatment` | Industrial wastewater treatment | Sulzer |
+| logged-out | `/applications/water-treatment/process-water-treatment` | `/applications/water-treatment/process-water-treatment` | Process water treatment | Sulzer |
+| logged-out | `/applications/water-treatment/cooling-water` | `/applications/water-treatment/cooling-water` | Cooling water | Sulzer |
+| logged-out | `/applications/water-treatment/boiler-feed-water` | `/applications/water-treatment/boiler-feed-water` | Boiler feed water | Sulzer |
+| logged-out | `/applications/water-treatment/reverse-osmosis` | `/applications/water-treatment/reverse-osmosis` | Reverse osmosis | Sulzer |
+| logged-out | `/applications/water-treatment/ultrafiltration` | `/applications/water-treatment/ultrafiltration` | Ultrafiltration | Sulzer |
+| logged-out | `/applications/water-treatment/water-reuse` | `/applications/water-treatment/water-reuse` | Water reuse | Sulzer |
+| logged-out | `/applications/energy-transition` | `/applications/energy-transition` | Energy transition | Sulzer |
+| logged-out | `/applications/energy-transition/carbon-capture` | `/applications/energy-transition/carbon-capture` | Carbon capture, utilisation and storage | Sulzer |
+| logged-out | `/applications/energy-transition/biofuels` | `/applications/energy-transition/biofuels` | Biofuels | Sulzer |
+| logged-out | `/applications/energy-transition/energy-recovery-storage` | `/applications/energy-transition/energy-recovery-storage` | Energy recovery and storage | Sulzer |
+| logged-out | `/applications/energy-transition/concentrated-solar-power` | `/applications/energy-transition/concentrated-solar-power` | Concentrated solar power | Sulzer |
+| logged-out | `/applications/energy-transition/geothermal` | `/applications/energy-transition/geothermal` | Geothermal power | Sulzer |
+| logged-out | `/applications/energy-transition/wind-power` | `/applications/energy-transition/wind-power` | Wind power generation | Sulzer |
+| logged-out | `/applications/energy-transition/nuclear-power` | `/applications/energy-transition/nuclear-power` | Nuclear power generation | Sulzer |
+| logged-out | `/applications/agitators-mixers` | `/applications/agitators-mixers` | Agitators & mixers | Sulzer |
+| logged-out | `/applications/agitators-mixers/horizontal-agitators` | `/applications/agitators-mixers/horizontal-agitators` | Horizontal agitators | Sulzer |
+| logged-out | `/applications/agitators-mixers/vertical-agitators` | `/applications/agitators-mixers/vertical-agitators` | Vertical agitators | Sulzer |
+| logged-out | `/applications/agitators-mixers/submersible-mixers` | `/applications/agitators-mixers/submersible-mixers` | Submersible mixers | Sulzer |
+| logged-out | `/applications/agitators-mixers/static-mixers` | `/applications/agitators-mixers/static-mixers` | Static mixers | Sulzer |
+| logged-out | `/applications/agitators-mixers/dynamic-chemical-mixers` | `/applications/agitators-mixers/dynamic-chemical-mixers` | Dynamic chemical mixers | Sulzer |
 | logged-out | `/applications/pulp-paper` | `/applications/pulp-paper` | Pulp & paper | Sulzer |
-| logged-out | `/applications/oil-gas` | `/applications/oil-gas` | Oil & gas | Sulzer |
-| logged-out | `/products` | `/products` | Product Center | Sulzer |
-| logged-out | `/products?q=pump` | `/products?q=pump` | “pump” | Product Center | Sulzer |
-| logged-out | `/products/end-suction-pump` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
-| logged-out | `/products/end-suction-pump#models` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
-| logged-out | `/products/end-suction-pump#documentation` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
-| logged-out | `/products/end-suction-pump#bim` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
-| logged-out | `/products/end-suction-pump#spare-parts` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
-| logged-out | `/products/end-suction-pump#services` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
-| logged-out | `/products/submersible-wastewater-pump` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
-| logged-out | `/products/submersible-wastewater-pump#models` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
-| logged-out | `/products/submersible-wastewater-pump#documentation` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
-| logged-out | `/products/submersible-wastewater-pump#bim` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
-| logged-out | `/products/submersible-wastewater-pump#spare-parts` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
-| logged-out | `/products/submersible-wastewater-pump#services` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
+| logged-out | `/applications/pulp-paper/stock-preparation` | `/applications/pulp-paper/stock-preparation` | Stock preparation | Sulzer |
+| logged-out | `/applications/pulp-paper/pulp-bleaching` | `/applications/pulp-paper/pulp-bleaching` | Pulp bleaching | Sulzer |
+| logged-out | `/applications/pulp-paper/chemical-recovery` | `/applications/pulp-paper/chemical-recovery` | Chemical recovery | Sulzer |
+| logged-out | `/applications/pulp-paper/paper-machine-approach` | `/applications/pulp-paper/paper-machine-approach` | Paper machine approach | Sulzer |
+| logged-out | `/products` | `/products` | Products A–Z | Sulzer |
+| logged-out | `/products?q=pump` | `/products?q=pump` | ‘pump’ – Search | Sulzer |
+| logged-out | `/products?q=ahlstar` | `/products?q=ahlstar` | ‘AHLSTAR’ – Search | Sulzer |
+| logged-out | `/products?q=ahlstar&tab=documents` | `/products?q=ahlstar&tab=documents` | ‘AHLSTAR’ – Search | Sulzer |
+| logged-out | `/products?q=water&tab=applications` | `/products?q=water&tab=applications` | ‘water’ – Search | Sulzer |
+| logged-out | `/products?category=submersible-pumps&flow=1000-5000` | `/products?category=submersible-pumps&flow=1000-5000` | Products A–Z | Sulzer |
+| logged-out | `/products?q=zzzz` | `/products?q=zzzz` | ‘zzzz’ – Search | Sulzer |
+| logged-out | `/products/ahlstar` | `/products/ahlstar` | AHLSTAR | Sulzer |
+| logged-out | `/products/ahlstar#models` | `/products/ahlstar` | AHLSTAR | Sulzer |
+| logged-out | `/products/ahlstar#documentation` | `/products/ahlstar` | AHLSTAR | Sulzer |
+| logged-out | `/products/ahlstar#bim` | `/products/ahlstar` | AHLSTAR | Sulzer |
+| logged-out | `/products/ahlstar#spare-parts` | `/products/ahlstar` | AHLSTAR | Sulzer |
+| logged-out | `/products/ahlstar#services` | `/products/ahlstar` | AHLSTAR | Sulzer |
+| logged-out | `/products/sns` | `/products/sns` | SNS | Sulzer |
+| logged-out | `/products/sns#models` | `/products/sns` | SNS | Sulzer |
+| logged-out | `/products/sns#documentation` | `/products/sns` | SNS | Sulzer |
+| logged-out | `/products/sns#bim` | `/products/sns` | SNS | Sulzer |
+| logged-out | `/products/sns#spare-parts` | `/products/sns` | SNS | Sulzer |
+| logged-out | `/products/sns#services` | `/products/sns` | SNS | Sulzer |
+| logged-out | `/products/smd` | `/products/smd` | SMD | Sulzer |
+| logged-out | `/products/smd#models` | `/products/smd` | SMD | Sulzer |
+| logged-out | `/products/smd#documentation` | `/products/smd` | SMD | Sulzer |
+| logged-out | `/products/smd#bim` | `/products/smd` | SMD | Sulzer |
+| logged-out | `/products/smd#spare-parts` | `/products/smd` | SMD | Sulzer |
+| logged-out | `/products/smd#services` | `/products/smd` | SMD | Sulzer |
+| logged-out | `/products/sjt` | `/products/sjt` | SJT | Sulzer |
+| logged-out | `/products/sjt#models` | `/products/sjt` | SJT | Sulzer |
+| logged-out | `/products/sjt#documentation` | `/products/sjt` | SJT | Sulzer |
+| logged-out | `/products/sjt#bim` | `/products/sjt` | SJT | Sulzer |
+| logged-out | `/products/sjt#spare-parts` | `/products/sjt` | SJT | Sulzer |
+| logged-out | `/products/sjt#services` | `/products/sjt` | SJT | Sulzer |
+| logged-out | `/products/xfp` | `/products/xfp` | XFP | Sulzer |
+| logged-out | `/products/xfp#models` | `/products/xfp` | XFP | Sulzer |
+| logged-out | `/products/xfp#documentation` | `/products/xfp` | XFP | Sulzer |
+| logged-out | `/products/xfp#bim` | `/products/xfp` | XFP | Sulzer |
+| logged-out | `/products/xfp#spare-parts` | `/products/xfp` | XFP | Sulzer |
+| logged-out | `/products/xfp#services` | `/products/xfp` | XFP | Sulzer |
+| logged-out | `/products/sulzer-connect` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-out | `/products/sulzer-connect#models` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-out | `/products/sulzer-connect#documentation` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-out | `/products/sulzer-connect#bim` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-out | `/products/sulzer-connect#spare-parts` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-out | `/products/sulzer-connect#services` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-out | `/products/motor-protection-relay` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-out | `/products/motor-protection-relay#models` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-out | `/products/motor-protection-relay#documentation` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-out | `/products/motor-protection-relay#bim` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-out | `/products/motor-protection-relay#spare-parts` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-out | `/products/motor-protection-relay#services` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-out | `/products/sjm` | `/products/sjm` | SJM | Sulzer |
+| logged-out | `/products/sjm#models` | `/products/sjm` | SJM | Sulzer |
+| logged-out | `/products/sjm#documentation` | `/products/sjm` | SJM | Sulzer |
+| logged-out | `/products/sjm#bim` | `/products/sjm` | SJM | Sulzer |
+| logged-out | `/products/sjm#spare-parts` | `/products/sjm` | SJM | Sulzer |
+| logged-out | `/products/sjm#services` | `/products/sjm` | SJM | Sulzer |
+| logged-out | `/products/afp` | `/products/afp` | AFP | Sulzer |
+| logged-out | `/products/afp#models` | `/products/afp` | AFP | Sulzer |
+| logged-out | `/products/afp#documentation` | `/products/afp` | AFP | Sulzer |
+| logged-out | `/products/afp#bim` | `/products/afp` | AFP | Sulzer |
+| logged-out | `/products/afp#spare-parts` | `/products/afp` | AFP | Sulzer |
+| logged-out | `/products/afp#services` | `/products/afp` | AFP | Sulzer |
+| logged-out | `/products/j-dewatering` | `/products/j-dewatering` | J dewatering pump | Sulzer |
+| logged-out | `/products/j-dewatering#models` | `/products/j-dewatering` | J dewatering pump | Sulzer |
+| logged-out | `/products/j-dewatering#documentation` | `/products/j-dewatering` | J dewatering pump | Sulzer |
+| logged-out | `/products/j-dewatering#bim` | `/products/j-dewatering` | J dewatering pump | Sulzer |
+| logged-out | `/products/j-dewatering#spare-parts` | `/products/j-dewatering` | J dewatering pump | Sulzer |
+| logged-out | `/products/j-dewatering#services` | `/products/j-dewatering` | J dewatering pump | Sulzer |
+| logged-out | `/products/pump-controller` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-out | `/products/pump-controller#models` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-out | `/products/pump-controller#documentation` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-out | `/products/pump-controller#bim` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-out | `/products/pump-controller#spare-parts` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-out | `/products/pump-controller#services` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-out | `/products/blue-box` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-out | `/products/blue-box#models` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-out | `/products/blue-box#documentation` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-out | `/products/blue-box#bim` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-out | `/products/blue-box#spare-parts` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-out | `/products/blue-box#services` | `/products/blue-box` | BLUE BOX | Sulzer |
 | logged-out | `/sizing` | `/sizing` | Sizing & configuration | Sulzer |
-| logged-out | `/sizing?product=end-suction-pump` | `/sizing?product=end-suction-pump` | Sizing & configuration | Sulzer |
+| logged-out | `/sizing?product=ahlstar` | `/sizing?product=ahlstar` | Sizing & configuration | Sulzer |
 | logged-out | `/my-projects` | `/my-sulzer` | mySulzer | Sulzer |
 | logged-out | `/assets` | `/my-sulzer` | mySulzer | Sulzer |
 | logged-out | `/connect` | `/connect` | Sulzer Connect | Sulzer |
-| logged-out | `/products/categories` | `/products/categories` | Product categories | Sulzer |
-| logged-out | `/products/a-z` | `/products/a-z` | Products A–Z | Sulzer |
 | logged-out | `/products/replacement` | `/products/replacement` | Product replacement | Sulzer |
 | logged-out | `/spare-parts` | `/spare-parts` | Spare parts | Sulzer |
 | logged-out | `/digital-solutions` | `/digital-solutions` | Digital solutions | Sulzer |
@@ -78,38 +170,130 @@
 | logged-in | `/my-sulzer` | `/my-sulzer` | mySulzer | Sulzer |
 | logged-in | `/my-pages` | `/my-pages` | My Pages | mySulzer | Sulzer |
 | logged-in | `/applications` | `/applications` | Applications | Sulzer |
-| logged-in | `/applications#products` | `/applications` | Applications | Sulzer |
-| logged-in | `/applications#learn` | `/applications` | Applications | Sulzer |
 | logged-in | `/applications/municipal-water-supply` | `/applications/municipal-water-supply` | Municipal water supply | Sulzer |
-| logged-in | `/applications/surface-water-intake` | `/applications/surface-water-intake` | Surface water intake | Sulzer |
-| logged-in | `/applications/groundwater-intake` | `/applications/groundwater-intake` | Groundwater intake | Sulzer |
-| logged-in | `/applications/water-distribution` | `/applications/water-distribution` | Water distribution | Sulzer |
+| logged-in | `/applications/municipal-water-supply/surface-water-intake` | `/applications/municipal-water-supply/surface-water-intake` | Surface water intake | Sulzer |
+| logged-in | `/applications/municipal-water-supply/groundwater-intake` | `/applications/municipal-water-supply/groundwater-intake` | Groundwater intake | Sulzer |
+| logged-in | `/applications/municipal-water-supply/drinking-water-treatment` | `/applications/municipal-water-supply/drinking-water-treatment` | Drinking water treatment | Sulzer |
+| logged-in | `/applications/municipal-water-supply/water-distribution` | `/applications/municipal-water-supply/water-distribution` | Water distribution | Sulzer |
+| logged-in | `/applications/municipal-water-supply/desalination` | `/applications/municipal-water-supply/desalination` | Desalination | Sulzer |
+| logged-in | `/applications/municipal-water-supply/raw-water-transfer` | `/applications/municipal-water-supply/raw-water-transfer` | Raw water transfer | Sulzer |
 | logged-in | `/applications/wastewater` | `/applications/wastewater` | Wastewater | Sulzer |
-| logged-in | `/applications/industrial-processes` | `/applications/industrial-processes` | Industrial processes | Sulzer |
-| logged-in | `/applications/building-services` | `/applications/building-services` | Building services | Sulzer |
+| logged-in | `/applications/wastewater/wastewater-collection` | `/applications/wastewater/wastewater-collection` | Wastewater collection and transport | Sulzer |
+| logged-in | `/applications/wastewater/stormwater-flood-control` | `/applications/wastewater/stormwater-flood-control` | Stormwater and flood control | Sulzer |
+| logged-in | `/applications/wastewater/wastewater-treatment` | `/applications/wastewater/wastewater-treatment` | Wastewater treatment | Sulzer |
+| logged-in | `/applications/wastewater/sludge-handling` | `/applications/wastewater/sludge-handling` | Sludge handling | Sulzer |
+| logged-in | `/applications/water-treatment` | `/applications/water-treatment` | Water treatment | Sulzer |
+| logged-in | `/applications/water-treatment/industrial-water-supply` | `/applications/water-treatment/industrial-water-supply` | Industrial water supply and transfer | Sulzer |
+| logged-in | `/applications/water-treatment/industrial-wastewater-treatment` | `/applications/water-treatment/industrial-wastewater-treatment` | Industrial wastewater treatment | Sulzer |
+| logged-in | `/applications/water-treatment/process-water-treatment` | `/applications/water-treatment/process-water-treatment` | Process water treatment | Sulzer |
+| logged-in | `/applications/water-treatment/cooling-water` | `/applications/water-treatment/cooling-water` | Cooling water | Sulzer |
+| logged-in | `/applications/water-treatment/boiler-feed-water` | `/applications/water-treatment/boiler-feed-water` | Boiler feed water | Sulzer |
+| logged-in | `/applications/water-treatment/reverse-osmosis` | `/applications/water-treatment/reverse-osmosis` | Reverse osmosis | Sulzer |
+| logged-in | `/applications/water-treatment/ultrafiltration` | `/applications/water-treatment/ultrafiltration` | Ultrafiltration | Sulzer |
+| logged-in | `/applications/water-treatment/water-reuse` | `/applications/water-treatment/water-reuse` | Water reuse | Sulzer |
+| logged-in | `/applications/energy-transition` | `/applications/energy-transition` | Energy transition | Sulzer |
+| logged-in | `/applications/energy-transition/carbon-capture` | `/applications/energy-transition/carbon-capture` | Carbon capture, utilisation and storage | Sulzer |
+| logged-in | `/applications/energy-transition/biofuels` | `/applications/energy-transition/biofuels` | Biofuels | Sulzer |
+| logged-in | `/applications/energy-transition/energy-recovery-storage` | `/applications/energy-transition/energy-recovery-storage` | Energy recovery and storage | Sulzer |
+| logged-in | `/applications/energy-transition/concentrated-solar-power` | `/applications/energy-transition/concentrated-solar-power` | Concentrated solar power | Sulzer |
+| logged-in | `/applications/energy-transition/geothermal` | `/applications/energy-transition/geothermal` | Geothermal power | Sulzer |
+| logged-in | `/applications/energy-transition/wind-power` | `/applications/energy-transition/wind-power` | Wind power generation | Sulzer |
+| logged-in | `/applications/energy-transition/nuclear-power` | `/applications/energy-transition/nuclear-power` | Nuclear power generation | Sulzer |
+| logged-in | `/applications/agitators-mixers` | `/applications/agitators-mixers` | Agitators & mixers | Sulzer |
+| logged-in | `/applications/agitators-mixers/horizontal-agitators` | `/applications/agitators-mixers/horizontal-agitators` | Horizontal agitators | Sulzer |
+| logged-in | `/applications/agitators-mixers/vertical-agitators` | `/applications/agitators-mixers/vertical-agitators` | Vertical agitators | Sulzer |
+| logged-in | `/applications/agitators-mixers/submersible-mixers` | `/applications/agitators-mixers/submersible-mixers` | Submersible mixers | Sulzer |
+| logged-in | `/applications/agitators-mixers/static-mixers` | `/applications/agitators-mixers/static-mixers` | Static mixers | Sulzer |
+| logged-in | `/applications/agitators-mixers/dynamic-chemical-mixers` | `/applications/agitators-mixers/dynamic-chemical-mixers` | Dynamic chemical mixers | Sulzer |
 | logged-in | `/applications/pulp-paper` | `/applications/pulp-paper` | Pulp & paper | Sulzer |
-| logged-in | `/applications/oil-gas` | `/applications/oil-gas` | Oil & gas | Sulzer |
-| logged-in | `/products` | `/products` | Product Center | Sulzer |
-| logged-in | `/products?q=pump` | `/products?q=pump` | “pump” | Product Center | Sulzer |
-| logged-in | `/products/end-suction-pump` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
-| logged-in | `/products/end-suction-pump#models` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
-| logged-in | `/products/end-suction-pump#documentation` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
-| logged-in | `/products/end-suction-pump#bim` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
-| logged-in | `/products/end-suction-pump#spare-parts` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
-| logged-in | `/products/end-suction-pump#services` | `/products/end-suction-pump` | Sulzer End Suction Pump | Sulzer |
-| logged-in | `/products/submersible-wastewater-pump` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
-| logged-in | `/products/submersible-wastewater-pump#models` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
-| logged-in | `/products/submersible-wastewater-pump#documentation` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
-| logged-in | `/products/submersible-wastewater-pump#bim` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
-| logged-in | `/products/submersible-wastewater-pump#spare-parts` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
-| logged-in | `/products/submersible-wastewater-pump#services` | `/products/submersible-wastewater-pump` | Sulzer Submersible Wastewater Pump | Sulzer |
+| logged-in | `/applications/pulp-paper/stock-preparation` | `/applications/pulp-paper/stock-preparation` | Stock preparation | Sulzer |
+| logged-in | `/applications/pulp-paper/pulp-bleaching` | `/applications/pulp-paper/pulp-bleaching` | Pulp bleaching | Sulzer |
+| logged-in | `/applications/pulp-paper/chemical-recovery` | `/applications/pulp-paper/chemical-recovery` | Chemical recovery | Sulzer |
+| logged-in | `/applications/pulp-paper/paper-machine-approach` | `/applications/pulp-paper/paper-machine-approach` | Paper machine approach | Sulzer |
+| logged-in | `/products` | `/products` | Products A–Z | Sulzer |
+| logged-in | `/products?q=pump` | `/products?q=pump` | ‘pump’ – Search | Sulzer |
+| logged-in | `/products?q=ahlstar` | `/products?q=ahlstar` | ‘AHLSTAR’ – Search | Sulzer |
+| logged-in | `/products?q=ahlstar&tab=documents` | `/products?q=ahlstar&tab=documents` | ‘AHLSTAR’ – Search | Sulzer |
+| logged-in | `/products?q=water&tab=applications` | `/products?q=water&tab=applications` | ‘water’ – Search | Sulzer |
+| logged-in | `/products?category=submersible-pumps&flow=1000-5000` | `/products?category=submersible-pumps&flow=1000-5000` | Products A–Z | Sulzer |
+| logged-in | `/products?q=zzzz` | `/products?q=zzzz` | ‘zzzz’ – Search | Sulzer |
+| logged-in | `/products/ahlstar` | `/products/ahlstar` | AHLSTAR | Sulzer |
+| logged-in | `/products/ahlstar#models` | `/products/ahlstar` | AHLSTAR | Sulzer |
+| logged-in | `/products/ahlstar#documentation` | `/products/ahlstar` | AHLSTAR | Sulzer |
+| logged-in | `/products/ahlstar#bim` | `/products/ahlstar` | AHLSTAR | Sulzer |
+| logged-in | `/products/ahlstar#spare-parts` | `/products/ahlstar` | AHLSTAR | Sulzer |
+| logged-in | `/products/ahlstar#services` | `/products/ahlstar` | AHLSTAR | Sulzer |
+| logged-in | `/products/sns` | `/products/sns` | SNS | Sulzer |
+| logged-in | `/products/sns#models` | `/products/sns` | SNS | Sulzer |
+| logged-in | `/products/sns#documentation` | `/products/sns` | SNS | Sulzer |
+| logged-in | `/products/sns#bim` | `/products/sns` | SNS | Sulzer |
+| logged-in | `/products/sns#spare-parts` | `/products/sns` | SNS | Sulzer |
+| logged-in | `/products/sns#services` | `/products/sns` | SNS | Sulzer |
+| logged-in | `/products/smd` | `/products/smd` | SMD | Sulzer |
+| logged-in | `/products/smd#models` | `/products/smd` | SMD | Sulzer |
+| logged-in | `/products/smd#documentation` | `/products/smd` | SMD | Sulzer |
+| logged-in | `/products/smd#bim` | `/products/smd` | SMD | Sulzer |
+| logged-in | `/products/smd#spare-parts` | `/products/smd` | SMD | Sulzer |
+| logged-in | `/products/smd#services` | `/products/smd` | SMD | Sulzer |
+| logged-in | `/products/sjt` | `/products/sjt` | SJT | Sulzer |
+| logged-in | `/products/sjt#models` | `/products/sjt` | SJT | Sulzer |
+| logged-in | `/products/sjt#documentation` | `/products/sjt` | SJT | Sulzer |
+| logged-in | `/products/sjt#bim` | `/products/sjt` | SJT | Sulzer |
+| logged-in | `/products/sjt#spare-parts` | `/products/sjt` | SJT | Sulzer |
+| logged-in | `/products/sjt#services` | `/products/sjt` | SJT | Sulzer |
+| logged-in | `/products/xfp` | `/products/xfp` | XFP | Sulzer |
+| logged-in | `/products/xfp#models` | `/products/xfp` | XFP | Sulzer |
+| logged-in | `/products/xfp#documentation` | `/products/xfp` | XFP | Sulzer |
+| logged-in | `/products/xfp#bim` | `/products/xfp` | XFP | Sulzer |
+| logged-in | `/products/xfp#spare-parts` | `/products/xfp` | XFP | Sulzer |
+| logged-in | `/products/xfp#services` | `/products/xfp` | XFP | Sulzer |
+| logged-in | `/products/sulzer-connect` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-in | `/products/sulzer-connect#models` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-in | `/products/sulzer-connect#documentation` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-in | `/products/sulzer-connect#bim` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-in | `/products/sulzer-connect#spare-parts` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-in | `/products/sulzer-connect#services` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-in | `/products/motor-protection-relay` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-in | `/products/motor-protection-relay#models` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-in | `/products/motor-protection-relay#documentation` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-in | `/products/motor-protection-relay#bim` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-in | `/products/motor-protection-relay#spare-parts` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-in | `/products/motor-protection-relay#services` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-in | `/products/sjm` | `/products/sjm` | SJM | Sulzer |
+| logged-in | `/products/sjm#models` | `/products/sjm` | SJM | Sulzer |
+| logged-in | `/products/sjm#documentation` | `/products/sjm` | SJM | Sulzer |
+| logged-in | `/products/sjm#bim` | `/products/sjm` | SJM | Sulzer |
+| logged-in | `/products/sjm#spare-parts` | `/products/sjm` | SJM | Sulzer |
+| logged-in | `/products/sjm#services` | `/products/sjm` | SJM | Sulzer |
+| logged-in | `/products/afp` | `/products/afp` | AFP | Sulzer |
+| logged-in | `/products/afp#models` | `/products/afp` | AFP | Sulzer |
+| logged-in | `/products/afp#documentation` | `/products/afp` | AFP | Sulzer |
+| logged-in | `/products/afp#bim` | `/products/afp` | AFP | Sulzer |
+| logged-in | `/products/afp#spare-parts` | `/products/afp` | AFP | Sulzer |
+| logged-in | `/products/afp#services` | `/products/afp` | AFP | Sulzer |
+| logged-in | `/products/j-dewatering` | `/products/j-dewatering` | J dewatering pump | Sulzer |
+| logged-in | `/products/j-dewatering#models` | `/products/j-dewatering` | J dewatering pump | Sulzer |
+| logged-in | `/products/j-dewatering#documentation` | `/products/j-dewatering` | J dewatering pump | Sulzer |
+| logged-in | `/products/j-dewatering#bim` | `/products/j-dewatering` | J dewatering pump | Sulzer |
+| logged-in | `/products/j-dewatering#spare-parts` | `/products/j-dewatering` | J dewatering pump | Sulzer |
+| logged-in | `/products/j-dewatering#services` | `/products/j-dewatering` | J dewatering pump | Sulzer |
+| logged-in | `/products/pump-controller` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-in | `/products/pump-controller#models` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-in | `/products/pump-controller#documentation` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-in | `/products/pump-controller#bim` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-in | `/products/pump-controller#spare-parts` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-in | `/products/pump-controller#services` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-in | `/products/blue-box` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-in | `/products/blue-box#models` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-in | `/products/blue-box#documentation` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-in | `/products/blue-box#bim` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-in | `/products/blue-box#spare-parts` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-in | `/products/blue-box#services` | `/products/blue-box` | BLUE BOX | Sulzer |
 | logged-in | `/sizing` | `/sizing` | Sizing & configuration | Sulzer |
-| logged-in | `/sizing?product=end-suction-pump` | `/sizing?product=end-suction-pump` | Sizing & configuration | Sulzer |
+| logged-in | `/sizing?product=ahlstar` | `/sizing?product=ahlstar` | Sizing & configuration | Sulzer |
 | logged-in | `/my-projects` | `/my-projects` | My projects | Sulzer |
 | logged-in | `/assets` | `/assets` | My assets | Sulzer |
 | logged-in | `/connect` | `/connect` | Sulzer Connect | Sulzer |
-| logged-in | `/products/categories` | `/products/categories` | Product categories | Sulzer |
-| logged-in | `/products/a-z` | `/products/a-z` | Products A–Z | Sulzer |
 | logged-in | `/products/replacement` | `/products/replacement` | Product replacement | Sulzer |
 | logged-in | `/spare-parts` | `/spare-parts` | Spare parts | Sulzer |
 | logged-in | `/digital-solutions` | `/digital-solutions` | Digital solutions | Sulzer |
