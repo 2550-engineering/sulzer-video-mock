@@ -1,6 +1,6 @@
 # Recording QA — 1920×1080
 
-337 captures, 0 with issues. Screenshots in `_qa/screenshots/`.
+351 captures, 0 with issues. Screenshots in `_qa/screenshots/`.
 
 | Auth | Route | Lands on | Title |
 | --- | --- | --- | --- |
@@ -37,12 +37,19 @@
 | logged-out | `/applications/energy-transition/geothermal` | `/applications/energy-transition/geothermal` | Geothermal power | Sulzer |
 | logged-out | `/applications/energy-transition/wind-power` | `/applications/energy-transition/wind-power` | Wind power generation | Sulzer |
 | logged-out | `/applications/energy-transition/nuclear-power` | `/applications/energy-transition/nuclear-power` | Nuclear power generation | Sulzer |
-| logged-out | `/applications/agitators-mixers` | `/applications/agitators-mixers` | Agitators & mixers | Sulzer |
-| logged-out | `/applications/agitators-mixers/horizontal-agitators` | `/applications/agitators-mixers/horizontal-agitators` | Horizontal agitators | Sulzer |
-| logged-out | `/applications/agitators-mixers/vertical-agitators` | `/applications/agitators-mixers/vertical-agitators` | Vertical agitators | Sulzer |
-| logged-out | `/applications/agitators-mixers/submersible-mixers` | `/applications/agitators-mixers/submersible-mixers` | Submersible mixers | Sulzer |
-| logged-out | `/applications/agitators-mixers/static-mixers` | `/applications/agitators-mixers/static-mixers` | Static mixers | Sulzer |
-| logged-out | `/applications/agitators-mixers/dynamic-chemical-mixers` | `/applications/agitators-mixers/dynamic-chemical-mixers` | Dynamic chemical mixers | Sulzer |
+| logged-out | `/applications/fertilizers` | `/applications/fertilizers` | Fertilizers | Sulzer |
+| logged-out | `/applications/fertilizers/ammonia-urea-fertilizers` | `/applications/fertilizers/ammonia-urea-fertilizers` | Ammonia and urea fertilizers | Sulzer |
+| logged-out | `/applications/fertilizers/phosphate-fertilizers` | `/applications/fertilizers/phosphate-fertilizers` | Phosphate fertilizers | Sulzer |
+| logged-out | `/applications/fertilizers/potash-fertilizers` | `/applications/fertilizers/potash-fertilizers` | Potash fertilizers | Sulzer |
+| logged-out | `/applications/fertilizers/npk-fertilizers` | `/applications/fertilizers/npk-fertilizers` | NPK fertilizers | Sulzer |
+| logged-out | `/applications/fertilizers/fertilizer-plant-water` | `/applications/fertilizers/fertilizer-plant-water` | Water in fertilizer complexes | Sulzer |
+| logged-out | `/applications/mining-metals` | `/applications/mining-metals` | Mining and metals | Sulzer |
+| logged-out | `/applications/mining-metals/open-pit-dewatering` | `/applications/mining-metals/open-pit-dewatering` | Open pit mine dewatering | Sulzer |
+| logged-out | `/applications/mining-metals/underground-dewatering` | `/applications/mining-metals/underground-dewatering` | Underground mine dewatering | Sulzer |
+| logged-out | `/applications/mining-metals/ore-separation` | `/applications/mining-metals/ore-separation` | Ore separation | Sulzer |
+| logged-out | `/applications/mining-metals/electrowinning` | `/applications/mining-metals/electrowinning` | Electrowinning | Sulzer |
+| logged-out | `/applications/mining-metals/tailings-water-reclamation` | `/applications/mining-metals/tailings-water-reclamation` | Tailings ponds and water reclamation | Sulzer |
+| logged-out | `/applications/mining-metals/metals-processing` | `/applications/mining-metals/metals-processing` | Metals processing | Sulzer |
 | logged-out | `/applications/pulp-paper` | `/applications/pulp-paper` | Pulp & paper | Sulzer |
 | logged-out | `/applications/pulp-paper/stock-preparation` | `/applications/pulp-paper/stock-preparation` | Stock preparation | Sulzer |
 | logged-out | `/applications/pulp-paper/pulp-bleaching` | `/applications/pulp-paper/pulp-bleaching` | Pulp bleaching | Sulzer |
@@ -199,12 +206,19 @@
 | logged-in | `/applications/energy-transition/geothermal` | `/applications/energy-transition/geothermal` | Geothermal power | Sulzer |
 | logged-in | `/applications/energy-transition/wind-power` | `/applications/energy-transition/wind-power` | Wind power generation | Sulzer |
 | logged-in | `/applications/energy-transition/nuclear-power` | `/applications/energy-transition/nuclear-power` | Nuclear power generation | Sulzer |
-| logged-in | `/applications/agitators-mixers` | `/applications/agitators-mixers` | Agitators & mixers | Sulzer |
-| logged-in | `/applications/agitators-mixers/horizontal-agitators` | `/applications/agitators-mixers/horizontal-agitators` | Horizontal agitators | Sulzer |
-| logged-in | `/applications/agitators-mixers/vertical-agitators` | `/applications/agitators-mixers/vertical-agitators` | Vertical agitators | Sulzer |
-| logged-in | `/applications/agitators-mixers/submersible-mixers` | `/applications/agitators-mixers/submersible-mixers` | Submersible mixers | Sulzer |
-| logged-in | `/applications/agitators-mixers/static-mixers` | `/applications/agitators-mixers/static-mixers` | Static mixers | Sulzer |
-| logged-in | `/applications/agitators-mixers/dynamic-chemical-mixers` | `/applications/agitators-mixers/dynamic-chemical-mixers` | Dynamic chemical mixers | Sulzer |
+| logged-in | `/applications/fertilizers` | `/applications/fertilizers` | Fertilizers | Sulzer |
+| logged-in | `/applications/fertilizers/ammonia-urea-fertilizers` | `/applications/fertilizers/ammonia-urea-fertilizers` | Ammonia and urea fertilizers | Sulzer |
+| logged-in | `/applications/fertilizers/phosphate-fertilizers` | `/applications/fertilizers/phosphate-fertilizers` | Phosphate fertilizers | Sulzer |
+| logged-in | `/applications/fertilizers/potash-fertilizers` | `/applications/fertilizers/potash-fertilizers` | Potash fertilizers | Sulzer |
+| logged-in | `/applications/fertilizers/npk-fertilizers` | `/applications/fertilizers/npk-fertilizers` | NPK fertilizers | Sulzer |
+| logged-in | `/applications/fertilizers/fertilizer-plant-water` | `/applications/fertilizers/fertilizer-plant-water` | Water in fertilizer complexes | Sulzer |
+| logged-in | `/applications/mining-metals` | `/applications/mining-metals` | Mining and metals | Sulzer |
+| logged-in | `/applications/mining-metals/open-pit-dewatering` | `/applications/mining-metals/open-pit-dewatering` | Open pit mine dewatering | Sulzer |
+| logged-in | `/applications/mining-metals/underground-dewatering` | `/applications/mining-metals/underground-dewatering` | Underground mine dewatering | Sulzer |
+| logged-in | `/applications/mining-metals/ore-separation` | `/applications/mining-metals/ore-separation` | Ore separation | Sulzer |
+| logged-in | `/applications/mining-metals/electrowinning` | `/applications/mining-metals/electrowinning` | Electrowinning | Sulzer |
+| logged-in | `/applications/mining-metals/tailings-water-reclamation` | `/applications/mining-metals/tailings-water-reclamation` | Tailings ponds and water reclamation | Sulzer |
+| logged-in | `/applications/mining-metals/metals-processing` | `/applications/mining-metals/metals-processing` | Metals processing | Sulzer |
 | logged-in | `/applications/pulp-paper` | `/applications/pulp-paper` | Pulp & paper | Sulzer |
 | logged-in | `/applications/pulp-paper/stock-preparation` | `/applications/pulp-paper/stock-preparation` | Stock preparation | Sulzer |
 | logged-in | `/applications/pulp-paper/pulp-bleaching` | `/applications/pulp-paper/pulp-bleaching` | Pulp bleaching | Sulzer |

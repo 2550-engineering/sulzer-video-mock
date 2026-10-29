@@ -12,7 +12,7 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
   product finder).
 - **Formats:** JPG for photos (quality 80–85), PNG for product cut-outs.
 
-119 images, 106 missing.
+133 images, 119 missing.
 
 | Priority | File | Folder | Aspect | Min. size | Kind | What it should show | Status |
 |----------|------|--------|--------|-----------|------|---------------------|--------|
@@ -29,7 +29,8 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
 | 1 · application finder | `wastewater-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Round clarifier basins at a wastewater treatment plant, from above | present |
 | 1 · application finder | `water-treatment-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Industrial water treatment hall with filters and stainless pipework | present |
 | 1 · application finder | `energy-transition-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Aerial views of geothermal springs, forest and a river valley | present |
-| 1 · application finder | `agitators-mixers-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Sulzer engineer and operator at the basins of a water treatment plant | present |
+| 1 · application finder | `fertilizers-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Close-up of a backlit green leaf | present |
+| 1 · application finder | `mining-metals-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Aerial view of a bucket-wheel stacker loading ore by a railway line | present |
 | 1 · application finder | `pulp-paper-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Paper machine running at speed in a paper mill | present |
 | 1 · application finder | `intake-engineering-manual.jpg` | `public/images/knowledge/` | 3:2 | 1200 × 800 | Knowledge card | Cover of a technical manual on a desk, with an intake structure drawing beside it | missing |
 | 1 · application finder | `expert-video-sump-design.jpg` | `public/images/knowledge/` | 3:2 | 1200 × 800 | Knowledge card | Sulzer application engineer presenting in front of a pump sump model | missing |
@@ -102,17 +103,30 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
 | 2 | `wind-power-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Onshore wind farm at sunset | missing |
 | 2 | `nuclear-power-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Nuclear power plant with cooling towers | missing |
 | 2 | `nuclear-power-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Nuclear power plant with cooling towers | missing |
-| 2 | `agitators-mixers-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Sulzer engineer and operator at the basins of a water treatment plant | missing |
-| 2 | `horizontal-agitators-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Side-entry agitator mounted on a large storage tank | missing |
-| 2 | `horizontal-agitators-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Side-entry agitator mounted on a large storage tank | missing |
-| 2 | `vertical-agitators-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Top-entry agitator drive on a process tank | missing |
-| 2 | `vertical-agitators-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Top-entry agitator drive on a process tank | missing |
-| 2 | `submersible-mixers-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Submersible mixer being lowered into an activated sludge basin | missing |
-| 2 | `submersible-mixers-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Submersible mixer being lowered into an activated sludge basin | missing |
-| 2 | `static-mixers-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Static mixer elements inside a cutaway pipe section | missing |
-| 2 | `static-mixers-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Static mixer elements inside a cutaway pipe section | missing |
-| 2 | `dynamic-chemical-mixers-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | In-line chemical mixer on a pulp line | missing |
-| 2 | `dynamic-chemical-mixers-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | In-line chemical mixer on a pulp line | missing |
+| 2 | `fertilizers-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Close-up of a backlit green leaf | missing |
+| 2 | `ammonia-urea-fertilizers-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Ammonia and urea plant with prilling tower | missing |
+| 2 | `ammonia-urea-fertilizers-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Ammonia and urea plant with prilling tower | missing |
+| 2 | `phosphate-fertilizers-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Phosphoric acid plant with reactors and evaporators | missing |
+| 2 | `phosphate-fertilizers-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Phosphoric acid plant with reactors and evaporators | missing |
+| 2 | `potash-fertilizers-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Potash flotation cells in a processing plant | missing |
+| 2 | `potash-fertilizers-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Potash flotation cells in a processing plant | missing |
+| 2 | `npk-fertilizers-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Granulation drum in an NPK fertilizer plant | missing |
+| 2 | `npk-fertilizers-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Granulation drum in an NPK fertilizer plant | missing |
+| 2 | `fertilizer-plant-water-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Water treatment basins at a fertilizer complex | missing |
+| 2 | `fertilizer-plant-water-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Water treatment basins at a fertilizer complex | missing |
+| 2 | `mining-metals-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Aerial view of a bucket-wheel stacker loading ore by a railway line | missing |
+| 2 | `open-pit-dewatering-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Dewatering pump at the bottom of an open-pit mine | missing |
+| 2 | `open-pit-dewatering-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Dewatering pump at the bottom of an open-pit mine | missing |
+| 2 | `underground-dewatering-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Submersible dewatering pump in an underground mine tunnel | missing |
+| 2 | `underground-dewatering-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Submersible dewatering pump in an underground mine tunnel | missing |
+| 2 | `ore-separation-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Flotation cells in a mineral processing plant | missing |
+| 2 | `ore-separation-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Flotation cells in a mineral processing plant | missing |
+| 2 | `electrowinning-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Electrowinning cell house with rows of cathode plates | missing |
+| 2 | `electrowinning-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Electrowinning cell house with rows of cathode plates | missing |
+| 2 | `tailings-water-reclamation-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Tailings pond with a floating reclaim pump barge | missing |
+| 2 | `tailings-water-reclamation-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Tailings pond with a floating reclaim pump barge | missing |
+| 2 | `metals-processing-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Hydrometallurgical plant with acid-resistant pumps and pipework | missing |
+| 2 | `metals-processing-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Hydrometallurgical plant with acid-resistant pumps and pipework | missing |
 | 2 | `pulp-paper-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Paper machine running at speed in a paper mill | missing |
 | 2 | `stock-preparation-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Stock preparation area with pulp chests and pumps | missing |
 | 2 | `stock-preparation-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Stock preparation area with pulp chests and pumps | missing |

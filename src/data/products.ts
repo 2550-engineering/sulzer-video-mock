@@ -492,7 +492,7 @@ export const products: Product[] = [
     name: productNames.jDewatering,
     family: 'Submersible dewatering',
     category: 'Dewatering pumps',
-    applications: ['stormwater-flood-control'],
+    applications: ['open-pit-dewatering', 'underground-dewatering', 'stormwater-flood-control'],
     summary:
       'Portable submersible pump for construction sites, mines and emergency drainage, light enough to move by hand and tough enough for abrasive water.',
     keySpecs: {
