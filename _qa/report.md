@@ -1,6 +1,6 @@
 # Recording QA — 1920×1080
 
-351 captures, 0 with issues. Screenshots in `_qa/screenshots/`.
+355 captures, 0 with issues. Screenshots in `_qa/screenshots/`.
 
 | Auth | Route | Lands on | Title |
 | --- | --- | --- | --- |
@@ -134,9 +134,11 @@
 | logged-out | `/products/blue-box#bim` | `/products/blue-box` | BLUE BOX | Sulzer |
 | logged-out | `/products/blue-box#spare-parts` | `/products/blue-box` | BLUE BOX | Sulzer |
 | logged-out | `/products/blue-box#services` | `/products/blue-box` | BLUE BOX | Sulzer |
-| logged-out | `/sizing` | `/sizing` | Sizing & configuration | Sulzer |
-| logged-out | `/sizing?product=ahlstar` | `/sizing?product=ahlstar` | Sizing & configuration | Sulzer |
+| logged-out | `/sizing` | `/sizing` | Size Product | Sulzer |
+| logged-out | `/sizing?product=ahlstar` | `/sizing?product=ahlstar` | Size Product | Sulzer |
+| logged-out | `/sizing/results` | `/sizing/results` | Sizing | Sulzer |
 | logged-out | `/my-projects` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/my-projects/riverside-intake` | `/my-sulzer` | mySulzer | Sulzer |
 | logged-out | `/assets` | `/my-sulzer` | mySulzer | Sulzer |
 | logged-out | `/connect` | `/connect` | Sulzer Connect | Sulzer |
 | logged-out | `/products/replacement` | `/products/replacement` | Product replacement | Sulzer |
@@ -303,9 +305,11 @@
 | logged-in | `/products/blue-box#bim` | `/products/blue-box` | BLUE BOX | Sulzer |
 | logged-in | `/products/blue-box#spare-parts` | `/products/blue-box` | BLUE BOX | Sulzer |
 | logged-in | `/products/blue-box#services` | `/products/blue-box` | BLUE BOX | Sulzer |
-| logged-in | `/sizing` | `/sizing` | Sizing & configuration | Sulzer |
-| logged-in | `/sizing?product=ahlstar` | `/sizing?product=ahlstar` | Sizing & configuration | Sulzer |
-| logged-in | `/my-projects` | `/my-projects` | My projects | Sulzer |
+| logged-in | `/sizing` | `/sizing` | Size Product | Sulzer |
+| logged-in | `/sizing?product=ahlstar` | `/sizing?product=ahlstar` | Size Product | Sulzer |
+| logged-in | `/sizing/results` | `/sizing/results` | Sizing | Sulzer |
+| logged-in | `/my-projects` | `/my-projects/riverside-intake` | Riverside intake – My Projects | Sulzer |
+| logged-in | `/my-projects/riverside-intake` | `/my-projects/riverside-intake` | Riverside intake – My Projects | Sulzer |
 | logged-in | `/assets` | `/assets` | My assets | Sulzer |
 | logged-in | `/connect` | `/connect` | Sulzer Connect | Sulzer |
 | logged-in | `/products/replacement` | `/products/replacement` | Product replacement | Sulzer |
