@@ -8,6 +8,8 @@ type SelectFieldProps<T extends string> = {
   onChange: (value: T) => void
   /** `inline` puts the label beside the select, `stacked` above it. */
   layout?: 'inline' | 'stacked'
+  /** `dark` for navy bands: light label text. */
+  tone?: 'light' | 'dark'
 }
 
 /** Native select in Sulzer styling, with its label. */
@@ -17,6 +19,7 @@ export function SelectField<T extends string>({
   options,
   onChange,
   layout = 'inline',
+  tone = 'light',
 }: SelectFieldProps<T>) {
   const id = useId()
   return (
@@ -27,7 +30,13 @@ export function SelectField<T extends string>({
     >
       <label
         htmlFor={id}
-        className={layout === 'inline' ? 'text-text-muted' : 'font-semibold text-navy-900'}
+        className={
+          tone === 'dark'
+            ? 'font-semibold text-text-on-dark'
+            : layout === 'inline'
+              ? 'text-text-muted'
+              : 'font-semibold text-navy-900'
+        }
       >
         {label}
       </label>

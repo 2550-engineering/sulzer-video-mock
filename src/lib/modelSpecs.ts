@@ -140,7 +140,7 @@ const priceFormat = new Intl.NumberFormat('en-GB', {
 export const formatPrice = (amount: number) => priceFormat.format(amount)
 
 /** "In stock" in green; anything with a lead time in amber, showing the lead time. */
-export function availabilityLabel(model: ProductModel) {
+export function availabilityLabel(model: Pick<ProductModel, 'availability' | 'leadTime'>) {
   return model.availability === 'In stock'
     ? { label: copy.inStock, tone: 'success' as const }
     : { label: model.leadTime, tone: 'warning' as const }

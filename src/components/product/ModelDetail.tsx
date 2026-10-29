@@ -55,7 +55,7 @@ export function ModelDetail({
 
       <div className="flex flex-col gap-3 lg:pt-9">
         <Link
-          to={`/sizing?model=${model.id}`}
+          to={`/sizing?product=${model.productId}&model=${model.id}`}
           className="group inline-flex h-11 items-center justify-center gap-2 rounded-pill bg-primary px-5 text-sm font-semibold text-white shadow-raised transition-colors hover:bg-primary-hover"
         >
           {copy.size}

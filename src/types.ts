@@ -391,16 +391,67 @@ export type SearchResult = { score: number } & (
 
 export type ProjectStatus = 'Draft' | 'In progress' | 'Quoted'
 
-export type Project = {
+/** A sized pump in a project. Rebuilt from its variant id and duty point, so curves and prices stay in step. */
+export type ProjectItem = {
+  id: string
+  /** 10, 20, 30 … like an order position. */
+  position: number
+  /** The customer's own tag, e.g. "RW-01". Editable. */
+  customerPosition: string
+  variantId: string
+  dutyPoint: DutyPoint
+  quantity: number
+  /** The sizing record this product came from, if any. */
+  sizingId?: string
+}
+
+/** A whole sizing saved in a project: its input, filters and chosen products. */
+export type SizingRecord = {
+  /** "<project id>-s<n>". */
   id: string
   name: string
-  applicationId: string
-  productIds: string[]
+  /** Pre-formatted, e.g. "Today". */
+  created: string
+  createdBy: string
+  /** Every sizing param (form rows, units, optional parameters, result filters) as URL entries. */
+  params: [string, string][]
+  dutyPoint: DutyPoint
+  productId: string
+  applicationId?: string
+  variantIds: string[]
+  /** "Number of hits" when it was saved. */
+  hits: number
+  /** Adds performance curves and data sheets to the project documents. */
+  includeCurves: boolean
+  note?: string
+}
+
+export type ProjectMember = {
+  name: string
+  role: string
+}
+
+export type Project = {
+  id: string
+  /** Shown as "Ref no.", e.g. "P-2026-0318". */
+  refNo: string
+  /** Shown as "Project ID", e.g. "396088". */
+  projectNumber: string
+  name: string
+  applicationId?: string
   status: ProjectStatus
-  owner: string
-  /** Pre-formatted, e.g. "Today, 07:58". */
-  updated: string
-  sharedWith: number
+  /** Pre-formatted dates, e.g. "14 Oct 2026" or "Just now". */
+  created: string
+  createdBy: string
+  lastModified: string
+  lastModifiedBy: string
+  /** Higher = modified more recently; drives "By date" sorting. */
+  modifiedOrder: number
+  deadline?: string
+  members: ProjectMember[]
+  client: { company: string; contact: string; site: string; email: string }
+  items: ProjectItem[]
+  sizings: SizingRecord[]
 }
 
 export type AssetStatus = 'ok' | 'warning' | 'alarm'
@@ -439,4 +490,164 @@ export type ComingSoonContent = {
   panelText: string
   /** What the finished page will offer, shown as a checklist. */
   features: string[]
+}
+
+/* ── Sizing (Phase 2, module 3) ────────────────────────────────────────────── */
+
+export type LiquidId = 'water' | 'seawater' | 'raw-solids' | 'glycol' | 'light-oil'
+
+/** What the customer asks for. Canonical units: m³/h, m, °C. */
+export type DutyPoint = {
+  flow: number
+  head: number
+  liquid: LiquidId
+  temperature: number
+  frequency: 50 | 60
+}
+
+/**
+ * A hydraulic's curves at full impeller and the 4-pole reference speed:
+ * head H = H0 − k·Q², efficiency η = ηb·(2x − x²) and NPSHr = Nb·(0.5 + 0.5x²),
+ * where x = Q / bepFlow.
+ */
+export type HydraulicCurve = {
+  /** H0, m. */
+  shutOffHead: number
+  /** k, m per (m³/h)². */
+  k: number
+  /** m³/h. */
+  bepFlow: number
+  /** %. */
+  bepEfficiency: number
+  /** NPSHr at the best-efficiency point, m. */
+  npshrAtBep: number
+}
+
+export type Poles = 2 | 4 | 6
+
+/** C1 cast iron, S2 duplex impeller in stainless housing, D3 super duplex in duplex housing. */
+export type MaterialCode = 'C1' | 'S2' | 'D3'
+export type SealCode = 'SD' | 'DD'
+/** F: flexible coupling without spacer; FS: with spacer. */
+export type CouplingCode = 'F' | 'FS'
+export type MotorClass = 'IE4'
+
+/** One pump size (casing + impeller pattern) as sizing sees it. */
+export type Hydraulic = {
+  /** e.g. "ahlstar-a23". */
+  id: string
+  productId: string
+  /** Short hydraulic code in the variant name, e.g. "A23". */
+  code: string
+  /** Suction DN - discharge DN - nominal impeller, e.g. "150-125-400". */
+  size: string
+  connection: { suction: number; discharge: number }
+  /** Nominal impeller diameter in the name, mm. */
+  nominalImpeller: number
+  impellerMax: number
+  impellerMin: number
+  /** At impellerMax and the 4-pole reference speed (1 475 rpm). */
+  curve: HydraulicCurve
+  /** Rated speeds at 50 Hz per pole count this size is sold with, rpm. */
+  speeds: Partial<Record<Poles, number>>
+  materials: MaterialCode[]
+  couplings: CouplingCode[]
+  /** Bare-shaft pump in cast iron with a single seal, EUR. */
+  basePrice: number
+}
+
+/**
+ * A pump unit as the configurator offers it: hydraulic × poles × material ×
+ * seal × coupling, with its motor and what it supports. Counted as "hits".
+ * Multi-valued attributes list every option the unit supports.
+ */
+export type PumpConfiguration = {
+  /** e.g. "ahlstar-a23-4p-c1-sd-f". */
+  id: string
+  hydraulicId: string
+  productId: string
+  /** "AHLSTAR A23 · 150-125-400". */
+  productName: string
+  /** The part after the size: material, seal, poles, coupling, e.g. "C1-SD-4P-F". */
+  code: string
+  poles: Poles
+  /** Rated speed at 50 Hz, rpm. */
+  speed: number
+  connection: { suction: number; discharge: number }
+  nominalImpeller: number
+  material: MaterialCode
+  impellerMaterial: string
+  housingMaterial: string
+  housingGrade: string
+  seal: SealCode
+  coupling: CouplingCode
+  /** Motor fitted to the unit: sized for the full impeller. */
+  motorPower: number
+  motorEfficiency: number
+  motorPrice: number
+  motorClass: MotorClass
+  motorNumber: string
+  motorVoltage: string
+  motorEnclosure: string
+  mainsVoltages: string[]
+  enclosures: string[]
+  variableSpeed: string[]
+  motorSupply: string[]
+  impellerTypes: string[]
+  liquids: LiquidId[]
+  /** Liquid temperature the unit is rated for, °C. */
+  temperature: { min: number; max: number }
+  /** Pump without motor, EUR. */
+  pumpPrice: number
+}
+
+/** A configuration with its impeller trimmed: one orderable pump. */
+export type PumpVariant = PumpConfiguration & {
+  /** "<configuration id>-t<trim>". */
+  id: string
+  configurationId: string
+  /** e.g. "AHLSTAR A23-150-400/365 C1-SD-4P-F". */
+  name: string
+  impeller: number
+  /** Fixed number for standard variants; null shows "On request". */
+  productNumber: string | null
+  availability: ModelAvailability
+  leadTime: string
+}
+
+/** Where a pump curve meets the system curve through the duty point. */
+export type OperatingPoint = { flow: number; head: number }
+
+/** A variant evaluated at a duty point. All money in EUR. */
+export type SizingResult = {
+  variant: PumpVariant
+  /** 1 = lowest life cycle cost. */
+  rank: number
+  operatingPoint: OperatingPoint
+  /** Pump efficiency at the operating point, %. */
+  efficiency: number
+  /** Shaft power, kW. */
+  p2: number
+  /** Standard motor rating, kW. */
+  motorPower: number
+  /** Motor efficiency at rating, %. */
+  motorEfficiency: number
+  /** Electrical input power, kW. */
+  p1: number
+  /** m. */
+  npshr: number
+  /** Operating flow / best-efficiency flow at this trim and speed. */
+  bepRatio: number
+  /** Pump + motor. */
+  purchasePrice: number
+  energyCostPerYear: number
+  maintenanceCostPerYear: number
+  lifeCycleCost: number
+}
+
+/** A filter group with its options and counts, as shown in a filter column. */
+export type FilterGroup = {
+  id: string
+  label: string
+  options: { value: string; label: string; count: number; selected: boolean }[]
 }

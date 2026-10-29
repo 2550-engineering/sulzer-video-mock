@@ -41,7 +41,7 @@ export function ProductResults({
     <div className="grid items-start gap-8 lg:grid-cols-[17.5rem_minmax(0,1fr)]">
       <FilterColumn
         facets={facetsFor(products, selection)}
-        onToggle={onToggleFilter}
+        onToggle={(id, value) => onToggleFilter(id as FacetId, value)}
         onReset={filtersOn ? onResetFilters : undefined}
       />
 
