@@ -39,7 +39,6 @@ export const products: Product[] = [
       'surface-water-intake',
       'raw-water-transfer',
       'industrial-water-supply',
-      'process-liquid-transfer',
       'stock-preparation',
     ],
     summary:
@@ -54,7 +53,7 @@ export const products: Product[] = [
     images: [
       {
         src: '/images/products/ahlstar-main.png',
-        alt: `${productNames.ahlstar} end-suction pump on base frame with motor`,
+        alt: `${productNames.ahlstar} end-suction process pump`,
       },
     ],
     tabs: {
@@ -71,7 +70,7 @@ export const products: Product[] = [
           text: 'Hydraulics designed for the duty points you actually run at, matched with premium-efficiency motors, keep energy use – the biggest share of a pump’s lifetime cost – as low as possible.',
           image: {
             src: '/images/products/ahlstar-feature.png',
-            alt: `Two ${productNames.ahlstar} pumps side by side, one with the motor fitted`,
+            alt: `Cutaway of an ${productNames.ahlstar} pump showing the impeller, shaft seal and bearing unit`,
           },
         },
         highlights: [
@@ -115,7 +114,7 @@ export const products: Product[] = [
     name: productNames.sns,
     family: 'End-suction single-stage',
     category: 'End suction pumps',
-    applications: ['surface-water-intake', 'water-distribution', 'water-pressure-boosting'],
+    applications: ['surface-water-intake', 'water-distribution'],
     summary:
       'Compact end-suction pump for clean water supply, irrigation and building services, built to standard dimensions for easy replacement.',
     keySpecs: {
@@ -127,7 +126,7 @@ export const products: Product[] = [
     images: [
       {
         src: '/images/products/sns-main.png',
-        alt: `${productNames.sns} compact end-suction pump with motor`,
+        alt: `${productNames.sns} end-suction single-stage pump`,
       },
     ],
     tabs: {
@@ -228,7 +227,7 @@ export const products: Product[] = [
     images: [
       {
         src: '/images/products/sjt-main.png',
-        alt: `${productNames.sjt} vertical turbine pump with column and motor head`,
+        alt: `${productNames.sjt} vertical turbine pump, shown in cutaway`,
       },
     ],
     tabs: {
@@ -264,12 +263,7 @@ export const products: Product[] = [
     name: productNames.xfp,
     family: 'Submersible, non-clogging',
     category: 'Submersible pumps',
-    applications: [
-      'surface-water-intake',
-      'wastewater-collection',
-      'stormwater-flood-control',
-      'building-drainage',
-    ],
+    applications: ['surface-water-intake', 'wastewater-collection', 'stormwater-flood-control'],
     summary:
       'Heavy-duty submersible pump for raw water, sewage and stormwater, with a clog-resistant impeller and premium-efficiency motor.',
     keySpecs: {
@@ -281,7 +275,7 @@ export const products: Product[] = [
     images: [
       {
         src: '/images/products/xfp-main.png',
-        alt: `${productNames.xfp} submersible pump`,
+        alt: `${productNames.xfp} submersible pumps in several sizes`,
       },
     ],
     tabs: {
@@ -318,13 +312,13 @@ export const products: Product[] = [
     viewTo: '/connect',
     family: 'IoT monitoring',
     category: 'Monitoring and connectivity',
-    applications: ['surface-water-intake', 'wastewater-collection', 'process-liquid-transfer'],
+    applications: ['surface-water-intake', 'wastewater-collection'],
     summary:
       'Wireless sensors and a cloud dashboard that turn every pump into a connected asset, with live condition data and early warnings.',
     images: [
       {
         src: '/images/products/sulzer-connect-main.png',
-        alt: `${productNames.connect} wireless sensor and gateway`,
+        alt: `${productNames.connect} wireless sensor mounted on a pump motor`,
       },
     ],
     tabs: {
@@ -366,7 +360,7 @@ export const products: Product[] = [
     images: [
       {
         src: '/images/products/motor-protection-relay-main.png',
-        alt: 'DIN-rail motor protection relay with display',
+        alt: 'DIN-rail motor protection relay',
       },
     ],
     tabs: {
@@ -414,7 +408,7 @@ export const products: Product[] = [
     images: [
       {
         src: '/images/products/sjm-main.png',
-        alt: `${productNames.sjm} vertical mixed-flow pump with discharge head and motor`,
+        alt: `${productNames.sjm} vertical mixed-flow pump with discharge head`,
       },
     ],
     tabs: {
@@ -450,7 +444,7 @@ export const products: Product[] = [
     name: productNames.afp,
     family: 'Submersible, solids-handling',
     category: 'Submersible pumps',
-    applications: ['wastewater-collection', 'stormwater-flood-control', 'building-wastewater'],
+    applications: ['wastewater-collection', 'stormwater-flood-control'],
     summary:
       'Submersible sewage pump for municipal and building wastewater, with a solids-handling impeller and a compact, cooling-jacket-free design.',
     keySpecs: {
@@ -498,7 +492,7 @@ export const products: Product[] = [
     name: productNames.jDewatering,
     family: 'Submersible dewatering',
     category: 'Dewatering pumps',
-    applications: ['mine-dewatering', 'building-drainage', 'stormwater-flood-control'],
+    applications: ['open-pit-dewatering', 'underground-dewatering', 'stormwater-flood-control'],
     summary:
       'Portable submersible pump for construction sites, mines and emergency drainage, light enough to move by hand and tough enough for abrasive water.',
     keySpecs: {
@@ -510,7 +504,7 @@ export const products: Product[] = [
     images: [
       {
         src: '/images/products/j-dewatering-main.png',
-        alt: `${productNames.jDewatering}, portable submersible pump with lifting handle`,
+        alt: `${productNames.jDewatering}, portable submersible drainage pump`,
       },
     ],
     tabs: {
@@ -546,13 +540,13 @@ export const products: Product[] = [
     name: productNames.pumpController,
     family: 'Pump control',
     category: 'Monitoring and connectivity',
-    applications: ['wastewater-collection', 'building-wastewater', 'stormwater-flood-control'],
+    applications: ['wastewater-collection', 'stormwater-flood-control'],
     summary:
       'Level-based controller for pump stations: starts, stops and alternates pumps, logs every run and sends alarms to your phone or SCADA.',
     images: [
       {
         src: '/images/products/pump-controller-main.png',
-        alt: `${productNames.pumpController} with display, in a control cabinet`,
+        alt: `${productNames.pumpController} touchscreen with plug-in I/O modules`,
       },
     ],
     tabs: {
@@ -594,7 +588,7 @@ export const products: Product[] = [
     images: [
       {
         src: '/images/products/blue-box-main.png',
-        alt: `${productNames.blueBox} dashboard on a laptop in a treatment plant control room`,
+        alt: `Sulzer pump surrounded by data, illustrating ${productNames.blueBox} analytics`,
       },
     ],
     tabs: {

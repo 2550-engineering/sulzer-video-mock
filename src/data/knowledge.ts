@@ -13,7 +13,7 @@ export const knowledgeItems: KnowledgeItem[] = [
     teaser: 'Sump layout, intake velocities and pump selection for river and lake intakes.',
     image: {
       src: '/images/knowledge/intake-engineering-manual.jpg',
-      alt: 'Cover of a technical manual on a desk, with an intake structure drawing beside it',
+      alt: 'Stack of printed technical manuals',
     },
     to: '/learn',
   },
@@ -24,7 +24,7 @@ export const knowledgeItems: KnowledgeItem[] = [
     teaser: 'A Sulzer application engineer explains how to avoid vortices and air entrainment.',
     image: {
       src: '/images/knowledge/expert-video-sump-design.jpg',
-      alt: 'Sulzer application engineer presenting in front of a pump sump model',
+      alt: 'Sulzer engineer talking a group of visitors through pump components',
     },
     to: '/learn',
   },
@@ -35,7 +35,7 @@ export const knowledgeItems: KnowledgeItem[] = [
     teaser: 'Hydraulics, materials and operation, from the people who design the pumps.',
     image: {
       src: '/images/knowledge/centrifugal-pump-handbook.jpg',
-      alt: 'Centrifugal pump handbook lying open next to a pump impeller',
+      alt: 'See-through illustration of a centrifugal pump showing its internals',
     },
     to: '/learn',
   },
@@ -59,7 +59,7 @@ export const knowledgeItems: KnowledgeItem[] = [
     teaser: 'New intake pumps sized for the real duty point, not the worst case.',
     image: {
       src: '/images/stories/story-river-intake.jpg',
-      alt: 'River intake pumping station at dawn, with mist on the water',
+      alt: 'Brick raw water pumping station on a riverbank, with its intake below the waterline',
     },
     to: '/learn',
   },
@@ -70,7 +70,7 @@ export const knowledgeItems: KnowledgeItem[] = [
     teaser: 'Shared wear parts and back pull-out design keep the line running.',
     image: {
       src: '/images/stories/story-paper-mill.jpg',
-      alt: 'Maintenance engineer next to a row of process pumps in a paper mill',
+      alt: 'AHLSTAR process pump and motor in a paper mill pump room',
     },
     to: '/learn',
   },
@@ -81,7 +81,7 @@ export const knowledgeItems: KnowledgeItem[] = [
     teaser: 'Corrosion-resistant materials for round-the-clock seawater duty.',
     image: {
       src: '/images/stories/story-desalination.jpg',
-      alt: 'Coastal desalination plant beside the sea under a clear sky',
+      alt: 'Sulzer engineers in the high-pressure pump hall of a seawater desalination plant',
     },
     to: '/learn',
   },

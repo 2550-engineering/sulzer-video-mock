@@ -28,7 +28,11 @@ export function PlaceholderPage({ route }: { route: PlaceholderRoute }) {
       </PageHeaderBand>
 
       <section className="site-container py-16">
-        <ComingSoonPanel eyebrow="Coming soon" title="We're building something new here">
+        <ComingSoonPanel
+          eyebrow="Coming soon"
+          title="We're building something new here"
+          image={route.image}
+        >
           This part of the Sulzer website is getting a faster, simpler experience. In the meantime,
           our specialists are happy to help you with anything you need.
         </ComingSoonPanel>
