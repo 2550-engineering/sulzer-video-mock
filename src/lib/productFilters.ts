@@ -1,6 +1,6 @@
 import { searchPage as copy } from '../data/catalogPages'
 import { products as allProducts } from '../data/products'
-import type { Product } from '../types'
+import type { FilterGroup, Product } from '../types'
 import { applicationTrail, childApplications, getApplication, rootApplication } from './catalog'
 
 /*
@@ -16,7 +16,7 @@ export type FacetId = (typeof facetIds)[number]
 export type FilterSelection = Record<FacetId, string[]>
 
 export type FacetOption = { value: string; label: string; count: number; selected: boolean }
-export type Facet = { id: FacetId; label: string; options: FacetOption[] }
+export type Facet = FilterGroup & { id: FacetId; options: FacetOption[] }
 
 type OptionDef = { value: string; label: string; matches: (product: Product) => boolean }
 

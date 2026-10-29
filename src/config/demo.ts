@@ -13,6 +13,8 @@ export const demoUser = {
   // Placeholder customer company — confirm with Sulzer (fictional, not a real customer).
   company: 'Nordvatten Utilities AB',
   role: 'Maintenance Manager',
+  // Placeholder address on a reserved example domain.
+  email: 'emma.lindqvist@nordvatten.example',
 } as const
 
 export const market = {
@@ -48,6 +50,32 @@ export const productSeries = {
   // Placeholder model-name prefixes, e.g. "AHLSTAR 150-125-315" — confirm with Sulzer.
   ahlstar: 'AHLSTAR',
   xfp: 'XFP',
+} as const
+
+/**
+ * Sizing defaults and life cycle cost assumptions.
+ * PLACEHOLDERS — confirm with Sulzer: the duty point is a plausible raw water lift
+ * for the recording (covered by eight AHLSTAR sizes), and the energy price and
+ * running hours are typical values, not Sulzer figures.
+ */
+export const sizingDemo = {
+  productId: 'ahlstar',
+  /** m³/h. */
+  flow: 150,
+  /** m. */
+  head: 30,
+  liquid: 'water',
+  /** °C. */
+  temperature: 20,
+  frequency: 50,
+  /** EUR per kWh. */
+  electricityPrice: 0.12,
+  /** Hours per year. */
+  operatingHours: 6000,
+  /** Life cycle cost period, years. */
+  lifeCycleYears: 15,
+  /** "18 best matches": the result list is capped at this many. */
+  maxResults: 18,
 } as const
 
 /** Reference shown after "Request service" is sent. Fixed, so every recording shows the same one. */

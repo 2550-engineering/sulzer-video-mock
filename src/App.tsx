@@ -16,45 +16,51 @@ import { PlaceholderPage } from './pages/PlaceholderPage'
 import { ProductPage } from './pages/ProductPage'
 import { ProductSearchPage } from './pages/ProductSearchPage'
 import { SizingPage } from './pages/SizingPage'
+import { SizingResultsPage } from './pages/SizingResultsPage'
+import { ProjectsProvider } from './projects/ProjectsProvider'
 import { ToastProvider } from './toast/ToastProvider'
 
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <ToastProvider>
-          <ScrollToTop />
-          <Routes>
-            <Route element={<SiteLayout />}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/my-sulzer" element={<MySulzerPage />} />
-              <Route path="/my-pages" element={<MyPagesPage />} />
-              <Route path="/applications" element={<ApplicationPage />} />
-              <Route path="/applications/:areaSlug" element={<ApplicationPage />} />
-              <Route path="/applications/:areaSlug/:appSlug" element={<ApplicationPage />} />
-              <Route path="/products" element={<ProductSearchPage />} />
-              {/* Products A–Z and Categories are the results page without a query; keeps old links working. */}
-              <Route path="/products/a-z" element={<Navigate to="/products" replace />} />
-              <Route path="/products/categories" element={<Navigate to="/products" replace />} />
-              <Route path="/products/:id" element={<ProductPage />} />
-              <Route path="/sizing" element={<SizingPage />} />
-              <Route path="/my-projects" element={<MyProjectsPage />} />
-              <Route path="/assets" element={<AssetsPage />} />
-              {placeholderRoutes.map((route) => (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={<PlaceholderPage route={route} />}
-                />
-              ))}
-              <Route path="*" element={<NotFoundPage />} />
-            </Route>
-            {/* Sulzer Connect is its own app, outside the website header and footer. */}
-            <Route path="/connect" element={<ConnectPage />} />
-          </Routes>
-        </ToastProvider>
-        <DemoControls />
-      </BrowserRouter>
+      <ProjectsProvider>
+        <BrowserRouter>
+          <ToastProvider>
+            <ScrollToTop />
+            <Routes>
+              <Route element={<SiteLayout />}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/my-sulzer" element={<MySulzerPage />} />
+                <Route path="/my-pages" element={<MyPagesPage />} />
+                <Route path="/applications" element={<ApplicationPage />} />
+                <Route path="/applications/:areaSlug" element={<ApplicationPage />} />
+                <Route path="/applications/:areaSlug/:appSlug" element={<ApplicationPage />} />
+                <Route path="/products" element={<ProductSearchPage />} />
+                {/* Products A–Z and Categories are the results page without a query; keeps old links working. */}
+                <Route path="/products/a-z" element={<Navigate to="/products" replace />} />
+                <Route path="/products/categories" element={<Navigate to="/products" replace />} />
+                <Route path="/products/:id" element={<ProductPage />} />
+                <Route path="/sizing" element={<SizingPage />} />
+                <Route path="/sizing/results" element={<SizingResultsPage />} />
+                <Route path="/my-projects" element={<MyProjectsPage />} />
+                <Route path="/my-projects/:projectId" element={<MyProjectsPage />} />
+                <Route path="/assets" element={<AssetsPage />} />
+                {placeholderRoutes.map((route) => (
+                  <Route
+                    key={route.path}
+                    path={route.path}
+                    element={<PlaceholderPage route={route} />}
+                  />
+                ))}
+                <Route path="*" element={<NotFoundPage />} />
+              </Route>
+              {/* Sulzer Connect is its own app, outside the website header and footer. */}
+              <Route path="/connect" element={<ConnectPage />} />
+            </Routes>
+          </ToastProvider>
+          <DemoControls />
+        </BrowserRouter>
+      </ProjectsProvider>
     </AuthProvider>
   )
 }
