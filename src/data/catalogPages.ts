@@ -360,32 +360,6 @@ export const catalogList = {
 
 /** Copy for feature pages that aren't built yet. */
 export const comingSoon = {
-  sizing: {
-    title: 'Sizing & configuration',
-    description: 'Enter your duty point and get matching Sulzer pumps, curves and energy data.',
-    panelTitle: 'Size and configure in minutes',
-    panelText:
-      'Our new sizing tool takes you from duty point to a fully configured pump – with curves, energy data and drawings – and saves the result straight to your project.',
-    features: [
-      'Flow and head entry with live performance curves',
-      'Ranked matches by efficiency and lifetime cost',
-      'Configure motor, materials and accessories',
-      'Add the result to My projects with one click',
-    ],
-  },
-  myProjects: {
-    title: 'My projects',
-    description: 'Collect products, sizing results and documents per project and share them.',
-    panelTitle: 'Your projects, all in one place',
-    panelText:
-      'Keep every product, sizing result, drawing and quotation for a project together – and work on it with your colleagues and Sulzer.',
-    features: [
-      'Products and sizing results per project',
-      'Drawings, BIM files and tender texts',
-      'Share with colleagues and your Sulzer contact',
-      'Request a quotation for the whole project',
-    ],
-  },
   assets: {
     title: 'My assets',
     description: 'Your installed base with live condition, alerts and service history.',

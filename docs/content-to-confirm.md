@@ -32,6 +32,35 @@ and checks links, tab hashes, the sticky tab bar and layout shift.
    - Help cards go to `/contact/quote`, `/eshop` and `/self-service/requests`, all "Coming soon".
    - Service rows go to `/support` or `/support/service-portal`, both "Coming soon".
 
+## Before recording the Sizing video
+
+Demo path: `/products/ahlstar` → "Size product" → `/sizing?product=ahlstar` (set parameters;
+"Number of hits" counts down from 586) → Start sizing → `/sizing/results` (18 best matches of 38) → tick a result → "Save as project" → `/my-projects/project-4` → "Open sizing" → change
+something → Start sizing → "Update project".
+
+1. **Parameters page (`/sizing`):**
+   - The dark "Size Product" band and the action row: Load parameters, Save parameters, Reset
+     to defaults, Start sizing.
+   - The dense "Select parameters" form: 36 rows from `src/data/sizingParameters.ts`.
+   - The optional sizing parameters, collapsed by default.
+   - The sticky range chart with 60 coverage shapes.
+   - Every value is in the URL.
+2. **Sign in first** (Shift+D). Signed out, results show no prices or lead times, and "Add to
+   project" asks you to sign in.
+3. **Reset demo before each take** (Shift+D), so projects return to their seed state.
+4. **Entry points into sizing:**
+   - "Size product" on product pages and "Size range" on product rows (Products & solutions,
+     search results) go to `/sizing?product=<id>`.
+   - "Size this model" on the Models tab goes to `/sizing?product=<id>&model=<model id>`.
+   - "Size application" on application pages goes to `/sizing?application=<slug>`.
+   - Mega menu "Sizing", the mega menu "Size your product" card, the home "Sizing" card, Quick
+     links "Sizing" and the account menu "Size a pump" go to `/sizing`.
+5. **Entry points into My Projects:** My Pages "My projects", the account menu "My projects" and
+   the "View" link after "Add to project" on the Models tab go to `/my-projects`, which opens the
+   most recently changed project. The My Pages activity row "Project ‘Riverside intake’" opens
+   that project.
+6. **No images needed:** sizing and My Projects charts and thumbnails are SVG.
+
 ## Before recording the Product finder video
 
 Recording path: header search → type "AHLSTAR" → suggestions → Enter → `/products?q=ahlstar` →
@@ -222,6 +251,147 @@ or per range.
   within one working day". Placeholder, confirm with Sulzer. The reference number after sending
   is always `SR-2026-0142` (`serviceRequestReference` in `src/config/demo.ts`); nothing is sent.
 - **Spare parts tab** shows "Coming soon" until the spare parts module.
+
+## Sizing (module 3)
+
+Everything below is invented so that sizing looks and behaves like a real configurator, with
+repeatable results. None of it is Sulzer data. **Placeholder, confirm with Sulzer** before a video
+shows numbers from sizing.
+
+### Defaults and life cycle cost (`src/config/demo.ts` → `sizingDemo`, `src/data/sizingParameters.ts`)
+
+- **Demo duty point:** 150 m³/h at 30 m, water at 20 °C, 50 Hz. Earlier versions used 300 m³/h
+  at 45 m, but in the current range only 6 configurations reach it.
+  - 38 configurations qualify, and the best 18 by life cycle cost are shown.
+  - **Best match:** `AHLSTAR A24-200-315/325 C1-SD-4P-F` (product no. 63244325), about
+    207 000 EUR over 15 years.
+  - Narrowing to a handful takes more than Shaft seal + Poles. With this range, SD + 4 poles
+    still leaves many results; add Material code C1 and a coupling type.
+- **Form defaults:**
+  - Pumped liquid: Water
+  - Variable speed: Yes, external
+  - Impeller size: Energy optimised
+  - Maximum frequency: 105 %
+  - Flow rate margin: from 0 m³/h to the end of the curve (used as 0.2–1.25 × BEP flow)
+  - Application: Surface water intake
+- **Read-only values:**
+  - Mechanical seal: Single (Double when only DD is selected)
+  - Shaft seal designation: Mechanical seal
+  - Bearing design: Standard
+  - Base frame: EN/ISO
+  - IE efficiency class: IE4
+  - Language on pump plate: GB
+- **Optional sizing parameters (defaults):**
+  - Load profile: water supply (100/75/50 %)
+  - Operating hours and energy price: 6 000 h/year, 0.12 EUR/kWh
+  - Control mode: constant speed; reduced night-time duty: no
+  - System: 1 pump, 1 duty, no parallel operation
+  - Suction conditions: NPSH available 6 m, suction pressure 0 bar, altitude 50 m
+  - Liquid properties: density 998 kg/m³, viscosity 1 mm²/s, solids 0 %
+  - Tolerances: ISO 9906 grade 2B, no test certificate
+
+  Only operating hours and energy price change the results, through the life cycle cost.
+
+- **Life cycle cost:** purchase price (pump + motor) + 15 × (energy + maintenance). No
+  discounting. Maintenance per year = 1.5 % of the purchase price + seal service: 280 EUR
+  single, 460 EUR double.
+
+### Hydraulic sizes and range chart (`src/data/hydraulics.ts`)
+
+- **Sizes:** 28 AHLSTAR sizes (A01 `50-32-125` to A28 `300-250-500`), sold with 2, 4 and/or 6
+  poles. That gives 60 coverage areas on the range chart, about 2–800 m³/h and 2–180 m.
+- **How the curves are derived:** from the impeller diameter (1.05 × nominal; smallest trim
+  0.78 × nominal) and the discharge size.
+  - BEP head = 0.9 · u²/2g at 1 475 rpm.
+  - BEP flow from 2.4 m/s in the discharge nozzle.
+  - Efficiency 48 + 14·log₁₀(Q), capped at 86 %.
+  - NPSHr 1.2 + 0.5·Q^0.35.
+  - Base price 2 200 EUR × (impeller/200)^1.2 × (discharge/32)^0.55.
+- **Catalogue rules:**
+  - The largest sizes (discharge DN 200+) come in cast iron only, with a spacer coupling.
+  - Super duplex is not offered for 400–500 mm impellers.
+  - Sizes up to 160 mm have no spacer coupling.
+
+### Configurations, hits and filters (`src/lib/variants.ts`, `src/lib/sizingFilters.ts`)
+
+- **Hits:** a configuration is size × poles × material code × shaft seal × coupling. There are
+  586 for AHLSTAR, which is the "Number of hits" with only the product group set.
+- **Material codes:**
+  - C1: cast iron impeller, cast iron EN-GJL-250 housing
+  - S2: duplex impeller, stainless EN 1.4408 housing
+  - D3: super duplex impeller, duplex EN 1.4517 housing
+- **Seals and couplings:** seals SD (single) and DD (double); couplings F (without spacer) and
+  FS (with spacer).
+- **Motor per configuration:** IE4, the next standard rating at least 1.25 × shaft power at full
+  impeller.
+  - Its efficiency is the IE3 table + 0.8 points; its price is the IE3 price × 1.25 (× 1.3 for
+    6 poles).
+  - Motor numbers look like `MT-40550`.
+  - U is 230/400 V up to 3 kW, otherwise 400/690 V.
+  - Enclosure: IC410 up to 1.5 kW, IC416 from 110 kW, otherwise IC411.
+- **Supported options per configuration:**
+  - Mains 3×690 V above 3 kW, 3×460 V up to 90 kW.
+  - IP56 from 11 kW, IP65 up to 30 kW.
+  - Integrated variable speed up to 22 kW; customer motor from 11 kW.
+  - Semi-open impeller for impellers up to 315 mm, not in D3.
+  - Liquids: sea water needs S2 or D3; raw water with solids needs a semi-open impeller; light
+    oil needs a double seal and no D3.
+  - Seal temperature range: SD −20 to 120 °C, DD −40 to 180 °C.
+- **Variants and names:** a variant is a configuration with a trimmed impeller (5 mm steps).
+  - Name pattern: `AHLSTAR <code>-<inlet DN>-<nominal impeller>/<trim> <material>-<seal>-<poles>P-<coupling>`,
+    e.g. `AHLSTAR A24-200-315/325 C1-SD-4P-F`.
+  - Standard variants (C1, SD, F) get a fixed number: `63` + size position + poles + trim. They
+    show "Fast delivery, 2 weeks"; the rest are "On request", 10–12 weeks.
+- **Price factors:** S2 × 1.55, D3 × 2.1, double seal × 1.22, spacer coupling × 1.06.
+
+### Curve model (`src/lib/pumpCurves.ts`, `src/lib/sizing.ts`)
+
+- **Head:** H = H0 − k·Q², with H0 = 1.25 × the BEP head. Trim and speed follow the affinity
+  laws.
+- **Efficiency:** parabolic around the BEP, minus 0.5 points per 5 % trim, times the liquid's
+  factor.
+- **NPSHr:** NPSHr at BEP × (0.5 + 0.5·(Q/Q_BEP)²), scaling with speed².
+- **Operating point:** on a friction-only system curve through the duty point.
+- **Qualifying:** the smallest allowed trim that reaches the duty head, within the flow rate
+  margin, and a motor with 10 % margin over shaft power. "Max impeller" uses the full impeller
+  only; "Fixed trim" uses 10 mm steps.
+
+### Liquids (`src/data/liquids.ts`)
+
+| Liquid                | Density    | Efficiency factor | Temperature range |
+| --------------------- | ---------- | ----------------- | ----------------- |
+| Water                 | 998 kg/m³  | 1                 | 0 to 120 °C       |
+| Sea water             | 1025 kg/m³ | 1                 | 0 to 50 °C        |
+| Raw water with solids | 1050 kg/m³ | 0.96              | 0 to 40 °C        |
+| Glycol mix            | 1040 kg/m³ | 0.97              | −20 to 90 °C      |
+| Light oil             | 850 kg/m³  | 0.94              | −10 to 120 °C     |
+
+Head in bar or kPa is converted with the liquid's density.
+
+## My Projects (module 3)
+
+Invented for the demo. **Placeholder, confirm with Sulzer.**
+
+- **Projects** (`src/data/projects.ts`): Riverside intake (P-2026-0318, Draft), North pump
+  station upgrade (P-2026-0291, Quoted) and Harbour district booster station (P-2026-0274, Draft).
+  Their ref numbers, project IDs, dates, deadlines and members (Johan Berg, Sara Nyström, Lars
+  Holm, and Mikael Ahonen as the Sulzer application engineer) are fictional. Each product in them
+  is the best sizing result for an invented duty point.
+- **Client data:** the demo company, the demo user and `emma.lindqvist@nordvatten.example`.
+- **Actions that only show a toast:** print, download, edit, copy, delete, "Sale price and profit
+  margins", "Customize columns", and project document downloads. "Advanced My Projects" is a
+  visual switch only.
+- **Saving:** projects, sizings and products are saved in the browser (`localStorage`), as are
+  saved parameter sets. "Reset demo" (Shift+D) clears them.
+- **Saved sizings:** a sizing stores every parameter, unit, optional parameter and result
+  filter, the duty point, the chosen variants and the hit count.
+  - New projects get ids `project-4` and up, ref numbers `P-2026-0143` and up, and project IDs
+    `396092` and up.
+  - Their dates read "Today" or "Just now", so recordings don't depend on the clock.
+- **Seed sizing:** Riverside intake holds one, "Surface water intake – 220 m³/h @ 38 m", which
+  position 10 came from.
+- **Models tab:** "Add to project" there still shows a toast only. Project items are sized
+  variants, and catalogue models aren't one.
 
 ## AHLSTAR product page (`src/data/products.ts` → `ahlstar.tabs.explore`)
 

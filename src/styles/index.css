@@ -59,11 +59,20 @@
   --animate-fade-in: sz-fade-in var(--sz-duration-base) var(--sz-ease);
   /* Route change. Opacity only: a transform would break sticky/fixed elements inside the page. */
   --animate-page-in: sz-page-in var(--sz-duration-page) var(--sz-ease);
+  /* A newly added row: tinted, then fades back to its normal background. */
+  --animate-highlight: sz-highlight 2.4s var(--sz-ease);
 
   @keyframes sz-fade-in {
     from {
       opacity: 0;
       translate: 0 4px;
+    }
+  }
+
+  @keyframes sz-highlight {
+    0%,
+    40% {
+      background-color: var(--sz-color-primary-tint-strong);
     }
   }
 

@@ -112,9 +112,9 @@ export const recentActivity = {
     },
     {
       subject: 'Project ‘Riverside intake’',
-      text: 'shared with you',
+      text: 'updated by Johan Berg',
       time: 'Today, 07:58',
-      to: '/my-projects',
+      to: '/my-projects/riverside-intake',
       icon: FolderOpen,
     },
     {

@@ -10,6 +10,7 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
   Never Grundfos images.
 - **Priority 1** images are visible in a recording; the column says which (application finder,
   product finder).
+- **Sizing and My Projects** need no photos: their charts and curve thumbnails are drawn in SVG.
 - **Formats:** JPG for photos (quality 80–85), PNG for product cut-outs.
 
 136 images, 0 missing.
