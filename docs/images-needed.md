@@ -12,140 +12,143 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
   product finder).
 - **Formats:** JPG for photos (quality 80–85), PNG for product cut-outs.
 
-133 images, 115 missing.
+136 images, 0 missing.
 
 | Priority | File | Folder | Aspect | Min. size | Kind | What it should show | Status |
 |----------|------|--------|--------|-----------|------|---------------------|--------|
-| 1 · application finder | `applications-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Row of large Sulzer pumps in a bright, modern pump hall | missing |
-| 1 · application finder | `municipal-water-supply-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Municipal waterworks next to a river, seen from above | missing |
-| 1 · application finder | `municipal-water-supply-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Municipal waterworks next to a river, seen from above | present |
-| 1 · application finder | `surface-water-intake-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Raw water intake pumping station with large vertical pumps and blue pipework | missing |
-| 1 · application finder | `surface-water-intake-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Raw water intake pumping station with large vertical pumps and blue pipework | missing |
-| 1 · application finder | `groundwater-intake-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Well field with borehole wellheads in green countryside | missing |
-| 1 · application finder | `drinking-water-treatment-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Open filtration basins in a drinking water plant | missing |
-| 1 · application finder | `water-distribution-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Distribution pumping station with a row of horizontal pumps | missing |
-| 1 · application finder | `desalination-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Coastal desalination plant with rows of membrane vessels | missing |
-| 1 · application finder | `raw-water-transfer-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Large raw water pipeline running across open landscape | missing |
-| 1 · application finder | `wastewater-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Round clarifier basins at a wastewater treatment plant, from above | present |
-| 1 · application finder | `water-treatment-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Industrial water treatment hall with filters and stainless pipework | present |
+| 1 · application finder | `applications-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Range of Sulzer AHLSTAR process pumps on display in a bright hall | present |
+| 1 · application finder | `municipal-water-supply-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Clarifier at a municipal water treatment plant under a blue sky | present |
+| 1 · application finder | `municipal-water-supply-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Clarifier at a municipal water treatment plant under a blue sky | present |
+| 1 · application finder | `surface-water-intake-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Raw water intake tower on a lake between forested hills | present |
+| 1 · application finder | `surface-water-intake-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Raw water intake tower on a lake between forested hills | present |
+| 1 · application finder | `groundwater-intake-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Well pump discharging groundwater into an irrigation canal | present |
+| 1 · application finder | `drinking-water-treatment-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Rows of open filtration basins at a water treatment plant | present |
+| 1 · application finder | `water-distribution-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Large Sulzer axially split pump with green pipework in a pumping station | present |
+| 1 · application finder | `desalination-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Aerial view of a coastal seawater desalination plant | present |
+| 1 · application finder | `raw-water-transfer-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Large water transmission pipeline running across open landscape | present |
+| 1 · application finder | `wastewater-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Water droplets splashing on a dark water surface | present |
+| 1 · application finder | `water-treatment-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Clarifier at an industrial water treatment plant | present |
 | 1 · application finder | `energy-transition-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Aerial views of geothermal springs, forest and a river valley | present |
 | 1 · application finder | `fertilizers-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Close-up of a backlit green leaf | present |
 | 1 · application finder | `mining-metals-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Aerial view of a bucket-wheel stacker loading ore by a railway line | present |
-| 1 · application finder | `pulp-paper-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Paper machine running at speed in a paper mill | present |
-| 1 · application finder | `intake-engineering-manual.jpg` | `public/images/knowledge/` | 3:2 | 1200 × 800 | Knowledge card | Cover of a technical manual on a desk, with an intake structure drawing beside it | missing |
-| 1 · application finder | `expert-video-sump-design.jpg` | `public/images/knowledge/` | 3:2 | 1200 × 800 | Knowledge card | Sulzer application engineer presenting in front of a pump sump model | missing |
-| 1 · application finder | `centrifugal-pump-handbook.jpg` | `public/images/knowledge/` | 3:2 | 1200 × 800 | Knowledge card | Centrifugal pump handbook lying open next to a pump impeller | missing |
+| 1 · application finder | `pulp-paper-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Close-up of stacked paper rolls | present |
+| 1 · application finder | `intake-engineering-manual.jpg` | `public/images/knowledge/` | 3:2 | 1200 × 800 | Knowledge card | Stack of printed technical manuals | present |
+| 1 · application finder | `expert-video-sump-design.jpg` | `public/images/knowledge/` | 3:2 | 1200 × 800 | Knowledge card | Sulzer engineer talking a group of visitors through pump components | present |
+| 1 · application finder | `centrifugal-pump-handbook.jpg` | `public/images/knowledge/` | 3:2 | 1200 × 800 | Knowledge card | See-through illustration of a centrifugal pump showing its internals | present |
 | 1 · application finder | `river-intake-customer-story.jpg` | `public/images/knowledge/` | 3:2 | 1200 × 800 | Knowledge card | River intake pumping station seen from the water on a clear day | present |
 | 1 · application finder | `ahlstar-feature.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | Cutaway of an AHLSTAR pump showing the impeller, shaft seal and bearing unit | present |
-| 1 · application finder | `sns-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | SNS compact end-suction pump with motor | missing |
-| 1 · application finder | `smd-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | SMD axially split double-suction pump | missing |
-| 1 · application finder | `sjt-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | SJT vertical turbine pump with column and motor head | missing |
-| 1 · application finder | `xfp-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | XFP submersible pump | missing |
-| 1 · application finder | `sulzer-connect-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | Sulzer Connect wireless sensor and gateway | missing |
-| 1 · application finder | `motor-protection-relay-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | DIN-rail motor protection relay with display | missing |
-| 1 · application finder | `remote-expert-support.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer engineer on a video call, reviewing pump performance curves | missing |
-| 1 · application finder | `installation.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Installation crew lowering a large pump into place with a crane | missing |
+| 1 · application finder | `sns-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | SNS end-suction single-stage pump | present |
+| 1 · application finder | `smd-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | SMD axially split double-suction pump | present |
+| 1 · application finder | `sjt-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | SJT vertical turbine pump, shown in cutaway | present |
+| 1 · application finder | `xfp-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | XFP submersible pumps in several sizes | present |
+| 1 · application finder | `sulzer-connect-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | Sulzer Connect wireless sensor mounted on a pump motor | present |
+| 1 · application finder | `motor-protection-relay-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | DIN-rail motor protection relay | present |
+| 1 · application finder | `remote-expert-support.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer digital expert reviewing pump data on a laptop | present |
+| 1 · application finder | `installation.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Installation crew lifting a large rotor into place with a chain hoist | present |
 | 1 · application finder | `story-river-intake.jpg` | `public/images/stories/` | 4:5 (portrait; headline sits on the lower third) | 1200 × 1500 | Customer story card | Brick raw water pumping station on a riverbank, with its intake below the waterline | present |
 | 1 · application finder | `story-paper-mill.jpg` | `public/images/stories/` | 4:5 (portrait; headline sits on the lower third) | 1200 × 1500 | Customer story card | AHLSTAR process pump and motor in a paper mill pump room | present |
 | 1 · application finder | `story-desalination.jpg` | `public/images/stories/` | 4:5 (portrait; headline sits on the lower third) | 1200 × 1500 | Customer story card | Sulzer engineers in the high-pressure pump hall of a seawater desalination plant | present |
 | 1 · application finder, product finder | `ahlstar-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | AHLSTAR end-suction process pump | present |
-| 1 · application finder, product finder | `connect-asset-monitoring.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Operator checking live pump data on a tablet in a pump station | missing |
-| 1 · application finder, product finder | `commissioning.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Technician aligning a pump and motor on a base frame | missing |
-| 1 · application finder, product finder | `inspection.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Service engineer with a checklist inspecting a pump in a pump station | missing |
-| 1 · application finder, product finder | `vibration-analysis.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Vibration sensor being held against a pump bearing housing | missing |
+| 1 · application finder, product finder | `connect-asset-monitoring.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Operator checking live pump data on a tablet | present |
+| 1 · application finder, product finder | `commissioning.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer engineer assembling a pump on site | present |
+| 1 · application finder, product finder | `inspection.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer service engineer inspecting a large pump casing | present |
+| 1 · application finder, product finder | `vibration-analysis.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer wireless vibration sensor fitted to a pump bearing housing | present |
 | 1 · product finder | `ahlstar-bim-preview.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | 3D render of an AHLSTAR end-suction pump, isometric view | present |
-| 1 · product finder | `service-agreements.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer service engineer and plant manager shaking hands next to a pump | missing |
+| 1 · product finder | `service-agreements.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Two Sulzer service technicians beside their service van | present |
 | 1 · product finder | `repair-overhaul.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer technician restoring a pump part with a laser cladding robot in a service center | present |
-| 2 | `applications-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Row of large Sulzer pumps in a bright, modern pump hall | missing |
-| 2 | `groundwater-intake-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Well field with borehole wellheads in green countryside | missing |
-| 2 | `drinking-water-treatment-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Open filtration basins in a drinking water plant | missing |
-| 2 | `water-distribution-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Distribution pumping station with a row of horizontal pumps | missing |
-| 2 | `desalination-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Coastal desalination plant with rows of membrane vessels | missing |
-| 2 | `raw-water-transfer-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Large raw water pipeline running across open landscape | missing |
-| 2 | `wastewater-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Round clarifier basins at a wastewater treatment plant, from above | missing |
-| 2 | `wastewater-collection-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Submersible pumps being lifted out of a wastewater lift station | missing |
-| 2 | `wastewater-collection-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Submersible pumps being lifted out of a wastewater lift station | missing |
-| 2 | `stormwater-flood-control-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Stormwater pumping station beside a city canal | missing |
-| 2 | `stormwater-flood-control-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Stormwater pumping station beside a city canal | missing |
-| 2 | `wastewater-treatment-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Aeration basin with fine bubbles rising to the surface | missing |
-| 2 | `wastewater-treatment-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Aeration basin with fine bubbles rising to the surface | missing |
-| 2 | `sludge-handling-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Sludge digesters at a wastewater treatment plant | missing |
-| 2 | `sludge-handling-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Sludge digesters at a wastewater treatment plant | missing |
-| 2 | `water-treatment-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Industrial water treatment hall with filters and stainless pipework | missing |
-| 2 | `industrial-water-supply-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Industrial water intake pumps at a riverside plant | missing |
-| 2 | `industrial-water-supply-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Industrial water intake pumps at a riverside plant | missing |
-| 2 | `industrial-wastewater-treatment-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Effluent treatment tanks at an industrial site | missing |
-| 2 | `industrial-wastewater-treatment-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Effluent treatment tanks at an industrial site | missing |
-| 2 | `process-water-treatment-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Process water treatment skid with pumps and filters | missing |
-| 2 | `process-water-treatment-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Process water treatment skid with pumps and filters | missing |
-| 2 | `cooling-water-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Industrial cooling towers against a blue sky | missing |
-| 2 | `cooling-water-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Industrial cooling towers against a blue sky | missing |
-| 2 | `boiler-feed-water-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Multistage boiler feed pumps in a power plant | missing |
-| 2 | `boiler-feed-water-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Multistage boiler feed pumps in a power plant | missing |
-| 2 | `reverse-osmosis-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Racks of reverse osmosis membrane vessels | missing |
-| 2 | `reverse-osmosis-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Racks of reverse osmosis membrane vessels | missing |
-| 2 | `ultrafiltration-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Ultrafiltration modules in a water treatment hall | missing |
-| 2 | `ultrafiltration-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Ultrafiltration modules in a water treatment hall | missing |
-| 2 | `water-reuse-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Clean treated water flowing out of a reuse plant | missing |
-| 2 | `water-reuse-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Clean treated water flowing out of a reuse plant | missing |
-| 2 | `energy-transition-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Aerial views of geothermal springs, forest and a river valley | missing |
-| 2 | `carbon-capture-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Carbon capture plant with absorber columns beside an industrial site | missing |
-| 2 | `carbon-capture-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Carbon capture plant with absorber columns beside an industrial site | missing |
-| 2 | `biofuels-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Biorefinery with storage tanks and distillation columns | missing |
-| 2 | `biofuels-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Biorefinery with storage tanks and distillation columns | missing |
-| 2 | `energy-recovery-storage-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Pumped storage reservoir in a mountain landscape | missing |
-| 2 | `energy-recovery-storage-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Pumped storage reservoir in a mountain landscape | missing |
-| 2 | `concentrated-solar-power-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Heliostat field focusing sunlight on a solar tower | missing |
-| 2 | `concentrated-solar-power-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Heliostat field focusing sunlight on a solar tower | missing |
-| 2 | `geothermal-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Geothermal power plant with steam rising over the landscape | missing |
-| 2 | `geothermal-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Geothermal power plant with steam rising over the landscape | missing |
-| 2 | `wind-power-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Onshore wind farm at sunset | missing |
-| 2 | `wind-power-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Onshore wind farm at sunset | missing |
-| 2 | `nuclear-power-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Nuclear power plant with cooling towers | missing |
-| 2 | `nuclear-power-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Nuclear power plant with cooling towers | missing |
-| 2 | `fertilizers-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Close-up of a backlit green leaf | missing |
-| 2 | `ammonia-urea-fertilizers-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Ammonia and urea plant with prilling tower | missing |
-| 2 | `ammonia-urea-fertilizers-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Ammonia and urea plant with prilling tower | missing |
-| 2 | `phosphate-fertilizers-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Phosphoric acid plant with reactors and evaporators | missing |
-| 2 | `phosphate-fertilizers-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Phosphoric acid plant with reactors and evaporators | missing |
-| 2 | `potash-fertilizers-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Potash flotation cells in a processing plant | missing |
-| 2 | `potash-fertilizers-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Potash flotation cells in a processing plant | missing |
-| 2 | `npk-fertilizers-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Granulation drum in an NPK fertilizer plant | missing |
-| 2 | `npk-fertilizers-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Granulation drum in an NPK fertilizer plant | missing |
-| 2 | `fertilizer-plant-water-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Water treatment basins at a fertilizer complex | missing |
-| 2 | `fertilizer-plant-water-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Water treatment basins at a fertilizer complex | missing |
-| 2 | `mining-metals-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Aerial view of a bucket-wheel stacker loading ore by a railway line | missing |
-| 2 | `open-pit-dewatering-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Dewatering pump at the bottom of an open-pit mine | missing |
-| 2 | `open-pit-dewatering-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Dewatering pump at the bottom of an open-pit mine | missing |
-| 2 | `underground-dewatering-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Submersible dewatering pump in an underground mine tunnel | missing |
-| 2 | `underground-dewatering-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Submersible dewatering pump in an underground mine tunnel | missing |
-| 2 | `ore-separation-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Flotation cells in a mineral processing plant | missing |
-| 2 | `ore-separation-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Flotation cells in a mineral processing plant | missing |
-| 2 | `electrowinning-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Electrowinning cell house with rows of cathode plates | missing |
-| 2 | `electrowinning-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Electrowinning cell house with rows of cathode plates | missing |
-| 2 | `tailings-water-reclamation-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Tailings pond with a floating reclaim pump barge | missing |
-| 2 | `tailings-water-reclamation-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Tailings pond with a floating reclaim pump barge | missing |
-| 2 | `metals-processing-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Hydrometallurgical plant with acid-resistant pumps and pipework | missing |
-| 2 | `metals-processing-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Hydrometallurgical plant with acid-resistant pumps and pipework | missing |
-| 2 | `pulp-paper-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Paper machine running at speed in a paper mill | missing |
-| 2 | `stock-preparation-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Stock preparation area with pulp chests and pumps | missing |
-| 2 | `stock-preparation-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Stock preparation area with pulp chests and pumps | missing |
-| 2 | `pulp-bleaching-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Bleaching towers at a pulp mill | missing |
-| 2 | `pulp-bleaching-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Bleaching towers at a pulp mill | missing |
-| 2 | `chemical-recovery-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Recovery boiler building at a pulp mill | missing |
-| 2 | `chemical-recovery-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Recovery boiler building at a pulp mill | missing |
-| 2 | `paper-machine-approach-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Fan pump feeding the headbox of a paper machine | missing |
-| 2 | `paper-machine-approach-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Fan pump feeding the headbox of a paper machine | missing |
+| 2 | `applications-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Range of Sulzer AHLSTAR process pumps on display in a bright hall | present |
+| 2 | `groundwater-intake-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Well pump discharging groundwater into an irrigation canal | present |
+| 2 | `drinking-water-treatment-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Rows of open filtration basins at a water treatment plant | present |
+| 2 | `water-distribution-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Large Sulzer axially split pump with green pipework in a pumping station | present |
+| 2 | `desalination-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Aerial view of a coastal seawater desalination plant | present |
+| 2 | `raw-water-transfer-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Large water transmission pipeline running across open landscape | present |
+| 2 | `wastewater-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Clarifier at a wastewater treatment plant at sunset | present |
+| 2 | `wastewater-collection-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Sulzer service van beside a wastewater pumping station control cabinet | present |
+| 2 | `wastewater-collection-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Sulzer service van beside a wastewater pumping station control cabinet | present |
+| 2 | `stormwater-flood-control-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | River flooding its banks after heavy rain | present |
+| 2 | `stormwater-flood-control-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | River flooding its banks after heavy rain | present |
+| 2 | `wastewater-treatment-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Aeration basin with air bubbling up through the wastewater | present |
+| 2 | `wastewater-treatment-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Aeration basin with air bubbling up through the wastewater | present |
+| 2 | `sludge-handling-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Anaerobic digesters and a biogas holder at a treatment plant | present |
+| 2 | `sludge-handling-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Anaerobic digesters and a biogas holder at a treatment plant | present |
+| 2 | `water-treatment-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Clarifier at an industrial water treatment plant | present |
+| 2 | `industrial-water-supply-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Row of Sulzer end-suction pumps with pipework at an industrial site | present |
+| 2 | `industrial-water-supply-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Row of Sulzer end-suction pumps with pipework at an industrial site | present |
+| 2 | `industrial-wastewater-treatment-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Operator inspecting an effluent treatment basin | present |
+| 2 | `industrial-wastewater-treatment-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Operator inspecting an effluent treatment basin | present |
+| 2 | `process-water-treatment-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Dissolved air flotation unit at a process water treatment plant | present |
+| 2 | `process-water-treatment-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Dissolved air flotation unit at a process water treatment plant | present |
+| 2 | `cooling-water-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Coastal power plant that draws its cooling water from the sea | present |
+| 2 | `cooling-water-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Coastal power plant that draws its cooling water from the sea | present |
+| 2 | `boiler-feed-water-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Multistage boiler feed pump and motor in a power plant | present |
+| 2 | `boiler-feed-water-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Multistage boiler feed pump and motor in a power plant | present |
+| 2 | `reverse-osmosis-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Sulzer engineers in a reverse osmosis hall with rows of membrane racks | present |
+| 2 | `reverse-osmosis-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Sulzer engineers in a reverse osmosis hall with rows of membrane racks | present |
+| 2 | `ultrafiltration-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Covered filtration basin at a water treatment plant | present |
+| 2 | `ultrafiltration-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Covered filtration basin at a water treatment plant | present |
+| 2 | `water-reuse-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Clean treated water pouring out of an outlet pipe | present |
+| 2 | `water-reuse-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Clean treated water pouring out of an outlet pipe | present |
+| 2 | `energy-transition-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Layers of misty blue mountains | present |
+| 2 | `carbon-capture-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Gas processing plant with pipe racks and pressure vessels | present |
+| 2 | `carbon-capture-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Gas processing plant with pipe racks and pressure vessels | present |
+| 2 | `biofuels-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Aerial view of a bioethanol plant with storage tanks | present |
+| 2 | `biofuels-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Aerial view of a bioethanol plant with storage tanks | present |
+| 2 | `energy-recovery-storage-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Hydropower dam with intake towers standing in the reservoir | present |
+| 2 | `energy-recovery-storage-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Hydropower dam with intake towers standing in the reservoir | present |
+| 2 | `concentrated-solar-power-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Solar tower surrounded by a field of heliostats | present |
+| 2 | `concentrated-solar-power-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Solar tower surrounded by a field of heliostats | present |
+| 2 | `geothermal-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Geothermal power plant with steam rising beside a blue lagoon | present |
+| 2 | `geothermal-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Geothermal power plant with steam rising beside a blue lagoon | present |
+| 2 | `wind-power-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Wind turbines silhouetted against a sunset sky | present |
+| 2 | `wind-power-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Wind turbines silhouetted against a sunset sky | present |
+| 2 | `nuclear-power-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Nuclear power plant cooling towers beside a river | present |
+| 2 | `nuclear-power-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Nuclear power plant cooling towers beside a river | present |
+| 2 | `fertilizers-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Close-up of a backlit green leaf | present |
+| 2 | `ammonia-urea-fertilizers-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Ammonia plant with process columns and pipe racks | present |
+| 2 | `ammonia-urea-fertilizers-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Ammonia plant with process columns and pipe racks | present |
+| 2 | `phosphate-fertilizers-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Phosphate mine processing mill with ore stockpiles | present |
+| 2 | `phosphate-fertilizers-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Phosphate mine processing mill with ore stockpiles | present |
+| 2 | `potash-fertilizers-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Aerial view of a potash fertilizer plant among farm fields | present |
+| 2 | `potash-fertilizers-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Aerial view of a potash fertilizer plant among farm fields | present |
+| 2 | `npk-fertilizers-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Hands holding a scoop of granular NPK fertilizer | present |
+| 2 | `npk-fertilizers-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Hands holding a scoop of granular NPK fertilizer | present |
+| 2 | `fertilizer-plant-water-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Large axial flow pump running at a fertilizer plant | present |
+| 2 | `fertilizer-plant-water-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Large axial flow pump running at a fertilizer plant | present |
+| 2 | `mining-metals-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Aerial view of a bucket-wheel stacker loading ore by a railway line | present |
+| 2 | `open-pit-dewatering-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Flooded open-pit mine with a dewatering discharge line | present |
+| 2 | `open-pit-dewatering-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Flooded open-pit mine with a dewatering discharge line | present |
+| 2 | `underground-dewatering-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Underground pump station in a gold mine | present |
+| 2 | `underground-dewatering-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Underground pump station in a gold mine | present |
+| 2 | `ore-separation-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Aerial view of a copper mine processing plant with round thickener tanks | present |
+| 2 | `ore-separation-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Aerial view of a copper mine processing plant with round thickener tanks | present |
+| 2 | `electrowinning-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Close-up of copper ore | present |
+| 2 | `electrowinning-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Close-up of copper ore | present |
+| 2 | `tailings-water-reclamation-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Tailings pond at a copper mine surrounded by forest | present |
+| 2 | `tailings-water-reclamation-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Tailings pond at a copper mine surrounded by forest | present |
+| 2 | `metals-processing-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Glowing heat-treated pump castings hanging from chains | present |
+| 2 | `metals-processing-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Glowing heat-treated pump castings hanging from chains | present |
+| 2 | `pulp-paper-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Close-up of stacked paper rolls | present |
+| 2 | `stock-preparation-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Sulzer process pump and pipework in a bioproduct mill | present |
+| 2 | `stock-preparation-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Sulzer process pump and pipework in a bioproduct mill | present |
+| 2 | `pulp-bleaching-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Sulzer medium-consistency pump with yellow hoses in a pulp mill | present |
+| 2 | `pulp-bleaching-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Sulzer medium-consistency pump with yellow hoses in a pulp mill | present |
+| 2 | `chemical-recovery-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Pulp mill with chimneys and a wood chip pile beside the water | present |
+| 2 | `chemical-recovery-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Pulp mill with chimneys and a wood chip pile beside the water | present |
+| 2 | `paper-machine-approach-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Sulzer end-suction pump with large pipework in a paper mill | present |
+| 2 | `paper-machine-approach-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Sulzer end-suction pump with large pipework in a paper mill | present |
 | 2 | `ahlstar-materials.png` | `public/images/documents/` | 4:3 (shown on a white page) | 1200 × 900 | Document page preview | Data sheet page with the material options and their chemical composition | present |
 | 2 | `ahlstar-performance-range.jpg` | `public/images/documents/` | 4:3 (shown on a white page) | 1200 × 900 | Document page preview | Performance range of the AHLSTAR A range, head against flow | present |
 | 2 | `ahlstar-modular-range.png` | `public/images/documents/` | 4:3 (shown on a white page) | 1200 × 900 | Document page preview | Brochure page showing the modular AHLSTAR hydraulics and shaft seals | present |
-| 2 | `sjm-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | SJM vertical mixed-flow pump with discharge head and motor | missing |
-| 2 | `afp-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | AFP submersible sewage pump | missing |
-| 2 | `j-dewatering-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | J dewatering pump, portable submersible pump with lifting handle | missing |
-| 2 | `pump-controller-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | PC 441 pump controller with display, in a control cabinet | missing |
-| 2 | `blue-box-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | BLUE BOX dashboard on a laptop in a treatment plant control room | missing |
-| 2 | `energy-audit.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Engineer reading a flow meter and power analyser in a pump station | missing |
-| 2 | `ahlstar-video-seal-replacement.jpg` | `public/images/videos/` | 16:9 | 1280 × 720 | Service video thumbnail | Technician fitting a mechanical seal on an end-suction pump in a workshop | missing |
-| 2 | `ahlstar-video-back-pull-out.jpg` | `public/images/videos/` | 16:9 | 1280 × 720 | Service video thumbnail | Bearing unit and impeller being pulled out of a pump casing | missing |
-| 2 | `ahlstar-video-shaft-alignment.jpg` | `public/images/videos/` | 16:9 | 1280 × 720 | Service video thumbnail | Laser alignment tool mounted on a pump-motor coupling | missing |
-| 2 | `ahlstar-video-impeller-clearance.jpg` | `public/images/videos/` | 16:9 | 1280 × 720 | Service video thumbnail | Close-up of a feeler gauge measuring impeller clearance | missing |
+| 2 | `home-hero.jpg` | `public/images/home/` | 3:2 (shown as a wide band) | 1920 × 1280 | Home hero (under a dark overlay, text centred) | Sulzer engineers beside high-pressure pumps in a desalination plant | present |
+| 2 | `connect-promo.jpg` | `public/images/home/` | 4:3 | 1200 × 900 | Home promo | Pumps in a plant linked by a wireless monitoring network | present |
+| 2 | `mysulzer-intro.jpg` | `public/images/mysulzer/` | 5:4 | 1200 × 960 | mySulzer intro | Two engineers checking pump data on a laptop in a plant | present |
+| 2 | `sjm-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | SJM vertical mixed-flow pump with discharge head | present |
+| 2 | `afp-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | AFP submersible sewage pump | present |
+| 2 | `j-dewatering-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | J dewatering pump, portable submersible drainage pump | present |
+| 2 | `pump-controller-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | PC 441 pump controller touchscreen with plug-in I/O modules | present |
+| 2 | `blue-box-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | Sulzer pump surrounded by data, illustrating BLUE BOX analytics | present |
+| 2 | `energy-audit.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Engineers reviewing pump performance data on a screen | present |
+| 2 | `ahlstar-video-seal-replacement.jpg` | `public/images/videos/` | 16:9 | 1280 × 720 | Service video thumbnail | Two Sulzer mechanical seal cartridges | present |
+| 2 | `ahlstar-video-back-pull-out.jpg` | `public/images/videos/` | 16:9 | 1280 × 720 | Service video thumbnail | Two Sulzer engineers working on a pump | present |
+| 2 | `ahlstar-video-shaft-alignment.jpg` | `public/images/videos/` | 16:9 | 1280 × 720 | Service video thumbnail | Engineer checking a pump shaft assembly in the workshop | present |
+| 2 | `ahlstar-video-impeller-clearance.jpg` | `public/images/videos/` | 16:9 | 1280 × 720 | Service video thumbnail | Pump wear rings, bearings and seals laid out for inspection | present |

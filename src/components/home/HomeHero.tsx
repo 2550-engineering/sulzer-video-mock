@@ -1,5 +1,5 @@
 import { hero } from '../../data/home'
-import { ImageSlot } from '../ImageSlot'
+import { SmartImage } from '../SmartImage'
 import { HeroSearch } from './HeroSearch'
 
 /** Full-width image hero with headline and scoped product search. */
@@ -7,7 +7,7 @@ export function HomeHero() {
   return (
     // z-10 keeps the scope dropdown above the next section.
     <section className="relative z-10 bg-navy-900 on-dark">
-      <ImageSlot image={hero.image} />
+      <SmartImage src={hero.image.src} alt={hero.image.alt} />
       <div
         aria-hidden
         className="absolute inset-0 bg-linear-to-b from-navy-900/45 via-navy-900/60 to-navy-900/85"

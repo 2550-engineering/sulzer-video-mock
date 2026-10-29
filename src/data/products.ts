@@ -126,7 +126,7 @@ export const products: Product[] = [
     images: [
       {
         src: '/images/products/sns-main.png',
-        alt: `${productNames.sns} compact end-suction pump with motor`,
+        alt: `${productNames.sns} end-suction single-stage pump`,
       },
     ],
     tabs: {
@@ -227,7 +227,7 @@ export const products: Product[] = [
     images: [
       {
         src: '/images/products/sjt-main.png',
-        alt: `${productNames.sjt} vertical turbine pump with column and motor head`,
+        alt: `${productNames.sjt} vertical turbine pump, shown in cutaway`,
       },
     ],
     tabs: {
@@ -275,7 +275,7 @@ export const products: Product[] = [
     images: [
       {
         src: '/images/products/xfp-main.png',
-        alt: `${productNames.xfp} submersible pump`,
+        alt: `${productNames.xfp} submersible pumps in several sizes`,
       },
     ],
     tabs: {
@@ -318,7 +318,7 @@ export const products: Product[] = [
     images: [
       {
         src: '/images/products/sulzer-connect-main.png',
-        alt: `${productNames.connect} wireless sensor and gateway`,
+        alt: `${productNames.connect} wireless sensor mounted on a pump motor`,
       },
     ],
     tabs: {
@@ -360,7 +360,7 @@ export const products: Product[] = [
     images: [
       {
         src: '/images/products/motor-protection-relay-main.png',
-        alt: 'DIN-rail motor protection relay with display',
+        alt: 'DIN-rail motor protection relay',
       },
     ],
     tabs: {
@@ -408,7 +408,7 @@ export const products: Product[] = [
     images: [
       {
         src: '/images/products/sjm-main.png',
-        alt: `${productNames.sjm} vertical mixed-flow pump with discharge head and motor`,
+        alt: `${productNames.sjm} vertical mixed-flow pump with discharge head`,
       },
     ],
     tabs: {
@@ -504,7 +504,7 @@ export const products: Product[] = [
     images: [
       {
         src: '/images/products/j-dewatering-main.png',
-        alt: `${productNames.jDewatering}, portable submersible pump with lifting handle`,
+        alt: `${productNames.jDewatering}, portable submersible drainage pump`,
       },
     ],
     tabs: {
@@ -546,7 +546,7 @@ export const products: Product[] = [
     images: [
       {
         src: '/images/products/pump-controller-main.png',
-        alt: `${productNames.pumpController} with display, in a control cabinet`,
+        alt: `${productNames.pumpController} touchscreen with plug-in I/O modules`,
       },
     ],
     tabs: {
@@ -588,7 +588,7 @@ export const products: Product[] = [
     images: [
       {
         src: '/images/products/blue-box-main.png',
-        alt: `${productNames.blueBox} dashboard on a laptop in a treatment plant control room`,
+        alt: `Sulzer pump surrounded by data, illustrating ${productNames.blueBox} analytics`,
       },
     ],
     tabs: {

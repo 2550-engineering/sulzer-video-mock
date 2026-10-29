@@ -26,7 +26,7 @@ export const services: Service[] = [
     icon: Activity,
     image: {
       src: '/images/services/connect-asset-monitoring.jpg',
-      alt: 'Operator checking live pump data on a tablet in a pump station',
+      alt: 'Operator checking live pump data on a tablet',
     },
     to: '/connect',
   },
@@ -38,7 +38,7 @@ export const services: Service[] = [
     icon: Headset,
     image: {
       src: '/images/services/remote-expert-support.jpg',
-      alt: 'Sulzer engineer on a video call, reviewing pump performance curves',
+      alt: 'Sulzer digital expert reviewing pump data on a laptop',
     },
     to: '/support',
   },
@@ -50,7 +50,7 @@ export const services: Service[] = [
     icon: CalendarCheck,
     image: {
       src: '/images/services/commissioning.jpg',
-      alt: 'Technician aligning a pump and motor on a base frame',
+      alt: 'Sulzer engineer assembling a pump on site',
     },
     to: '/support/service-portal',
   },
@@ -62,7 +62,7 @@ export const services: Service[] = [
     icon: ClipboardCheck,
     image: {
       src: '/images/services/inspection.jpg',
-      alt: 'Service engineer with a checklist inspecting a pump in a pump station',
+      alt: 'Sulzer service engineer inspecting a large pump casing',
     },
     to: '/support/service-portal',
   },
@@ -74,7 +74,7 @@ export const services: Service[] = [
     icon: HardHat,
     image: {
       src: '/images/services/installation.jpg',
-      alt: 'Installation crew lowering a large pump into place with a crane',
+      alt: 'Installation crew lifting a large rotor into place with a chain hoist',
     },
     to: '/support/service-portal',
   },
@@ -86,7 +86,7 @@ export const services: Service[] = [
     icon: Waves,
     image: {
       src: '/images/services/vibration-analysis.jpg',
-      alt: 'Vibration sensor being held against a pump bearing housing',
+      alt: 'Sulzer wireless vibration sensor fitted to a pump bearing housing',
     },
     to: '/support/service-portal',
   },
@@ -98,7 +98,7 @@ export const services: Service[] = [
     icon: ShieldCheck,
     image: {
       src: '/images/services/service-agreements.jpg',
-      alt: 'Sulzer service engineer and plant manager shaking hands next to a pump',
+      alt: 'Two Sulzer service technicians beside their service van',
     },
     to: '/support/service-portal',
   },
@@ -122,7 +122,7 @@ export const services: Service[] = [
     icon: Gauge,
     image: {
       src: '/images/services/energy-audit.jpg',
-      alt: 'Engineer reading a flow meter and power analyser in a pump station',
+      alt: 'Engineers reviewing pump performance data on a screen',
     },
     to: '/support/service-portal',
   },

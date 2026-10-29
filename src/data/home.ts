@@ -8,20 +8,18 @@ import {
 } from 'lucide-react'
 import { market, products } from '../config/demo'
 import { applicationTeaser, childApplications, rootApplication } from '../lib/catalog'
-import type { AssetReadout, ImageRef, LinkCard, NavItem } from '../types'
+import type { AssetReadout, ImageSource, LinkCard, NavItem } from '../types'
 
 /*
  * Copy and image references for the home page ("/").
- * Image files go in _asset-source/images under the names below
- * (application tiles take theirs from data/applications.ts).
+ * Images are in public/images/home (application tiles take theirs from data/applications.ts).
  */
 
 export const hero = {
   image: {
-    file: 'home-hero.jpg',
-    alt: 'Sulzer pumps installed in a water treatment plant',
-    tone: 'ocean',
-  } satisfies ImageRef,
+    src: '/images/home/home-hero.jpg',
+    alt: 'Sulzer engineers beside high-pressure pumps in a desalination plant',
+  } satisfies ImageSource,
   eyebrow: 'Sulzer self-service',
   title: 'Everything you need, whenever you need it',
   subtitle:
@@ -99,10 +97,9 @@ export const connectPromo = {
   ],
   cta: { label: 'Discover Sulzer Connect', to: '/connect' } satisfies NavItem,
   image: {
-    file: 'connect-promo.jpg',
-    alt: 'Sulzer pump station monitored with Sulzer Connect',
-    tone: 'deep',
-  } satisfies ImageRef,
+    src: '/images/home/connect-promo.jpg',
+    alt: 'Pumps in a plant linked by a wireless monitoring network',
+  } satisfies ImageSource,
   readouts: [
     { label: 'Lift station P-104', value: 'Running normally', status: 'ok' },
     {

@@ -14,7 +14,7 @@ import {
   Wrench,
 } from 'lucide-react'
 import { demoUser, products } from '../config/demo'
-import type { IconItem, ImageRef, LinkCard, NavItem } from '../types'
+import type { IconItem, ImageSource, LinkCard, NavItem } from '../types'
 import { supportSection } from './home'
 
 /* Copy and demo data for the public mySulzer landing page ("/my-sulzer"). */
@@ -37,7 +37,10 @@ export const intro = {
   createAccountLabel: 'Create an account',
   /** Where "Sign in" and "Go to My Pages" lead. */
   myPagesPath: '/my-pages',
-  image: { file: 'mysulzer-intro.jpg', alt: '', tone: 'ocean' } satisfies ImageRef,
+  image: {
+    src: '/images/mysulzer/mysulzer-intro.jpg',
+    alt: 'Two engineers checking pump data on a laptop in a plant',
+  } satisfies ImageSource,
 }
 
 /** Mock portal snippets floating over the intro image. Deterministic demo values. */

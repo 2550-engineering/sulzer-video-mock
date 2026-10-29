@@ -200,7 +200,7 @@ export const serviceVideos: Document[] = [
       duration: '14:20',
       thumbnail: {
         src: '/images/videos/ahlstar-video-seal-replacement.jpg',
-        alt: 'Technician fitting a mechanical seal on an end-suction pump in a workshop',
+        alt: 'Two Sulzer mechanical seal cartridges',
       },
     },
   },
@@ -219,7 +219,7 @@ export const serviceVideos: Document[] = [
       duration: '16:41',
       thumbnail: {
         src: '/images/videos/ahlstar-video-back-pull-out.jpg',
-        alt: 'Bearing unit and impeller being pulled out of a pump casing',
+        alt: 'Two Sulzer engineers working on a pump',
       },
     },
   },
@@ -238,7 +238,7 @@ export const serviceVideos: Document[] = [
       duration: '10:54',
       thumbnail: {
         src: '/images/videos/ahlstar-video-shaft-alignment.jpg',
-        alt: 'Laser alignment tool mounted on a pump-motor coupling',
+        alt: 'Engineer checking a pump shaft assembly in the workshop',
       },
     },
   },
@@ -257,7 +257,7 @@ export const serviceVideos: Document[] = [
       duration: '8:05',
       thumbnail: {
         src: '/images/videos/ahlstar-video-impeller-clearance.jpg',
-        alt: 'Close-up of a feeler gauge measuring impeller clearance',
+        alt: 'Pump wear rings, bearings and seals laid out for inspection',
       },
     },
   },

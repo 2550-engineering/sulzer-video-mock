@@ -1,6 +1,6 @@
 import { Tag, Truck } from 'lucide-react'
 import { intro, portalPreview } from '../../data/mySulzer'
-import { ImageSlot } from '../ImageSlot'
+import { SmartImage } from '../SmartImage'
 
 /** Intro visual: brand image with floating snippets of the portal (price, order, request). */
 export function PortalPreview() {
@@ -9,7 +9,7 @@ export function PortalPreview() {
   return (
     <div className="relative aspect-[5/4]">
       <div className="absolute inset-0 overflow-hidden rounded-lg">
-        <ImageSlot image={intro.image} />
+        <SmartImage src={intro.image.src} alt={intro.image.alt} />
       </div>
 
       <div className="absolute top-8 right-8 flex items-center gap-2 rounded-pill bg-white/95 px-4 py-2 text-sm shadow-card">

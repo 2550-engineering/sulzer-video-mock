@@ -12,6 +12,24 @@ import { createServer } from 'vite'
 /** Shape per kind of image. Components pass the same aspect to <SmartImage>. */
 const specs = [
   {
+    match: /^\/images\/home\/home-hero\.jpg$/,
+    kind: 'Home hero (under a dark overlay, text centred)',
+    aspect: '3:2 (shown as a wide band)',
+    minSize: '1920 × 1280',
+  },
+  {
+    match: /^\/images\/home\//,
+    kind: 'Home promo',
+    aspect: '4:3',
+    minSize: '1200 × 900',
+  },
+  {
+    match: /^\/images\/mysulzer\//,
+    kind: 'mySulzer intro',
+    aspect: '5:4',
+    minSize: '1200 × 960',
+  },
+  {
     match: /^\/images\/applications\/.+-hero\.jpg$/,
     kind: 'Application hero',
     aspect: '21:9 (shown as a wide band; keep the subject centred)',
@@ -69,6 +87,8 @@ const { services } = await load('/src/data/services.ts')
 const { knowledgeItems } = await load('/src/data/knowledge.ts')
 const { documents, serviceVideos } = await load('/src/data/documents.ts')
 const { cadPreviews } = await load('/src/data/cad.ts')
+const { hero, connectPromo } = await load('/src/data/home.ts')
+const { intro } = await load('/src/data/mySulzer.ts')
 await server.close()
 
 const byId = (items) => new Map(items.map((item) => [item.id, item]))
@@ -111,6 +131,9 @@ const recordings = (src) =>
   ].filter(Boolean)
 
 const images = [
+  hero.image,
+  connectPromo.image,
+  intro.image,
   ...applications.flatMap((app) => [app.heroImage, app.cardImage]),
   ...products.flatMap((product) => [
     ...product.images,

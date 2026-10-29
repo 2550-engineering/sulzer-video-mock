@@ -29,13 +29,6 @@ export type FooterColumn = {
 /** Gradient shown while an image file hasn't been supplied yet. */
 export type PlaceholderTone = 'ocean' | 'deep' | 'steel' | 'slate'
 
-/** An image from `_asset-source/images`, referenced by file name. */
-export type ImageRef = {
-  file: string
-  alt: string
-  tone: PlaceholderTone
-}
-
 /**
  * An image in `public/images`, by its fixed URL path, e.g. "/images/products/ahlstar-main.png".
  * Rendered by <SmartImage>, which shows a placeholder until the file exists.

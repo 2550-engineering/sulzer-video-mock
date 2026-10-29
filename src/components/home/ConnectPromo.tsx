@@ -1,7 +1,7 @@
 import { ArrowRight, Check } from 'lucide-react'
 import { Link } from 'react-router'
 import { connectPromo } from '../../data/home'
-import { ImageSlot } from '../ImageSlot'
+import { SmartImage } from '../SmartImage'
 import { ConnectReadout } from './ConnectReadout'
 
 /** Navy promo band for Sulzer Connect (remote condition monitoring). */
@@ -42,7 +42,7 @@ export function ConnectPromo() {
 
         <div className="relative aspect-[4/3]">
           <div className="absolute inset-0 overflow-hidden rounded-lg ring-1 ring-white/10">
-            <ImageSlot image={connectPromo.image} />
+            <SmartImage src={connectPromo.image.src} alt={connectPromo.image.alt} />
           </div>
           <ConnectReadout readout={statusReadout} className="absolute top-10 -left-8" />
           <ConnectReadout readout={trendReadout} className="absolute right-10 -bottom-10" />
