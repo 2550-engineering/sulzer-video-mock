@@ -12,7 +12,7 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
   product finder).
 - **Formats:** JPG for photos (quality 80–85), PNG for product cut-outs.
 
-133 images, 119 missing.
+133 images, 115 missing.
 
 | Priority | File | Folder | Aspect | Min. size | Kind | What it should show | Status |
 |----------|------|--------|--------|-----------|------|---------------------|--------|
@@ -35,7 +35,7 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
 | 1 · application finder | `intake-engineering-manual.jpg` | `public/images/knowledge/` | 3:2 | 1200 × 800 | Knowledge card | Cover of a technical manual on a desk, with an intake structure drawing beside it | missing |
 | 1 · application finder | `expert-video-sump-design.jpg` | `public/images/knowledge/` | 3:2 | 1200 × 800 | Knowledge card | Sulzer application engineer presenting in front of a pump sump model | missing |
 | 1 · application finder | `centrifugal-pump-handbook.jpg` | `public/images/knowledge/` | 3:2 | 1200 × 800 | Knowledge card | Centrifugal pump handbook lying open next to a pump impeller | missing |
-| 1 · application finder | `river-intake-customer-story.jpg` | `public/images/knowledge/` | 3:2 | 1200 × 800 | Knowledge card | River intake pumping station seen from the water on a clear day | missing |
+| 1 · application finder | `river-intake-customer-story.jpg` | `public/images/knowledge/` | 3:2 | 1200 × 800 | Knowledge card | River intake pumping station seen from the water on a clear day | present |
 | 1 · application finder | `ahlstar-feature.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | Cutaway of an AHLSTAR pump showing the impeller, shaft seal and bearing unit | present |
 | 1 · application finder | `sns-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | SNS compact end-suction pump with motor | missing |
 | 1 · application finder | `smd-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | SMD axially split double-suction pump | missing |
@@ -45,9 +45,9 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
 | 1 · application finder | `motor-protection-relay-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | DIN-rail motor protection relay with display | missing |
 | 1 · application finder | `remote-expert-support.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer engineer on a video call, reviewing pump performance curves | missing |
 | 1 · application finder | `installation.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Installation crew lowering a large pump into place with a crane | missing |
-| 1 · application finder | `story-river-intake.jpg` | `public/images/stories/` | 4:5 (portrait; headline sits on the lower third) | 1200 × 1500 | Customer story card | River intake pumping station at dawn, with mist on the water | missing |
-| 1 · application finder | `story-paper-mill.jpg` | `public/images/stories/` | 4:5 (portrait; headline sits on the lower third) | 1200 × 1500 | Customer story card | Maintenance engineer next to a row of process pumps in a paper mill | missing |
-| 1 · application finder | `story-desalination.jpg` | `public/images/stories/` | 4:5 (portrait; headline sits on the lower third) | 1200 × 1500 | Customer story card | Coastal desalination plant beside the sea under a clear sky | missing |
+| 1 · application finder | `story-river-intake.jpg` | `public/images/stories/` | 4:5 (portrait; headline sits on the lower third) | 1200 × 1500 | Customer story card | Brick raw water pumping station on a riverbank, with its intake below the waterline | present |
+| 1 · application finder | `story-paper-mill.jpg` | `public/images/stories/` | 4:5 (portrait; headline sits on the lower third) | 1200 × 1500 | Customer story card | AHLSTAR process pump and motor in a paper mill pump room | present |
+| 1 · application finder | `story-desalination.jpg` | `public/images/stories/` | 4:5 (portrait; headline sits on the lower third) | 1200 × 1500 | Customer story card | Sulzer engineers in the high-pressure pump hall of a seawater desalination plant | present |
 | 1 · application finder, product finder | `ahlstar-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | AHLSTAR end-suction process pump | present |
 | 1 · application finder, product finder | `connect-asset-monitoring.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Operator checking live pump data on a tablet in a pump station | missing |
 | 1 · application finder, product finder | `commissioning.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Technician aligning a pump and motor on a base frame | missing |
