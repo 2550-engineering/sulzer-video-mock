@@ -48,17 +48,26 @@ export const defaultPersona: PersonaId = 'endUser'
 export const demoUser = personas.endUser
 
 /**
- * Partner net prices and lead times, for spare parts and partner prices only
- * (the Models tab keeps its own lead times). PLACEHOLDERS — confirm with Sulzer.
+ * Spare part lead times, for every persona (the Models tab keeps its own model lead
+ * times). `dispatchDays` are working days until the part ships, for the expected
+ * delivery date at checkout. PLACEHOLDERS — confirm with Sulzer.
+ */
+export const sparePartLeadTimes = {
+  'In stock': { label: 'In stock', detail: 'ships in 2 days', dispatchDays: 2 },
+  'Fast delivery': { label: 'Fast delivery', detail: '1 week', dispatchDays: 5 },
+  'Made to order': { label: 'Made to order', detail: '3 weeks', dispatchDays: 15 },
+} as const satisfies Record<
+  ModelAvailability,
+  { label: string; detail: string; dispatchDays: number }
+>
+
+/**
+ * Partner net prices, on spare parts and partner prices only. Spare part lead times
+ * are the same for everyone (`sparePartLeadTimes`). PLACEHOLDERS — confirm with Sulzer.
  */
 export const partnerPricing = {
   /** % off list price. */
   discount: 32,
-  leadTimes: {
-    'In stock': 'In stock – ships in 2 days',
-    'Fast delivery': 'Fast delivery – 1 week',
-    'Made to order': 'Made to order – 3 weeks',
-  } satisfies Record<ModelAvailability, string>,
 } as const
 
 export const market = {

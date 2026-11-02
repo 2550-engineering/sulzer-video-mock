@@ -82,6 +82,18 @@ const routes = [
   '/self-service/quotations',
   '/self-service/quotations?status=open',
   ...quotations.filter((q) => q.issuer === 'sulzer').map((q) => `/self-service/quotations/${q.id}`),
+  // Spare parts and eShop (P5). The cart is empty in QA, so checkout redirects to the cart.
+  '/spare-parts',
+  '/spare-parts?product=xfp&model=xfp-150-e&pos=433',
+  '/spare-parts?by=part&q=bearing kit',
+  '/spare-parts?by=part&q=zzzz',
+  '/spare-parts?by=serial&serial=AH-1918-04512',
+  '/spare-parts?by=serial&serial=AF-1811-05240',
+  '/spare-parts?by=serial&serial=XX-0000',
+  '/products/ahlstar?bom=ahlstar-150-125-315#spare-parts',
+  '/eshop',
+  '/eshop/cart',
+  '/eshop/checkout',
   // Sulzer Connect: its own app outside SiteLayout. Signed out, every page but the welcome asks to sign in.
   '/connect',
   '/connect/dashboard',
@@ -144,6 +156,23 @@ const states = [
     name: 'account-menu',
     signedInOnly: true,
     run: (page) => page.getByRole('button', { name: /Lindqvist|Sign in/ }).click(),
+  },
+  {
+    name: 'spare-parts-hotspot',
+    path: '/products/ahlstar#spare-parts',
+    run: async (page) => {
+      await page.getByRole('figure').scrollIntoViewIfNeeded()
+      await page.getByRole('button', { name: 'Position 321' }).click()
+    },
+  },
+  {
+    name: 'cart-drawer',
+    path: '/products/ahlstar#spare-parts',
+    signedInOnly: true,
+    run: async (page) => {
+      await page.getByRole('button', { name: /^Add Bearing kit/ }).click()
+      await page.getByRole('button', { name: /^Cart/ }).click()
+    },
   },
   ...toolbarStates,
 ]

@@ -44,7 +44,7 @@ Goal: viewers should go "Wow!" It must look like a real, polished, production Su
 - **Stub pages** for future flows show a tasteful "Coming soon" state inside the real layout.
 - **Demo content** (user name, company, product names, market) lives in `src/config/demo.ts`.
 - **Demo controls:** Shift+D opens a hidden presenter panel (Reset demo / Sign in as each persona). It renders nothing while closed.
-- **Recording QA:** `npm run qa` screenshots every route logged out and logged in to `_qa/screenshots/` (gitignored) and writes `_qa/report.md` (console errors, failed requests, broken images, overflow, placeholder text). Add `-- --viewport=1440x900` for the secondary size. New routes are picked up from `placeholderRoutes` and `src/data`, but add new top-level pages to the list in `scripts/qa-screenshots.mjs`.
+- **No QA runs by default:** after a change, run only `npm run build` and `npm run lint`. Don't run `npm run qa`, Playwright flows or screenshot reviews, and don't add routes to the QA script, unless I explicitly ask. (`npm run qa` exists and screenshots every route to `_qa/screenshots/` if I want it.)
 
 ## Phases
 

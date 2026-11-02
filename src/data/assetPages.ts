@@ -204,10 +204,9 @@ export const assetPage = {
   spareParts: {
     title: 'Spare parts',
     intro: (model: string, serial: string) =>
-      `Genuine Sulzer parts that fit ${model}, serial no. ${serial}.`,
+      `Genuine Sulzer parts that fit ${model}, serial no. ${serial}. Select a number on the drawing to find the part.`,
     recommended: 'Recommended for the current alert',
-    order: 'Order spare parts',
-    orderTo: '/spare-parts',
+    addRecommended: 'Add to cart',
     quote: 'Request a quotation',
     quoteTo: '/contact/quote',
     empty: {

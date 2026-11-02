@@ -1,5 +1,6 @@
 import { personas } from '../config/demo'
 import type { Asset, AssetStatus, ConditionFinding, Customer, Site } from '../types'
+import { partOfKind } from './spareParts'
 
 /*
  * Installed base ("/assets", Sulzer Connect). Deterministic: condition readings come from
@@ -194,7 +195,7 @@ export const conditionFindings: Record<string, ConditionFinding> = {
     action: 'Inspect within 14 days',
     detail:
       'Vibration on the drive-end bearing has risen steadily for nine days, with the pattern typical of bearing wear. The bearing runs about 9 °C warmer than last week.',
-    partId: 'sp-1003',
+    partId: partOfKind('ahlstar-150-125-315', 'bearing-kit').id,
     partAction: 'Order bearing kit',
   },
   'p-211': {

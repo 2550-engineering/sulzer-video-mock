@@ -4,6 +4,7 @@ import { orderSeeds } from '../data/orders'
 import { quotations } from '../data/quotations'
 import { recentActivity } from '../data/myPages'
 import { serviceRequestSeeds } from '../data/serviceRequests'
+import { partOfKind } from '../data/spareParts'
 import {
   isInTransit,
   isOpenRequest,
@@ -64,7 +65,10 @@ describe('totals', () => {
   it('nets list prices by the order discount and adds shipping', () => {
     const order = orderSeeds.find((o) => o.id === 'SO-104382')!
     const totals = orderTotals(order)
-    expect(totals.list).toBe(3 * 1180 + 3 * 640)
+    // Three XFP 150E seal kits and three bottom plates.
+    const seal = partOfKind('xfp-150-e', 'seal-kit').listPrice
+    const plate = partOfKind('xfp-150-e', 'bottom-plate').listPrice
+    expect(totals.list).toBe(3 * seal + 3 * plate)
     expect(totals.net).toBeCloseTo(totals.list * 0.88, 2)
     expect(totals.total).toBe(totals.net + order.shippingCost)
   })

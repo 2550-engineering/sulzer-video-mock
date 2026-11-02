@@ -2,7 +2,7 @@ import { demoUser, partnerPricing } from '../config/demo'
 import type { Order, OrderLine, SparePart, TrackingEvent } from '../types'
 import { customers } from './assets'
 import { issuers } from './quotations'
-import { spareParts } from './spareParts'
+import { partOfKind } from './spareParts'
 
 /*
  * Orders with track & trace ("/self-service/orders"). End users see their own direct
@@ -18,7 +18,8 @@ export const shipping = {
   method: 'Standard road freight, 2–3 days',
 }
 
-const nordvattenAddress = [
+/** Nordvatten's goods reception: seed orders and the default checkout address. */
+export const nordvattenAddress = [
   demoUser.company,
   'Goods reception, Norra water treatment plant',
   'Verksvägen 21',
@@ -38,8 +39,8 @@ function customerAddress(customerId: string, street: string, postcode: string) {
   ]
 }
 
-function line(position: number, partId: string, quantity: number, assetId?: string): OrderLine {
-  const { partNumber, name, listPrice } = spareParts.find((p) => p.id === partId) as SparePart
+function line(position: number, part: SparePart, quantity: number, assetId?: string): OrderLine {
+  const { partNumber, name, listPrice } = part
   return {
     position,
     partNumber,
@@ -92,6 +93,9 @@ function events(steps: {
 }
 
 const nordvatten = demoUser.customerId
+/** Models of the units the seed orders are for: RW-01/02/03 and BW-01. */
+const rw = 'ahlstar-150-125-315'
+const bw01 = 'ahlstar-200-150-400'
 const direct = {
   customerId: nordvatten,
   channel: 'direct',
@@ -126,7 +130,10 @@ export const orderSeeds: Order[] = [
     deliveryMethod: shipping.method,
     events: events({ confirmed: '2026-10-26T11:40', city: 'Västerås' }),
     shippingCost: 45,
-    lines: [line(10, 'sp-1002', 1, 'bw-01'), line(20, 'sp-1003', 1, 'bw-01')],
+    lines: [
+      line(10, partOfKind(bw01, 'seal-kit'), 1, 'bw-01'),
+      line(20, partOfKind(bw01, 'bearing-kit'), 1, 'bw-01'),
+    ],
   },
   {
     id: 'SO-104390',
@@ -146,7 +153,7 @@ export const orderSeeds: Order[] = [
       city: 'Västerås',
     }),
     shippingCost: 45,
-    lines: [line(10, 'sp-1002', 2)],
+    lines: [line(10, partOfKind(rw, 'seal'), 2)],
   },
   {
     id: 'SO-104382',
@@ -170,10 +177,10 @@ export const orderSeeds: Order[] = [
     discount: 12,
     shippingCost: 0,
     lines: [
-      line(10, 'sp-2002', 1, 'p-210'),
-      line(20, 'sp-2002', 1, 'p-211'),
-      line(30, 'sp-2002', 1, 'p-212'),
-      line(40, 'sp-2001', 3),
+      line(10, partOfKind('xfp-150-e', 'seal-kit'), 1, 'p-210'),
+      line(20, partOfKind('xfp-150-e', 'seal-kit'), 1, 'p-211'),
+      line(30, partOfKind('xfp-150-e', 'seal-kit'), 1, 'p-212'),
+      line(40, partOfKind('xfp-150-e', 'bottom-plate'), 3),
     ],
   },
   {
@@ -195,7 +202,7 @@ export const orderSeeds: Order[] = [
       city: 'Västerås',
     }),
     shippingCost: 45,
-    lines: [line(10, 'sp-1001', 1, 'rw-01')],
+    lines: [line(10, partOfKind(rw, 'impeller'), 1, 'rw-01')],
   },
   {
     id: 'SO-104255',
@@ -217,9 +224,9 @@ export const orderSeeds: Order[] = [
     }),
     shippingCost: 45,
     lines: [
-      line(10, 'sp-2001', 1, 'p-102'),
-      line(20, 'sp-2001', 1, 'p-103'),
-      line(30, 'sp-2001', 1, 'p-104'),
+      line(10, partOfKind('xfp-100-c', 'bottom-plate'), 1, 'p-102'),
+      line(20, partOfKind('xfp-100-c', 'bottom-plate'), 1, 'p-103'),
+      line(30, partOfKind('xfp-100-c', 'bottom-plate'), 1, 'p-104'),
     ],
   },
 
@@ -235,7 +242,7 @@ export const orderSeeds: Order[] = [
     deliveryMethod: shipping.method,
     events: events({ confirmed: '2026-10-27T13:40', city: 'Sala' }),
     shippingCost: 45,
-    lines: [line(10, 'sp-1001', 1), line(20, 'sp-1003', 2)],
+    lines: [line(10, partOfKind(rw, 'impeller'), 1), line(20, partOfKind(rw, 'bearing-kit'), 2)],
   },
   {
     id: 'SO-104393',
@@ -256,7 +263,7 @@ export const orderSeeds: Order[] = [
       city: 'Köping',
     }),
     shippingCost: 45,
-    lines: [line(10, 'sp-1002', 4)],
+    lines: [line(10, partOfKind('ahlstar-80-65-160', 'seal'), 4)],
   },
   {
     id: 'SO-104368',
@@ -277,6 +284,6 @@ export const orderSeeds: Order[] = [
       city: 'Eskilstuna',
     }),
     shippingCost: 45,
-    lines: [line(10, 'sp-1002', 2)],
+    lines: [line(10, partOfKind('ahlstar-50-32-200', 'seal'), 2)],
   },
 ]

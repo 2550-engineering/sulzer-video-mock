@@ -96,6 +96,24 @@ const specs = [
     minSize: '1920 × 1280',
   },
   {
+    match: /^\/images\/spare-parts\/drawings\//,
+    kind: 'Sectional drawing (PNG, transparent). Hotspots in src/data/sectionalDrawings.ts are placed on this exact file: move them if you swap it',
+    aspect: '845:929',
+    minSize: '845 × 929',
+  },
+  {
+    match: /^\/images\/spare-parts\/parts\//,
+    kind: 'Spare part photo (part centred on white or light grey, no text)',
+    aspect: '4:3 (also shown square in the cart)',
+    minSize: '800 × 600',
+  },
+  {
+    match: /^\/images\/eshop\/eshop-hero\.jpg$/,
+    kind: 'eShop hero (text panel on the left; keep the subject right of centre)',
+    aspect: '21:9 (shown as a wide band)',
+    minSize: '2560 × 1100',
+  },
+  {
     match: /^\/images\/sites\//,
     kind: 'Site photo (also the asset page hero band; keep the subject centred)',
     aspect: '16:9',
@@ -115,6 +133,9 @@ const { hero, connectPromo } = await load('/src/data/home.ts')
 const { intro } = await load('/src/data/mySulzer.ts')
 const { sites, assets } = await load('/src/data/assets.ts')
 const { digitalSolutionsPage } = await load('/src/data/digitalSolutions.ts')
+const { spareParts } = await load('/src/data/spareParts.ts')
+const { sectionalDrawings } = await load('/src/data/sectionalDrawings.ts')
+const { eshopPage } = await load('/src/data/eshop.ts')
 await server.close()
 
 const byId = (items) => new Map(items.map((item) => [item.id, item]))
@@ -170,12 +191,23 @@ const onConnectProduct = new Set([
   knowledgeItems.find((k) => k.id === connectExplore.story.storyId).image.src,
 ])
 
+// Spare parts and eShop (P5, Video B step 3): the AHLSTAR drawing, the eShop hero and
+// RW-02's bearing kit, which ends up in the cart and on the order.
+const onSpareParts = new Set([
+  sectionalDrawings.ahlstar.image.src,
+  eshopPage.hero.src,
+  spareParts.find(
+    (p) => p.name.startsWith('Bearing kit') && p.modelIds.includes('ahlstar-150-125-315'),
+  ).image.src,
+])
+
 const recordings = (src) =>
   [
     onApplicationFinder.has(src) && 'application finder',
     onProductFinder.has(src) && 'product finder',
     onMyAssets.has(src) && 'my assets',
     onConnectProduct.has(src) && 'connect product page',
+    onSpareParts.has(src) && 'spare parts',
   ].filter(Boolean)
 
 const images = [
@@ -196,6 +228,10 @@ const images = [
   ...documents.flatMap((document) => (document.preview ? [document.preview] : [])),
   ...Object.values(cadPreviews),
   ...sites.map((site) => site.image),
+  eshopPage.hero,
+  ...Object.values(sectionalDrawings).flatMap((d) => (d.kind === 'image' ? [d.image] : [])),
+  // Part photos are shared by parts of one kind, so list each file once.
+  ...[...new Map(spareParts.map((part) => [part.image.src, part.image])).values()],
 ]
 
 const rows = images.map(({ src, alt }) => {
@@ -229,10 +265,12 @@ with the file name (hide the labels with \`showPlaceholderLabels\` in \`src/conf
   Never Grundfos, KSB or Xylem images. Log web sources in the Sulzer project folder
   (\`docs/image-sources.md\`).
 - **Priority 1** images are visible in a recording; the column says which (application finder,
-  product finder, my assets, connect product page).
+  product finder, my assets, connect product page, spare parts).
 - **Generated:** \`sulzer-connect-devices.png\` is screenshots of the Connect app in device
   frames. Rebuild it with \`npm run connect:devices\` after changing the Connect app.
 - **Sizing and My Projects** need no photos: their charts and curve thumbnails are drawn in SVG.
+- **Spare parts:** the XFP sectional drawing is SVG (\`XfpSectionDrawing.tsx\`). Part photos are
+  shared by every part of one kind (all AHLSTAR impellers use \`ahlstar-impeller.jpg\`).
 - **Formats:** JPG for photos (quality 80–85), PNG for product cut-outs.
 
 ${rows.length} images, ${missing} missing.

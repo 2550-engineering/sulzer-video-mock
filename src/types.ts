@@ -414,18 +414,77 @@ export type ProductModel = {
   leadTime: string
 }
 
+/** Spare part groups, in parts-list order. The BOM filters by them. */
+export type SparePartGroup =
+  | 'Casing & hydraulics'
+  | 'Shaft & seal'
+  | 'Bearings'
+  | 'Gaskets & O-rings'
+  | 'Drive'
+  | 'Motor & cable'
+  | 'Service kits'
+
+/** One line of a kit: a part from the same parts list, and how many the kit holds. */
+export type KitItem = { partId: string; quantity: number }
+
+/**
+ * A genuine spare part. Parts lists (BOMs) are per model: see data/spareParts.ts.
+ * Show prices and lead times through lib/pricing.ts, never `listPrice` directly.
+ */
 export type SparePart = {
+  /** Same as the part number. */
   id: string
+  /** 8 digits, e.g. "62016308". */
   partNumber: string
   name: string
   productId: string
-  /** e.g. "Wear parts", "Seals", "Bearings". */
-  group: string
-  /** Item number on the sectional drawing. */
-  position: number
-  availability: 'in-stock' | 'on-request'
+  /** The models it fits. Parts shared by a bearing unit fit several sizes. */
+  modelIds: string[]
+  group: SparePartGroup
+  /** Item number on the sectional drawing. Service kits that span the pump have none. */
+  position?: number
+  /** How many one pump has. */
+  quantity: number
   /** Per unit in `market.currency`, excl. VAT. Signed-in users only. */
   listPrice: number
+  availability: ModelAvailability
+  image: ImageSource
+  /** Kits only: what is in the kit. */
+  contains?: KitItem[]
+  /** Kits only: when to fit it, e.g. "Every 2 years or 16 000 h". */
+  interval?: string
+}
+
+/** A hotspot on a sectional drawing: the part position and where it sits, in % of the drawing. */
+export type DrawingHotspot = { position: number; x: number; y: number }
+
+/**
+ * A product's sectional drawing. Either a cut-away image or one of the SVG drawings in
+ * components/spareparts (by key). Every model of the product shares it.
+ */
+export type SectionalDrawing = {
+  /** Width / height, e.g. "845 / 929". Hotspot % are of this box. */
+  aspect: string
+  hotspots: DrawingHotspot[]
+} & ({ kind: 'image'; image: ImageSource } | { kind: 'svg'; svg: 'xfp'; title: string })
+
+/** One cart line. The same part for two assets is two lines. */
+export type CartLine = {
+  partId: string
+  quantity: number
+  /** The installed unit it is for (asset id), when added from an asset or serial number. */
+  assetId?: string
+}
+
+/** How a checkout order ships. */
+export type DeliveryOption = {
+  id: string
+  label: string
+  detail: string
+  /** In `market.currency`, excl. VAT. */
+  price: number
+  /** Working days from dispatch to delivery. */
+  days: number
 }
 
 export type DocumentType =

@@ -9,6 +9,7 @@ import { ProductExploreTab } from '../components/product/ProductExploreTab'
 import { ProductHeader } from '../components/product/ProductHeader'
 import { ServicesTab } from '../components/product/ServicesTab'
 import { VariantsTab } from '../components/product/VariantsTab'
+import { ProductSparePartsTab } from '../components/spareparts/ProductSparePartsTab'
 import { TabBar } from '../components/TabBar'
 import { TabComingSoon } from '../components/TabComingSoon'
 import { TabPanel } from '../components/TabPanel'
@@ -103,8 +104,7 @@ export function ProductPage() {
             <TabComingSoon copy={copy.tabEmpty} />
           ))}
 
-        {/* Spare parts arrive with the spare parts and eCommerce module. */}
-        {activeTab === 'spare-parts' && <TabComingSoon copy={copy.spareParts} />}
+        {activeTab === 'spare-parts' && <ProductSparePartsTab key={product.id} product={product} />}
 
         {activeTab === 'services' && (
           <ServicesTab key={product.id} product={product} services={services} />

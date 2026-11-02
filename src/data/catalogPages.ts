@@ -267,10 +267,6 @@ export const productPage = {
       size: 'Approx. file size',
     },
   },
-  spareParts: {
-    title: 'Spare parts for this product are coming to mySulzer',
-    text: 'Soon you can find genuine parts on the sectional drawing, check prices and stock, and order online. Until then, your local Sulzer team is happy to help.',
-  } satisfies TabComingSoonCopy,
   services: {
     title: 'Services',
     intro: (product: string) =>

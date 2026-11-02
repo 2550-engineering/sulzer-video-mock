@@ -81,6 +81,14 @@
     }
   }
 
+  /* A badge whose number just changed, e.g. the cart count. */
+  --animate-pop: sz-pop 250ms var(--sz-ease);
+  @keyframes sz-pop {
+    50% {
+      scale: 1.3;
+    }
+  }
+
   /* Chart lines draw from left to right; use with pathLength="1" and stroke-dasharray 1. */
   --animate-draw: sz-draw 800ms var(--sz-ease) backwards;
   @keyframes sz-draw {

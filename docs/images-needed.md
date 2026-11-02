@@ -10,13 +10,15 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
   Never Grundfos, KSB or Xylem images. Log web sources in the Sulzer project folder
   (`docs/image-sources.md`).
 - **Priority 1** images are visible in a recording; the column says which (application finder,
-  product finder, my assets, connect product page).
+  product finder, my assets, connect product page, spare parts).
 - **Generated:** `sulzer-connect-devices.png` is screenshots of the Connect app in device
   frames. Rebuild it with `npm run connect:devices` after changing the Connect app.
 - **Sizing and My Projects** need no photos: their charts and curve thumbnails are drawn in SVG.
+- **Spare parts:** the XFP sectional drawing is SVG (`XfpSectionDrawing.tsx`). Part photos are
+  shared by every part of one kind (all AHLSTAR impellers use `ahlstar-impeller.jpg`).
 - **Formats:** JPG for photos (quality 80–85), PNG for product cut-outs.
 
-149 images, 0 missing.
+195 images, 45 missing.
 
 | Priority | File | Folder | Aspect | Min. size | Kind | What it should show | Status |
 |----------|------|--------|--------|-----------|------|---------------------|--------|
@@ -71,6 +73,9 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
 | 1 · product finder | `ahlstar-bim-preview.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | 3D render of an AHLSTAR end-suction pump, isometric view | present |
 | 1 · product finder | `service-agreements.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Two Sulzer service technicians beside their service van | present |
 | 1 · product finder | `repair-overhaul.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer technician restoring a pump part with a laser cladding robot in a service center | present |
+| 1 · spare parts | `eshop-hero.jpg` | `public/images/eshop/` | 21:9 (shown as a wide band) | 2560 × 1100 | eShop hero (text panel on the left; keep the subject right of centre) | Rows of genuine Sulzer spare parts on shelves in a bright distribution warehouse | missing |
+| 1 · spare parts | `ahlstar-cutaway.png` | `public/images/spare-parts/drawings/` | 845:929 | 845 × 929 | Sectional drawing (PNG, transparent). Hotspots in src/data/sectionalDrawings.ts are placed on this exact file: move them if you swap it | Cut-away of an AHLSTAR end-suction pump: volute casing, impeller, seal chamber, shaft and bearing unit | present |
+| 1 · spare parts | `ahlstar-bearing-kit.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Bearing kit laid out: bearings, isolators and O-rings | missing |
 | 2 | `applications-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Range of Sulzer AHLSTAR process pumps on display in a bright hall | present |
 | 2 | `groundwater-intake-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Well pump discharging groundwater into an irrigation canal | present |
 | 2 | `drinking-water-treatment-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Rows of open filtration basins at a water treatment plant | present |
@@ -165,6 +170,49 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
 | 2 | `pump-controller-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | PC 441 pump controller touchscreen with plug-in I/O modules | present |
 | 2 | `blue-box-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | Sulzer pump surrounded by data, illustrating BLUE BOX analytics | present |
 | 2 | `energy-audit.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Engineers reviewing pump performance data on a screen | present |
+| 2 | `ahlstar-casing.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Machined AHLSTAR volute casing, flange up | missing |
+| 2 | `ahlstar-side-plate.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Round AHLSTAR side plate (suction cover) with its bolts | missing |
+| 2 | `ahlstar-casing-cover.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | AHLSTAR casing cover, seal chamber side | missing |
+| 2 | `ahlstar-impeller.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Closed AHLSTAR impeller, stainless steel | missing |
+| 2 | `ahlstar-wear-ring.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Machined casing wear ring | missing |
+| 2 | `ahlstar-support-foot.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Cast AHLSTAR support foot for the bearing unit | missing |
+| 2 | `ahlstar-shaft.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Long stainless pump shaft with keyways, lying horizontally | missing |
+| 2 | `ahlstar-shaft-sleeve.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Polished stainless shaft sleeve | missing |
+| 2 | `ahlstar-mechanical-seal.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Single mechanical seal with silicon carbide faces | missing |
+| 2 | `ahlstar-seal-cartridge.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Double mechanical seal cartridge with flush connections | missing |
+| 2 | `gland-packing.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Five braided PTFE gland packing rings | missing |
+| 2 | `ahlstar-rotokey.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Impeller fastening nut, key and washer laid out | missing |
+| 2 | `ahlstar-bearing-housing.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | AHLSTAR bearing unit housing, painted | missing |
+| 2 | `ball-bearing.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Pair of angular contact ball bearings | missing |
+| 2 | `roller-bearing.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Cylindrical roller bearing | missing |
+| 2 | `ahlstar-bearing-cover.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Round cast bearing end cover | missing |
+| 2 | `bearing-isolator.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Labyrinth bearing isolator ring | missing |
+| 2 | `flat-gasket.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Flat round casing gasket | missing |
+| 2 | `o-ring-set.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Set of black O-rings of different sizes | missing |
+| 2 | `spacer-coupling.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Flexible spacer coupling, two hubs and spacer | missing |
+| 2 | `ahlstar-coupling-guard.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Perforated steel coupling guard | missing |
+| 2 | `ahlstar-seal-kit.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Mechanical seal kit: seal, shaft sleeve and O-rings | missing |
+| 2 | `ahlstar-wear-parts-kit.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Side plate, wear ring and casing gasket laid out | missing |
+| 2 | `ahlstar-service-kit.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Sulzer service kit box with bearings and gaskets | missing |
+| 2 | `ahlstar-overhaul-kit.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Complete overhaul kit laid out on a workbench | missing |
+| 2 | `xfp-volute.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | XFP volute casing with discharge flange | missing |
+| 2 | `xfp-bottom-plate.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | XFP Contrablock bottom plate with its spiral groove | missing |
+| 2 | `xfp-impeller.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | XFP closed channel impeller | missing |
+| 2 | `xfp-lifting-hoop.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Stainless steel lifting hoop | missing |
+| 2 | `xfp-mechanical-seal.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Mechanical seal with silicon carbide faces | missing |
+| 2 | `xfp-upper-seal.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Small mechanical seal with a carbon face | missing |
+| 2 | `impeller-screw-set.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Stainless impeller screw and washer | missing |
+| 2 | `oil-plug.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Stainless steel screw plug with a copper seal ring | missing |
+| 2 | `xfp-motor-housing.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | XFP motor housing with the stator fitted, cooling fins outside | missing |
+| 2 | `xfp-rotor.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Motor rotor on its shaft | missing |
+| 2 | `moisture-sensor.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Small moisture sensor probe with its cable | missing |
+| 2 | `power-cable.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Coiled black rubber power cable | missing |
+| 2 | `cable-entry-kit.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Cable gland, grommet and strain relief laid out | missing |
+| 2 | `xfp-seal-kit.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Seal kit: two mechanical seals, O-rings and oil plug | missing |
+| 2 | `xfp-bearing-kit.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Bearing kit: two bearings and O-rings | missing |
+| 2 | `xfp-wear-parts-kit.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Contrablock bottom plate, gasket and impeller screw | missing |
+| 2 | `xfp-service-kit.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Sulzer service kit box with O-rings and gaskets | missing |
+| 2 | `xfp-overhaul-kit.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Complete overhaul kit laid out on a workbench | missing |
 | 2 | `ahlstar-video-seal-replacement.jpg` | `public/images/videos/` | 16:9 | 1280 × 720 | Service video thumbnail | Two Sulzer mechanical seal cartridges | present |
 | 2 | `ahlstar-video-back-pull-out.jpg` | `public/images/videos/` | 16:9 | 1280 × 720 | Service video thumbnail | Two Sulzer engineers working on a pump | present |
 | 2 | `ahlstar-video-shaft-alignment.jpg` | `public/images/videos/` | 16:9 | 1280 × 720 | Service video thumbnail | Engineer checking a pump shaft assembly in the workshop | present |

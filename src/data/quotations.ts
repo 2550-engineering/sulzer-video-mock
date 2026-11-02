@@ -2,7 +2,7 @@ import { demoUser, personas, products } from '../config/demo'
 import { getVariant } from '../lib/variants'
 import type { Quotation, QuotationIssuer, QuotationLine, SparePart } from '../types'
 import { projects } from './projects'
-import { spareParts } from './spareParts'
+import { partOfKind } from './spareParts'
 
 /*
  * Quotations ("/self-service/quotations"). End users see Sulzer's quotations to their
@@ -46,10 +46,12 @@ const partnerContact = {
   phone: '+46 16 12 40 57',
 }
 
-const part = (id: string) => spareParts.find((p) => p.id === id) as SparePart
+/** Models the seed parts are for: RW-02's AHLSTAR size and the Hamnen XFP pumps. */
+const rw02 = 'ahlstar-150-125-315'
+const xfp150 = 'xfp-150-e'
 
-function partLine(position: number, partId: string, quantity: number, delivery: string) {
-  const { partNumber, name, listPrice } = part(partId)
+function partLine(position: number, part: SparePart, quantity: number, delivery: string) {
+  const { partNumber, name, listPrice } = part
   return {
     position,
     number: partNumber,
@@ -173,7 +175,10 @@ export const quotations: Quotation[] = [
     orderId: 'SO-104382',
     contact: sulzerContact,
     discount: 12,
-    lines: [partLine(10, 'sp-2002', 3, 'In stock'), partLine(20, 'sp-2001', 3, 'In stock')],
+    lines: [
+      partLine(10, partOfKind(xfp150, 'seal-kit'), 3, 'In stock'),
+      partLine(20, partOfKind(xfp150, 'bottom-plate'), 3, 'In stock'),
+    ],
     ...sulzerTerms,
     notes: [
       'For P-210, P-211 and P-212.',
@@ -193,7 +198,7 @@ export const quotations: Quotation[] = [
     yourReference: 'BW-01 spares',
     contact: sulzerContact,
     discount: 12,
-    lines: [partLine(10, 'sp-1001', 1, '3 weeks')],
+    lines: [partLine(10, partOfKind('ahlstar-200-150-400', 'impeller'), 1, '3 weeks')],
     ...sulzerTerms,
     notes: ['Prices include your framework agreement discount of 12%.'],
   },
@@ -213,8 +218,8 @@ export const quotations: Quotation[] = [
     contact: partnerContact,
     discount: 8,
     lines: [
-      partLine(10, 'sp-1003', 1, '1 week'),
-      partLine(20, 'sp-1002', 1, '2 days'),
+      partLine(10, partOfKind(rw02, 'bearing-kit'), 1, '1 week'),
+      partLine(20, partOfKind(rw02, 'seal'), 1, '2 days'),
       {
         position: 30,
         description: 'Bearing replacement on site',
@@ -246,7 +251,7 @@ export const quotations: Quotation[] = [
     orderId: 'SO-104393',
     contact: partnerContact,
     discount: 6,
-    lines: [partLine(10, 'sp-1002', 4, '2 days')],
+    lines: [partLine(10, partOfKind('ahlstar-80-65-160', 'seal'), 4, '2 days')],
     ...partnerTerms,
     notes: ['Delivered to the mill stores, gate 3.'],
   },
@@ -263,7 +268,10 @@ export const quotations: Quotation[] = [
     yourReference: 'Line 2 overhaul',
     contact: partnerContact,
     discount: 5,
-    lines: [partLine(10, 'sp-1001', 1, '3 weeks'), partLine(20, 'sp-1002', 1, '2 days')],
+    lines: [
+      partLine(10, partOfKind('ahlstar-50-32-200', 'impeller'), 1, '3 weeks'),
+      partLine(20, partOfKind('ahlstar-50-32-200', 'seal'), 1, '2 days'),
+    ],
     ...partnerTerms,
     notes: [],
   },
@@ -280,7 +288,7 @@ export const quotations: Quotation[] = [
     yourReference: 'Summer stop 2027',
     contact: partnerContact,
     discount: 5,
-    lines: [partLine(10, 'sp-1003', 2, '1 week')],
+    lines: [partLine(10, partOfKind(rw02, 'bearing-kit'), 2, '1 week')],
     ...partnerTerms,
     notes: [],
   },
