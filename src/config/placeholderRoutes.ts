@@ -7,33 +7,9 @@ import type { NavItem, PlaceholderRoute } from '../types'
  */
 export const placeholderRoutes: PlaceholderRoute[] = [
   {
-    path: '/products/replacement',
-    title: 'Product replacement',
-    description: 'Find the right Sulzer replacement for your existing pump in a few steps.',
-    parent: '/products',
-  },
-  {
-    path: '/spare-parts',
-    title: 'Spare parts',
-    description: 'Identify, price and order genuine Sulzer spare parts.',
-    image: {
-      src: '/images/spare-parts/service-kits.jpg',
-      alt: 'Sulzer genuine spare parts kits with bearings, seals and O-rings',
-    },
-  },
-  {
     path: '/digital-solutions',
     title: 'Digital solutions',
     description: 'Connected services that keep your equipment running at its best.',
-  },
-  {
-    path: '/eshop',
-    title: 'eShop',
-    description: 'Order products and spare parts online with your account pricing.',
-    image: {
-      src: '/images/spare-parts/original-spare-parts.jpg',
-      alt: 'Original Sulzer pump casing parts, machined and ready to ship',
-    },
   },
   {
     path: '/my-pages/saved',

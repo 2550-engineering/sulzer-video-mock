@@ -6,7 +6,14 @@ import type { DutyPoint, PumpConfiguration, PumpVariant, SizingResult } from '..
 import { getProduct } from './catalog'
 import type { FilterSelection } from './filters'
 import { specNumber } from './productFilters'
-import { bepFlowAt, efficiencyAt, headAt, npshrAt, operatingPoint } from './pumpCurves'
+import {
+  bepFlowAt,
+  efficiencyAt,
+  headAt,
+  npshrAt,
+  operatingPoint,
+  type CurveSeries,
+} from './pumpCurves'
 import { matchingConfigurations } from './sizingFilters'
 import { configurationsForProduct, trimsFor, variantFor } from './variants'
 
@@ -55,6 +62,19 @@ function ratios(variant: PumpVariant, frequency: 50 | 60) {
 export function variantCurve(variant: PumpVariant, frequency: 50 | 60) {
   const { hydraulic, ...rest } = ratios(variant, frequency)
   return { curve: hydraulic.curve, ...rest }
+}
+
+/** A sizing result as a curve to draw. */
+export function resultSeries(result: SizingResult, frequency: 50 | 60): CurveSeries {
+  const { curve, scale, trimRatio } = variantCurve(result.variant, frequency)
+  return {
+    id: result.variant.id,
+    name: result.variant.name,
+    curve,
+    scale,
+    trimRatio,
+    operatingPoint: result.operatingPoint,
+  }
 }
 
 /**

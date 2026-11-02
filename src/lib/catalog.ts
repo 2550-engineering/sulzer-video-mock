@@ -5,8 +5,23 @@ import { knowledgeItems } from '../data/knowledge'
 import { productModels } from '../data/productModels'
 import { products } from '../data/products'
 import { services } from '../data/services'
-import { spareParts } from '../data/spareParts'
-import type { Application, ApplicationTeaser, Product, Service } from '../types'
+import { serviceProviderDemo } from '../config/demo'
+import { ahlstarDrawing } from '../data/drawings/ahlstar'
+import { xfp150eDrawing } from '../data/drawings/xfp150e'
+import { ahlstarSpareParts } from '../data/spareParts/ahlstar'
+import { xfpSpareParts } from '../data/spareParts/xfp'
+import { xfpVariants } from '../data/xfp'
+import type {
+  Application,
+  ApplicationTeaser,
+  PartHit,
+  PartOwner,
+  Product,
+  ProductVariant,
+  Service,
+  SparePart,
+  SparePartCatalogue,
+} from '../types'
 
 /* Lookups over the mock catalogue in src/data. */
 
@@ -126,8 +141,108 @@ export function modelsFor(productId: string) {
   return productModels.filter((model) => model.productId === productId)
 }
 
-export function sparePartsFor(productId: string) {
-  return spareParts.filter((part) => part.productId === productId)
+const productVariants = [...xfpVariants]
+// The demo AHLSTAR model first, so search links shared part numbers to it.
+const sparePartCatalogues = [
+  xfpSpareParts,
+  ...ahlstarSpareParts.filter((c) => c.forIds.includes(serviceProviderDemo.ahlstarModelId)),
+  ...ahlstarSpareParts.filter((c) => !c.forIds.includes(serviceProviderDemo.ahlstarModelId)),
+]
+
+export function getProductVariant(id: string) {
+  return productVariants.find((variant) => variant.id === id)
+}
+
+export function variantsFor(productId: string, modelId?: string) {
+  return productVariants.filter(
+    (variant) => variant.productId === productId && (!modelId || variant.modelId === modelId),
+  )
+}
+
+export const variantPath = (variant: ProductVariant) =>
+  `/products/${variant.productId}/${variant.id}`
+
+/** The configured variant or model a parts list belongs to. */
+export function partOwner(id: string): PartOwner | undefined {
+  const variant = getProductVariant(id)
+  if (variant) {
+    return { id, productId: variant.productId, name: variant.code, kind: 'variant' }
+  }
+  const model = getModel(id)
+  return model && { id, productId: model.productId, name: model.name, kind: 'model' }
+}
+
+/**
+ * The owner's Spare parts tab on its own page: /products/xfp/<variant> or
+ * /products/ahlstar/<model>, #spare-parts. `query` adds e.g. part= or view=.
+ */
+export function sparePartsPath(owner: PartOwner, query: Record<string, string> = {}) {
+  const search = new URLSearchParams(query).toString()
+  return `/products/${owner.productId}/${owner.id}${search ? `?${search}` : ''}#spare-parts`
+}
+
+/**
+ * Pumps whose Spare parts tab a product number or model code leads to: every
+ * configured variant and every model with a parts list. Spaces are ignored,
+ * so "XFP150E" and "24150" both match.
+ */
+export function findSparePartOwners(query: string): PartOwner[] {
+  const q = query.toLowerCase().replace(/\s+/g, '')
+  if (q.length < 2) return []
+  const owners = [
+    ...productVariants.map((variant) => partOwner(variant.id)!),
+    ...productModels
+      .filter((model) => sparePartsFor(model.id))
+      .map((model) => partOwner(model.id)!),
+  ]
+  return owners.filter(
+    (owner) =>
+      ownerProductNumber(owner).startsWith(q) ||
+      owner.name.toLowerCase().replace(/\s+/g, '').includes(q),
+  )
+}
+
+/** The article number of the variant or model itself. */
+export const ownerProductNumber = (owner: PartOwner) =>
+  (owner.kind === 'variant' ? getProductVariant(owner.id) : getModel(owner.id))?.productNumber ?? ''
+
+/** The owner's own page: /products/<product>/<variant or model>. */
+export const ownerPath = (owner: PartOwner) => `/products/${owner.productId}/${owner.id}`
+
+/** The Spare parts tab with this part selected. */
+export const partPath = ({ part, owner }: PartHit) => sparePartsPath(owner, { part: part.id })
+
+const drawings = [xfp150eDrawing, ahlstarDrawing]
+
+export function getDrawing(id: string) {
+  return drawings.find((drawing) => drawing.id === id)
+}
+
+/**
+ * Every spare part with the variant or model it belongs to, for search. A part
+ * number shared by several models is listed once, with the first (the demo
+ * model comes first).
+ */
+export const partHits: PartHit[] = (() => {
+  const byNumber = new Map<string, PartHit>()
+  for (const catalogue of sparePartCatalogues) {
+    const owner = partOwner(catalogue.forIds[0])!
+    for (const part of catalogue.parts) {
+      if (!byNumber.has(part.partNumber)) byNumber.set(part.partNumber, { part, owner })
+    }
+  }
+  return [...byNumber.values()]
+})()
+
+/** Spare parts of a variant or model, or undefined when there is no parts list for it yet. */
+export function sparePartsFor(id: string) {
+  return sparePartCatalogues.find((catalogue) => catalogue.forIds.includes(id))
+}
+
+/** The BOM as built in one production version (the current one by default). */
+export function partsInVersion(catalogue: SparePartCatalogue, versionId?: string): SparePart[] {
+  const changes = catalogue.versions.find((version) => version.id === versionId)?.changes ?? {}
+  return catalogue.parts.map((part) => (changes[part.id] ? { ...part, ...changes[part.id] } : part))
 }
 
 export function documentsFor(productId: string) {

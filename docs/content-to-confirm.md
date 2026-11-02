@@ -88,15 +88,16 @@ results page.
    - Popular searches are now AHLSTAR, Submersible pumps, Vertical turbine, Condition
      monitoring and Raw water (header and "No results"), and AHLSTAR, Submersible pumps, Raw water
      and Wastewater (home hero). Each finds something.
-   - The home hero scopes Products, Applications and Documentation open the matching tab of the
-     search results. "Spare parts" still goes to its "Coming soon" page.
+   - The home hero and header search have the scopes Products, Part numbers and Documents.
+     Applications are no longer a scope; they appear on the "Pages" results tab. Result tabs
+     are All, Products, Documentation, Support & learn and Pages.
 6. **Links that end on placeholder pages.** Not on the recording path, but clickable:
    - "Size product", "Size range" and "Size this model" go to `/sizing` ("Coming soon", naming
      the product or model).
    - "View my requests" after a service request goes to `/self-service/requests` ("Coming soon").
    - The toast after "Add to project" links to My projects, where the model does not appear.
    - Service "Learn more" links go to `/support`, `/support/service-portal` or `/connect`.
-   - The Spare parts tab shows "Coming soon".
+   - The Spare parts tab shows the interactive parts list for AHLSTAR and XFP; other products show "Coming soon".
 
 ## Product names (`src/config/demo.ts` → `products`, `productSeries`)
 
@@ -250,7 +251,7 @@ or per range.
 - **Service request:** the band promises that "a Sulzer service coordinator confirms the visit
   within one working day". Placeholder, confirm with Sulzer. The reference number after sending
   is always `SR-2026-0142` (`serviceRequestReference` in `src/config/demo.ts`); nothing is sent.
-- **Spare parts tab** shows "Coming soon" until the spare parts module.
+- **Spare parts tab** shows the AHLSTAR parts list and exploded drawing (see "AHLSTAR spare parts").
 
 ## Sizing (module 3)
 
@@ -392,6 +393,324 @@ Invented for the demo. **Placeholder, confirm with Sulzer.**
   position 10 came from.
 - **Models tab:** "Add to project" there still shows a toast only. Project items are sized
   variants, and catalogue models aren't one.
+
+## Service Provider Workshop (persona)
+
+Everything below is invented. Placeholder, confirm with Sulzer, or replace with real XFP data.
+
+### Demo settings (`src/config/demo.ts`)
+
+- Demo pump (`serviceProviderDemo.variantId`): 24150231, XFP 150E CB1.6 PE220/4-D01 *10-ST.
+- Customer account (`customerAccount`): customer number 104572, discount group SP, 18 % off list
+  price on spare parts and service kits. Net prices in the parts list are list price × 0.82,
+  rounded to the cent.
+
+### XFP variants (`src/data/xfp.ts`)
+
+- **Category badge:** "Submersible wastewater pump".
+- **Model code pattern:** `XFP <size> CB<hydraulic version> PE<P2 × 10>/<poles>-<supply>
+*<cable length m>-<ST|EX>`. CB = closed two-channel impeller. Supply D01 = 400 V 50 Hz, D02 =
+  690 V 50 Hz, D11 = 460 V 60 Hz. ST = standard, EX = explosion proof. Confirm against Sulzer's
+  real XFP type key.
+- **Shared by every variant:** 3-phase, IP68, pump housing grey cast iron EN-GJL-250, max.
+  ambient temperature 40 °C. Suitable for Wastewater collection and transport, Stormwater and
+  flood control, and Wastewater treatment.
+- **Lead time wording:** "In stock – ships in <n> days", "<from>–<to> weeks". Up to 3 weeks
+  counts as a normal lead time, longer as made to order (`src/lib/availability.ts`).
+
+| Product no. | Code                               | Hz  | P2 kW | rpm  | Voltage | Impeller             | Inlet/outlet DN | Ex  | Cable m | kg  | List price EUR | Availability                            |
+| ----------- | ---------------------------------- | --- | ----- | ---- | ------- | -------------------- | --------------- | --- | ------- | --- | -------------- | --------------------------------------- |
+| 24140111    | XFP 100C CB1.5 PE75/4-D01 \*10-ST  | 50  | 7.5   | 1455 | 400 V   | Ø245, grey cast iron | 100/100         | No  | 10      | 210 | 7 900          | 2–3 weeks                               |
+| 24140112    | XFP 100C CB1.5 PE75/4-D01 \*10-EX  | 50  | 7.5   | 1455 | 400 V   | Ø245, grey cast iron | 100/100         | Yes | 10      | 218 | 9 150          | 4–6 weeks                               |
+| 24140121    | XFP 100C CB1.5 PE90/4-D01 \*20-ST  | 50  | 9     | 1460 | 400 V   | Ø260, grey cast iron | 100/100         | No  | 20      | 228 | 8 650          | 2–3 weeks                               |
+| 24150211    | XFP 150E CB1.6 PE185/4-D01 \*10-ST | 50  | 18.5  | 1470 | 400 V   | Ø315, grey cast iron | 150/150         | No  | 10      | 455 | 14 900         | 6–8 weeks                               |
+| 24150231    | XFP 150E CB1.6 PE220/4-D01 \*10-ST | 50  | 22    | 1470 | 400 V   | Ø330, grey cast iron | 150/150         | No  | 10      | 480 | 16 400         | In stock – ships in 3 days              |
+| 24150232    | XFP 150E CB1.6 PE220/4-D01 \*10-EX | 50  | 22    | 1470 | 400 V   | Ø330, grey cast iron | 150/150         | Yes | 10      | 492 | 18 900         | 6–8 weeks                               |
+| 24150241    | XFP 150E CB1.6 PE300/4-D02 \*20-ST | 50  | 30    | 1475 | 690 V   | Ø345, duplex 1.4470  | 150/150         | No  | 20      | 545 | 19 800         | 8–10 weeks                              |
+| 24150261    | XFP 150E CB1.6 PE250/4-D11 \*10-ST | 60  | 25    | 1770 | 460 V   | Ø300, grey cast iron | 150/150         | No  | 10      | 490 | 17 300         | 8–10 weeks                              |
+| 24130931    | XFP 150E CB1.6 PE200/4-D01 \*10-ST | 50  | 20    | 1465 | 400 V   | Ø325, grey cast iron | 150/150         | No  | 10      | 470 | 15 200 (last)  | Discontinued 2018, replaced by 24150231 |
+
+All impellers are "Closed two-channel". These article numbers sit beside the model numbers in
+`src/data/models/xfp.ts` (24140101, 24150205); confirm both schemes.
+
+### Search (steps 1–2)
+
+- Typing a model code without spaces ("XFP100") or the start of a product number ("2415")
+  suggests configured products, and the Products tab then lists them as variant cards with
+  the filter list (Product range, Discontinued products, Frequency, Phase, IP class, Pump
+  housing material, Pump inlet size, Impeller type, Ex approval). "XFP" on its own still lists
+  the XFP range.
+- A search for exactly one part number in the Part numbers scope goes straight to the part.
+- Part links open `/products/xfp/<variantId>?part=<part id>#spare-parts`.
+
+### Spare parts of the demo pump (`src/data/spareParts/xfp.ts`)
+
+- **Parts list:** 34 positions in 9 groups. Position number ranges: 100s cable entry, 200s
+  motor, 300s bearings, 400s shaft seal, 500s hydraulics, 600s cooling jacket, 700s lifting and
+  fixing, 800s sensors, 900s O-rings and gaskets.
+- **Part numbers:** 8 digits, 615 + group digit + 4 digits.
+- **Drawing:** drawing id `td-xfp150e-01`. Every part has a drawing hotspot id, e.g.
+  `impeller` or `seal-primary`.
+- **Bearing designations** (6310-2Z/C3, 3312-2Z/C3) are generic standard sizes, not checked
+  against a real XFP.
+
+| Pos. | Part                                                       | Part no. | Qty | Material                           | List EUR | Lead time | Service |
+| ---- | ---------------------------------------------------------- | -------- | --- | ---------------------------------- | -------- | --------- | ------- |
+| 101  | Power cable, 10 m, 4G6 + 2×1.5                             | 61510110 | 1   | Copper, chloroprene rubber sheath  | 412.00   | In stock  |         |
+| 110  | Cable gland, M40×1.5                                       | 61511024 | 1   | Brass, nickel-plated               | 86.50    | In stock  |         |
+| 111  | Cable entry grommet                                        | 61511131 | 1   | NBR                                | 24.80    | In stock  | 2 years |
+| 120  | Terminal board, 6-pole, spring terminals                   | 61512046 | 1   | PA66, glass-fibre reinforced       | 148.00   | 2–3 weeks |         |
+| 201  | Stator housing with stator, PE220/4, 400 V                 | 61520117 | 1   | EN-GJL-250, copper winding class H | 4 860.00 | 6–8 weeks |         |
+| 210  | Rotor, PE220/4                                             | 61521009 | 1   | Electrical steel, aluminium cage   | 1 940.00 | 4–6 weeks |         |
+| 220  | Shaft                                                      | 61522013 | 1   | Stainless steel 1.4021             | 690.00   | 2–3 weeks |         |
+| 301  | Upper bearing, 6310-2Z/C3                                  | 61530110 | 1   | Bearing steel                      | 78.40    | In stock  | 5 years |
+| 302  | Lower bearing, 3312-2Z/C3                                  | 61530212 | 1   | Bearing steel                      | 196.00   | In stock  | 5 years |
+| 310  | Bearing housing, lower                                     | 61531005 | 1   | EN-GJL-250                         | 640.00   | 2–3 weeks |         |
+| 311  | Retaining ring, DIN 471, 60×2                              | 61531160 | 1   | Spring steel                       | 6.20     | In stock  | 5 years |
+| 401  | Mechanical seal, primary (liquid side)                     | 61540143 | 1   | SiC/SiC, FKM                       | 685.00   | In stock  | 5 years |
+| 402  | Mechanical seal, secondary (motor side)                    | 61540238 | 1   | Carbon/chrome steel, NBR           | 298.00   | In stock  | 5 years |
+| 410  | Seal housing                                               | 61541007 | 1   | EN-GJL-250                         | 720.00   | 2–3 weeks |         |
+| 420  | Oil chamber plug, G 1/2                                    | 61542012 | 1   | Stainless steel 1.4401             | 14.60    | In stock  |         |
+| 501  | Impeller, closed two-channel, Ø330                         | 61550133 | 1   | EN-GJL-250                         | 1 620.00 | 2–3 weeks |         |
+| 502  | Impeller key, 10×8×40                                      | 61550210 | 1   | Stainless steel 1.4401             | 9.80     | In stock  | 5 years |
+| 510  | Wear ring, suction side                                    | 61551015 | 1   | Stainless steel 1.4460             | 214.00   | In stock  | 2 years |
+| 520  | Volute, DN 150                                             | 61552015 | 1   | EN-GJL-250                         | 2 950.00 | 6–8 weeks |         |
+| 530  | Suction cover, DN 150                                      | 61553015 | 1   | EN-GJL-250                         | 1 160.00 | 4–6 weeks |         |
+| 601  | Cooling jacket                                             | 61560122 | 1   | Stainless steel 1.4301             | 1 380.00 | 4–6 weeks |         |
+| 605  | Vent screw with seal, G 1/4                                | 61560514 | 1   | Stainless steel 1.4401, NBR        | 18.90    | In stock  |         |
+| 701  | Lifting hoop                                               | 61570122 | 1   | Stainless steel 1.4401             | 168.00   | In stock  |         |
+| 710  | Hexagon screw, M16×50, volute                              | 61571050 | 8   | A4-70                              | 4.90     | In stock  |         |
+| 711  | Hexagon screw, M12×40, suction cover                       | 61571140 | 6   | A4-70                              | 2.80     | In stock  |         |
+| 712  | Washer, M16                                                | 61571216 | 8   | A4                                 | 0.90     | In stock  |         |
+| 714  | Impeller screw, M16×45, with wedge-locking washers         | 61571445 | 1   | A4-80                              | 21.50    | In stock  | 2 years |
+| 801  | Moisture sensor, seal chamber                              | 61580136 | 1   | Stainless steel 1.4401, PEEK       | 236.00   | In stock  | 5 years |
+| 802  | Temperature sensors, stator winding, PTC 140 °C (set of 3) | 61580214 | 1   | PTC thermistor, PTFE leads         | 164.00   | 2–3 weeks |         |
+| 901  | O-ring, 290×5, stator housing / seal housing               | 61590129 | 1   | NBR                                | 32.40    | In stock  | 2 years |
+| 902  | O-ring, 240×5, seal housing / volute                       | 61590224 | 1   | NBR                                | 28.60    | In stock  | 2 years |
+| 903  | O-ring, 310×4, cooling jacket                              | 61590331 | 2   | NBR                                | 30.20    | In stock  | 2 years |
+| 904  | Gasket, cable entry cover                                  | 61590412 | 1   | NBR                                | 12.40    | In stock  | 2 years |
+| 905  | Sealing washer, G 1/2, oil chamber plug                    | 61590505 | 1   | Copper                             | 1.80     | In stock  | 2 years |
+
+"In stock" is "In stock – ships in 2 days". "2 years" or "5 years" is when the part is first
+recommended for replacement.
+
+### Service kits
+
+- **"Recommended service parts – 2 years of operation"** (61599002): the 8 parts marked
+  "2 years", in their fitted quantities. List price EUR 395.90.
+- **"Recommended service parts – 5 years of operation"** (61599005): the 2-year parts plus the 7
+  parts marked "5 years", 15 lines. List price EUR 1 905.30.
+- Kit prices are the sum of their parts with no kit discount, and a kit's lead time is that of
+  its slowest part. Confirm whether Sulzer sells these as kits under their own numbers.
+
+### Production versions
+
+- **"Produced after 2018 (production year and week number)":** production code (YYWW) 1801 or
+  later. This is the parts list above.
+- **"Produced before 2018":** production code up to 1752. Five parts differ:
+
+| Pos. | Before 2018                                         | Part no. | Material                     | List EUR | Lead time |
+| ---- | --------------------------------------------------- | -------- | ---------------------------- | -------- | --------- |
+| 110  | Cable gland, M40×1.5, with strain relief clamp      | 61511017 | Brass, nickel-plated         | 92.00    | 2–3 weeks |
+| 120  | Terminal board, 6-pole, screw terminals             | 61512031 | PA6, glass-fibre reinforced  | 132.00   | 4–6 weeks |
+| 401  | Mechanical seal, primary (liquid side)              | 61540128 | SiC/SiC, NBR                 | 640.00   | In stock  |
+| 601  | Cooling jacket                                      | 61560108 | Steel S235, epoxy-coated     | 1 240.00 | 6–8 weeks |
+| 801  | Moisture sensor, seal chamber, conductive electrode | 61580111 | Stainless steel 1.4401, PTFE | 198.00   | 2–3 weeks |
+
+The discontinued variant 24130931 (built until 2017) is a "before 2018" pump.
+
+### Spare parts tab and exploded drawing
+
+- **The exploded drawing is an original illustration made for this mock-up**
+  (`src/data/drawings/xfp150e.ts`, drawing number TD-XFP150E-01). It is not a Sulzer service
+  drawing and is not to scale. `_reference/service_provider` holds no Sulzer drawing, only
+  Grundfos screenshots, so nothing was traced. Confirm it may be shown, or supply a real XFP
+  exploded view; it can then be placed under the same hotspots.
+- **Wording:** "Year and week of production are on the rating plate" is assumed; confirm
+  where XFP pumps show their production code.
+- **Set prices:** the price of a recommended set is the sum of its parts in the chosen
+  production version.
+
+### Product page layout (`/products/xfp/<variant>`, `/products/ahlstar/<model>`)
+
+- **Shared page:** XFP variants and AHLSTAR models use the same page. AHLSTAR models now
+  have their own page; model links, Spare parts links and part search open it.
+- **Opens on Curves.** The icons under the image are Compare and Share (toasts only).
+  Bookmark and Add to project were removed from the page.
+- **Price status wording:** "In stock" (green), "Lead time <n>" (blue) and "To be confirmed in
+  sales order" (orange, for made to order). Then "Discount group: SP"
+  (`customerAccount.discountGroup`).
+- **Recommended spare parts (named kits, invented):**
+  - XFP 150E: Impeller 61550133, and kits for impeller (61599501), lower bearing
+    (61599302), O-ring for motor (61599901), overhaul (61599400) and plug (61599420).
+  - AHLSTAR, per model: impeller, and kits for impeller, bearings, shaft seal, gaskets and
+    O-rings, overhaul and plugs. Numbers are 6299 + size code + 23 / 32 / 43 / 40 / 99 / 90.
+  - Kit prices are the sum of their parts. The kits are listed under "Service kits" in the
+    parts tree.
+- **Curves** (`src/lib/performance.ts`), illustrative:
+  - Motor efficiency is about IE3: 0.84 + 0.05 × log10(kW), at most 0.96.
+  - Total efficiency is pump × motor, and P1 = P2 / motor efficiency.
+  - Liquid density and the liquid's efficiency factor apply. "2 pumps in parallel" doubles
+    the flow at the same head.
+  - Advanced options: speed 50–100 % and impeller trimmed down to 80 %.
+  - "Show duty point" uses the rated point.
+- **Drawings tab** (`src/data/drawingDocuments.ts`): DD-<size>-01 dimensional drawing, the
+  exploded view (TD-XFP150E-01 or GA-AHLSTAR-01) and WD-<supply> wiring diagram. All
+  invented.
+
+### Search results: variants and models (`src/lib/articles.ts`, `searchArticles` in `src/lib/search.ts`)
+
+- **What lists variants:**
+  - Searching a product with many sizes by name ("XFP", "AHLSTAR") lists every variant or
+    model, 10 per page.
+  - So does a model code or product number ("XFP100", "100-80-250", "2415").
+  - Broader searches ("pump", "Submersible pumps") keep the product rows.
+- **This changes the Product finder recording:** searching "AHLSTAR" now shows "14
+  variants of AHLSTAR" instead of the single AHLSTAR row.
+- **Values invented for AHLSTAR cards** (the models have no such data): IP55, impeller type
+  "Closed", Ex approval "No", 3-phase.
+- **Max. flow and max. head:** the end of the drawn curve (1.4 × rated flow) and the shut-off
+  head (1.25 × rated head, scaled by speed and impeller for XFP). Illustrative.
+- **P2 filter buckets:** up to 10 kW, 10–30 kW, 30–100 kW, above 100 kW.
+
+### Service provider entry points
+
+- **Mega menu:** "Spare parts" goes to `/spare-parts` and "Product replacement" to
+  `/products/replacement`. Quick links "eShop" and the "Looking for our eShop?" help card go to
+  `/eshop/cart`. My Pages "Spare parts" and "Replace pump", and the mySulzer tool cards, link
+  to the same pages.
+- **`/spare-parts` ("Find spare parts for your pump"):**
+  - Finds pumps by product number or model code: all 9 XFP variants and the 14 AHLSTAR
+    models. Spaces are ignored, so "XFP150E" works. Each pump opens its Spare parts tab.
+  - Finds parts by number or name; each opens the tab with the part selected (`?part=<id>`).
+  - Enter on an exact number goes straight there.
+  - XFP variants other than 24150231 show "Parts list not online yet".
+- **Wording to confirm:** "The product number is on the rating plate", assumed for both
+  pump ranges.
+
+### AHLSTAR spare parts (`src/data/spareParts/ahlstar.ts`, `src/data/drawings/ahlstar.ts`)
+
+- **Drawing:** the exploded view GA-AHLSTAR-01 (back pull-out, exploded along the shaft) is an
+  original illustration made for this mock-up, not a Sulzer drawing and not to scale.
+- **One parts list per model,** on `/products/ahlstar?model=<model>#spare-parts`. The tab
+  opens on AHLSTAR 100-80-250 (`serviceProviderDemo.ahlstarModelId`).
+- **Position numbers** follow the common pump nomenclature (102 volute casing, 230 impeller,
+  321 bearing …), with .1/.2 for pairs. Confirm Sulzer uses these.
+- **Size-dependent parts:** volute casing, impeller, wear rings, casing cover, casing gasket,
+  coupling and base plate.
+  - Part number: 62 + position digits + size code (01–10 in Models tab order), padded to 8
+    digits.
+  - Price: the 100-80-250 price × (impeller / 250)^1.6 × ((discharge DN + 20) / 100)^0.4.
+- **Motor:** "Motor, <kW> kW, <2|4>-pole, <Hz> Hz, IE3", part number 6280 + kW × 10, price
+  EUR 900 + 128 per kW.
+- **Seal follows the model:**
+  - Single seal: pos. 433, EUR 545.
+  - Double cartridge: pos. 433, EUR 1 480.
+  - Gland packing models: pos. 461 "Gland packing set", EUR 96.
+- **Shared parts:** the bearing unit, shaft and small parts are the same for all models. That
+  is not true across real AHLSTAR bearing frame sizes; confirm or supply real BOMs.
+- **Service sets:**
+  - 2 years: wear rings, impeller nut, oil seals, casing gasket, O-rings.
+  - 5 years: those plus the shaft sleeve, seal, throttle bushing and both bearings.
+  - Part numbers 6299 + size code + 02 / 05.
+- **Search:** finds each part number once. Shared numbers link to the demo model.
+
+| Pos.  | Part (AHLSTAR 100-80-250)                                      | Part no. | Qty | List EUR | Lead time |
+| ----- | -------------------------------------------------------------- | -------- | --- | -------- | --------- |
+| 102   | Volute casing, DN 100 / DN 80                                  | 62102060 | 1   | 2 680    | 6–8 weeks |
+| 230   | Impeller, closed, Ø250                                         | 62230060 | 1   | 1 240    | 2–3 weeks |
+| 922   | Impeller nut, M24, self-locking                                | 62092224 | 1   | 38       | In stock  |
+| 502.1 | Wear ring, front (suction side)                                | 62502106 | 1   | 168      | In stock  |
+| 502.2 | Wear ring, back (casing cover)                                 | 62502206 | 1   | 154      | In stock  |
+| 161   | Casing cover                                                   | 62161060 | 1   | 1 120    | 4–6 weeks |
+| 210   | Shaft                                                          | 62021045 | 1   | 760      | 2–3 weeks |
+| 524   | Shaft sleeve                                                   | 62052445 | 1   | 236      | In stock  |
+| 433   | Mechanical seal, single, balanced                              | 62043341 | 1   | 545      | In stock  |
+| 471   | Seal cover                                                     | 62047145 | 1   | 312      | 2–3 weeks |
+| 456   | Throttle bushing                                               | 62045645 | 1   | 88       | In stock  |
+| 330   | Bearing housing                                                | 62033045 | 1   | 1 460    | 4–6 weeks |
+| 321.1 | Inboard bearing, deep groove ball bearing 6309-C3              | 62032109 | 1   | 64       | In stock  |
+| 321.2 | Outboard bearing, angular contact ball bearing pair 7309-BECBM | 62032209 | 1   | 248      | In stock  |
+| 360.1 | Bearing cover, inboard                                         | 62036145 | 1   | 142      | 2–3 weeks |
+| 360.2 | Bearing cover, outboard                                        | 62036245 | 1   | 138      | 2–3 weeks |
+| 421.1 | Oil seal, inboard, 45×62×8                                     | 62042145 | 1   | 18.50    | In stock  |
+| 421.2 | Oil seal, outboard, 40×55×7                                    | 62042240 | 1   | 16.90    | In stock  |
+| 638   | Oil level indicator, constant level oiler                      | 62063801 | 1   | 74       | In stock  |
+| 840   | Coupling, flexible with spacer                                 | 62840060 | 1   | 420      | 2–3 weeks |
+| 681   | Coupling guard                                                 | 62068145 | 1   | 186      | 2–3 weeks |
+| 800   | Motor, 11 kW, 4-pole, 50 Hz, IE3                               | 62800110 | 1   | 2 308    | 2–3 weeks |
+| 890   | Base plate                                                     | 62890060 | 1   | 980      | 4–6 weeks |
+| 183   | Support foot                                                   | 62018345 | 1   | 164      | 2–3 weeks |
+| 901   | Hexagon screw, M16×60, casing cover                            | 62090116 | 12  | 2.40     | In stock  |
+| 920   | Hexagon nut, M16                                               | 62092016 | 12  | 0.80     | In stock  |
+| 400   | Casing gasket                                                  | 62400060 | 1   | 42       | In stock  |
+| 412.1 | O-ring, 45×3, shaft sleeve                                     | 62041245 | 1   | 6.40     | In stock  |
+| 412.2 | O-ring, 135×4, seal cover                                      | 62041235 | 1   | 9.80     | In stock  |
+| 903.1 | Drain plug, G 1/2, with sealing ring                           | 62090312 | 1   | 12.60    | In stock  |
+| 903.2 | Vent plug, G 3/8, with sealing ring                            | 62090338 | 1   | 10.40    | In stock  |
+
+### Bill of material and product replacement
+
+- **BOM export:** a CSV made in the browser, named e.g.
+  `BOM_XFP_150E_CB1.6_PE220_4_D01_10_ST_after-2018.csv`. It has prices only when signed in.
+  The print view is at `/products/xfp/<id>/bom`.
+- **Replacement** (`xfpReplacements` in `src/data/xfp.ts`): XFP 150E … PE200/4 (24130931,
+  discontinued 2018) is replaced by 24150231.
+  - Adapter kit 61599150, "Adapter kit, auto-coupling claw DN 150 (built before 2018 to
+    current)", EUR 286, in stock. It is invented.
+  - Fit notes from the data, all invented: different bolt pattern of the pre-2018 claw, the new
+    moisture sensor, and the same guide rails and base elbow. The other notes (connections,
+    supply, motor power, cable, weight) are worked out from the specs.
+  - Search on the page finds product numbers and model codes of the XFP variants only.
+
+### eShop: cart, checkout and order confirmation (`eshop` in `src/config/demo.ts`)
+
+- **Prices:** cart prices are list prices. The customer's 18 % parts discount (`netPrice`) is
+  not applied yet; confirm whether the cart should show net prices.
+- **Freight:** EUR 45 per order, free from EUR 2 500. **VAT:** 25 % (Sweden), added to
+  subtotal plus freight.
+- **Delivery dates:** counted in working days from a fixed "today", 3 Nov 2026, so recordings
+  always show the same dates. Lead time plus 2 days transport. The earliest date uses the
+  shortest lead time in the cart and the latest uses the longest. Checkout offers "all
+  together" (the default) or "as soon as possible".
+- **Delivery addresses:** fictional addresses of Nordvatten Utilities AB in Karlstad: Central
+  workshop, Verkstadsvägen 12, and Riverside intake pumping station, Älvkanten 3.
+- **Payment:** "Invoice on account, 30 days net" is the only method, charged to customer
+  account 104572.
+- **Numbers:**
+  - Orders: SO-104390 first, then SO-104391 and so on.
+  - Saved quotations: Q-10243 first, then Q-10244 and so on.
+  - "Reset demo" starts both again.
+- **Toast wording:** "Save as quotation" promises a reply "within one working day".
+- **Links that end on "Coming soon" pages:** "Track order" (`/self-service/orders`) and "View
+  quotations" (`/self-service/quotations`).
+
+### Configured product page (`/products/xfp/<variantId>`)
+
+- **Where to buy** (`serviceCentre` in `src/config/demo.ts`): "Sulzer Service Centre
+  Mälardalen", Verkstadsgatan 8, 721 30 Västerås, 14 km from the demo company. It is fictional.
+  The phone number +46 70 174 06 42 is in the range Sweden reserves for fiction, and the email
+  uses `sulzer.example`. Replace it with a real Sulzer site, or keep it clearly fictional.
+- **Quotation:** fixed reference Q-10242 (`quotationReference`). "A Sulzer sales engineer
+  replies within one working day" is a service promise to confirm.
+- **Price box:** signed in, it shows the variant's list price, stock status and lead time. A
+  discontinued variant shows no price.
+- **Specifications** (`xfpDetails` in `src/data/xfp.ts`):
+  - Liquids: wastewater, stormwater and raw water, 0–40 °C, max. density 1 100 kg/m³, pH 6–11.
+  - Free passage: 76 mm (100C) and 100 mm (150E).
+  - Shaft 1.4021. Shaft seals SiC/SiC and carbon/chrome steel. NBR O-rings, A4 fasteners.
+  - Installation: wet well on auto-coupling, max. immersion depth 20 m.
+  - Electrical: insulation class H, S1 duty. Starting: D01 and D11 direct on line, D02
+    star-delta. Motor protection: PTC thermistors and a moisture sensor.
+- **Curves** (`src/lib/variantCurves.ts`): illustrative. Each model's rated point is taken as
+  its best-efficiency point, with shut-off head at 1.25 × rated head. Variants are scaled by
+  speed and impeller diameter. Water at 20 °C. P2 is calculated as ρ·g·Q·H / η. Replace with
+  Sulzer curves before publishing.
+- **Drawings** (`xfpDrawings`): DD-XFP150E-01 (dimensional, rev. B), TD-XFP150E-01 (exploded
+  view, rev. B) and WD-PE-D01 (wiring diagram, rev. C). Sizes and dates are invented. There
+  are no files; preview shows the designed cover.
+- **Toasts:** "Documentation package … (ZIP, 14.2 MB, 9 files)". Export file names are the
+  model code with underscores, e.g. `XFP_150E_CB1.6_PE220_4_D01_10_ST.xlsx`.
 
 ## AHLSTAR product page (`src/data/products.ts` → `ahlstar.tabs.explore`)
 

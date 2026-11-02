@@ -2,17 +2,18 @@ import { useState, type KeyboardEvent, type PointerEvent } from 'react'
 import { sizingResultsPage } from '../../data/sizingPages'
 import { groupThousands } from '../../lib/format'
 import { niceAxis } from '../../lib/modelSpecs'
-import { bepFlowAt, efficiencyAt, headAt } from '../../lib/pumpCurves'
-import { operatingRange, variantCurve } from '../../lib/sizing'
-import type { DutyPoint, SizingResult } from '../../types'
+import { bepFlowAt, efficiencyAt, headAt, type CurveSeries } from '../../lib/pumpCurves'
+import { operatingRange } from '../../lib/sizing'
+import type { OperatingPoint } from '../../types'
 
 const copy = sizingResultsPage.panel
 
 type SizingCurveChartProps = {
-  /** One result shows the full picture; several are overlaid for comparison. */
-  results: SizingResult[]
+  /** One curve shows the full picture; several are overlaid for comparison. */
+  curves: CurveSeries[]
   colors: string[]
-  duty: DutyPoint
+  /** The system curve runs through it (zero static head). */
+  duty: OperatingPoint
 }
 
 const width = 680
@@ -28,20 +29,16 @@ const ticks = (max: number, step: number) =>
   Array.from({ length: Math.round(max / step) + 1 }, (_, i) => i * step)
 
 /**
- * Interactive Q–H chart for sizing results: pump curve(s), the system curve
+ * Interactive Q–H chart for sizing results and configured products: pump curve(s), the system curve
  * through the duty point, the duty and operating points and, for a single
  * result, efficiency on a second axis and the recommended operating range.
  * Pointer or arrow keys move a reading line with a tooltip. Hand-made SVG,
  * like the other charts.
  */
-export function SizingCurveChart({ results, colors, duty }: SizingCurveChartProps) {
+export function SizingCurveChart({ curves, colors, duty }: SizingCurveChartProps) {
   const [reading, setReading] = useState<number | null>(null)
-  const single = results.length === 1
-  const series = results.map((result, i) => ({
-    result,
-    color: colors[i % colors.length],
-    ...variantCurve(result.variant, duty.frequency),
-  }))
+  const single = curves.length === 1
+  const series = curves.map((curve, i) => ({ ...curve, color: colors[i % colors.length] }))
 
   const xAxis = niceAxis(
     Math.max(duty.flow * 1.3, ...series.map((s) => bepFlowAt(s.curve, s.scale) * 1.4)),
@@ -87,7 +84,7 @@ export function SizingCurveChart({ results, colors, duty }: SizingCurveChartProp
       ? []
       : [
           ...series.map((s) => ({
-            label: single ? copy.pumpCurve : s.result.variant.name,
+            label: single ? copy.pumpCurve : s.name,
             color: s.color,
             value: `${Math.max(0, headAt(s.curve, s.scale, reading)).toFixed(1)} m`,
           })),
@@ -112,7 +109,7 @@ export function SizingCurveChart({ results, colors, duty }: SizingCurveChartProp
       <svg
         viewBox={`0 0 ${width} ${height}`}
         role="img"
-        aria-label={`${copy.pumpCurve}: ${results.map((r) => r.variant.name).join(', ')}. ${copy.dutyPoint} ${duty.flow} m³/h, ${duty.head} m.`}
+        aria-label={`${copy.pumpCurve}: ${curves.map((c) => c.name).join(', ')}. ${copy.dutyPoint} ${duty.flow} m³/h, ${duty.head} m.`}
         tabIndex={0}
         onPointerMove={readAt}
         onPointerLeave={() => setReading(null)}
@@ -231,7 +228,7 @@ export function SizingCurveChart({ results, colors, duty }: SizingCurveChartProp
         />
         {series.map((s) => (
           <path
-            key={s.result.variant.id}
+            key={s.id}
             d={path((flow) => headAt(s.curve, s.scale, flow), y, bepFlowAt(s.curve, s.scale) * 1.4)}
             fill="none"
             stroke={s.color}
@@ -243,9 +240,9 @@ export function SizingCurveChart({ results, colors, duty }: SizingCurveChartProp
         {/* Operating points, then the duty point on top. */}
         {series.map((s) => (
           <circle
-            key={`op-${s.result.variant.id}`}
-            cx={x(s.result.operatingPoint.flow)}
-            cy={y(s.result.operatingPoint.head)}
+            key={`op-${s.id}`}
+            cx={x(s.operatingPoint.flow)}
+            cy={y(s.operatingPoint.head)}
             r={4.5}
             fill="white"
             stroke={s.color}
@@ -283,13 +280,7 @@ export function SizingCurveChart({ results, colors, duty }: SizingCurveChartProp
             {series.map((s) => {
               const head = headAt(s.curve, s.scale, reading)
               return head >= 0 ? (
-                <circle
-                  key={`r-${s.result.variant.id}`}
-                  cx={x(reading)}
-                  cy={y(head)}
-                  r={3.5}
-                  fill={s.color}
-                />
+                <circle key={`r-${s.id}`} cx={x(reading)} cy={y(head)} r={3.5} fill={s.color} />
               ) : null
             })}
           </g>
@@ -320,13 +311,13 @@ export function SizingCurveChart({ results, colors, duty }: SizingCurveChartProp
 
       <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-text-muted">
         {series.map((s) => (
-          <li key={s.result.variant.id} className="inline-flex items-center gap-1.5">
+          <li key={s.id} className="inline-flex items-center gap-1.5">
             <span
               aria-hidden
               className="h-[3px] w-5 rounded-full"
               style={{ background: s.color }}
             />
-            {single ? copy.pumpCurve : s.result.variant.name}
+            {single ? copy.pumpCurve : s.name}
           </li>
         ))}
         <li className="inline-flex items-center gap-1.5">

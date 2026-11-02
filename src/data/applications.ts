@@ -32,7 +32,7 @@ const helpCards: HelpCard[] = [
     text: 'Order pumps and genuine spare parts online, with your own prices and delivery times.',
     icon: ShoppingCart,
     actionLabel: 'Go to eShop',
-    to: '/eshop',
+    to: '/eshop/cart',
   },
   {
     title: 'Need service?',

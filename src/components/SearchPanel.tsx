@@ -2,10 +2,14 @@ import { Search } from 'lucide-react'
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router'
 import { popularSearches } from '../config/navigation'
+import { searchScopes } from '../data/catalogPages'
 import { useSearchSuggest } from '../hooks/useSearchSuggest'
 import { popoverClasses } from '../lib/popover'
-import { searchPath } from '../lib/search'
+import { scopePath } from '../lib/search'
+import { ScopeSelect } from './search/ScopeSelect'
 import { SearchSuggestions } from './search/SearchSuggestions'
+
+const defaultPlaceholder = 'Search products, applications, part numbers…'
 
 type SearchPanelProps = {
   open: boolean
@@ -17,14 +21,16 @@ export function SearchPanel({ open, onClose }: SearchPanelProps) {
   const navigate = useNavigate()
   const inputRef = useRef<HTMLInputElement>(null)
   const [term, setTerm] = useState('')
-  const { inputProps, panelProps } = useSearchSuggest(term, onClose)
+  const [scope, setScope] = useState<(typeof searchScopes)[number]>(searchScopes[0])
+  const { inputProps, panelProps } = useSearchSuggest(term, scope.id, onClose)
+  const placeholder = ('placeholder' in scope && scope.placeholder) || defaultPlaceholder
 
   useEffect(() => {
     if (open) inputRef.current?.focus()
   }, [open])
 
   function search(value: string) {
-    navigate(searchPath(value))
+    navigate(scopePath(value, scope.id))
     onClose()
   }
 
@@ -41,6 +47,15 @@ export function SearchPanel({ open, onClose }: SearchPanelProps) {
     >
       <form role="search" onSubmit={handleSubmit} className="site-container py-8">
         <div className="flex gap-3">
+          <ScopeSelect
+            options={searchScopes}
+            value={scope}
+            onChange={(option) => {
+              setScope(option)
+              inputRef.current?.focus()
+            }}
+            buttonClassName="h-14 border border-border-strong bg-white hover:border-primary hover:text-primary"
+          />
           <div className="relative flex-1">
             <Search
               className="pointer-events-none absolute top-1/2 left-5 size-5 -translate-y-1/2 text-text-subtle"
@@ -52,8 +67,8 @@ export function SearchPanel({ open, onClose }: SearchPanelProps) {
               type="search"
               value={term}
               onChange={(event) => setTerm(event.target.value)}
-              aria-label="Search"
-              placeholder="Search products, applications, part numbers…"
+              aria-label={placeholder}
+              placeholder={placeholder}
               className="h-14 w-full rounded-md border border-border-strong bg-white pr-4 pl-14 text-lg text-text transition-[border-color,box-shadow] placeholder:text-text-subtle focus:border-primary focus:shadow-[0_0_0_4px_var(--sz-color-primary-tint-strong)] focus-visible:outline-none"
             />
             <SearchSuggestions {...panelProps} className="inset-x-0 top-[calc(100%+8px)]" />

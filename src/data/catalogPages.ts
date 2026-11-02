@@ -1,4 +1,4 @@
-import type { ComingSoonContent, NavItem, TabComingSoonCopy, TabDef } from '../types'
+import type { ComingSoonContent, NavItem, SearchScope, TabComingSoonCopy, TabDef } from '../types'
 
 /* Copy for the application, product and product search templates. */
 
@@ -114,6 +114,8 @@ export const productPage = {
     },
     units: { flow: 'm³/h', head: 'm', power: 'kW', speed: 'rpm' },
     signInForPrices: 'Sign in to see prices',
+    spareParts: 'Spare parts',
+    sparePartsFor: (model: string) => `Spare parts for ${model}`,
     priceNote: 'List prices excl. VAT',
     inStock: 'In stock',
     showDetails: (name: string) => `Show details for ${name}`,
@@ -233,6 +235,21 @@ export const productPage = {
       size: 'Approx. file size',
     },
   },
+  /** Band under the header on products with configured variants (XFP). */
+  configured: {
+    eyebrow: 'Configured products',
+    title: (product: string) => `Know your exact ${product} pump?`,
+    text: 'Open its page for spare parts on the exploded drawing, curves, drawings, price and lead time.',
+    demo: (code: string) => `Open ${code}`,
+    all: (count: number) => `All ${count} variants`,
+  },
+  /** Spare parts tab on products with configured variants: parts depend on the exact pump. */
+  variantSpareParts: {
+    title: 'Spare parts depend on the exact pump',
+    text: (code: string) =>
+      `Each configured pump has its own parts list and exploded drawing. ${code} has them online now.`,
+    action: 'Show its spare parts',
+  },
   spareParts: {
     title: 'Spare parts for this product are coming to mySulzer',
     text: 'Soon you can find genuine parts on the sectional drawing, check prices and stock, and order online. Until then, your local Sulzer team is happy to help.',
@@ -292,11 +309,96 @@ export const searchPage = {
   allText: (count: number) =>
     `All ${count} Sulzer products, from pumps to digital solutions. Filter by category, application or performance.`,
   tabs: {
+    all: 'All',
     products: 'Products',
-    applications: 'Applications',
-    documents: 'Documents',
+    documentation: 'Documentation',
+    support: 'Support & learn',
+    pages: 'Pages',
   },
   tabLabel: (label: string, count: number) => `${label} (${count})`,
+  /** Sections of the All tab; each shows its first few hits and links to its tab. */
+  all: {
+    preview: 3,
+    /** Spare parts have no tab of their own, so the All tab lists more of them. */
+    partsPreview: 10,
+    sections: {
+      products: 'Products',
+      parts: 'Spare parts',
+      documentation: 'Documentation',
+      support: 'Support & learn',
+      pages: 'Pages',
+    },
+    showAll: (count: number) => `Show all ${count}`,
+  },
+  support: { services: 'Services', knowledge: 'Learn' },
+  /** Variant mode of the Products tab: configured products with their own filter list. */
+  variants: {
+    filterTitle: 'Filter list',
+    /** Heading over the list, e.g. "9 variants of XFP" or "3 of 14 variants of AHLSTAR". */
+    heading: (shown: number, total: number, product: string | null) => {
+      const count = shown === total ? `${total}` : `${shown} of ${total}`
+      const noun = total === 1 ? 'variant' : 'variants'
+      return product ? `${count} ${noun} of ${product}` : `${count} ${noun}`
+    },
+    range: (from: number, to: number, total: number) => `Showing ${from}–${to} of ${total}`,
+    pagination: {
+      label: 'Result pages',
+      previous: 'Previous page',
+      next: 'Next page',
+      page: (n: number) => `Page ${n}`,
+    },
+    perPage: 10,
+    showCurve: 'Show curve',
+    hideCurve: 'Hide curve',
+    groups: {
+      range: 'Product range',
+      discontinued: 'Discontinued products',
+      frequency: 'Frequency',
+      phase: 'Phase',
+      power: 'P2',
+      ip: 'IP class',
+      housing: 'Pump housing',
+      inlet: 'Pump inlet',
+      outlet: 'Pump outlet',
+      impeller: 'Impeller type',
+      ex: 'Ex approval',
+    },
+    status: { current: 'Current products', discontinued: 'Discontinued products' },
+    /** P2 filter, by motor power. */
+    powerBuckets: [
+      { value: 'up-to-10', label: 'Up to 10 kW', upTo: 10 },
+      { value: '10-30', label: '10–30 kW', above: 10, upTo: 30 },
+      { value: '30-100', label: '30–100 kW', above: 30, upTo: 100 },
+      { value: 'above-100', label: 'Above 100 kW', above: 100 },
+    ] as { value: string; label: string; above?: number; upTo?: number }[],
+    yesNo: { yes: 'Yes', no: 'No' },
+    productNumber: 'Product no.',
+    number: 'No.',
+    discontinued: 'Discontinued',
+    replacedBy: 'Replaced by',
+    specs: {
+      frequency: 'Frequency',
+      phase: 'Phase',
+      power: 'P2',
+      speed: 'Rated speed',
+      voltage: 'Voltage',
+      ipClass: 'IP class',
+      housing: 'Pump housing',
+      impeller: 'Impeller',
+      inlet: 'Pump inlet',
+      outlet: 'Pump outlet',
+      ambient: 'Max. ambient temperature',
+      ex: 'Ex approval',
+      maxFlow: 'Max. flow',
+      maxHead: 'Max. head',
+      cable: 'Cable length',
+      weight: 'Weight',
+    },
+  },
+  part: {
+    detail: (partNumber: string, position: string) => `Part no. ${partNumber} · Pos. ${position}`,
+    forProduct: (code: string) => `Spare part for ${code}`,
+  },
   filters: {
     title: 'Filter',
     reset: 'Reset',
@@ -325,7 +427,14 @@ export const searchPage = {
       ? `${total} ${total === 1 ? 'product' : 'products'}`
       : `${shown} of ${total} products`,
   sortLabel: 'Sort by',
-  sort: { relevance: 'Relevance', name: 'Name A–Z' },
+  sort: {
+    relevance: 'Relevance',
+    name: 'Name A–Z',
+    power: 'P2',
+    flow: 'Max. flow',
+    head: 'Max. head',
+    price: 'Price',
+  },
   noFilterMatches: {
     title: 'No products match these filters',
     text: 'Remove a filter, or reset them all to see every match again.',
@@ -340,6 +449,13 @@ export const searchPage = {
   },
 }
 
+/** Scope dropdown of the home hero and header search fields. */
+export const searchScopes = [
+  { id: 'products', label: 'Products' },
+  { id: 'parts', label: 'Part numbers', placeholder: 'Enter a part number or part name' },
+  { id: 'documents', label: 'Documents', placeholder: 'Search documents by title or number' },
+] satisfies { id: SearchScope; label: string; placeholder?: string }[]
+
 /** Suggestion panel under the header and home hero search fields. */
 export const searchSuggestions = {
   label: 'Search suggestions',
@@ -347,7 +463,12 @@ export const searchSuggestions = {
     product: 'Products',
     application: 'Applications',
     document: 'Documents',
+    part: 'Spare parts',
   },
+  productNumber: (number: string) => `Product no. ${number}`,
+  discontinued: 'Discontinued',
+  partDetail: (partNumber: string, position: string, code: string) =>
+    `Part no. ${partNumber} · Pos. ${position} · ${code}`,
   seeAll: (term: string) => `See all results for ‘${term}’`,
   noMatches: (term: string) => `No suggestions for ‘${term}’. Search anyway:`,
 }

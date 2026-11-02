@@ -12,7 +12,7 @@ type ResultsSearchFormProps = {
 /** Search field at the top of /products, with suggestions. Remount (via `key`) to reset it to a new query. */
 export function ResultsSearchForm({ initialQuery, onSearch }: ResultsSearchFormProps) {
   const [term, setTerm] = useState(initialQuery)
-  const { inputProps, panelProps } = useSearchSuggest(term)
+  const { inputProps, panelProps } = useSearchSuggest(term, 'products')
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()

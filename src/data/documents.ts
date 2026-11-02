@@ -25,6 +25,9 @@ export const documentTypeOrder: DocumentType[] = [
   'Declaration of conformity',
   'Certificate',
   'Service video',
+  'Dimensional drawing',
+  'Exploded view',
+  'Wiring diagram',
 ]
 
 const allLanguages = ['English', 'German', 'French', 'Spanish', 'Finnish', 'Swedish']

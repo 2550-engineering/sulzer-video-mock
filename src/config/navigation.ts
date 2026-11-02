@@ -62,7 +62,7 @@ export const quickLinks: IconLink[] = [
   { label: 'Product Center', to: '/products', icon: Search },
   { label: 'Applications', to: '/applications', icon: Factory },
   { label: 'Sizing', to: '/sizing', icon: Ruler },
-  { label: 'eShop', to: '/eshop', icon: ShoppingCart },
+  { label: 'eShop', to: '/eshop/cart', icon: ShoppingCart },
   { label: 'Sulzer Academy', to: '/learn', icon: GraduationCap },
   { label: 'mySulzer', to: '/my-sulzer', icon: CircleUserRound },
 ]

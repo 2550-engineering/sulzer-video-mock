@@ -1,10 +1,25 @@
 import { applications } from '../data/applications'
 import { documents } from '../data/documents'
+import { knowledgeItems } from '../data/knowledge'
 import { productModels } from '../data/productModels'
 import { products } from '../data/products'
 import { services } from '../data/services'
-import type { Application, Document, Product, SearchKind, SearchResult } from '../types'
-import { getApplication, getProduct } from './catalog'
+import { xfpVariants } from '../data/xfp'
+import type {
+  Application,
+  Document,
+  KnowledgeItem,
+  PartHit,
+  Product,
+  ProductVariant,
+  SearchKind,
+  SearchResult,
+  ResultArticle,
+  SearchScope,
+  Service,
+} from '../types'
+import { articlesFor, articlesOfModel, getArticle } from './articles'
+import { getApplication, getProduct, partHits, partPath } from './catalog'
 
 /*
  * Site search over the mock catalogue. Pure and deterministic: no state, no
@@ -27,7 +42,19 @@ function fold(text: string) {
 const tokensOf = (query: string) => normalizeQuery(query).split(' ').filter(Boolean)
 
 /** Display order when scores tie. */
-const kindOrder: SearchKind[] = ['product', 'model', 'document', 'service', 'application']
+const kindOrder: SearchKind[] = [
+  'product',
+  'variant',
+  'model',
+  'part',
+  'document',
+  'service',
+  'knowledge',
+  'application',
+]
+
+/** "XFP 100C CB1.5 …" → "xfp100ccb1.5…", so "XFP100" finds it as typed. */
+const compact = (text: string) => text.replace(/\s+/g, '')
 
 type Entry = {
   result: SearchResult
@@ -85,6 +112,19 @@ const index: Entry[] = [
       ].join(' '),
     )
   }),
+  // Configured variants by long model code and product number. Not by category or
+  // family, so a general search ("wastewater") still lists product ranges.
+  ...xfpVariants.map((variant) =>
+    entry(
+      { kind: 'variant', variant, product: getProduct(variant.productId)!, score: 0 },
+      variant.code,
+      [variant.productNumber, compact(variant.code)],
+    ),
+  ),
+  // Spare parts by name and part number.
+  ...partHits.map((hit) =>
+    entry({ kind: 'part', ...hit, score: 0 }, hit.part.name, [hit.part.partNumber]),
+  ),
   ...documents.map((document) =>
     entry({ kind: 'document', document, score: 0 }, document.title, [
       document.number,
@@ -94,6 +134,9 @@ const index: Entry[] = [
   ),
   ...services.map((service) =>
     entry({ kind: 'service', service, score: 0 }, service.name, [], service.summary),
+  ),
+  ...knowledgeItems.map((item) =>
+    entry({ kind: 'knowledge', item, score: 0 }, item.title, [item.type], item.teaser),
   ),
   // Every application except the root ("Applications").
   ...applications
@@ -163,62 +206,205 @@ export function search(query: string): SearchResponse {
   const counts = {
     all: results.length,
     product: 0,
+    variant: 0,
     model: 0,
+    part: 0,
     document: 0,
     service: 0,
+    knowledge: 0,
     application: 0,
   }
   for (const result of results) counts[result.kind]++
   return { results, counts }
 }
 
+/** Tabs of the results page, in order. */
+export const resultTabs = ['all', 'products', 'documentation', 'support', 'pages'] as const
+export type ResultTab = (typeof resultTabs)[number]
+
 /**
  * The results page for a query: /products?q=<normalised query>, optionally
- * opening a result tab (?tab=applications). Without a query: Products A–Z.
+ * opening a result tab (?tab=documentation). Without a query: Products A–Z.
  */
-export function searchPath(query: string, tab?: 'products' | 'applications' | 'documents') {
+export function searchPath(query: string, tab?: ResultTab) {
   const q = normalizeQuery(query)
   if (!q) return '/products'
-  return `/products?q=${encodeURIComponent(q)}${tab && tab !== 'products' ? `&tab=${tab}` : ''}`
+  return `/products?q=${encodeURIComponent(q)}${tab ? `&tab=${tab}` : ''}`
 }
 
 export type SearchGroups = {
+  /** Product ranges, found by name or through one of their models. */
   products: Product[]
-  applications: Application[]
+  /** Configured products, by model code or product number. */
+  variants: ProductVariant[]
+  parts: PartHit[]
   documents: Document[]
+  services: Service[]
+  knowledge: KnowledgeItem[]
+  applications: Application[]
 }
 
 /**
- * Search results for the results page tabs, in search order. A product found
+ * Search results for the results page, in search order. A product found
  * through one of its models (a size or article number) counts as a product hit.
  */
 export function searchGroups(query: string): SearchGroups {
   const products = new Set<Product>()
-  const groups: SearchGroups = { products: [], applications: [], documents: [] }
+  const groups: SearchGroups = {
+    products: [],
+    variants: [],
+    parts: [],
+    documents: [],
+    services: [],
+    knowledge: [],
+    applications: [],
+  }
   for (const result of search(query).results) {
-    if (result.kind === 'product' || result.kind === 'model') products.add(result.product)
-    if (result.kind === 'application') groups.applications.push(result.application)
-    if (result.kind === 'document') groups.documents.push(result.document)
+    switch (result.kind) {
+      case 'product':
+      case 'model':
+        products.add(result.product)
+        break
+      case 'variant':
+        groups.variants.push(result.variant)
+        break
+      case 'part':
+        groups.parts.push({ part: result.part, owner: result.owner })
+        break
+      case 'document':
+        groups.documents.push(result.document)
+        break
+      case 'service':
+        groups.services.push(result.service)
+        break
+      case 'knowledge':
+        groups.knowledge.push(result.item)
+        break
+      case 'application':
+        groups.applications.push(result.application)
+        break
+    }
   }
   return { ...groups, products: [...products] }
+}
+
+/**
+ * The Products tab lists every variant or model instead of product rows when
+ * the search is about one product with many sizes (pressing Search, not the
+ * suggestions):
+ * - the term is that product's name ("XFP", "AHLSTAR"): all its variants or models;
+ * - the term finds variants or models directly (a model code or product
+ *   number, "XFP100", "100-80-250", "2415"): those, as long as every product
+ *   it finds is one of theirs.
+ * Otherwise (e.g. "pump") it returns null and the tab lists product rows.
+ */
+export function searchArticles(query: string): ResultArticle[] | null {
+  const q = normalizeQuery(query)
+  if (!q) return null
+  const family = products.find((product) => normalizeQuery(product.name) === q)
+  if (family) {
+    const all = articlesFor(family.id)
+    return all.length > 1 ? all : null
+  }
+
+  const { results } = search(query)
+  const found = new Map<string, ResultArticle>()
+  for (const result of results) {
+    if (result.kind === 'variant') {
+      const article = getArticle(result.variant.productId, result.variant.id)
+      if (article) found.set(article.id, article)
+    } else if (result.kind === 'model') {
+      for (const article of articlesOfModel(result.model.id)) found.set(article.id, article)
+    }
+  }
+  if (found.size === 0) return null
+  const families = new Set([...found.values()].map((article) => article.productId))
+  const onlyTheirs = results
+    .filter((result) => result.kind === 'product')
+    .every((result) => families.has(result.product.id))
+  return onlyTheirs ? [...found.values()] : null
+}
+
+/**
+ * Where submitting a search goes. Products: the results page. Part numbers:
+ * straight to the part when the number matches exactly one, else All results.
+ * Documents: the Documentation tab.
+ */
+export function scopePath(query: string, scope: SearchScope) {
+  if (scope === 'documents') return searchPath(query, 'documentation')
+  if (scope === 'parts') {
+    const q = compact(normalizeQuery(query))
+    const exact = partHits.filter((hit) => hit.part.partNumber === q)
+    return exact.length === 1 ? partPath(exact[0]) : searchPath(query, 'all')
+  }
+  return searchPath(query)
 }
 
 /** Suggestions start at this many characters. */
 export const minSuggestLength = 2
 
+/** A product range or a configured product, in the Products suggestion group. */
+export type ProductSuggestion =
+  | { kind: 'product'; product: Product }
+  | { kind: 'variant'; variant: ProductVariant; product: Product }
+
+export type SuggestGroups = {
+  products: ProductSuggestion[]
+  applications: Application[]
+  documents: Document[]
+  parts: PartHit[]
+}
+
+const noSuggestions = (): SuggestGroups => ({
+  products: [],
+  applications: [],
+  documents: [],
+  parts: [],
+})
+
 /**
- * Suggestions while typing: the first `perGroup` products, applications and
- * documents of `searchGroups`. Empty under `minSuggestLength` characters.
+ * Suggestions while typing, in the groups the scope searches. Products:
+ * product ranges and configured products (mixed, in rank order), applications
+ * and documents, `perGroup` each. Part numbers: spare parts. Documents:
+ * documents. Empty under `minSuggestLength` characters.
  */
-export function suggestGroups(query: string, perGroup = 4): SearchGroups {
-  if (normalizeQuery(query).length < minSuggestLength) {
-    return { products: [], applications: [], documents: [] }
+export function suggestGroups(
+  query: string,
+  scope: SearchScope = 'products',
+  perGroup = 4,
+): SuggestGroups {
+  const groups = noSuggestions()
+  if (normalizeQuery(query).length < minSuggestLength) return groups
+  const { results } = search(query)
+  const many = perGroup + 2
+
+  if (scope === 'parts') {
+    groups.parts = searchGroups(query).parts.slice(0, many)
+    return groups
   }
-  const groups = searchGroups(query)
+  if (scope === 'documents') {
+    groups.documents = searchGroups(query).documents.slice(0, many)
+    return groups
+  }
+
+  const seen = new Set<string>()
+  for (const result of results) {
+    if (result.kind === 'variant') {
+      groups.products.push({ kind: 'variant', variant: result.variant, product: result.product })
+    } else if (
+      (result.kind === 'product' || result.kind === 'model') &&
+      !seen.has(result.product.id)
+    ) {
+      seen.add(result.product.id)
+      groups.products.push({ kind: 'product', product: result.product })
+    }
+  }
+  const all = searchGroups(query)
   return {
+    ...groups,
     products: groups.products.slice(0, perGroup),
-    applications: groups.applications.slice(0, perGroup),
-    documents: groups.documents.slice(0, perGroup),
+    applications: all.applications.slice(0, perGroup),
+    documents: all.documents.slice(0, perGroup),
   }
 }
 
@@ -237,11 +423,20 @@ export function matchRanges(text: string, query: string): [number, number][] {
     }
   }
   origin.push(text.length)
+  // The same without spaces, for tokens typed without them ("XFP100" in "XFP 100C").
+  const kept = [...folded].map((c, i) => ({ c, i })).filter(({ c }) => !/\s/.test(c))
+  const squeezed = kept.map(({ c }) => c).join('')
 
   const ranges: [number, number][] = []
   for (const token of tokensOf(query)) {
-    for (let at = folded.indexOf(token); at !== -1; at = folded.indexOf(token, at + 1)) {
-      ranges.push([origin[at], origin[at + token.length]])
+    if (folded.includes(token)) {
+      for (let at = folded.indexOf(token); at !== -1; at = folded.indexOf(token, at + 1)) {
+        ranges.push([origin[at], origin[at + token.length]])
+      }
+      continue
+    }
+    for (let at = squeezed.indexOf(token); at !== -1; at = squeezed.indexOf(token, at + 1)) {
+      ranges.push([origin[kept[at].i], origin[kept[at + token.length - 1].i + 1]])
     }
   }
   ranges.sort((a, b) => a[0] - b[0] || a[1] - b[1])

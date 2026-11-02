@@ -1,6 +1,7 @@
 import { Download } from 'lucide-react'
 import { useId, useState, type ReactNode } from 'react'
 import { myProjectsPage } from '../../data/projectPages'
+import { getProductVariant } from '../../lib/catalog'
 import { getVariant } from '../../lib/variants'
 import type { Project } from '../../types'
 import { FileTypeIcon } from '../product/FileTypeIcon'
@@ -38,7 +39,7 @@ export function ProjectDetailsPanel({
   const ids = useId()
   const [tab, setTab] = useState<Tab>('details')
   const dataSheets = [...new Set(project.items.map((item) => item.variantId))].map((id) => ({
-    title: copy.dataSheet(getVariant(id)?.name ?? id),
+    title: copy.dataSheet(getVariant(id)?.name ?? getProductVariant(id)?.code ?? id),
     format: 'PDF',
     size: '1.1 MB',
   }))

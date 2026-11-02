@@ -1,4 +1,3 @@
-import { SlidersHorizontal } from 'lucide-react'
 import { searchPage as copy } from '../../data/catalogPages'
 import type { ResultSort } from '../../hooks/useResultsParams'
 import {
@@ -11,6 +10,7 @@ import {
 import type { Product } from '../../types'
 import { ProductListItem } from '../product/ProductListItem'
 import { FilterColumn } from './FilterColumn'
+import { NoFilterMatches } from './NoFilterMatches'
 import { SortSelect } from './SortSelect'
 
 type ProductResultsProps = {
@@ -50,7 +50,7 @@ export function ProductResults({
           <p className="font-semibold text-navy-900" aria-live="polite">
             {copy.productCount(shown.length, products.length)}
           </p>
-          <SortSelect value={sort} onChange={onSort} />
+          <SortSelect value={sort} onChange={onSort} options={['relevance', 'name']} />
         </div>
 
         {shown.length > 0 ? (
@@ -62,18 +62,7 @@ export function ProductResults({
             ))}
           </ul>
         ) : (
-          <div className="mt-5 flex flex-col items-center rounded-lg border border-border bg-white px-8 py-14 text-center">
-            <SlidersHorizontal aria-hidden className="size-10 text-text-subtle" strokeWidth={1.5} />
-            <p className="mt-4 text-lg font-semibold text-navy-900">{copy.noFilterMatches.title}</p>
-            <p className="mt-2 text-text-muted">{copy.noFilterMatches.text}</p>
-            <button
-              type="button"
-              onClick={onResetFilters}
-              className="mt-6 inline-flex h-10 items-center rounded-pill bg-primary px-6 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
-            >
-              {copy.noFilterMatches.action}
-            </button>
-          </div>
+          <NoFilterMatches onReset={onResetFilters} />
         )}
       </div>
     </div>

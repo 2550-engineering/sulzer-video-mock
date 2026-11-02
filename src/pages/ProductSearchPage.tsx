@@ -1,23 +1,46 @@
 import { useRef } from 'react'
 import { useNavigate } from 'react-router'
 import { DocumentList } from '../components/product/DocumentList'
+import { AllResults } from '../components/search/AllResults'
 import { ApplicationResults } from '../components/search/ApplicationResults'
 import { EmptyTab } from '../components/search/EmptyTab'
 import { NoResults } from '../components/search/NoResults'
 import { ProductResults } from '../components/search/ProductResults'
 import { ResultsSearchForm } from '../components/search/ResultsSearchForm'
 import { SearchBand } from '../components/search/SearchBand'
+import { SupportResults } from '../components/search/SupportResults'
+import { ArticleResults } from '../components/search/ArticleResults'
 import { TabBar } from '../components/TabBar'
 import { TabPanel } from '../components/TabPanel'
 import { searchPage as copy } from '../data/catalogPages'
 import { products } from '../data/products'
-import { resultTabs, useResultsParams, type ResultTab } from '../hooks/useResultsParams'
+import { useResultsParams } from '../hooks/useResultsParams'
 import { scrollToTabBar } from '../lib/scrollToTabBar'
-import { normalizeQuery, searchGroups, searchPath } from '../lib/search'
+import {
+  normalizeQuery,
+  resultTabs,
+  searchGroups,
+  searchPath,
+  searchArticles,
+  type ResultTab,
+  type SearchGroups,
+} from '../lib/search'
+
+const noHits: Omit<SearchGroups, 'products'> = {
+  variants: [],
+  parts: [],
+  documents: [],
+  services: [],
+  knowledge: [],
+  applications: [],
+}
 
 /**
- * /products: search results with Products, Applications and Documents tabs
- * (?q=…), or every product (Products A–Z) without a query.
+ * /products: search results (?q=…) with All, Products, Documentation, Support &
+ * learn and Pages tabs, or every product (Products A–Z) without a query. When
+ * the search is about a product with many sizes ("XFP", "AHLSTAR", a model
+ * code or product number), the Products tab lists every variant or model,
+ * with its own filter list, sorting and pages.
  */
 export function ProductSearchPage() {
   const navigate = useNavigate()
@@ -25,15 +48,20 @@ export function ProductSearchPage() {
   const params = useResultsParams()
   const { query } = params
 
-  const groups = query ? searchGroups(query) : { products, applications: [], documents: [] }
-  const counts: Record<ResultTab, number> = {
-    products: groups.products.length,
-    applications: groups.applications.length,
-    documents: groups.documents.length,
+  const groups: SearchGroups = query ? searchGroups(query) : { ...noHits, products }
+  // Products with many sizes list every variant or model instead of one row.
+  const articles = query ? searchArticles(query) : null
+  const counts: Record<Exclude<ResultTab, 'all'>, number> = {
+    products: articles ? articles.length : groups.products.length,
+    documentation: groups.documents.length,
+    support: groups.services.length + groups.knowledge.length,
+    pages: groups.applications.length,
   }
-  const total = counts.products + counts.applications + counts.documents
-  // Without ?tab, open the first tab that has results.
-  const tab = params.tab ?? resultTabs.find((t) => counts[t] > 0) ?? 'products'
+  const total =
+    counts.products + groups.parts.length + counts.documentation + counts.support + counts.pages
+  const countOf = (t: ResultTab) => (t === 'all' ? total : counts[t])
+  // Without ?tab: Products when there are products, else All.
+  const tab = params.tab ?? (counts.products > 0 ? 'products' : 'all')
 
   // Show "AHLSTAR" rather than "ahlstar" when the query is a product name.
   const term =
@@ -48,7 +76,22 @@ export function ProductSearchPage() {
   // A new search is a new history entry and starts without filters.
   const search = (value: string) => navigate(searchPath(value))
 
-  const productResults = (
+  const productResults = articles ? (
+    <ArticleResults
+      articles={articles}
+      query={query}
+      selection={params.variantSelection}
+      sort={params.sort}
+      page={params.page}
+      onToggleFilter={params.toggleFilter}
+      onResetFilters={params.resetFilters}
+      onSort={params.setSort}
+      onPage={(page) => {
+        params.setPage(page)
+        scrollToTabBar(anchorRef.current)
+      }}
+    />
+  ) : (
     <ProductResults
       products={groups.products}
       selection={params.selection}
@@ -63,8 +106,8 @@ export function ProductSearchPage() {
     <EmptyTab
       message={copy.emptyTab(copy.tabs[kind].toLowerCase(), term)}
       alternatives={resultTabs
-        .filter((t) => t !== kind && counts[t] > 0)
-        .map((t) => ({ id: t, label: copy.tabLabel(copy.tabs[t], counts[t]) }))}
+        .filter((t) => t !== kind && countOf(t) > 0)
+        .map((t) => ({ id: t, label: copy.tabLabel(copy.tabs[t], countOf(t)) }))}
       onSelect={selectTab}
     />
   )
@@ -94,7 +137,7 @@ export function ProductSearchPage() {
           <TabBar
             tabs={resultTabs.map((t) => ({
               id: t,
-              label: copy.tabLabel(copy.tabs[t], counts[t]),
+              label: copy.tabLabel(copy.tabs[t], countOf(t)),
             }))}
             active={tab}
             onSelect={selectTab}
@@ -103,18 +146,32 @@ export function ProductSearchPage() {
           />
           <div className="bg-surface-muted">
             <TabPanel idPrefix="search" tabId={tab}>
+              {tab === 'all' && (
+                <AllResults
+                  groups={groups}
+                  query={query}
+                  articles={articles}
+                  onSelectTab={selectTab}
+                />
+              )}
               {tab === 'products' && (counts.products > 0 ? productResults : emptyTab('products'))}
-              {tab === 'applications' &&
-                (counts.applications > 0 ? (
-                  <ApplicationResults applications={groups.applications} />
-                ) : (
-                  emptyTab('applications')
-                ))}
-              {tab === 'documents' &&
-                (counts.documents > 0 ? (
+              {tab === 'documentation' &&
+                (counts.documentation > 0 ? (
                   <DocumentList documents={groups.documents} showProducts />
                 ) : (
-                  emptyTab('documents')
+                  emptyTab('documentation')
+                ))}
+              {tab === 'support' &&
+                (counts.support > 0 ? (
+                  <SupportResults services={groups.services} knowledge={groups.knowledge} />
+                ) : (
+                  emptyTab('support')
+                ))}
+              {tab === 'pages' &&
+                (counts.pages > 0 ? (
+                  <ApplicationResults applications={groups.applications} />
+                ) : (
+                  emptyTab('pages')
                 ))}
             </TabPanel>
           </div>
