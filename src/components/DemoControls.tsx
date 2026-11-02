@@ -1,6 +1,7 @@
 import { LogIn, RotateCcw, X } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useAuth } from '../auth/useAuth'
+import { personas, type PersonaId } from '../config/demo'
 import { useDismiss } from '../hooks/useDismiss'
 
 const actionButton =
@@ -27,7 +28,7 @@ function clearStorage() {
  * Renders nothing while closed, so it can never show up in a take.
  */
 export function DemoControls() {
-  const { user, signIn, signOut } = useAuth()
+  const { user, persona: signedInAs, signIn, signOut } = useAuth()
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -82,22 +83,25 @@ export function DemoControls() {
           <RotateCcw className="size-[18px] text-primary-on-dark" />
           Reset demo
         </button>
-        <button
-          type="button"
-          onClick={() => {
-            signIn()
-            close()
-          }}
-          disabled={user !== null}
-          className={`${actionButton} text-white enabled:hover:bg-white/10`}
-        >
-          <LogIn className="size-[18px] text-primary-on-dark" />
-          Sign in as demo user
-        </button>
+        {(Object.keys(personas) as PersonaId[]).map((persona) => (
+          <button
+            key={persona}
+            type="button"
+            onClick={() => {
+              signIn(persona)
+              close()
+            }}
+            disabled={persona === signedInAs}
+            className={`${actionButton} text-white enabled:hover:bg-white/10`}
+          >
+            <LogIn className="size-[18px] text-primary-on-dark" />
+            Sign in as {personas[persona].label.toLowerCase()}
+          </button>
+        ))}
       </div>
 
       <div className="flex items-center justify-between gap-3 border-t border-white/10 px-4 py-2.5 text-xs text-text-on-dark-muted">
-        <span className="truncate">{user ? `Signed in as ${user.name}` : 'Signed out'}</span>
+        <span className="truncate">{user ? `${user.label}: ${user.name}` : 'Signed out'}</span>
         <kbd className="shrink-0 rounded-sm bg-white/10 px-1.5 py-0.5 font-sans text-[11px] text-text-on-dark">
           Shift D
         </kbd>

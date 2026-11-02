@@ -77,6 +77,12 @@ const specs = [
     aspect: '4:3',
     minSize: '800 × 600',
   },
+  {
+    match: /^\/images\/sites\//,
+    kind: 'Site photo',
+    aspect: '16:9',
+    minSize: '1600 × 900',
+  },
 ]
 
 const server = await createServer({ logLevel: 'error', server: { middlewareMode: true } })
@@ -89,6 +95,7 @@ const { documents, serviceVideos } = await load('/src/data/documents.ts')
 const { cadPreviews } = await load('/src/data/cad.ts')
 const { hero, connectPromo } = await load('/src/data/home.ts')
 const { intro } = await load('/src/data/mySulzer.ts')
+const { sites } = await load('/src/data/assets.ts')
 await server.close()
 
 const byId = (items) => new Map(items.map((item) => [item.id, item]))
@@ -144,6 +151,7 @@ const images = [
   ...serviceVideos.map((video) => video.video.thumbnail),
   ...documents.flatMap((document) => (document.preview ? [document.preview] : [])),
   ...Object.values(cadPreviews),
+  ...sites.map((site) => site.image),
 ]
 
 const rows = images.map(({ src, alt }) => {
@@ -173,8 +181,9 @@ Drop each file into its folder with exactly this name. It shows up on the next p
 with no code changes. Until then \`<SmartImage>\` shows a blue-to-cyan placeholder labelled
 with the file name (hide the labels with \`showPlaceholderLabels\` in \`src/config/demo.ts\`).
 
-- **Sources:** Sulzer media (sulzer.com, media bank, product photography) or licensed stock.
-  Never Grundfos images.
+- **Sources:** Sulzer media (sulzer.com, Sulzer PDFs, product photography) or licensed stock.
+  Never Grundfos, KSB or Xylem images. Log web sources in the Sulzer project folder
+  (\`docs/image-sources.md\`).
 - **Priority 1** images are visible in a recording; the column says which (application finder,
   product finder).
 - **Sizing and My Projects** need no photos: their charts and curve thumbnails are drawn in SVG.

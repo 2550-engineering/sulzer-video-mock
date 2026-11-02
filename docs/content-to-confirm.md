@@ -114,7 +114,7 @@ results page.
 | Digital product        | BLUE BOX                               | Placeholder, confirm with Sulzer: name, spelling and how Sulzer describes it.                                                                                                                        |
 | IoT product            | Sulzer Connect                         | Placeholder, confirm with Sulzer. Also the name of the `/connect` app in the mock-up.                                                                                                                |
 | Motor protection relay | "Motor protection relay" (generic)     | Placeholder, confirm with Sulzer. Does Sulzer offer one, and under what name?                                                                                                                        |
-| IoT offering in copy   | Sulzer Smart Monitoring                | Placeholder from Phase 1, confirm with Sulzer.                                                                                                                                                       |
+| IoT offering in copy   | Sulzer Connect                         | Placeholder, confirm with Sulzer. Was "Sulzer Smart Monitoring" in Phase 1; now the same name as the IoT product, so there is one name everywhere.                                                   |
 | Model prefixes         | `AHLSTAR 100-80-250`, `XFP 100C` style | Placeholder, confirm with Sulzer. Models, sizes and figures in `src/data/productModels.ts` are invented.                                                                                             |
 
 ## Product data (`src/data/products.ts`)
@@ -460,3 +460,41 @@ All four are invented publications. Placeholder, confirm with Sulzer, or swap in
 - "Need service?" → claims "remote help from a Sulzer expert"
 
 Placeholder, confirm with Sulzer.
+
+## Personas (Phase 3, `src/config/demo.ts` → `personas`)
+
+| Item                      | Value in the mock-up                                                   | Note                                                                                                                                      |
+| ------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| End user                  | Emma Lindqvist, Maintenance Manager, Nordvatten Utilities AB, Västerås | Placeholder, fictional. Unchanged from Phase 1.                                                                                           |
+| Channel partner           | Lars Ek, Sales Engineer, Aqua Pumpteknik AB                            | Placeholder, fictional company and person.                                                                                                |
+| Partner status and region | Authorised Sulzer distributor, Region Mälardalen                       | Placeholder, confirm how Sulzer names its partner tiers and regions. Mälardalen so that Nordvatten (Västerås) is in the partner's region. |
+| E-mail addresses          | `…@nordvatten.example`, `…@aquapumpteknik.example`                     | Reserved example domains on purpose.                                                                                                      |
+
+## Partner pricing (`src/config/demo.ts` → `partnerPricing`)
+
+| Item             | Value in the mock-up                                                              | Note                                                                                                                      |
+| ---------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Partner discount | 32% off list price                                                                | Placeholder, confirm with Sulzer. Used for spare parts and partner net prices only.                                       |
+| Lead-time labels | "In stock – ships in 2 days", "Fast delivery – 1 week", "Made to order – 3 weeks" | Placeholder. Spare parts and partner prices only; the Models tab keeps its own lead times (`src/data/models/ahlstar.ts`). |
+
+## Installed base (`src/data/assets.ts`)
+
+| Item                | Value in the mock-up                                                                                                                               | Note                                                                                                  |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Assets              | 24 units on 6 sites, 18 connected to Sulzer Connect                                                                                                | Invented. Tags, serial numbers, install dates, warranties, run hours and service dates are fictional. |
+| Sites               | Riverside intake, Norra water treatment plant, Ekbacken reservoir, Södra and Hamnen pump stations, Östra wastewater treatment plant (all Västerås) | Fictional site names.                                                                                 |
+| Partner's customers | Nordvatten Utilities AB, Mälarbruk Paper AB (Köping), Sörby Livsmedel AB (Eskilstuna), Västmalm Energi AB (Sala)                                   | Fictional companies, contacts and customer numbers.                                                   |
+| Products on site    | AHLSTAR, XFP, AFP (return sludge), J dewatering pump (drainage)                                                                                    | Confirm these products fit those duties.                                                              |
+| Warranty            | 2 years; 3 years for units installed since 2024                                                                                                    | Placeholder, confirm Sulzer's standard warranty terms.                                                |
+
+## Condition monitoring (`src/config/demo.ts` → `conditionLimits`, `src/lib/conditionData.ts`)
+
+| Item                       | Value in the mock-up                                                                        | Note                                                                  |
+| -------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| Demo date                  | Today is Wed 28 Oct 2026, last sync 08:42                                                   | `demoClock`. Matches the dates already in Recent activity and orders. |
+| Vibration limits           | ISO 10816-3-style zones (A/B 2.8, B/C 4.5, C/D 7.1 mm/s RMS), warning 7.1, alarm 11 mm/s    | Placeholder, confirm with Sulzer.                                     |
+| Bearing temperature limits | Warning 85 °C, alarm 95 °C                                                                  | Placeholder.                                                          |
+| Motor temperature limits   | Warning 105 °C, alarm 115 °C                                                                | Placeholder.                                                          |
+| RW-02 story                | Bearing wear: vibration rises over 9 days and crosses 7.1 mm/s today at 03:12, now 7.4 mm/s | Invented.                                                             |
+| P-211 story                | Motor temperature climbs overnight to 118 °C (alarm)                                        | Invented.                                                             |
+| Data                       | Hourly vibration, bearing and motor temperature and run status for 30 days                  | Generated from a seeded function, the same on every run.              |

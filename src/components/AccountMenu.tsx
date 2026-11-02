@@ -21,7 +21,7 @@ export function AccountMenu({ open, onToggle, onClose, buttonClassName }: Accoun
 
   if (!user) {
     return (
-      <button type="button" onClick={signIn} className={buttonClassName}>
+      <button type="button" onClick={() => signIn()} className={buttonClassName}>
         <CircleUserRound className="size-5 text-primary" strokeWidth={1.75} />
         Sign in
       </button>

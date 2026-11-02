@@ -11,8 +11,10 @@ import {
   Truck,
   Wrench,
 } from 'lucide-react'
-import { demoUser, products } from '../config/demo'
+import { demoClock, demoUser, products } from '../config/demo'
+import { serviceDueWithinDays, summarizeAssets } from '../lib/assetSummary'
 import type { ActivityItem, AssetStat, DashboardCard, NavItem } from '../types'
+import { assets } from './assets'
 import { projects } from './projects'
 
 /* Copy and demo data for the signed-in dashboard ("/my-pages"). Deterministic — no live values. */
@@ -80,23 +82,39 @@ export const dashboardCards = {
   },
 } satisfies Record<string, DashboardCard>
 
+const summary = summarizeAssets(assets.filter((asset) => asset.customerId === demoUser.customerId))
+
+const count = (n: number, noun: string) => `${n} ${noun}${n === 1 ? '' : 's'}`
+
 export const assetsCard = {
   title: 'My assets',
   badge: 'New',
   subtitle: 'Your installed base at a glance',
   icon: Gauge,
   stats: [
-    { value: '24', label: 'assets', detail: 'Across 6 sites', tone: 'neutral', icon: Server },
     {
-      value: '2',
+      value: String(summary.total),
+      label: 'assets',
+      detail: `Across ${summary.sites} sites`,
+      tone: 'neutral',
+      icon: Server,
+    },
+    {
+      value: String(summary.needsAttention),
       label: 'need attention',
-      detail: 'Vibration above limit',
+      detail: `${count(summary.alarms, 'alarm')} · ${count(summary.warnings, 'warning')}`,
       tone: 'warning',
       icon: CircleAlert,
     },
-    { value: '1', label: 'service due', detail: 'Within 30 days', tone: 'info', icon: Wrench },
+    {
+      value: String(summary.serviceDue),
+      label: 'service due',
+      detail: `Within ${serviceDueWithinDays} days`,
+      tone: 'info',
+      icon: Wrench,
+    },
   ] satisfies AssetStat[],
-  source: `Monitored with ${products.iotOffering} · Updated today, 08:42`,
+  source: `Monitored with ${products.iotOffering} · Updated today, ${demoClock.lastSync}`,
   link: { label: 'View all assets', to: '/assets' } satisfies NavItem,
 }
 

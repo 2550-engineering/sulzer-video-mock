@@ -1,11 +1,23 @@
 import type { LucideIcon } from 'lucide-react'
 
+/** A customer (asset owner) or a Sulzer channel partner. */
+export type PersonaKind = 'customer' | 'partner'
+
+/** A demo persona. The ids are the keys of `personas` in config/demo.ts. */
 export type User = {
+  kind: PersonaKind
+  /** Shift+D panel: "Sign in as <label>". */
+  label: string
   firstName: string
   name: string
   initials: string
   company: string
   role: string
+  email: string
+  /** Customers only: their account in data/assets.ts. */
+  customerId?: string
+  /** Partners only. */
+  partner?: { type: string; region: string }
 }
 
 export type NavItem = {
@@ -453,19 +465,69 @@ export type Project = {
 
 export type AssetStatus = 'ok' | 'warning' | 'alarm'
 
-export type Asset = {
+/** An asset owner. The channel partner sees several. */
+export type Customer = {
   id: string
   name: string
-  location: string
-  productId: string
-  status: AssetStatus
-  lastReading: {
-    metric: string
-    value: string
-    /** Pre-formatted, e.g. "Today, 08:42". */
-    time: string
-  }
+  /** Sulzer customer number, shown as "Customer no.". */
+  customerNumber: string
+  city: string
+  industry: string
+  contact: { name: string; role: string; email: string }
 }
+
+export type Site = {
+  id: string
+  customerId: string
+  name: string
+  city: string
+  /** e.g. "Raw water intake". */
+  type: string
+  /** `alt` also describes what the photo should show (see docs/images-needed.md). */
+  image: ImageSource
+}
+
+/** One installed unit. Dates are ISO, e.g. "2026-11-12". */
+export type Asset = {
+  /** The tag in lower case, also the URL slug: /assets/<id>. */
+  id: string
+  /** The customer's own tag, e.g. "RW-02". */
+  tag: string
+  /** e.g. "Raw water pump RW-02". */
+  name: string
+  customerId: string
+  siteId: string
+  productId: string
+  /** From data/productModels.ts. Products without a Models tab have none. */
+  modelId?: string
+  serialNumber: string
+  installedOn: string
+  warrantyUntil: string
+  runHours: number
+  lastService: string
+  nextServiceDue: string
+  /** Streams condition data to Sulzer Connect (lib/conditionData.ts). */
+  connected: boolean
+  /** From the latest condition reading. Assets that aren't connected are 'ok'. */
+  status: AssetStatus
+}
+
+/**
+ * One hourly condition sample. `time` is a wall-clock time stored as Date.UTC
+ * milliseconds, so format it with `timeZone: 'UTC'` to get the same clock on every machine.
+ */
+export type ConditionPoint = {
+  time: number
+  /** Bearing vibration velocity, mm/s RMS. */
+  vibration: number
+  /** °C. */
+  bearingTemperature: number
+  /** Motor winding temperature, °C. */
+  motorTemperature: number
+  running: boolean
+}
+
+export type ConditionChannel = 'vibration' | 'bearingTemperature' | 'motorTemperature'
 
 /** A tab in a page's sticky tab bar. `id` is also the URL hash. */
 export type TabDef = {

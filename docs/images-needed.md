@@ -6,14 +6,15 @@ Drop each file into its folder with exactly this name. It shows up on the next p
 with no code changes. Until then `<SmartImage>` shows a blue-to-cyan placeholder labelled
 with the file name (hide the labels with `showPlaceholderLabels` in `src/config/demo.ts`).
 
-- **Sources:** Sulzer media (sulzer.com, media bank, product photography) or licensed stock.
-  Never Grundfos images.
+- **Sources:** Sulzer media (sulzer.com, Sulzer PDFs, product photography) or licensed stock.
+  Never Grundfos, KSB or Xylem images. Log web sources in the Sulzer project folder
+  (`docs/image-sources.md`).
 - **Priority 1** images are visible in a recording; the column says which (application finder,
   product finder).
 - **Sizing and My Projects** need no photos: their charts and curve thumbnails are drawn in SVG.
 - **Formats:** JPG for photos (quality 80–85), PNG for product cut-outs.
 
-136 images, 0 missing.
+142 images, 6 missing.
 
 | Priority | File | Folder | Aspect | Min. size | Kind | What it should show | Status |
 |----------|------|--------|--------|-----------|------|---------------------|--------|
@@ -149,6 +150,12 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
 | 2 | `pump-controller-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | PC 441 pump controller touchscreen with plug-in I/O modules | present |
 | 2 | `blue-box-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | Sulzer pump surrounded by data, illustrating BLUE BOX analytics | present |
 | 2 | `energy-audit.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Engineers reviewing pump performance data on a screen | present |
+| 2 | `riverside-intake.jpg` | `public/images/sites/` | 16:9 | 1600 × 900 | Site photo | Raw water intake on a river bank: low concrete intake structure and pump house, Nordic landscape, daylight | missing |
+| 2 | `norra-wtp.jpg` | `public/images/sites/` | 16:9 | 1600 × 900 | Site photo | Drinking water treatment plant: open filter basins and the main process building, daylight | missing |
+| 2 | `ekbacken-reservoir.jpg` | `public/images/sites/` | 16:9 | 1600 × 900 | Site photo | Drinking water reservoir, grass-covered, with a small booster pump station next to it | missing |
+| 2 | `sodra-pump-station.jpg` | `public/images/sites/` | 16:9 | 1600 × 900 | Site photo | Wastewater lift station: small concrete building with a control cabinet in a residential area | missing |
+| 2 | `hamnen-pump-station.jpg` | `public/images/sites/` | 16:9 | 1600 × 900 | Site photo | Inside a wastewater pumping station: a row of large pumps with blue pipework in a clean, bright room | missing |
+| 2 | `ostra-wwtp.jpg` | `public/images/sites/` | 16:9 | 1600 × 900 | Site photo | Sludge handling at a wastewater treatment plant: round sludge tanks and pipework, daylight | missing |
 | 2 | `ahlstar-video-seal-replacement.jpg` | `public/images/videos/` | 16:9 | 1280 × 720 | Service video thumbnail | Two Sulzer mechanical seal cartridges | present |
 | 2 | `ahlstar-video-back-pull-out.jpg` | `public/images/videos/` | 16:9 | 1280 × 720 | Service video thumbnail | Two Sulzer engineers working on a pump | present |
 | 2 | `ahlstar-video-shaft-alignment.jpg` | `public/images/videos/` | 16:9 | 1280 × 720 | Service video thumbnail | Engineer checking a pump shaft assembly in the workshop | present |

@@ -3,7 +3,8 @@ import { useId, useState, type FormEvent, type ReactNode } from 'react'
 import { Link } from 'react-router'
 import { useAuth } from '../../auth/useAuth'
 import { serviceRequestReference } from '../../config/demo'
-import { assets } from '../../data/assets'
+import { assetLocation, assets } from '../../data/assets'
+import { needsAttention } from '../../lib/assetSummary'
 import { productPage } from '../../data/catalogPages'
 import type { Product, Service } from '../../types'
 
@@ -27,10 +28,13 @@ type ServiceRequestFormProps = {
 export function ServiceRequestForm({ product, services, onDone }: ServiceRequestFormProps) {
   const { user } = useAuth()
   const ids = useId()
+  // Prefill the site of this product's unit that needs attention, else its first unit.
+  const productAssets = assets.filter((asset) => asset.productId === product.id)
+  const asset = productAssets.find(needsAttention) ?? productAssets[0]
   const [values, setValues] = useState({
     service: services[0]?.id ?? other,
     date: '',
-    site: user ? (assets.find((asset) => asset.productId === product.id)?.location ?? '') : '',
+    site: user && asset ? assetLocation(asset) : '',
     name: user?.name ?? '',
     company: user?.company ?? '',
     message: '',

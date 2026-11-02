@@ -40,7 +40,7 @@ export function ConnectShell({ children }: { children: ReactNode }) {
         ) : (
           <button
             type="button"
-            onClick={signIn}
+            onClick={() => signIn()}
             className="h-9 rounded-pill border border-white/25 px-4 text-sm font-semibold text-white transition-colors hover:bg-white/10"
           >
             Sign in

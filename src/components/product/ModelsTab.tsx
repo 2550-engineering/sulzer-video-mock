@@ -117,7 +117,7 @@ export function ModelsTab({ models }: { models: ProductModel[] }) {
           <ModelsTable
             models={shown}
             signedIn={user !== null}
-            onSignIn={signIn}
+            onSignIn={() => signIn()}
             sort={sort}
             onSort={toggleSort}
             expandedId={expandedId}
