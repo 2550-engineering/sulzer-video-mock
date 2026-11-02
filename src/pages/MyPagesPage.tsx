@@ -6,9 +6,13 @@ import { Breadcrumb } from '../components/Breadcrumb'
 import { AssetsCard } from '../components/mypages/AssetsCard'
 import { LinksCard } from '../components/mypages/LinksCard'
 import { RecentActivity } from '../components/mypages/RecentActivity'
-import { dashboardCards, signedOutRedirect, welcome } from '../data/myPages'
+import { dashboardCards, selfServiceBadges, signedOutRedirect, welcome } from '../data/myPages'
 import { personalToolbar } from '../data/personal'
+import { ordersPath, requestsPath } from '../data/selfServicePages'
+import { isInTransit, isOpenRequest, ordersFor, requestsFor } from '../lib/selfService'
 import { usePersonal } from '../personal/usePersonal'
+import { useSelfService } from '../selfService/useSelfService'
+import type { DashboardLink } from '../types'
 
 // Cards fade in one after another on arrival, 50 ms apart.
 const enter = 'animate-fade-in [animation-fill-mode:backwards]'
@@ -20,9 +24,22 @@ function delay(index: number): CSSProperties {
 export function MyPagesPage() {
   const { user } = useAuth()
   const { saved } = usePersonal()
+  const { orders, requests } = useSelfService()
   if (!user) return <Navigate to={signedOutRedirect} replace />
 
-  const { selfService, learning, portals } = dashboardCards
+  const { learning, portals } = dashboardCards
+  const inTransit = ordersFor(user, orders).filter(isInTransit).length
+  const openRequests = requestsFor(user, requests).filter(isOpenRequest).length
+  const selfServiceBadge = (link: DashboardLink): DashboardLink =>
+    link.to === ordersPath && inTransit
+      ? { ...link, badge: { label: selfServiceBadges.inTransit(inTransit), tone: 'info' } }
+      : link.to === requestsPath && openRequests
+        ? { ...link, badge: { label: selfServiceBadges.open(openRequests) } }
+        : link
+  const selfService = {
+    ...dashboardCards.selfService,
+    links: dashboardCards.selfService.links.map(selfServiceBadge),
+  }
   const productsProjects = {
     ...dashboardCards.productsProjects,
     links: dashboardCards.productsProjects.links.map((link) =>

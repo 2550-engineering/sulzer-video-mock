@@ -424,6 +424,8 @@ export type SparePart = {
   /** Item number on the sectional drawing. */
   position: number
   availability: 'in-stock' | 'on-request'
+  /** Per unit in `market.currency`, excl. VAT. Signed-in users only. */
+  listPrice: number
 }
 
 export type DocumentType =
@@ -652,6 +654,145 @@ export type ServiceHistoryEntry = {
   technician: string
   /** Work order number, e.g. "WO-260317-RW02". */
   reference: string
+}
+
+/* ── Self-service: requests, orders and quotations (Phase 3, P4) ───────────── */
+
+/** A wall-clock date and time without a time zone, e.g. "2026-10-28T09:26". */
+export type DateTime = string
+
+export type ServiceRequestStatus = 'Received' | 'Planned' | 'Technician assigned' | 'Done'
+
+/** A service request on one asset. Persona-agnostic: whoever sent it is `requestedBy`. */
+export type ServiceRequest = {
+  /** e.g. "SR-2026-0142". */
+  id: string
+  customerId: string
+  assetId: string
+  /** The service type picked in the form, e.g. "Inspection". */
+  service: string
+  message: string
+  /** ISO date the customer asked for, if any. */
+  preferredDate?: string
+  requestedBy: string
+  /** Raised from a condition alert (Sulzer Connect), not routine. */
+  fromAlert: boolean
+  status: ServiceRequestStatus
+  /** When each step was reached. Steps not reached yet are missing. */
+  steps: Partial<Record<ServiceRequestStatus, DateTime>>
+  serviceCenter: string
+  /** ISO date of the planned visit, once planned. */
+  visitDate?: string
+  technician?: string
+  /** Work order number, once done. Matches the asset's service history. */
+  workOrder?: string
+}
+
+export type OrderStatus = 'Confirmed' | 'Packed' | 'Shipped' | 'Delivered'
+
+/** Direct orders are the customer's own; partner orders are a channel partner's, for a customer. */
+export type OrderChannel = 'direct' | 'partner'
+
+export type OrderLine = {
+  position: number
+  partNumber: string
+  description: string
+  quantity: number
+  /** List price per unit in `market.currency`, excl. VAT. */
+  listPrice: number
+  /** The asset the part is for, if any (its id). */
+  assetId?: string
+}
+
+/** One track & trace event. `status` marks the event that reached an order step. */
+export type TrackingEvent = {
+  at: DateTime
+  text: string
+  location: string
+  status?: OrderStatus
+}
+
+/**
+ * A Sulzer order with track & trace. The seeds are in data/orders.ts; checkout adds
+ * new ones through the self-service context (`addOrder`).
+ */
+export type Order = {
+  /** e.g. "SO-104382". */
+  id: string
+  customerId: string
+  channel: OrderChannel
+  placedAt: DateTime
+  placedBy: string
+  /** The buyer's purchase order number. */
+  poNumber: string
+  /** The quotation the order came from, if any. */
+  quotationId?: string
+  status: OrderStatus
+  /** ISO date. The delivery date once delivered. */
+  expectedDelivery: string
+  deliveryAddress: string[]
+  deliveryMethod: string
+  /** Once shipped. */
+  shipment?: { carrier: string; trackingNumber: string; packages: number; weight: string }
+  /** Oldest first. */
+  events: TrackingEvent[]
+  /** % off list on every line: the partner discount, or 0. */
+  discount: number
+  shippingCost: number
+  lines: OrderLine[]
+}
+
+export type QuotationStatus = 'Requested' | 'Sent' | 'Accepted' | 'Expired'
+
+/** Who a quotation is from: Sulzer (to an end user), or the signed-in channel partner (to their customer). */
+export type QuotationIssuer = 'sulzer' | 'partner'
+
+export type QuotationLine = {
+  position: number
+  /** Product or part number. Services have none. */
+  number?: string
+  description: string
+  /** Second line, e.g. the duty point or what the work covers. */
+  detail?: string
+  quantity: number
+  unit: 'pcs' | 'h' | 'lot'
+  /** Per unit in `market.currency`, excl. VAT. */
+  listPrice: number
+  /** Sulzer products and parts, bought at the partner discount; services are the issuer's own work. */
+  kind: 'sulzer' | 'service'
+  /** e.g. "Week 49" or "3 weeks". */
+  delivery: string
+}
+
+export type Quotation = {
+  /** e.g. "Q-10234". */
+  id: string
+  issuer: QuotationIssuer
+  customerId: string
+  title: string
+  status: QuotationStatus
+  requestedAt: DateTime
+  /** ISO dates, once sent. */
+  issuedOn?: string
+  validUntil?: string
+  /** While requested: when the issuer expects to send it (ISO date). */
+  expectedBy?: string
+  /** The latest change, shown in the list and on My Pages. */
+  updated: { at: DateTime; text: string }
+  /** The customer's reference, e.g. their project or work order. */
+  yourReference: string
+  projectId?: string
+  /** The order it became, once accepted. */
+  orderId?: string
+  /** The issuer's contact person for this quotation. */
+  contact: { name: string; role: string; email: string; phone: string }
+  /** % off list on every line, agreed with the customer. */
+  discount: number
+  lines: QuotationLine[]
+  deliveryTerms: string
+  paymentTerms: string
+  /** Remarks printed under the lines. */
+  notes: string[]
 }
 
 /** A tab in a page's sticky tab bar. `id` is also the URL hash. */

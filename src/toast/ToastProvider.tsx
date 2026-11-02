@@ -37,7 +37,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           <div
             key={toast.id}
             inert={!open}
-            className={`flex max-w-md min-w-80 items-center gap-3 rounded-lg bg-navy-900 py-3.5 pr-4 pl-4 text-white shadow-raised duration-200 ease-sz on-dark ${
+            className={`flex max-w-md min-w-80 items-center gap-3 rounded-lg bg-navy-900 py-3.5 pr-4 pl-4 text-white shadow-raised ring-1 ring-white/15 duration-200 ease-sz on-dark ${
               open
                 ? 'pointer-events-auto translate-y-0 animate-fade-in opacity-100 transition-[opacity,translate]'
                 : '-translate-y-1.5 opacity-0 transition-[opacity,translate]'

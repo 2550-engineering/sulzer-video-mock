@@ -49,6 +49,7 @@ export function AssetServiceRequestDialog({
           product={product}
           services={servicesFor(product.serviceIds)}
           prefill={serviceRequestPrefill(asset)}
+          asset={asset}
           onDone={onClose}
         />
       )}

@@ -17,6 +17,7 @@ import { serviceDueWithinDays, summarizeAssets } from '../lib/assetSummary'
 import type { ActivityItem, AssetStat, DashboardCard, NavItem } from '../types'
 import { assets } from './assets'
 import { projects } from './projects'
+import { orderPath, ordersPath, quotationPath, requestsPath } from './selfServicePages'
 
 /* Copy and demo data for the signed-in dashboard ("/my-pages"). Deterministic — no live values. */
 
@@ -37,12 +38,9 @@ export const dashboardCards = {
       { label: 'List price & availability', to: '/self-service/list-price' },
       { label: 'Spare parts', to: '/spare-parts' },
       { label: 'Replace pump', to: '/products/replacement' },
-      {
-        label: 'Order status incl. track & trace',
-        to: '/self-service/orders',
-        badge: { label: '2 in transit', tone: 'info' },
-      },
-      { label: 'Requests', to: '/self-service/requests', badge: { label: '1 open' } },
+      // Badges: orders in transit and open requests, from the self-service state (MyPagesPage).
+      { label: 'Order status incl. track & trace', to: ordersPath },
+      { label: 'Requests', to: requestsPath },
       { label: 'Export information', to: '/self-service/export' },
     ],
   },
@@ -83,6 +81,12 @@ export const dashboardCards = {
     ],
   },
 } satisfies Record<string, DashboardCard>
+
+/** Live counts on the Self-service card. */
+export const selfServiceBadges = {
+  inTransit: (n: number) => `${n} in transit`,
+  open: (n: number) => `${n} open`,
+}
 
 const summary = summarizeAssets(assets.filter((asset) => asset.customerId === demoUser.customerId))
 
@@ -130,7 +134,7 @@ export const recentActivity = {
       subject: 'Quotation Q-10234',
       text: 'updated with a new delivery date',
       time: 'Today, 09:14',
-      to: '/self-service/quotations',
+      to: quotationPath('Q-10234'),
       icon: FileText,
     },
     {
@@ -152,7 +156,7 @@ export const recentActivity = {
       subject: 'Order SO-104382',
       text: 'shipped – expected 30 Oct',
       time: 'Yesterday, 16:20',
-      to: '/self-service/orders',
+      to: orderPath('SO-104382'),
       icon: Truck,
     },
     {

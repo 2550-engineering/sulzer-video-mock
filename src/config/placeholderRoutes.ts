@@ -53,24 +53,6 @@ export const placeholderRoutes: PlaceholderRoute[] = [
     parent: '/my-sulzer',
   },
   {
-    path: '/self-service/quotations',
-    title: 'Quotations',
-    description: 'Request, follow and download your Sulzer quotations.',
-    parent: '/my-sulzer',
-  },
-  {
-    path: '/self-service/requests',
-    title: 'Requests',
-    description: 'Follow your service, support and return requests.',
-    parent: '/my-sulzer',
-  },
-  {
-    path: '/self-service/orders',
-    title: 'Order status',
-    description: 'Follow every order from confirmation to delivery with track & trace.',
-    parent: '/my-sulzer',
-  },
-  {
     path: '/register',
     title: 'Create a Sulzer account',
     description: 'Get personal prices, saved products, shared projects and more.',

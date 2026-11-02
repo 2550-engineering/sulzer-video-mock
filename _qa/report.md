@@ -1,6 +1,6 @@
 # Recording QA — 1920×1080
 
-471 captures, 0 with issues. Screenshots in `_qa/screenshots/`.
+495 captures, 0 with issues. Screenshots in `_qa/screenshots/`.
 
 | Auth | Route | Lands on | Title |
 | --- | --- | --- | --- |
@@ -171,6 +171,21 @@
 | logged-out | `/assets/p-211#condition` | `/my-sulzer` | mySulzer | Sulzer |
 | logged-out | `/assets/cd-01#condition` | `/my-sulzer` | mySulzer | Sulzer |
 | logged-out | `/assets/rs-02#documents` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/self-service/requests` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/self-service/orders` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/self-service/orders?status=transit` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/self-service/orders?q=zzzz` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/self-service/orders/SO-104396` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/self-service/orders/SO-104390` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/self-service/orders/SO-104382` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/self-service/orders/SO-104301` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/self-service/orders/SO-104255` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/self-service/quotations` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/self-service/quotations?status=open` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/self-service/quotations/Q-10234` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/self-service/quotations/Q-10241` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/self-service/quotations/Q-10198` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/self-service/quotations/Q-10163` | `/my-sulzer` | mySulzer | Sulzer |
 | logged-out | `/connect` | `/connect` | Sulzer Connect |
 | logged-out | `/connect/dashboard` | `/connect/dashboard` | Sulzer Connect |
 | logged-out | `/connect/assets` | `/connect/assets` | Sulzer Connect |
@@ -205,9 +220,6 @@
 | logged-out | `/settings` | `/settings` | Account settings | Sulzer |
 | logged-out | `/self-service/list-price` | `/self-service/list-price` | List price & availability | Sulzer |
 | logged-out | `/self-service/export` | `/self-service/export` | Export information | Sulzer |
-| logged-out | `/self-service/quotations` | `/self-service/quotations` | Quotations | Sulzer |
-| logged-out | `/self-service/requests` | `/self-service/requests` | Requests | Sulzer |
-| logged-out | `/self-service/orders` | `/self-service/orders` | Order status | Sulzer |
 | logged-out | `/register` | `/register` | Create a Sulzer account | Sulzer |
 | logged-out | `/support` | `/support` | Support | Sulzer |
 | logged-out | `/support/service-centers` | `/support/service-centers` | Service centers | Sulzer |
@@ -397,6 +409,21 @@
 | logged-in | `/assets/p-211#condition` | `/assets/p-211` | P-211 Lift pump | My assets | Sulzer |
 | logged-in | `/assets/cd-01#condition` | `/assets/cd-01` | CD-01 Dosing feed pump | My assets | Sulzer |
 | logged-in | `/assets/rs-02#documents` | `/assets/rs-02` | RS-02 Return sludge pump | My assets | Sulzer |
+| logged-in | `/self-service/requests` | `/self-service/requests` | Service requests | mySulzer | Sulzer |
+| logged-in | `/self-service/orders` | `/self-service/orders` | Orders | mySulzer | Sulzer |
+| logged-in | `/self-service/orders?status=transit` | `/self-service/orders?status=transit` | Orders | mySulzer | Sulzer |
+| logged-in | `/self-service/orders?q=zzzz` | `/self-service/orders?q=zzzz` | Orders | mySulzer | Sulzer |
+| logged-in | `/self-service/orders/SO-104396` | `/self-service/orders/SO-104396` | Order SO-104396 | mySulzer | Sulzer |
+| logged-in | `/self-service/orders/SO-104390` | `/self-service/orders/SO-104390` | Order SO-104390 | mySulzer | Sulzer |
+| logged-in | `/self-service/orders/SO-104382` | `/self-service/orders/SO-104382` | Order SO-104382 | mySulzer | Sulzer |
+| logged-in | `/self-service/orders/SO-104301` | `/self-service/orders/SO-104301` | Order SO-104301 | mySulzer | Sulzer |
+| logged-in | `/self-service/orders/SO-104255` | `/self-service/orders/SO-104255` | Order SO-104255 | mySulzer | Sulzer |
+| logged-in | `/self-service/quotations` | `/self-service/quotations` | Quotations | mySulzer | Sulzer |
+| logged-in | `/self-service/quotations?status=open` | `/self-service/quotations?status=open` | Quotations | mySulzer | Sulzer |
+| logged-in | `/self-service/quotations/Q-10234` | `/self-service/quotations/Q-10234` | Quotation Q-10234 | mySulzer | Sulzer |
+| logged-in | `/self-service/quotations/Q-10241` | `/self-service/quotations/Q-10241` | Quotation Q-10241 | mySulzer | Sulzer |
+| logged-in | `/self-service/quotations/Q-10198` | `/self-service/quotations/Q-10198` | Quotation Q-10198 | mySulzer | Sulzer |
+| logged-in | `/self-service/quotations/Q-10163` | `/self-service/quotations/Q-10163` | Quotation Q-10163 | mySulzer | Sulzer |
 | logged-in | `/connect` | `/connect` | Sulzer Connect |
 | logged-in | `/connect/dashboard` | `/connect/dashboard` | Fleet overview – Sulzer Connect |
 | logged-in | `/connect/assets` | `/connect/assets` | Assets – Sulzer Connect |
@@ -431,9 +458,6 @@
 | logged-in | `/settings` | `/settings` | Account settings | Sulzer |
 | logged-in | `/self-service/list-price` | `/self-service/list-price` | List price & availability | Sulzer |
 | logged-in | `/self-service/export` | `/self-service/export` | Export information | Sulzer |
-| logged-in | `/self-service/quotations` | `/self-service/quotations` | Quotations | Sulzer |
-| logged-in | `/self-service/requests` | `/self-service/requests` | Requests | Sulzer |
-| logged-in | `/self-service/orders` | `/self-service/orders` | Order status | Sulzer |
 | logged-in | `/register` | `/register` | Create a Sulzer account | Sulzer |
 | logged-in | `/support` | `/support` | Support | Sulzer |
 | logged-in | `/support/service-centers` | `/support/service-centers` | Service centers | Sulzer |

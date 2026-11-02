@@ -39,3 +39,23 @@ export const formatDay = (time: number) =>
 /** "28 Oct" from a wall-clock time stored as Date.UTC milliseconds. */
 export const formatDayMonth = (time: number) =>
   new Date(time).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' })
+
+/**
+ * "Today, 09:14", "Yesterday, 16:20" or "21 Oct, 10:05" from a wall-clock date time
+ * ("2026-10-28T09:14"), relative to `today` (ISO date).
+ */
+export function formatDateTime(dateTime: string, today: string) {
+  const [date, clock] = dateTime.split('T')
+  const days = daysBetween(date, today)
+  const day =
+    days === 0
+      ? 'Today'
+      : days === 1
+        ? 'Yesterday'
+        : new Date(`${date}T00:00:00Z`).toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            timeZone: 'UTC',
+          })
+  return clock ? `${day}, ${clock}` : day
+}

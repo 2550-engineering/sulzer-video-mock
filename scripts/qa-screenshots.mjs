@@ -31,6 +31,8 @@ const { products } = await server.ssrLoadModule('/src/data/products.ts')
 const { applicationPath, productTabs } = await server.ssrLoadModule('/src/lib/catalog.ts')
 const { assets } = await server.ssrLoadModule('/src/data/assets.ts')
 const { assetPage } = await server.ssrLoadModule('/src/data/assetPages.ts')
+const { orderSeeds } = await server.ssrLoadModule('/src/data/orders.ts')
+const { quotations } = await server.ssrLoadModule('/src/data/quotations.ts')
 
 const routes = [
   '/',
@@ -71,6 +73,15 @@ const routes = [
   '/assets/p-211#condition',
   '/assets/cd-01#condition',
   '/assets/rs-02#documents',
+  // Requests, orders and quotations, as the end user (QA signs in as endUser).
+  '/self-service/requests',
+  '/self-service/orders',
+  '/self-service/orders?status=transit',
+  '/self-service/orders?q=zzzz',
+  ...orderSeeds.filter((o) => o.channel === 'direct').map((o) => `/self-service/orders/${o.id}`),
+  '/self-service/quotations',
+  '/self-service/quotations?status=open',
+  ...quotations.filter((q) => q.issuer === 'sulzer').map((q) => `/self-service/quotations/${q.id}`),
   // Sulzer Connect: its own app outside SiteLayout. Signed out, every page but the welcome asks to sign in.
   '/connect',
   '/connect/dashboard',

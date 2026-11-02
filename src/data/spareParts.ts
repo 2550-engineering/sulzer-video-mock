@@ -1,6 +1,9 @@
 import type { SparePart } from '../types'
 
-/* Genuine spare parts per product. Positions match the sectional drawing. */
+/*
+ * Genuine spare parts per product. Positions match the sectional drawing. List prices
+ * are invented: see docs/content-to-confirm.md.
+ */
 
 export const spareParts: SparePart[] = [
   {
@@ -11,6 +14,7 @@ export const spareParts: SparePart[] = [
     group: 'Wear parts',
     position: 230,
     availability: 'in-stock',
+    listPrice: 4860,
   },
   {
     id: 'sp-1002',
@@ -20,6 +24,7 @@ export const spareParts: SparePart[] = [
     group: 'Seals',
     position: 433,
     availability: 'in-stock',
+    listPrice: 1420,
   },
   {
     id: 'sp-1003',
@@ -29,6 +34,7 @@ export const spareParts: SparePart[] = [
     group: 'Bearings',
     position: 321,
     availability: 'on-request',
+    listPrice: 890,
   },
   {
     id: 'sp-2001',
@@ -38,6 +44,7 @@ export const spareParts: SparePart[] = [
     group: 'Wear parts',
     position: 135,
     availability: 'in-stock',
+    listPrice: 640,
   },
   {
     id: 'sp-2002',
@@ -47,5 +54,6 @@ export const spareParts: SparePart[] = [
     group: 'Seals',
     position: 433,
     availability: 'in-stock',
+    listPrice: 1180,
   },
 ]

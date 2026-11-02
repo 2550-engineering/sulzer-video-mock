@@ -18,10 +18,21 @@ const tones: Record<StatusTone, { icon: string; value: string }> = {
   warning: { icon: 'bg-warning-tint text-warning', value: 'text-warning-strong' },
 }
 
-/** Headline numbers on the installed base. Each tile is a filter; the active one is outlined. */
-export function AssetSummaryStrip({ label, tiles }: { label: string; tiles: SummaryTile[] }) {
+type AssetSummaryStripProps = {
+  label: string
+  tiles: SummaryTile[]
+  /** Grid columns, e.g. for four tiles. */
+  columns?: string
+}
+
+/** Headline numbers, e.g. on the installed base. Each tile is a filter; the active one is outlined. */
+export function AssetSummaryStrip({
+  label,
+  tiles,
+  columns = 'sm:grid-cols-3 xl:grid-cols-5',
+}: AssetSummaryStripProps) {
   return (
-    <ul aria-label={label} className="grid gap-4 sm:grid-cols-3 xl:grid-cols-5">
+    <ul aria-label={label} className={`grid gap-4 ${columns}`}>
       {tiles.map(({ id, value, label: tileLabel, detail, tone, icon: Icon, active, onSelect }) => (
         <li key={id}>
           <button

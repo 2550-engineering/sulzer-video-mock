@@ -29,7 +29,7 @@ and checks links, tab hashes, the sticky tab bar and layout shift.
      (`/products`), the search results page without a query.
    - "Download brochure" goes to `/support/documentation`, and no file is downloaded.
    - Knowledge cards and customer stories go to `/learn` (Sulzer Academy, "Coming soon").
-   - Help cards go to `/contact/quote`, `/eshop` and `/self-service/requests`, all "Coming soon".
+   - Help cards go to `/contact/quote` and `/eshop` ("Coming soon") and to `/self-service/requests`.
    - Service rows go to `/support` or `/support/service-portal`, both "Coming soon".
 
 ## Before recording the Sizing video
@@ -93,7 +93,6 @@ results page.
 6. **Links that end on placeholder pages.** Not on the recording path, but clickable:
    - "Size product", "Size range" and "Size this model" go to `/sizing` ("Coming soon", naming
      the product or model).
-   - "View my requests" after a service request goes to `/self-service/requests` ("Coming soon").
    - The toast after "Add to project" links to My projects, where the model does not appear.
    - Service "Learn more" links go to `/support`, `/support/service-portal` or `/connect`.
    - The Spare parts tab shows "Coming soon".
@@ -118,7 +117,8 @@ Recording path: `/my-pages` (cursor on **My assets: 2 need attention**) → clic
      `/spare-parts` ("Coming soon" until P5), "Request a quotation" to `/contact/quote`.
    - "Get it connected" and "How it works" on the "Connect this asset" card go to
      `/products/sulzer-connect`.
-   - "View my requests" after sending a service request goes to `/self-service/requests` (P4).
+   - "View my requests" in the dialog and "View request" in the toast go to `/self-service/requests`,
+     where SR-2026-0142 is now at the top (P4).
    - "Service report" only shows a toast; no file is downloaded.
 
 ## Before recording Video A: Sulzer Connect (steps 5–10)
@@ -617,3 +617,25 @@ benefits, "See it live", customer story, CTA band). The personal toolbar sits on
 | Recently viewed seed | Emma: AHLSTAR, XFP, SNS, SMD. Lars: AHLSTAR, AFP, XFP. Every product page visit while signed in moves it to the top | Kept per persona in localStorage; "Reset demo" clears it.                               |
 | Compare              | Shared with the Models tab: up to 3 models of one product; a model of another product starts a new comparison       | In memory only.                                                                         |
 | Units & market       | Market (Sweden, English, EUR) is read-only; Units (Metric / US customary) and mains frequency (50 / 60 Hz)          | Only the frequency changes anything: the Models tab opens on it. Units are stored only. |
+
+## Requests, orders and quotations (P4, `src/data/serviceRequests.ts`, `src/data/orders.ts`, `src/data/quotations.ts`)
+
+| Item                   | Value in the mock-up                                                                                                                             | Note                                                                                                                           |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| SR-2026-0142           | Added to `/self-service/requests` when "Request service" is sent (asset page, Connect or product page), received "Today, 09:26", status Received | Fixed time so every recording matches. Shared by both personas; "Reset demo" removes it.                                       |
+| Earlier requests       | SR-2026-0129 (BW-01 annual service, visit 12 Nov, Anna Forsell) open; SR-2026-0108, -0097, -0071 done                                            | Visits, technicians and work orders match each asset's service history.                                                        |
+| Service center details | Sulzer Service Center Västerås, Kopparlundsvägen 7, +46 21 400 18 00                                                                             | Invented address and phone. Confirm the real service center.                                                                   |
+| Request steps          | Received → Visit planned → Technician assigned → Done, "We confirm the date within one working day"                                              | Confirm Sulzer's real request statuses and response time.                                                                      |
+| Orders                 | Emma: SO-104396, -104390, -104382 (from Q-10198, shipped, expected 30 Oct), -104301, -104255. Lars: SO-104399, -104393, -104368                  | Invented. My Pages "2 in transit" and "1 open" are now counted from this data.                                                 |
+| Carrier and tracking   | "Sulzer Logistics road freight" from "Sulzer distribution center, Norrköping", tracking numbers "SZL 3740 …"                                     | Placeholder carrier and warehouse, confirm how Sulzer ships spare parts in Sweden.                                             |
+| Delivery addresses     | Nordvatten goods reception, Verksvägen 21, Västerås; partner orders to each customer's site                                                      | Invented.                                                                                                                      |
+| Spare part list prices | Impeller €4,860, mechanical seal set €1,420, bearing kit €890, Contrablock wear plate €640, XFP seal kit €1,180 (`src/data/spareParts.ts`)       | Invented. P5's prices should use these.                                                                                        |
+| Agreement discount     | Nordvatten 12% on Sulzer quotations and on SO-104382                                                                                             | Invented.                                                                                                                      |
+| Sulzer issuer          | "Sulzer Pumps Sweden AB", Kopparlundsvägen 7, Västerås, reg. no. 556000-1234                                                                     | Placeholder legal entity, address and numbers. Confirm the real Swedish Sulzer entity before publishing.                       |
+| Sulzer contact         | Mikael Ahonen, Application engineer, +46 21 400 18 26                                                                                            | Fictional (also a member of the Riverside intake project).                                                                     |
+| Q-10234                | North pump station upgrade: 2 pumps from the project, 2 Sulzer Connect sensor kits (86040120, €1,450), commissioning (€2,900), delivery week 49  | The "new delivery date" in My Pages activity is "brought forward from week 51 to week 49". Kit number and prices are invented. |
+| Terms                  | FCA Sulzer distribution center, Norrköping (Incoterms 2020), 30 days net. ISO 9906 grade 2B test note                                            | Placeholder terms.                                                                                                             |
+| Partner letterhead     | Aqua Pumpteknik wordmark (SVG we made), Industrigatan 9, Eskilstuna, "Authorised Sulzer distributor" with the Sulzer logo in the footer          | Fictional partner. Confirm Sulzer allows its logo on partner documents.                                                        |
+| Partner quotations     | AQ-26-0418 to Nordvatten (RW-02 bearing replacement, 12 h at €95), AQ-26-0409, -0402, -0385 to the other three customers                         | Invented. Customer discounts 5–8%.                                                                                             |
+| Partner margin card    | Sulzer net price at the 32% partner discount, margin on Sulzer items, "Only you see this. It isn’t on the PDF."                                  | Uses `partnerPricing.discount`.                                                                                                |
+| Downloads              | "Download PDF", "Order confirmation" and service reports only show a toast                                                                       | No files.                                                                                                                      |
