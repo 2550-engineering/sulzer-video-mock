@@ -11,11 +11,14 @@ import { SulzerLogo } from '../SulzerLogo'
 const railItem =
   'flex w-full flex-col items-center gap-1.5 rounded-md py-2.5 text-[11px] font-medium transition-colors'
 const railIdle = 'text-text-on-dark-muted hover:bg-white/5 hover:text-white'
+/** Pages in the phone tab bar, which has room for five. */
+const phoneTabs = 5
 
 /**
  * Dark app frame for Sulzer Connect: a sticky top bar (sync status, alerts,
  * user), a sticky icon rail of the app's pages, and the page below. The page
  * scrolls the document, so full-page screenshots and recordings see all of it.
+ * On phones the rail becomes a tab bar at the bottom and the top bar shrinks.
  */
 export function ConnectShell({ children }: { children: ReactNode }) {
   const { user, signIn } = useAuth()
@@ -27,23 +30,25 @@ export function ConnectShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-navy-800 text-text-on-dark on-dark">
-      <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-white/10 bg-navy-900/95 pr-6 backdrop-blur-sm">
+      <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-white/10 bg-navy-900/95 pr-4 backdrop-blur-sm sm:pr-6">
         <div className="flex items-center">
           <Link
             to="/"
             aria-label="Sulzer home"
-            className="flex h-16 items-center border-r border-white/10 px-6"
+            className="flex h-16 items-center border-r border-white/10 px-4 sm:px-6"
           >
-            <SulzerLogo variant="white" className="h-5" />
+            <SulzerLogo variant="white" className="h-4 sm:h-5" />
           </Link>
-          <p className="ml-6 text-[15px] font-semibold text-white">
+          <p className="ml-4 text-[15px] font-semibold whitespace-nowrap text-white sm:ml-6">
             {connectApp.name}
-            <span className="ml-2 font-normal text-text-on-dark-muted">{connectApp.section}</span>
+            <span className="ml-2 font-normal text-text-on-dark-muted max-sm:hidden">
+              {connectApp.section}
+            </span>
           </p>
         </div>
 
         {user ? (
-          <div className="flex items-center gap-5 text-sm">
+          <div className="flex items-center gap-3 text-sm sm:gap-5">
             <p className="hidden items-center gap-2 text-text-on-dark-muted md:flex">
               <span className="relative flex size-2">
                 <span className="absolute inset-0 animate-ping rounded-full bg-success-on-dark opacity-50 [animation-duration:2.4s]" />
@@ -63,9 +68,9 @@ export function ConnectShell({ children }: { children: ReactNode }) {
                 </span>
               )}
             </Link>
-            <div className="flex items-center gap-3 border-l border-white/10 pl-5">
+            <div className="flex items-center gap-3 border-l border-white/10 pl-3 sm:pl-5">
               <Avatar initials={user.initials} />
-              <div className="leading-tight">
+              <div className="leading-tight max-sm:hidden">
                 <p className="font-medium text-white">{user.name}</p>
                 <p className="text-xs text-text-on-dark-muted">{user.company}</p>
               </div>
@@ -84,7 +89,7 @@ export function ConnectShell({ children }: { children: ReactNode }) {
 
       <div className="flex">
         {/* The rail's background runs the full page height; the nav sticks under the top bar. */}
-        <div className="w-20 shrink-0 border-r border-white/10 bg-navy-900">
+        <div className="w-20 shrink-0 border-r border-white/10 bg-navy-900 max-sm:hidden">
           <nav
             aria-label={connectApp.name}
             className="sticky top-16 flex h-[calc(100vh-4rem)] flex-col items-center gap-1 overflow-y-auto px-2 py-3"
@@ -119,8 +124,34 @@ export function ConnectShell({ children }: { children: ReactNode }) {
           </nav>
         </div>
 
-        <main className="min-w-0 flex-1">{children}</main>
+        <main className="min-w-0 flex-1 max-sm:pb-20">{children}</main>
       </div>
+
+      <nav
+        aria-label={connectApp.name}
+        className="fixed inset-x-0 bottom-0 z-40 flex border-t border-white/10 bg-navy-900/95 px-2 pt-1.5 pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur-sm sm:hidden"
+      >
+        {nav.slice(0, phoneTabs).map(({ label, to, icon: Icon }) => (
+          <NavLink
+            key={label}
+            to={to}
+            className={({ isActive }) =>
+              `${railItem} ${isActive ? 'text-white' : 'text-text-on-dark-muted'}`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <span
+                  className={`flex h-7 w-12 items-center justify-center rounded-pill transition-colors ${isActive ? 'bg-primary' : ''}`}
+                >
+                  <Icon className="size-5" strokeWidth={1.75} />
+                </span>
+                {label}
+              </>
+            )}
+          </NavLink>
+        ))}
+      </nav>
     </div>
   )
 }

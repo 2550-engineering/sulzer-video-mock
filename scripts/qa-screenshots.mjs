@@ -28,8 +28,7 @@ const base = 'http://localhost:5199'
 const { placeholderRoutes } = await server.ssrLoadModule('/src/config/placeholderRoutes.ts')
 const { applications, rootApplicationId } = await server.ssrLoadModule('/src/data/applications.ts')
 const { products } = await server.ssrLoadModule('/src/data/products.ts')
-const { applicationPath } = await server.ssrLoadModule('/src/lib/catalog.ts')
-const { productPage } = await server.ssrLoadModule('/src/data/catalogPages.ts')
+const { applicationPath, productTabs } = await server.ssrLoadModule('/src/lib/catalog.ts')
 const { assets } = await server.ssrLoadModule('/src/data/assets.ts')
 const { assetPage } = await server.ssrLoadModule('/src/data/assetPages.ts')
 
@@ -48,8 +47,14 @@ const routes = [
   '/products?q=zzzz',
   ...products.flatMap((product) => [
     `/products/${product.id}`,
-    ...productPage.tabs.slice(1).map((tab) => `/products/${product.id}#${tab.id}`),
+    ...productTabs(product)
+      .slice(1)
+      .map((tab) => `/products/${product.id}#${tab.id}`),
   ]),
+  '/digital-solutions',
+  '/my-pages/saved',
+  '/my-pages/saved?kind=document',
+  '/my-pages/recently-viewed',
   '/sizing',
   `/sizing?product=${products[0].id}`,
   '/sizing/results',
@@ -82,7 +87,26 @@ const routes = [
   '/this-page-does-not-exist',
 ]
 
-/** Overlays and interactive states worth checking on the home page (viewport-only shots). */
+/** The personal toolbar's panels, opened on the Sulzer Connect product page (signed in). */
+const toolbarStates = [
+  'Compare',
+  'Saved items',
+  'Sizing',
+  'My projects',
+  'Recently viewed',
+  'Units & market',
+].map((label) => ({
+  name: `toolbar-${label.toLowerCase().replace(/\W+/g, '-')}`,
+  path: '/products/sulzer-connect',
+  signedInOnly: true,
+  run: (page) =>
+    page
+      .getByRole('navigation', { name: 'Personal toolbar' })
+      .getByRole('button', { name: label })
+      .click(),
+}))
+
+/** Overlays and interactive states worth checking (viewport-only shots), on the home page unless they name a `path`. */
 const states = [
   {
     name: 'mega-menu',
@@ -110,6 +134,7 @@ const states = [
     signedInOnly: true,
     run: (page) => page.getByRole('button', { name: /Lindqvist|Sign in/ }).click(),
   },
+  ...toolbarStates,
 ]
 
 function fileName(route) {
@@ -213,14 +238,14 @@ for (const auth of ['logged-out', 'logged-in']) {
   for (const state of states) {
     if (state.signedInOnly && auth !== 'logged-in') continue
     messages = []
-    await page.goto(base + '/')
+    await page.goto(base + (state.path ?? '/'))
     await settle(page)
     await state.run(page)
     await page.waitForTimeout(400)
     await page.screenshot({ path: `${outDir}/${auth}/states/${state.name}.png` })
     results.push({
       auth,
-      route: `/ [${state.name}]`,
+      route: `${state.path ?? '/'} [${state.name}]`,
       title: '',
       messages,
       overflowing: [],

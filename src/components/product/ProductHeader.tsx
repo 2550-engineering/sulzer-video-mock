@@ -1,12 +1,14 @@
 import { ArrowRight, FileText } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router'
+import { useAuth } from '../../auth/useAuth'
 import { productPage as copy } from '../../data/catalogPages'
 import { applicationPath, getApplication } from '../../lib/catalog'
 import type { Product } from '../../types'
 import { Breadcrumb } from '../Breadcrumb'
 import { SmartImage } from '../SmartImage'
 import { KeySpecStrip } from './KeySpecStrip'
+import { SaveProductButton } from './SaveProductButton'
 
 type ProductHeaderProps = {
   product: Product
@@ -15,12 +17,15 @@ type ProductHeaderProps = {
 }
 
 /**
- * Product page header: breadcrumb, badge, name, "Suitable for" links (first three,
- * then "View more"), standard, documentation link and "Size product" on the left;
- * product image and key specs on the right.
+ * Product page header: breadcrumb, badge, name with a bookmark (signed in),
+ * "Suitable for" links (first three, then "View more"), standard, documentation
+ * link and the product's action ("Size product" unless it names another) on the
+ * left; product image and key specs on the right.
  */
 export function ProductHeader({ product, onShowDocumentation }: ProductHeaderProps) {
+  const { user } = useAuth()
   const [showAllApplications, setShowAllApplications] = useState(false)
+  const action = product.action ?? { label: copy.sizeLabel, to: `/sizing?product=${product.id}` }
   const suitableFor = product.applications.map(getApplication).filter((app) => app !== undefined)
   const shown = showAllApplications ? suitableFor : suitableFor.slice(0, copy.suitableForMax)
 
@@ -38,9 +43,12 @@ export function ProductHeader({ product, onShowDocumentation }: ProductHeaderPro
           <span className="rounded-sm bg-surface-sunken px-2.5 py-1 text-xs font-semibold text-navy-700">
             {product.family}
           </span>
-          <h1 className="mt-4 text-[2.75rem] leading-tight font-bold tracking-tight text-brand">
-            {product.name}
-          </h1>
+          <div className="mt-4 flex w-full items-start justify-between gap-6">
+            <h1 className="text-[2.75rem] leading-tight font-bold tracking-tight text-brand">
+              {product.name}
+            </h1>
+            {user && <SaveProductButton product={product} />}
+          </div>
 
           {suitableFor.length > 0 && (
             <>
@@ -82,10 +90,10 @@ export function ProductHeader({ product, onShowDocumentation }: ProductHeaderPro
           </button>
 
           <Link
-            to={`/sizing?product=${product.id}`}
+            to={action.to}
             className="group mt-auto inline-flex h-12 items-center gap-2 rounded-pill bg-primary px-7 font-semibold text-white shadow-raised transition-colors hover:bg-primary-hover max-lg:mt-8 lg:mt-10"
           >
-            {copy.sizeLabel}
+            {action.label}
             <ArrowRight className="size-[18px] transition-transform duration-200 group-hover:translate-x-1" />
           </Link>
         </div>

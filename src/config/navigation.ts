@@ -50,7 +50,7 @@ export const megaMenu: MegaMenuItem[] = [
     label: 'Digital solutions',
     to: '/digital-solutions',
     children: [
-      { label: 'Sulzer Connect', to: '/connect' },
+      { label: 'Sulzer Connect', to: '/products/sulzer-connect' },
       { label: 'Condition monitoring', to: '/assets' },
       { label: 'Sizing and selection', to: '/sizing' },
       { label: 'CAD and BIM downloads', to: '/digital-solutions' },

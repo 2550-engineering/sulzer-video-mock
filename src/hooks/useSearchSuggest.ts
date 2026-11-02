@@ -38,7 +38,7 @@ export function useSearchSuggest(term: string, onNavigate?: () => void) {
       ...groups.products.map((product) => ({
         kind: 'product' as const,
         product,
-        to: product.viewTo ?? productPath(product),
+        to: productPath(product),
       })),
       ...groups.applications.map((application) => ({
         kind: 'application' as const,

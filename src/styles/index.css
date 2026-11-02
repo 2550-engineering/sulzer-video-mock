@@ -105,6 +105,14 @@
     }
   }
 
+  /* Data moving along a dashed connector line. Infinite, so use it as motion-safe:animate-flow. */
+  --animate-flow: sz-flow 1.4s linear infinite;
+  @keyframes sz-flow {
+    to {
+      stroke-dashoffset: -16;
+    }
+  }
+
   @keyframes sz-page-in {
     from {
       opacity: 0;
@@ -123,6 +131,15 @@
   width: 100%;
   max-width: calc(var(--sz-content-max) + 2 * var(--sz-gutter));
   padding-inline: var(--sz-gutter);
+  /* Keeps content clear of the personal toolbar (--sz-toolbar-space, set on <main> while it shows)
+     where the page margin is narrower than the toolbar. */
+  padding-right: max(
+    var(--sz-gutter),
+    calc(
+      var(--sz-toolbar-space, 0px) -
+        max(0px, (100vw - var(--sz-content-max)) / 2 - var(--sz-gutter))
+    )
+  );
 
   @media (width < 40rem) {
     padding-inline: 1rem;

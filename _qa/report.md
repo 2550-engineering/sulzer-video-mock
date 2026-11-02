@@ -1,6 +1,6 @@
 # Recording QA — 1920×1080
 
-479 captures, 0 with issues. Screenshots in `_qa/screenshots/`.
+471 captures, 0 with issues. Screenshots in `_qa/screenshots/`.
 
 | Auth | Route | Lands on | Title |
 | --- | --- | --- | --- |
@@ -93,17 +93,13 @@
 | logged-out | `/products/xfp#spare-parts` | `/products/xfp` | XFP | Sulzer |
 | logged-out | `/products/xfp#services` | `/products/xfp` | XFP | Sulzer |
 | logged-out | `/products/sulzer-connect` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
-| logged-out | `/products/sulzer-connect#models` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-out | `/products/sulzer-connect#variants` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
 | logged-out | `/products/sulzer-connect#documentation` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
-| logged-out | `/products/sulzer-connect#bim` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
-| logged-out | `/products/sulzer-connect#spare-parts` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
-| logged-out | `/products/sulzer-connect#services` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-out | `/products/sulzer-connect#learn` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
 | logged-out | `/products/motor-protection-relay` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
-| logged-out | `/products/motor-protection-relay#models` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-out | `/products/motor-protection-relay#variants` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
 | logged-out | `/products/motor-protection-relay#documentation` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
-| logged-out | `/products/motor-protection-relay#bim` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
-| logged-out | `/products/motor-protection-relay#spare-parts` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
-| logged-out | `/products/motor-protection-relay#services` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-out | `/products/motor-protection-relay#learn` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
 | logged-out | `/products/sjm` | `/products/sjm` | SJM | Sulzer |
 | logged-out | `/products/sjm#models` | `/products/sjm` | SJM | Sulzer |
 | logged-out | `/products/sjm#documentation` | `/products/sjm` | SJM | Sulzer |
@@ -123,17 +119,17 @@
 | logged-out | `/products/j-dewatering#spare-parts` | `/products/j-dewatering` | J dewatering pump | Sulzer |
 | logged-out | `/products/j-dewatering#services` | `/products/j-dewatering` | J dewatering pump | Sulzer |
 | logged-out | `/products/pump-controller` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
-| logged-out | `/products/pump-controller#models` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-out | `/products/pump-controller#variants` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
 | logged-out | `/products/pump-controller#documentation` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
-| logged-out | `/products/pump-controller#bim` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
-| logged-out | `/products/pump-controller#spare-parts` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
-| logged-out | `/products/pump-controller#services` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-out | `/products/pump-controller#learn` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
 | logged-out | `/products/blue-box` | `/products/blue-box` | BLUE BOX | Sulzer |
-| logged-out | `/products/blue-box#models` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-out | `/products/blue-box#variants` | `/products/blue-box` | BLUE BOX | Sulzer |
 | logged-out | `/products/blue-box#documentation` | `/products/blue-box` | BLUE BOX | Sulzer |
-| logged-out | `/products/blue-box#bim` | `/products/blue-box` | BLUE BOX | Sulzer |
-| logged-out | `/products/blue-box#spare-parts` | `/products/blue-box` | BLUE BOX | Sulzer |
-| logged-out | `/products/blue-box#services` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-out | `/products/blue-box#learn` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-out | `/digital-solutions` | `/digital-solutions` | Digital solutions | Sulzer |
+| logged-out | `/my-pages/saved` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/my-pages/saved?kind=document` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/my-pages/recently-viewed` | `/my-sulzer` | mySulzer | Sulzer |
 | logged-out | `/sizing` | `/sizing` | Size Product | Sulzer |
 | logged-out | `/sizing?product=ahlstar` | `/sizing?product=ahlstar` | Size Product | Sulzer |
 | logged-out | `/sizing/results` | `/sizing/results` | Sizing | Sulzer |
@@ -205,10 +201,7 @@
 | logged-out | `/connect/teams` | `/connect/teams` | Sulzer Connect |
 | logged-out | `/products/replacement` | `/products/replacement` | Product replacement | Sulzer |
 | logged-out | `/spare-parts` | `/spare-parts` | Spare parts | Sulzer |
-| logged-out | `/digital-solutions` | `/digital-solutions` | Digital solutions | Sulzer |
 | logged-out | `/eshop` | `/eshop` | eShop | Sulzer |
-| logged-out | `/my-pages/saved` | `/my-pages/saved` | My saved items | Sulzer |
-| logged-out | `/my-pages/recently-viewed` | `/my-pages/recently-viewed` | Recently viewed products | Sulzer |
 | logged-out | `/settings` | `/settings` | Account settings | Sulzer |
 | logged-out | `/self-service/list-price` | `/self-service/list-price` | List price & availability | Sulzer |
 | logged-out | `/self-service/export` | `/self-service/export` | Export information | Sulzer |
@@ -326,17 +319,13 @@
 | logged-in | `/products/xfp#spare-parts` | `/products/xfp` | XFP | Sulzer |
 | logged-in | `/products/xfp#services` | `/products/xfp` | XFP | Sulzer |
 | logged-in | `/products/sulzer-connect` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
-| logged-in | `/products/sulzer-connect#models` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-in | `/products/sulzer-connect#variants` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
 | logged-in | `/products/sulzer-connect#documentation` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
-| logged-in | `/products/sulzer-connect#bim` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
-| logged-in | `/products/sulzer-connect#spare-parts` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
-| logged-in | `/products/sulzer-connect#services` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-in | `/products/sulzer-connect#learn` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
 | logged-in | `/products/motor-protection-relay` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
-| logged-in | `/products/motor-protection-relay#models` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-in | `/products/motor-protection-relay#variants` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
 | logged-in | `/products/motor-protection-relay#documentation` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
-| logged-in | `/products/motor-protection-relay#bim` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
-| logged-in | `/products/motor-protection-relay#spare-parts` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
-| logged-in | `/products/motor-protection-relay#services` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-in | `/products/motor-protection-relay#learn` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
 | logged-in | `/products/sjm` | `/products/sjm` | SJM | Sulzer |
 | logged-in | `/products/sjm#models` | `/products/sjm` | SJM | Sulzer |
 | logged-in | `/products/sjm#documentation` | `/products/sjm` | SJM | Sulzer |
@@ -356,17 +345,17 @@
 | logged-in | `/products/j-dewatering#spare-parts` | `/products/j-dewatering` | J dewatering pump | Sulzer |
 | logged-in | `/products/j-dewatering#services` | `/products/j-dewatering` | J dewatering pump | Sulzer |
 | logged-in | `/products/pump-controller` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
-| logged-in | `/products/pump-controller#models` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-in | `/products/pump-controller#variants` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
 | logged-in | `/products/pump-controller#documentation` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
-| logged-in | `/products/pump-controller#bim` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
-| logged-in | `/products/pump-controller#spare-parts` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
-| logged-in | `/products/pump-controller#services` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-in | `/products/pump-controller#learn` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
 | logged-in | `/products/blue-box` | `/products/blue-box` | BLUE BOX | Sulzer |
-| logged-in | `/products/blue-box#models` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-in | `/products/blue-box#variants` | `/products/blue-box` | BLUE BOX | Sulzer |
 | logged-in | `/products/blue-box#documentation` | `/products/blue-box` | BLUE BOX | Sulzer |
-| logged-in | `/products/blue-box#bim` | `/products/blue-box` | BLUE BOX | Sulzer |
-| logged-in | `/products/blue-box#spare-parts` | `/products/blue-box` | BLUE BOX | Sulzer |
-| logged-in | `/products/blue-box#services` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-in | `/products/blue-box#learn` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-in | `/digital-solutions` | `/digital-solutions` | Digital solutions | Sulzer |
+| logged-in | `/my-pages/saved` | `/my-pages/saved` | My saved items | mySulzer | Sulzer |
+| logged-in | `/my-pages/saved?kind=document` | `/my-pages/saved?kind=document` | My saved items | mySulzer | Sulzer |
+| logged-in | `/my-pages/recently-viewed` | `/my-pages/recently-viewed` | Recently viewed products | mySulzer | Sulzer |
 | logged-in | `/sizing` | `/sizing` | Size Product | Sulzer |
 | logged-in | `/sizing?product=ahlstar` | `/sizing?product=ahlstar` | Size Product | Sulzer |
 | logged-in | `/sizing/results` | `/sizing/results` | Sizing | Sulzer |
@@ -438,10 +427,7 @@
 | logged-in | `/connect/teams` | `/connect/teams` | Teams – Sulzer Connect |
 | logged-in | `/products/replacement` | `/products/replacement` | Product replacement | Sulzer |
 | logged-in | `/spare-parts` | `/spare-parts` | Spare parts | Sulzer |
-| logged-in | `/digital-solutions` | `/digital-solutions` | Digital solutions | Sulzer |
 | logged-in | `/eshop` | `/eshop` | eShop | Sulzer |
-| logged-in | `/my-pages/saved` | `/my-pages/saved` | My saved items | Sulzer |
-| logged-in | `/my-pages/recently-viewed` | `/my-pages/recently-viewed` | Recently viewed products | Sulzer |
 | logged-in | `/settings` | `/settings` | Account settings | Sulzer |
 | logged-in | `/self-service/list-price` | `/self-service/list-price` | List price & availability | Sulzer |
 | logged-in | `/self-service/export` | `/self-service/export` | Export information | Sulzer |

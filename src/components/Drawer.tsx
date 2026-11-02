@@ -10,15 +10,30 @@ type DrawerProps = {
   subtitle?: string
   closeLabel: string
   onClose: () => void
+  /** `lg` for full panels (default), `sm` for small flyouts like the personal toolbar's. */
+  size?: keyof typeof widths
   children: ReactNode
 }
+
+const widths = {
+  sm: 'max-w-md',
+  lg: 'max-w-4xl',
+} as const
 
 /**
  * Panel that slides in from the right over a dimmed page. Rendered in <body>;
  * Esc, the close button and a click outside close it, and focus moves to the
  * close button on open and back afterwards.
  */
-export function Drawer({ open, title, subtitle, closeLabel, onClose, children }: DrawerProps) {
+export function Drawer({
+  open,
+  title,
+  subtitle,
+  closeLabel,
+  onClose,
+  size = 'lg',
+  children,
+}: DrawerProps) {
   const titleId = useId()
   const panelRef = useRef<HTMLDivElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
@@ -49,7 +64,7 @@ export function Drawer({ open, title, subtitle, closeLabel, onClose, children }:
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className={`absolute inset-y-0 right-0 flex w-full max-w-4xl flex-col bg-white shadow-[-24px_0_60px_-24px_rgba(12,28,46,0.4)] transition-transform duration-250 ease-sz ${
+        className={`absolute inset-y-0 right-0 flex w-full ${widths[size]} flex-col bg-white shadow-[-24px_0_60px_-24px_rgba(12,28,46,0.4)] transition-transform duration-250 ease-sz ${
           open ? 'translate-x-0' : 'translate-x-full'
         }`}
       >

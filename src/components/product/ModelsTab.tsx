@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom'
 import { useAuth } from '../../auth/useAuth'
 import { productPage } from '../../data/catalogPages'
 import { useUrlParams } from '../../hooks/useUrlParams'
+import { maxCompare } from '../../lib/personal'
 import {
   filterModels,
   modelFilterOptions,
@@ -12,6 +13,7 @@ import {
   type ModelSort,
   type ModelSortKey,
 } from '../../lib/modelSpecs'
+import { usePersonal } from '../../personal/usePersonal'
 import { useToast } from '../../toast/useToast'
 import type { ProductModel } from '../../types'
 import { TabHeading } from '../TabHeading'
@@ -22,23 +24,27 @@ import { ModelFilterBar } from './ModelFilterBar'
 import { ModelsTable } from './ModelsTable'
 
 const copy = productPage.models
-const maxCompare = 3
 
 /**
  * Models tab. Filters and the open row are in the URL (?hz, ?power, ?dn,
- * ?model), so reload and links keep them; sort and comparison are local.
+ * ?model), so reload and links keep them; sort is local. The comparison is
+ * shared with the personal toolbar, and the frequency defaults to the one set
+ * under Units & market.
  */
 export function ModelsTab({ models }: { models: ProductModel[] }) {
   const { user, signIn } = useAuth()
   const showToast = useToast()
   const [params, update] = useUrlParams()
   const [sort, setSort] = useState<ModelSort | null>(null)
-  const [compareIds, setCompareIds] = useState<string[]>([])
-  const [comparing, setComparing] = useState(false)
+  const { compareIds, toggleCompare, clearCompare, compareOpen, setCompareOpen, preferences } =
+    usePersonal()
 
   const frequencies = modelFilterOptions(models, 50).frequencies
   const requestedHz = Number(params.get('hz'))
-  const frequency = frequencies.find((hz) => hz === requestedHz) ?? frequencies[0] ?? 50
+  const preferred = frequencies.includes(preferences.frequency)
+    ? preferences.frequency
+    : frequencies[0]
+  const frequency = frequencies.find((hz) => hz === requestedHz) ?? preferred ?? 50
   const options = modelFilterOptions(models, frequency)
   // Values that don't exist at this frequency (e.g. from an edited URL) count as "all".
   const power = options.power.some((o) => o.value === params.get('power'))
@@ -81,12 +87,6 @@ export function ModelsTab({ models }: { models: ProductModel[] }) {
     )
   }
 
-  function toggleCompare(id: string) {
-    setCompareIds((ids) =>
-      ids.includes(id) ? ids.filter((x) => x !== id) : ids.length < maxCompare ? [...ids, id] : ids,
-    )
-  }
-
   function addToProject(model: ProductModel) {
     showToast({
       message: copy.detail.addedToProject,
@@ -122,13 +122,13 @@ export function ModelsTab({ models }: { models: ProductModel[] }) {
             onSort={toggleSort}
             expandedId={expandedId}
             onToggleExpand={(id) => setParam('model', id === expandedId ? '' : id)}
-            compareIds={compareIds}
+            compareIds={compared.map((model) => model.id)}
             onToggleCompare={toggleCompare}
             detail={(model) => (
               <ModelDetail
                 model={model}
-                comparing={compareIds.includes(model.id)}
-                canCompare={compareIds.length < maxCompare}
+                comparing={compared.includes(model)}
+                canCompare={compared.length < maxCompare}
                 onAddToProject={() => addToProject(model)}
                 onToggleCompare={() => toggleCompare(model.id)}
               />
@@ -156,14 +156,14 @@ export function ModelsTab({ models }: { models: ProductModel[] }) {
           <CompareBar
             models={compared}
             onRemove={toggleCompare}
-            onClear={() => setCompareIds([])}
-            onOpen={() => setComparing(true)}
+            onClear={clearCompare}
+            onOpen={() => setCompareOpen(true)}
           />
           <ComparePanel
-            open={comparing && compared.length > 1}
+            open={compareOpen && compared.length > 1}
             models={compared}
             signedIn={user !== null}
-            onClose={() => setComparing(false)}
+            onClose={() => setCompareOpen(false)}
           />
         </>,
         document.body,

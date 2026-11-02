@@ -95,7 +95,7 @@ export const connectPromo = {
     'Early warnings before small issues become downtime',
     'Service planned on real data from your assets',
   ],
-  cta: { label: 'Discover Sulzer Connect', to: '/connect' } satisfies NavItem,
+  cta: { label: 'Discover Sulzer Connect', to: '/products/sulzer-connect' } satisfies NavItem,
   image: {
     src: '/images/home/connect-promo.jpg',
     alt: 'Pumps in a plant linked by a wireless monitoring network',

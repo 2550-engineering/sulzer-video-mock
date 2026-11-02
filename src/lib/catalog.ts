@@ -1,12 +1,20 @@
 import { applications, rootApplicationId } from '../data/applications'
 import { cadFiles, cadPreviews } from '../data/cad'
+import { productPage } from '../data/catalogPages'
 import { documents, serviceVideos } from '../data/documents'
 import { knowledgeItems } from '../data/knowledge'
 import { productModels } from '../data/productModels'
 import { products } from '../data/products'
 import { services } from '../data/services'
 import { spareParts } from '../data/spareParts'
-import type { Application, ApplicationTeaser, Product, Service } from '../types'
+import type {
+  Application,
+  ApplicationTeaser,
+  Document,
+  Product,
+  SavedItem,
+  Service,
+} from '../types'
 
 /* Lookups over the mock catalogue in src/data. */
 
@@ -118,6 +126,11 @@ export function productPath(product: Product) {
   return `/products/${product.id}`
 }
 
+/** The product page tabs for this product's tab set (pump or digital). */
+export function productTabs(product: Product) {
+  return productPage.tabSets[product.tabSet]
+}
+
 export function getModel(id: string) {
   return productModels.find((model) => model.id === id)
 }
@@ -132,6 +145,47 @@ export function sparePartsFor(productId: string) {
 
 export function documentsFor(productId: string) {
   return documents.filter((doc) => doc.productIds.includes(productId))
+}
+
+export function getDocument(id: string) {
+  return documents.find((doc) => doc.id === id)
+}
+
+/** A saved item as lists show it: title, the line under it, where it links, its product and (for documents) the document. */
+export type ResolvedSavedItem = {
+  item: SavedItem
+  title: string
+  meta: string
+  to: string
+  product?: Product
+  document?: Document
+}
+
+/** Looks up a saved product or document. Documents link to their product's Documentation tab. */
+export function resolveSavedItem(item: SavedItem): ResolvedSavedItem | undefined {
+  if (item.kind === 'product') {
+    const product = getProduct(item.id)
+    return (
+      product && {
+        item,
+        title: product.name,
+        meta: product.family,
+        to: productPath(product),
+        product,
+      }
+    )
+  }
+  const document = getDocument(item.id)
+  if (!document) return undefined
+  const product = getProduct(document.productIds[0])
+  return {
+    item,
+    title: document.title,
+    meta: [document.type, product?.name].filter(Boolean).join(' · '),
+    to: product ? `${productPath(product)}#documentation` : '/support/documentation',
+    product,
+    document,
+  }
 }
 
 export function videosFor(productId: string) {

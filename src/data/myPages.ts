@@ -66,7 +66,8 @@ export const dashboardCards = {
     subtitle: 'Access your saved product information',
     icon: FolderKanban,
     links: [
-      { label: 'My saved items', to: '/my-pages/saved', badge: { label: '12' } },
+      // The count comes from the personal toolbar state (MyPagesPage).
+      { label: 'My saved items', to: '/my-pages/saved' },
       { label: 'My projects', to: '/my-projects', badge: { label: String(projects.length) } },
       { label: 'My recently viewed products', to: '/my-pages/recently-viewed' },
     ],

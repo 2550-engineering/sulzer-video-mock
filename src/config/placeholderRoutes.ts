@@ -22,11 +22,6 @@ export const placeholderRoutes: PlaceholderRoute[] = [
     },
   },
   {
-    path: '/digital-solutions',
-    title: 'Digital solutions',
-    description: 'Connected services that keep your equipment running at its best.',
-  },
-  {
     path: '/eshop',
     title: 'eShop',
     description: 'Order products and spare parts online with your account pricing.',
@@ -34,18 +29,6 @@ export const placeholderRoutes: PlaceholderRoute[] = [
       src: '/images/spare-parts/original-spare-parts.jpg',
       alt: 'Original Sulzer pump casing parts, machined and ready to ship',
     },
-  },
-  {
-    path: '/my-pages/saved',
-    title: 'My saved items',
-    description: 'Products, documents and drawings you have bookmarked.',
-    parent: '/my-pages',
-  },
-  {
-    path: '/my-pages/recently-viewed',
-    title: 'Recently viewed products',
-    description: 'Pick up where you left off.',
-    parent: '/my-pages',
   },
   {
     path: '/settings',

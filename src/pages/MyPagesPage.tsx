@@ -7,6 +7,8 @@ import { AssetsCard } from '../components/mypages/AssetsCard'
 import { LinksCard } from '../components/mypages/LinksCard'
 import { RecentActivity } from '../components/mypages/RecentActivity'
 import { dashboardCards, signedOutRedirect, welcome } from '../data/myPages'
+import { personalToolbar } from '../data/personal'
+import { usePersonal } from '../personal/usePersonal'
 
 // Cards fade in one after another on arrival, 50 ms apart.
 const enter = 'animate-fade-in [animation-fill-mode:backwards]'
@@ -17,9 +19,18 @@ function delay(index: number): CSSProperties {
 /** Signed-in dashboard: welcome, card grid (self-service, learning, projects, portals, assets) and recent activity. */
 export function MyPagesPage() {
   const { user } = useAuth()
+  const { saved } = usePersonal()
   if (!user) return <Navigate to={signedOutRedirect} replace />
 
-  const { selfService, learning, productsProjects, portals } = dashboardCards
+  const { selfService, learning, portals } = dashboardCards
+  const productsProjects = {
+    ...dashboardCards.productsProjects,
+    links: dashboardCards.productsProjects.links.map((link) =>
+      link.to === personalToolbar.saved.to
+        ? { ...link, badge: { label: String(saved.length) } }
+        : link,
+    ),
+  }
 
   return (
     <div className="bg-surface-muted">

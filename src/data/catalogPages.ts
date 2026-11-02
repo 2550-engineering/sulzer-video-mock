@@ -1,4 +1,4 @@
-import type { NavItem, TabComingSoonCopy, TabDef } from '../types'
+import type { NavItem, ProductTabSet, TabComingSoonCopy, TabDef } from '../types'
 
 /* Copy for the application, product and product search templates. */
 
@@ -59,14 +59,23 @@ export const exploreIntroBand = {
 }
 
 export const productPage = {
-  tabs: [
-    { id: 'explore', label: 'Explore' },
-    { id: 'models', label: 'Models' },
-    { id: 'documentation', label: 'Documentation' },
-    { id: 'bim', label: 'BIM' },
-    { id: 'spare-parts', label: 'Spare parts' },
-    { id: 'services', label: 'Services' },
-  ] satisfies TabDef[],
+  /** Each product names its set in `tabSet` (data/products.ts). */
+  tabSets: {
+    pump: [
+      { id: 'explore', label: 'Explore' },
+      { id: 'models', label: 'Models' },
+      { id: 'documentation', label: 'Documentation' },
+      { id: 'bim', label: 'BIM' },
+      { id: 'spare-parts', label: 'Spare parts' },
+      { id: 'services', label: 'Services' },
+    ],
+    digital: [
+      { id: 'explore', label: 'Explore' },
+      { id: 'variants', label: 'Variants' },
+      { id: 'documentation', label: 'Documentation' },
+      { id: 'learn', label: 'Learn' },
+    ],
+  } satisfies Record<ProductTabSet, TabDef[]>,
   breadcrumb: [
     { label: 'Products & services', to: '/products' },
     { label: 'Products A–Z', to: '/products' },
@@ -83,6 +92,31 @@ export const productPage = {
     label: 'Case',
   },
   sizeLabel: 'Size product',
+  save: {
+    add: 'Save to My saved items',
+    remove: 'Remove from My saved items',
+    added: 'Saved to My saved items',
+    removed: 'Removed from My saved items',
+    view: 'View',
+  },
+  howItWorksStep: (n: number) => `Step ${n}`,
+  storyLabel: 'Customer story',
+  storyLink: 'Read the story',
+  variants: {
+    everythingIn: (name: string) => `Everything in ${name}, plus:`,
+    action: 'Request a quote',
+    actionTo: '/contact/quote',
+    priceNote:
+      'Priced per connected asset. Your Sulzer sales contact sends a quote within two working days.',
+    compareTitle: 'Compare packages',
+    feature: 'Feature',
+    included: 'Included',
+    notIncluded: 'Not included',
+  },
+  learn: {
+    title: (product: string) => `Learn more about ${product}`,
+    text: 'Manuals, expert videos and handbooks from Sulzer specialists, to help you get the most out of it.',
+  },
   keySpecLabels: {
     liquidTemp: 'Liquid temperature',
     maxFlow: 'Max. flow',

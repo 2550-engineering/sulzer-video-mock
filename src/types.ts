@@ -242,21 +242,110 @@ export type ProductPromo = {
   badge: PromoBadge
 }
 
-/** A product's Explore tab. Only `intro` and `highlights` are required. */
+/** Photo band that opens an Explore tab in place of the grey intro band, with live-looking readouts on the photo. */
+export type ExploreHero = {
+  image: ImageSource
+  readouts?: AssetReadout[]
+}
+
+/** A step in an Explore tab's "How it works" diagram. */
+export type ExploreStep = {
+  label: string
+  text: string
+  icon: LucideIcon
+}
+
+/** A headline figure, e.g. value "50 %" with label "less unplanned downtime". */
+export type BenefitStat = {
+  value: string
+  label: string
+  text?: string
+}
+
+/** Navy band with text and checkmarks on the left and a large image on the right. */
+export type ExploreShowcase = {
+  eyebrow: string
+  title: string
+  text: string
+  points: string[]
+  image: ImageSource
+  action: NavItem
+}
+
+/** One customer story, told with a quote and its results. */
+export type FeaturedStory = {
+  /** A "Customer story" item in data/knowledge.ts: its photo, headline and link. */
+  storyId: string
+  quote: string
+  author: string
+  role: string
+  figures: BenefitStat[]
+}
+
+/** Closing band with a headline and buttons. The first action is the primary button. */
+export type CtaBandContent = {
+  title: string
+  text: string
+  actions: NavItem[]
+}
+
+/**
+ * A product's Explore tab. Only `intro` is required; each other section shows
+ * when it is set, in this order: hero (or the grey intro band), how it works,
+ * feature panel and highlights, benefits, showcase, promo, stories, CTA.
+ */
 export type ProductExplore = {
   intro: ExploreIntro
+  hero?: ExploreHero
+  howItWorks?: { title: string; text: string; steps: ExploreStep[] }
   /** Large grey panel: headline and text on the left, product image on the right. */
   feature?: { title: string; text: string; image: ImageSource }
   /** Columns under the feature panel. */
-  highlights: IconItem[]
+  highlights?: IconItem[]
+  benefits?: { title: string; text: string; stats: BenefitStat[] }
+  showcase?: ExploreShowcase
   promo?: ProductPromo
-  /** Ids of "Customer story" items in data/knowledge.ts. */
+  /** Ids of "Customer story" items in data/knowledge.ts, shown as a row of cards. */
   storyIds?: string[]
+  /** One story told in full, with a quote. */
+  story?: FeaturedStory
+  cta?: CtaBandContent
+}
+
+/** A package on a digital product's Variants tab. Each package includes everything in the ones before it. */
+export type ProductPackage = {
+  id: string
+  name: string
+  /** One line under the name. */
+  tagline: string
+  /** Who it is for. */
+  audience: string
+  /** What this package adds to the one before it. */
+  features: string[]
+  /** Small badge, e.g. "Most popular". Also makes it the featured card. */
+  badge?: string
+}
+
+export type ProductVariants = {
+  title: string
+  text: string
+  packages: ProductPackage[]
 }
 
 export type ProductTabsContent = {
   explore: ProductExplore
+  /** Digital products: the Variants tab. */
+  variants?: ProductVariants
+  /** Digital products: ids from data/knowledge.ts for the Learn tab. */
+  learnIds?: string[]
 }
+
+/**
+ * Which tabs a product page has: pumps get Explore / Models / Documentation /
+ * BIM / Spare parts / Services, digital products Explore / Variants /
+ * Documentation / Learn. The tabs themselves are in data/catalogPages.ts.
+ */
+export type ProductTabSet = 'pump' | 'digital'
 
 export type Product = {
   /** Also the URL slug: /products/<id>. */
@@ -273,8 +362,9 @@ export type Product = {
   standard?: string
   /** Pumps only. Sensors, controllers and software have none. */
   keySpecs?: KeySpecs
-  /** Where "View" in product lists goes, when not the product page, e.g. "/connect". */
-  viewTo?: string
+  tabSet: ProductTabSet
+  /** The header button, in place of "Size product", e.g. "Open Sulzer Connect". */
+  action?: NavItem
   /** First image is the main product shot. */
   images: ImageSource[]
   tabs: ProductTabsContent
@@ -345,6 +435,7 @@ export type DocumentType =
   | 'Spare parts list'
   | 'Declaration of conformity'
   | 'Certificate'
+  | 'Data privacy sheet'
   | 'Service video'
 
 export type Document = {
@@ -733,4 +824,26 @@ export type FilterGroup = {
   id: string
   label: string
   options: { value: string; label: string; count: number; selected: boolean }[]
+}
+
+/* ── Personal toolbar (Phase 3, P3) ────────────────────────────────────────── */
+
+/** A bookmarked product or document, shown under Saved items. */
+export type SavedItem = { kind: 'product' | 'document'; id: string }
+
+export type UnitSystem = 'metric' | 'us'
+
+/** Units & market panel. The market itself is fixed in config/demo.ts. */
+export type PersonalPreferences = {
+  units: UnitSystem
+  /** Mains frequency: the Models tab opens on it. */
+  frequency: 50 | 60
+}
+
+/** What the personal toolbar remembers for one persona. */
+export type PersonalData = {
+  saved: SavedItem[]
+  /** Product ids, most recent first. */
+  recent: string[]
+  preferences: PersonalPreferences
 }

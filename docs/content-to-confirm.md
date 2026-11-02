@@ -570,3 +570,50 @@ Placeholder, confirm with Sulzer.
 | Teams           | Raw and drinking water, Wastewater network, Sulzer Service Västerås, with their alert channels                                                                                                       | Invented.                                                                                                |
 | Monthly report  | "Monthly condition report", October 2026, sent on the 1st of every month; figures computed from the condition data                                                                                   | Confirm whether Sulzer Connect sends a report like this.                                                 |
 | App sections    | Dashboard, Assets, Alerts, Reports, Users, Teams, Settings, Exit                                                                                                                                     | Teams added from the deck's slide 11 rail.                                                               |
+
+## Before recording Video A: Sulzer Connect product page (step 7)
+
+Recording path: `/connect` → "Learn more" → `/products/sulzer-connect#explore` (hero, How it works,
+benefits, "See it live", customer story, CTA band). The personal toolbar sits on the right edge.
+
+1. **Sign in as the end user** (Shift+D). The personal toolbar and the bookmark on the product
+   header are signed-in only. **Reset demo** first, so Saved items and Recently viewed return to
+   their seeds.
+2. **Images:** `remote-pump-station.jpg` (Explore hero), `story-connect-pump-stations.jpg`
+   (customer story) and `digital-solutions-hero.jpg` (`/digital-solutions`) are still missing; see
+   [images-needed.md](images-needed.md), marked "connect product page". The devices image
+   `sulzer-connect-devices.png` is generated: rebuild it with `npm run connect:devices` after any
+   change to the Connect app.
+3. **Toolbar at 1440 px:** product, application and search content moves 48 px left so the toolbar
+   never covers it; at 1920 px the page margin is wide enough and nothing moves.
+4. **Links that end on placeholder pages:** "Talk to an expert" goes to `/contact`; "Request a
+   quote" (Variants tab, other digital products) and "Request a demo" (BLUE BOX) go to
+   `/contact/quote`; Learn cards and "Read the story" go to `/learn`. All "Coming soon".
+
+## Sulzer Connect product page and digital solutions (P3, `src/data/products.ts`, `src/data/digitalSolutions.ts`)
+
+| Item                          | Value in the mock-up                                                                                                                                                                           | Note                                                                                                        |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Benefit figures               | "50 % less unplanned downtime", "30 % fewer site visits", "25 % lower maintenance cost", "< 1 h to connect a pump"                                                                             | **Placeholders.** Invented; confirm real figures (and their source) with Sulzer or remove them.             |
+| How it works                  | Sensors on the pump → gateway on site (mobile network) → analysis in the cloud (ISO limits and baseline) → alerts on your phone                                                                | Confirm the architecture: sensor types, gateway, connectivity and how alerts are sent.                      |
+| Hero readouts                 | "Pump station 7 · Pump 2 – Running normally", "Bearing vibration 2.4 mm/s"                                                                                                                     | Decorative, fictional.                                                                                      |
+| Customer story                | "A municipal utility watches 42 remote pump stations from one screen", quote by Henrik Dahl, Operations Manager; "42", "−60 % night-time call-outs"                                            | **Fictional** person, utility and figures. Replace with a real Sulzer Connect reference or keep it unnamed. |
+| Packages (Variants tab)       | Starter (sensors and app), Professional (gateway, alerts, reports; "Most popular"), Enterprise (expert remote support), 12 features                                                            | Invented packaging. Confirm whether Sulzer sells Connect in tiers, their names and contents.                |
+| Pricing note                  | "Priced per connected asset. Your Sulzer sales contact sends a quote within two working days."                                                                                                 | Placeholder.                                                                                                |
+| Documents                     | Data sheet E40112, installation guide E40113, quick guide E40114, data privacy sheet E40120 (also on BLUE BOX), EU declaration E40125                                                          | Invented numbers and dates. "Data privacy sheet" is a new document type.                                    |
+| Other digital products        | Data sheets and instructions for the pump controller and motor protection relay, a BLUE BOX brochure; their Variants tabs say "on its way"                                                     | Invented. Header buttons: "Request a quote" (BLUE BOX: "Request a demo").                                   |
+| Learn tab items               | "Engineering manual: condition monitoring for pump stations", "Ask the expert: reading a vibration trend", "Getting started with Sulzer Connect"                                               | Invented titles, `src/data/knowledge.ts`.                                                                   |
+| `/digital-solutions`          | Hero, the home Sulzer Connect promo, 4 product cards, 4 mySulzer tool cards, "Not sure where to start?" band                                                                                   | Confirm the digital portfolio to show.                                                                      |
+| Links now on the product page | Home promo "Discover Sulzer Connect", mega menu "Digital solutions › Sulzer Connect", the "Sulzer Connect asset monitoring" service, search and Product Finder open `/products/sulzer-connect` | Quick links "Sulzer Connect" and My Pages "Portals" still open the app (`/connect`).                        |
+
+## Personal toolbar, saved items and recently viewed (P3, `src/data/personal.ts`)
+
+| Item                 | Value in the mock-up                                                                                                | Note                                                                                    |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Where it shows       | Signed in, on `/products`, `/products/:id` and `/applications/*`; hidden below 1024 px                              | Slide 12 layout.                                                                        |
+| Buttons              | Compare (red count), Saved items, Sizing, My projects, Recently viewed, Units & market ("Sweden / 50 Hz")           |                                                                                         |
+| Emma's saved items   | AHLSTAR, its IOM manual and 50 Hz data sheet, XFP, the XFP IOM manual, SJT (6; the My Pages badge counts them)      | Seed. Was a fixed "12" on My Pages.                                                     |
+| Lars's saved items   | AHLSTAR, AFP, J dewatering pump, the water and wastewater brochure                                                  |                                                                                         |
+| Recently viewed seed | Emma: AHLSTAR, XFP, SNS, SMD. Lars: AHLSTAR, AFP, XFP. Every product page visit while signed in moves it to the top | Kept per persona in localStorage; "Reset demo" clears it.                               |
+| Compare              | Shared with the Models tab: up to 3 models of one product; a model of another product starts a new comparison       | In memory only.                                                                         |
+| Units & market       | Market (Sweden, English, EUR) is read-only; Units (Metric / US customary) and mains frequency (50 / 60 Hz)          | Only the frequency changes anything: the Models tab opens on it. Units are stored only. |

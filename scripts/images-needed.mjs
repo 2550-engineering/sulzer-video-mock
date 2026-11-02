@@ -42,6 +42,12 @@ const specs = [
     minSize: '1280 × 720',
   },
   {
+    match: /^\/images\/products\/sulzer-connect-devices\.png$/,
+    kind: 'Device mock-up (PNG, transparent). Generated: run `npm run connect:devices`, do not source',
+    aspect: '16:10',
+    minSize: '2400 × 1500',
+  },
+  {
     match: /^\/images\/products\//,
     kind: 'Product cut-out (PNG, transparent or white background)',
     aspect: '4:3',
@@ -78,6 +84,18 @@ const specs = [
     minSize: '800 × 600',
   },
   {
+    match: /^\/images\/digital-solutions\/digital-solutions-hero\.jpg$/,
+    kind: 'Digital solutions hero (text panel on the left; keep the subject right of centre)',
+    aspect: '21:9 (shown as a wide band)',
+    minSize: '2560 × 1100',
+  },
+  {
+    match: /^\/images\/digital-solutions\//,
+    kind: 'Explore hero photo (left half of the band; readout cards sit top right and bottom left)',
+    aspect: '3:2 (cropped to between 4:3 and 16:9)',
+    minSize: '1920 × 1280',
+  },
+  {
     match: /^\/images\/sites\//,
     kind: 'Site photo (also the asset page hero band; keep the subject centred)',
     aspect: '16:9',
@@ -96,6 +114,7 @@ const { cadPreviews } = await load('/src/data/cad.ts')
 const { hero, connectPromo } = await load('/src/data/home.ts')
 const { intro } = await load('/src/data/mySulzer.ts')
 const { sites, assets } = await load('/src/data/assets.ts')
+const { digitalSolutionsPage } = await load('/src/data/digitalSolutions.ts')
 await server.close()
 
 const byId = (items) => new Map(items.map((item) => [item.id, item]))
@@ -141,11 +160,22 @@ const onMyAssets = new Set([
   byId(products).get('sulzer-connect').images[0].src,
 ])
 
+// Video A step 7, the Sulzer Connect product page: header, Explore tab top to bottom.
+const connect = byId(products).get('sulzer-connect')
+const connectExplore = connect.tabs.explore
+const onConnectProduct = new Set([
+  connect.images[0].src,
+  connectExplore.hero.image.src,
+  connectExplore.showcase.image.src,
+  knowledgeItems.find((k) => k.id === connectExplore.story.storyId).image.src,
+])
+
 const recordings = (src) =>
   [
     onApplicationFinder.has(src) && 'application finder',
     onProductFinder.has(src) && 'product finder',
     onMyAssets.has(src) && 'my assets',
+    onConnectProduct.has(src) && 'connect product page',
   ].filter(Boolean)
 
 const images = [
@@ -153,10 +183,13 @@ const images = [
   connectPromo.image,
   intro.image,
   ...applications.flatMap((app) => [app.heroImage, app.cardImage]),
-  ...products.flatMap((product) => [
-    ...product.images,
-    ...(product.tabs.explore.feature ? [product.tabs.explore.feature.image] : []),
+  ...products.flatMap(({ images, tabs: { explore } }) => [
+    ...images,
+    ...[explore.feature, explore.hero, explore.showcase]
+      .filter((section) => section !== undefined)
+      .map((section) => section.image),
   ]),
+  digitalSolutionsPage.hero,
   ...knowledgeItems.map((item) => item.image),
   ...services.map((service) => service.image),
   ...serviceVideos.map((video) => video.video.thumbnail),
@@ -196,7 +229,9 @@ with the file name (hide the labels with \`showPlaceholderLabels\` in \`src/conf
   Never Grundfos, KSB or Xylem images. Log web sources in the Sulzer project folder
   (\`docs/image-sources.md\`).
 - **Priority 1** images are visible in a recording; the column says which (application finder,
-  product finder, my assets).
+  product finder, my assets, connect product page).
+- **Generated:** \`sulzer-connect-devices.png\` is screenshots of the Connect app in device
+  frames. Rebuild it with \`npm run connect:devices\` after changing the Connect app.
 - **Sizing and My Projects** need no photos: their charts and curve thumbnails are drawn in SVG.
 - **Formats:** JPG for photos (quality 80–85), PNG for product cut-outs.
 

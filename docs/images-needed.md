@@ -10,11 +10,13 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
   Never Grundfos, KSB or Xylem images. Log web sources in the Sulzer project folder
   (`docs/image-sources.md`).
 - **Priority 1** images are visible in a recording; the column says which (application finder,
-  product finder, my assets).
+  product finder, my assets, connect product page).
+- **Generated:** `sulzer-connect-devices.png` is screenshots of the Connect app in device
+  frames. Rebuild it with `npm run connect:devices` after changing the Connect app.
 - **Sizing and My Projects** need no photos: their charts and curve thumbnails are drawn in SVG.
 - **Formats:** JPG for photos (quality 80–85), PNG for product cut-outs.
 
-142 images, 0 missing.
+149 images, 6 missing.
 
 | Priority | File | Folder | Aspect | Min. size | Kind | What it should show | Status |
 |----------|------|--------|--------|-----------|------|---------------------|--------|
@@ -49,12 +51,15 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
 | 1 · application finder | `story-paper-mill.jpg` | `public/images/stories/` | 4:5 (portrait; headline sits on the lower third) | 1200 × 1500 | Customer story card | AHLSTAR process pump and motor in a paper mill pump room | present |
 | 1 · application finder | `story-desalination.jpg` | `public/images/stories/` | 4:5 (portrait; headline sits on the lower third) | 1200 × 1500 | Customer story card | Sulzer engineers in the high-pressure pump hall of a seawater desalination plant | present |
 | 1 · application finder, my assets | `xfp-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | XFP submersible pumps in several sizes | present |
-| 1 · application finder, my assets | `sulzer-connect-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | Sulzer Connect wireless sensor mounted on a pump motor | present |
+| 1 · application finder, my assets, connect product page | `sulzer-connect-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | Sulzer Connect wireless sensor mounted on a pump motor | present |
 | 1 · application finder, product finder | `connect-asset-monitoring.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Operator checking live pump data on a tablet | present |
 | 1 · application finder, product finder | `commissioning.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer engineer assembling a pump on site | present |
 | 1 · application finder, product finder | `inspection.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer service engineer inspecting a large pump casing | present |
 | 1 · application finder, product finder | `vibration-analysis.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer wireless vibration sensor fitted to a pump bearing housing | present |
 | 1 · application finder, product finder, my assets | `ahlstar-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | AHLSTAR end-suction process pump | present |
+| 1 · connect product page | `remote-pump-station.jpg` | `public/images/digital-solutions/` | 3:2 (cropped to between 4:3 and 16:9) | 1920 × 1280 | Explore hero photo (left half of the band; readout cards sit top right and bottom left) | Small brick pump station in open farmland under a blue sky, with a gateway antenna on the roof | missing |
+| 1 · connect product page | `sulzer-connect-devices.png` | `public/images/products/` | 16:10 | 2400 × 1500 | Device mock-up (PNG, transparent). Generated: run `npm run connect:devices`, do not source | Sulzer Connect on a laptop, a tablet and a phone, showing a pump condition page and the fleet dashboard | present |
+| 1 · connect product page | `story-connect-pump-stations.jpg` | `public/images/stories/` | 4:5 (portrait; headline sits on the lower third) | 1200 × 1500 | Customer story card | Operator checking pump condition on a tablet inside a small pump station | missing |
 | 1 · my assets | `afp-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | AFP submersible sewage pump | present |
 | 1 · my assets | `j-dewatering-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | J dewatering pump, portable submersible drainage pump | present |
 | 1 · my assets | `riverside-intake.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Brick pump house on the shore with the intake below it, open water and sky, daylight | present |
@@ -146,11 +151,15 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
 | 2 | `chemical-recovery-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Pulp mill with chimneys and a wood chip pile beside the water | present |
 | 2 | `paper-machine-approach-hero.jpg` | `public/images/applications/` | 21:9 (shown as a wide band; keep the subject centred) | 2560 × 1100 | Application hero | Sulzer end-suction pump with large pipework in a paper mill | present |
 | 2 | `paper-machine-approach-card.jpg` | `public/images/applications/` | 16:9 | 1280 × 720 | Application card | Sulzer end-suction pump with large pipework in a paper mill | present |
+| 2 | `digital-solutions-hero.jpg` | `public/images/digital-solutions/` | 21:9 (shown as a wide band) | 2560 × 1100 | Digital solutions hero (text panel on the left; keep the subject right of centre) | Engineer with a tablet checking live data in front of a row of pumps in a modern pump hall | missing |
 | 2 | `ahlstar-materials.png` | `public/images/documents/` | 4:3 (shown on a white page) | 1200 × 900 | Document page preview | Data sheet page with the material options and their chemical composition | present |
 | 2 | `ahlstar-performance-range.jpg` | `public/images/documents/` | 4:3 (shown on a white page) | 1200 × 900 | Document page preview | Performance range of the AHLSTAR A range, head against flow | present |
 | 2 | `ahlstar-modular-range.png` | `public/images/documents/` | 4:3 (shown on a white page) | 1200 × 900 | Document page preview | Brochure page showing the modular AHLSTAR hydraulics and shaft seals | present |
 | 2 | `home-hero.jpg` | `public/images/home/` | 3:2 (shown as a wide band) | 1920 × 1280 | Home hero (under a dark overlay, text centred) | Sulzer engineers beside high-pressure pumps in a desalination plant | present |
 | 2 | `connect-promo.jpg` | `public/images/home/` | 4:3 | 1200 × 900 | Home promo | Pumps in a plant linked by a wireless monitoring network | present |
+| 2 | `condition-monitoring-guide.jpg` | `public/images/knowledge/` | 3:2 | 1200 × 800 | Knowledge card | Wireless vibration sensor mounted on the bearing housing of a pump | missing |
+| 2 | `expert-video-vibration-trends.jpg` | `public/images/knowledge/` | 3:2 | 1200 × 800 | Knowledge card | Sulzer engineer pointing at a vibration trend on a laptop next to a pump | missing |
+| 2 | `connect-getting-started.jpg` | `public/images/knowledge/` | 3:2 | 1200 × 800 | Knowledge card | Technician using a tablet next to a pump in a clean pump room | missing |
 | 2 | `mysulzer-intro.jpg` | `public/images/mysulzer/` | 5:4 | 1200 × 960 | mySulzer intro | Two engineers checking pump data on a laptop in a plant | present |
 | 2 | `sjm-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | SJM vertical mixed-flow pump with discharge head | present |
 | 2 | `pump-controller-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | PC 441 pump controller touchscreen with plug-in I/O modules | present |

@@ -1,7 +1,8 @@
+import { products } from '../config/demo'
 import type { KnowledgeItem } from '../types'
 
 /*
- * Learning material shown on application Explore tabs. Links go to Sulzer
+ * Learning material shown on application Explore tabs and product Learn tabs. Links go to Sulzer
  * Academy (/learn) until it has real pages. Images go in public/images/knowledge.
  */
 
@@ -51,6 +52,42 @@ export const knowledgeItems: KnowledgeItem[] = [
     to: '/learn',
   },
 
+  /* Condition monitoring: Learn tabs of the digital products. */
+  {
+    id: 'condition-monitoring-guide',
+    type: 'Engineering manual',
+    title: 'Engineering manual: condition monitoring for pump stations',
+    teaser:
+      'What to measure, where to mount sensors and how to set alert limits that mean something.',
+    image: {
+      src: '/images/knowledge/condition-monitoring-guide.jpg',
+      alt: 'Wireless vibration sensor mounted on the bearing housing of a pump',
+    },
+    to: '/learn',
+  },
+  {
+    id: 'expert-video-vibration-trends',
+    type: 'Expert video',
+    title: 'Ask the expert: reading a vibration trend',
+    teaser: 'A Sulzer vibration analyst shows how bearing wear builds up, and when to act.',
+    image: {
+      src: '/images/knowledge/expert-video-vibration-trends.jpg',
+      alt: 'Sulzer engineer pointing at a vibration trend on a laptop next to a pump',
+    },
+    to: '/learn',
+  },
+  {
+    id: 'connect-getting-started',
+    type: 'Handbook',
+    title: `Getting started with ${products.connect}`,
+    teaser: 'Connect your first pumps, invite your team and set up alerts in an afternoon.',
+    image: {
+      src: '/images/knowledge/connect-getting-started.jpg',
+      alt: 'Technician using a tablet next to a pump in a clean pump room',
+    },
+    to: '/learn',
+  },
+
   /* Customer stories on product pages. Portrait images, in public/images/stories. */
   {
     id: 'story-river-intake',
@@ -82,6 +119,17 @@ export const knowledgeItems: KnowledgeItem[] = [
     image: {
       src: '/images/stories/story-desalination.jpg',
       alt: 'Sulzer engineers in the high-pressure pump hall of a seawater desalination plant',
+    },
+    to: '/learn',
+  },
+  {
+    id: 'story-connect-pump-stations',
+    type: 'Customer story',
+    title: 'A municipal utility watches 42 remote pump stations from one screen',
+    teaser: 'Remote monitoring replaced weekly site rounds and cut night-time call-outs.',
+    image: {
+      src: '/images/stories/story-connect-pump-stations.jpg',
+      alt: 'Operator checking pump condition on a tablet inside a small pump station',
     },
     to: '/learn',
   },
