@@ -6,6 +6,12 @@ const ids = (query: string) =>
     switch (result.kind) {
       case 'product':
         return `product:${result.product.id}`
+      case 'variant':
+        return `variant:${result.variant.id}`
+      case 'part':
+        return `part:${result.part.id}`
+      case 'knowledge':
+        return `knowledge:${result.item.id}`
       case 'model':
         return `model:${result.model.id}`
       case 'document':
@@ -40,9 +46,12 @@ describe('search', () => {
     expect(counts).toEqual({
       all: 25,
       product: 1,
+      variant: 0,
       model: 14,
+      part: 0,
       document: 10,
       service: 0,
+      knowledge: 0,
       application: 0,
     })
     expect(results[0]).toMatchObject({ kind: 'product', product: { id: 'ahlstar' } })
@@ -107,7 +116,9 @@ describe('suggestGroups', () => {
   const names = (query: string) => {
     const groups = suggestGroups(query)
     return {
-      products: groups.products.map((product) => product.id),
+      products: groups.products.map((suggestion) =>
+        suggestion.kind === 'variant' ? `variant:${suggestion.variant.id}` : suggestion.product.id,
+      ),
       applications: groups.applications.map((application) => application.id),
       documents: groups.documents.map((document) => document.id),
     }

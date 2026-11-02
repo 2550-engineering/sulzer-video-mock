@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Link } from 'react-router'
 import { myProjectsPage } from '../../data/projectPages'
 import { sizingResultsPage } from '../../data/sizingPages'
+import { getProductVariant, variantPath } from '../../lib/catalog'
 import { groupThousands } from '../../lib/format'
 import { formatPrice } from '../../lib/modelSpecs'
 import { evaluateVariant } from '../../lib/sizing'
@@ -44,13 +45,13 @@ export function ProjectItemsTable({
   const [selected, setSelected] = useState<string[]>([])
   const rows = items.map((item) => {
     const variant = getVariant(item.variantId)
-    return { item, variant, result: variant && evaluateVariant(variant, item.dutyPoint) }
+    const result = variant && evaluateVariant(variant, item.dutyPoint)
+    // Not a sized variant: a catalogue article such as a configured XFP.
+    const article = variant ? undefined : getProductVariant(item.variantId)
+    return { item, variant, result, article, price: result?.purchasePrice ?? article?.listPrice }
   })
   const allSelected = items.length > 0 && items.every((item) => selected.includes(item.id))
-  const total = rows.reduce(
-    (sum, { item, result }) => sum + (result?.purchasePrice ?? 0) * item.quantity,
-    0,
-  )
+  const total = rows.reduce((sum, { item, price }) => sum + (price ?? 0) * item.quantity, 0)
 
   return (
     <div className="overflow-x-auto rounded-lg border border-border bg-white">
@@ -89,8 +90,8 @@ export function ProjectItemsTable({
           </tr>
         </thead>
         <tbody>
-          {rows.map(({ item, variant, result }, index) => {
-            const name = variant?.name ?? item.variantId
+          {rows.map(({ item, variant, result, article, price }, index) => {
+            const name = variant?.name ?? article?.code ?? item.variantId
             const sizing = sizings.find((s) => s.id === item.sizingId)
             const checked = selected.includes(item.id)
             return (
@@ -142,7 +143,14 @@ export function ProjectItemsTable({
                     )}
                   </p>
                   <p className="mt-0.5 flex flex-wrap gap-x-3 text-sm">
-                    {variant?.productNumber ? (
+                    {article ? (
+                      <Link
+                        to={variantPath(article)}
+                        className="font-semibold text-primary tabular-nums underline-offset-4 hover:underline"
+                      >
+                        {article.productNumber}
+                      </Link>
+                    ) : variant?.productNumber ? (
                       <Link
                         to={`/products/${variant.productId}#models`}
                         className="font-semibold text-primary tabular-nums underline-offset-4 hover:underline"
@@ -198,7 +206,7 @@ export function ProjectItemsTable({
                   <td
                     className={`${cell} text-right font-semibold whitespace-nowrap text-navy-900 tabular-nums`}
                   >
-                    {result ? formatPrice(result.purchasePrice * item.quantity) : '–'}
+                    {price !== undefined ? formatPrice(price * item.quantity) : '–'}
                   </td>
                 )}
               </tr>

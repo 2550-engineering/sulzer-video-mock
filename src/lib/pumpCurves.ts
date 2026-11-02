@@ -1,4 +1,6 @@
-import type { HydraulicCurve, OperatingPoint } from '../types'
+import type { CurveSeries, HydraulicCurve, OperatingPoint } from '../types'
+
+export type { CurveSeries }
 
 /*
  * Pump curve physics shared by sizing and the charts. A curve is given at full

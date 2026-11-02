@@ -378,8 +378,10 @@ export function SizingResultsPage() {
       <AddToProjectDialog
         key={`add-${dialog.session}`}
         open={dialog.kind === 'add'}
-        results={dialog.results}
-        duty={duty}
+        entries={dialog.results.map((result) => ({
+          variantId: result.variant.id,
+          dutyPoint: duty,
+        }))}
         onClose={closeDialog}
       />
       <SaveSizingDialog

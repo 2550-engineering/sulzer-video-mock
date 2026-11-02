@@ -21,6 +21,8 @@ const zipMs = 1000
 type DocumentationTabProps = {
   product: Product
   documents: Document[]
+  /** Defaults to "Documentation"; e.g. "Drawings" when it lists drawings. */
+  title?: string
 }
 
 /**
@@ -28,7 +30,11 @@ type DocumentationTabProps = {
  * and ?lang, defaulting to the market language), documents grouped by type,
  * preview, download, and "Download selected" as one ZIP.
  */
-export function DocumentationTab({ product, documents }: DocumentationTabProps) {
+export function DocumentationTab({
+  product,
+  documents,
+  title = productPage.documentationTitle,
+}: DocumentationTabProps) {
   const [params, update] = useUrlParams()
   const download = useDocumentDownload()
   const showToast = useToast()
@@ -109,7 +115,7 @@ export function DocumentationTab({ product, documents }: DocumentationTabProps) 
 
   return (
     <>
-      <TabHeading title={productPage.documentationTitle} />
+      <TabHeading title={title} />
 
       <div className="mt-8 flex flex-wrap items-end justify-between gap-x-10 gap-y-5">
         <div>

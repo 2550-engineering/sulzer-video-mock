@@ -17,7 +17,10 @@ type SearchSuggestionsProps = {
   className?: string
 }
 
-const groupOrder = ['product', 'application', 'document'] as const
+const groupOrder = ['product', 'application', 'document', 'part'] as const
+
+/** Configured products sit in the Products group, beside product ranges. */
+const groupOf = (option: SuggestOption) => (option.kind === 'variant' ? 'product' : option.kind)
 
 /** Grouped search suggestions under a search field. Use with `useSearchSuggest`. */
 export function SearchSuggestions({
@@ -33,7 +36,7 @@ export function SearchSuggestions({
 }: SearchSuggestionsProps) {
   const indexed = options.map((option, index) => ({ option, index }))
   const groups = groupOrder
-    .map((kind) => ({ kind, rows: indexed.filter(({ option }) => option.kind === kind) }))
+    .map((kind) => ({ kind, rows: indexed.filter(({ option }) => groupOf(option) === kind) }))
     .filter((group) => group.rows.length > 0)
   const footer = indexed.at(-1)!
 
@@ -64,7 +67,7 @@ export function SearchSuggestions({
       } ${className}`}
     >
       {groups.length > 0 ? (
-        // Side by side from tablet width; products take a third when they share the row.
+        // Side by side from tablet width; products take a third when they share the row, half with long model codes.
         <div className="divide-y divide-border md:flex md:divide-x md:divide-y-0">
           {groups.map((group) => (
             <SuggestionGroup
@@ -72,7 +75,9 @@ export function SearchSuggestions({
               title={copy.groups[group.kind]}
               className={
                 group.kind === 'product' && groups.length > 1
-                  ? 'md:w-1/3 md:shrink-0'
+                  ? group.rows.some(({ option }) => option.kind === 'variant')
+                    ? 'md:w-1/2 md:shrink-0'
+                    : 'md:w-1/3 md:shrink-0'
                   : 'min-w-0 md:flex-1'
               }
             >

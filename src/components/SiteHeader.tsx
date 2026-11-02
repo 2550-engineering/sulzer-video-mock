@@ -1,16 +1,18 @@
 import { ChevronDown, LayoutGrid, Search, X } from 'lucide-react'
 import { useCallback, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router'
+import { useAuth } from '../auth/useAuth'
 import { market } from '../config/demo'
 import { mainNav } from '../config/navigation'
 import { useDismiss } from '../hooks/useDismiss'
 import { AccountMenu } from './AccountMenu'
+import { CartMenu } from './eshop/CartMenu'
 import { MegaMenu } from './MegaMenu'
 import { QuickLinksPanel } from './QuickLinksPanel'
 import { SearchPanel } from './SearchPanel'
 import { SulzerLogo } from './SulzerLogo'
 
-type Panel = 'products' | 'quick-links' | 'search' | 'account'
+type Panel = 'products' | 'quick-links' | 'search' | 'account' | 'cart'
 
 const utilityButton =
   'flex h-10 items-center gap-2 rounded-sm px-3 text-navy-900 transition-colors hover:bg-surface-muted hover:text-primary'
@@ -31,6 +33,7 @@ function navItemClass(active: boolean) {
 /** Sticky header: navy market strip, white logo row (quick links, account) and navy main nav. */
 export function SiteHeader() {
   const { pathname } = useLocation()
+  const { user } = useAuth()
   const headerRef = useRef<HTMLElement>(null)
   // Remember the path a panel was opened on, so navigating anywhere closes it.
   const [openState, setOpenState] = useState<{ panel: Panel; path: string } | null>(null)
@@ -88,6 +91,15 @@ export function SiteHeader() {
                 </button>
                 <QuickLinksPanel open={open === 'quick-links'} onNavigate={close} />
               </div>
+
+              {user && (
+                <CartMenu
+                  open={open === 'cart'}
+                  onToggle={() => toggle('cart')}
+                  onClose={close}
+                  buttonClassName={utilityButton}
+                />
+              )}
 
               <AccountMenu
                 open={open === 'account'}

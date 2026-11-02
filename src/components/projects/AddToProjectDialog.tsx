@@ -2,9 +2,9 @@ import { FolderPlus, LogIn } from 'lucide-react'
 import { useId, useState, type FormEvent } from 'react'
 import { useAuth } from '../../auth/useAuth'
 import { addToProjectDialog as copy } from '../../data/projectPages'
+import type { ProductEntry } from '../../projects/ProjectsContext'
 import { useProjects } from '../../projects/useProjects'
 import { useToast } from '../../toast/useToast'
-import type { DutyPoint, SizingResult } from '../../types'
 import { Modal } from '../Modal'
 import { ProjectStatusChip } from './ProjectStatusChip'
 
@@ -12,8 +12,8 @@ const newProject = 'new'
 
 type AddToProjectDialogProps = {
   open: boolean
-  results: SizingResult[]
-  duty: DutyPoint
+  /** The products to add, each with the duty point it was chosen for. */
+  entries: ProductEntry[]
   onClose: () => void
 }
 
@@ -23,7 +23,7 @@ type AddToProjectDialogProps = {
  * then Save. Confirms with a toast that opens the project with the new rows
  * highlighted. Remount (via `key`) for each opening to start fresh.
  */
-export function AddToProjectDialog({ open, results, duty, onClose }: AddToProjectDialogProps) {
+export function AddToProjectDialog({ open, entries, onClose }: AddToProjectDialogProps) {
   const ids = useId()
   const { user, signIn } = useAuth()
   const { projects, addItems, createProject } = useProjects()
@@ -39,7 +39,6 @@ export function AddToProjectDialog({ open, results, duty, onClose }: AddToProjec
   function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const newName = name.trim() || copy.newProjectDefault
-    const entries = results.map((result) => ({ variantId: result.variant.id, dutyPoint: duty }))
     const { projectId, itemIds } =
       choice === newProject
         ? createProject(newName, entries)
@@ -47,7 +46,7 @@ export function AddToProjectDialog({ open, results, duty, onClose }: AddToProjec
     const projectName =
       choice === newProject ? newName : (projects.find((p) => p.id === choice)?.name ?? '')
     showToast({
-      message: copy.added(results.length, projectName),
+      message: copy.added(entries.length, projectName),
       action: { label: copy.open, to: `/my-projects/${projectId}?added=${itemIds.join(',')}` },
     })
     onClose()
@@ -61,7 +60,7 @@ export function AddToProjectDialog({ open, results, duty, onClose }: AddToProjec
   return (
     <Modal
       open={open}
-      title={copy.title(results.length)}
+      title={copy.title(entries.length)}
       closeLabel={copy.close}
       onClose={onClose}
       width="max-w-xl"

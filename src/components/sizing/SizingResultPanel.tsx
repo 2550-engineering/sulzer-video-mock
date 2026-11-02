@@ -3,6 +3,7 @@ import { sizingResultsPage as copy } from '../../data/sizingPages'
 import { seriesColors } from '../../lib/chartColors'
 import { keyFigureRows } from '../../lib/keyFigures'
 import { formatPrice } from '../../lib/modelSpecs'
+import { resultSeries } from '../../lib/sizing'
 import type { DutyPoint, SizingResult } from '../../types'
 import { Drawer } from '../Drawer'
 import { AvailabilityBadge } from '../product/AvailabilityBadge'
@@ -60,7 +61,11 @@ export function SizingResultPanel({
     >
       {first && (
         <>
-          <SizingCurveChart results={shown} colors={seriesColors} duty={duty} />
+          <SizingCurveChart
+            curves={shown.map((result) => resultSeries(result, duty.frequency))}
+            colors={seriesColors}
+            duty={duty}
+          />
 
           {(mode === 'detail' || shown.length === 1) && (
             <div className="mt-8 grid gap-x-10 gap-y-6 md:grid-cols-[minmax(0,1fr)_14rem]">

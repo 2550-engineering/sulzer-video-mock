@@ -1,4 +1,4 @@
-import { ArrowRight, Factory, FileText, Search } from 'lucide-react'
+import { ArrowRight, Factory, FileText, Search, Wrench } from 'lucide-react'
 import type { MouseEvent } from 'react'
 import { Link } from 'react-router'
 import { searchSuggestions as copy } from '../../data/catalogPages'
@@ -95,6 +95,29 @@ function describe(option: Exclude<SuggestOption, { kind: 'all' }>) {
         ),
       }
     }
+    case 'variant': {
+      const image = option.product.images[0]
+      const number = copy.productNumber(option.variant.productNumber)
+      return {
+        title: option.variant.code,
+        detail: option.variant.discontinued ? `${number} · ${copy.discontinued}` : number,
+        visual: (
+          <span className="relative size-12 shrink-0 overflow-hidden rounded-sm bg-surface-muted">
+            <SmartImage src={image.src} alt="" fit="contain" />
+          </span>
+        ),
+      }
+    }
+    case 'part':
+      return {
+        title: option.part.name,
+        detail: copy.partDetail(option.part.partNumber, option.part.position, option.owner.name),
+        visual: (
+          <span className={iconBox}>
+            <Wrench className="size-5" strokeWidth={1.75} />
+          </span>
+        ),
+      }
     case 'application': {
       const parent = option.application.parentId && getApplication(option.application.parentId)
       return {

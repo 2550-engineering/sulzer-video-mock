@@ -178,6 +178,11 @@ with the file name (hide the labels with \`showPlaceholderLabels\` in \`src/conf
 - **Priority 1** images are visible in a recording; the column says which (application finder,
   product finder).
 - **Sizing and My Projects** need no photos: their charts and curve thumbnails are drawn in SVG.
+- **Spare parts, cart and replacement** need no new photos either. The exploded drawings, part
+  thumbnails and kit icons are SVG. Pumps reuse the product cut-outs (\`xfp-main.png\`,
+  \`ahlstar-main.png\`). \`public/images/spare-parts/\` still holds \`service-kits.jpg\` and
+  \`original-spare-parts.jpg\`; they are no longer shown since \`/spare-parts\` and \`/eshop\`
+  became real pages, and can go.
 - **Formats:** JPG for photos (quality 80–85), PNG for product cut-outs.
 
 ${rows.length} images, ${missing} missing.

@@ -1,16 +1,28 @@
 import { useParams } from 'react-router'
 import { BimTab } from '../components/product/BimTab'
+import { ConfiguredProductsBand } from '../components/product/ConfiguredProductsBand'
 import { DocumentationTab } from '../components/product/DocumentationTab'
 import { ModelsTab } from '../components/product/ModelsTab'
 import { ProductExploreTab } from '../components/product/ProductExploreTab'
 import { ProductHeader } from '../components/product/ProductHeader'
 import { ServicesTab } from '../components/product/ServicesTab'
+import { VariantSparePartsPointer } from '../components/product/VariantSparePartsPointer'
+import { ModelSparePartsTab } from '../components/spareparts/ModelSparePartsTab'
 import { TabBar } from '../components/TabBar'
 import { TabComingSoon } from '../components/TabComingSoon'
 import { TabPanel } from '../components/TabPanel'
+import { serviceProviderDemo } from '../config/demo'
 import { productPage as copy } from '../data/catalogPages'
 import { useHashTab } from '../hooks/useHashTab'
-import { documentsFor, getProduct, modelsFor, servicesFor } from '../lib/catalog'
+import {
+  documentsFor,
+  getProduct,
+  getProductVariant,
+  modelsFor,
+  servicesFor,
+  sparePartsFor,
+  variantsFor,
+} from '../lib/catalog'
 import { NotFoundPage } from './NotFoundPage'
 
 /** Product page: /products/:id. */
@@ -23,6 +35,10 @@ export function ProductPage() {
   const models = modelsFor(product.id)
   const documentation = documentsFor(product.id)
   const services = servicesFor(product.serviceIds)
+  const variants = variantsFor(product.id)
+  // The demo pump when it is one of this product's, else the first variant with a parts list.
+  const demo = getProductVariant(serviceProviderDemo.variantId)
+  const featured = demo?.productId === product.id ? demo : variants.find((v) => sparePartsFor(v.id))
 
   return (
     <>
@@ -33,6 +49,10 @@ export function ProductPage() {
         product={product}
         onShowDocumentation={() => selectTab('documentation')}
       />
+
+      {featured && (
+        <ConfiguredProductsBand product={product} featured={featured} count={variants.length} />
+      )}
 
       <TabBar
         tabs={copy.tabs}
@@ -66,8 +86,15 @@ export function ProductPage() {
             <TabComingSoon copy={copy.tabEmpty} />
           ))}
 
-        {/* Spare parts arrive with the spare parts and eCommerce module. */}
-        {activeTab === 'spare-parts' && <TabComingSoon copy={copy.spareParts} />}
+        {/* Parts lists belong to configured products (point to one) or to models (pick one). */}
+        {activeTab === 'spare-parts' &&
+          (featured ? (
+            <VariantSparePartsPointer variant={featured} />
+          ) : models.some((model) => sparePartsFor(model.id)) ? (
+            <ModelSparePartsTab product={product} />
+          ) : (
+            <TabComingSoon copy={copy.spareParts} />
+          ))}
 
         {activeTab === 'services' && (
           <ServicesTab key={product.id} product={product} services={services} />

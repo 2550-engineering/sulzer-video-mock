@@ -78,6 +78,74 @@ export const sizingDemo = {
   maxResults: 18,
 } as const
 
+/**
+ * Service Provider Workshop persona.
+ * PLACEHOLDERS — confirm with Sulzer: the demo pump and the customer's account terms.
+ */
+export const serviceProviderDemo = {
+  /** The configured XFP the presenter finds, opens and orders parts for. */
+  variantId: '24150231',
+  /** The AHLSTAR model the Spare parts tab opens on, and whose part numbers search finds first. */
+  ahlstarModelId: 'ahlstar-100-80-250',
+} as const
+
+/** Reference shown after "Request quotation" is sent. Fixed, so every recording shows the same one. */
+export const quotationReference = 'Q-10242'
+
+/**
+ * "Where to buy" on configured products. FICTIONAL — not a real Sulzer site.
+ * The phone number is in the range Sweden reserves for fiction (070-174 06 xx).
+ */
+export const serviceCentre = {
+  name: 'Sulzer Service Centre Mälardalen',
+  address: ['Verkstadsgatan 8', '721 30 Västerås', 'Sweden'],
+  phone: '+46 70 174 06 42',
+  email: 'service.malardalen@sulzer.example',
+  hours: 'Mon–Fri 07:00–16:00',
+  distance: '14 km',
+  services: ['Spare parts from stock', 'Workshop repairs and overhauls', 'Field service'],
+} as const
+
+/**
+ * eShop settings for the Service Provider Workshop.
+ * PLACEHOLDERS — confirm with Sulzer: freight, VAT, delivery addresses and numbering.
+ */
+export const eshop = {
+  /** "Today" for delivery dates, fixed so every recording shows the same dates. */
+  today: '2026-11-03',
+  /** Working days from dispatch to the customer's door. */
+  transitDays: 2,
+  /** % on top of the excl. VAT total (Sweden). */
+  vatRate: 25,
+  freight: { standard: 45, freeFrom: 2500 },
+  paymentTerms: 'Invoice on account, 30 days net',
+  /** The first order is SO-104390, the next SO-104391 … */
+  firstOrderNumber: 104390,
+  /** The first saved quotation is Q-10243 (Q-10242 is the variant page's quotation request). */
+  firstQuotationNumber: 10243,
+  /** Fictional addresses of the demo company. */
+  deliveryAddresses: [
+    {
+      id: 'workshop',
+      name: 'Central workshop',
+      lines: ['Nordvatten Utilities AB', 'Verkstadsvägen 12', '652 21 Karlstad', 'Sweden'],
+    },
+    {
+      id: 'riverside',
+      name: 'Riverside intake pumping station',
+      lines: ['Nordvatten Utilities AB', 'Älvkanten 3', '653 40 Karlstad', 'Sweden'],
+    },
+  ],
+} as const
+
+export const customerAccount = {
+  // Placeholder account terms for the demo company.
+  customerNumber: '104572',
+  discountGroup: 'SP',
+  /** % off list price on spare parts and service kits. */
+  partsDiscount: 18,
+} as const
+
 /** Reference shown after "Request service" is sent. Fixed, so every recording shows the same one. */
 export const serviceRequestReference = 'SR-2026-0142'
 

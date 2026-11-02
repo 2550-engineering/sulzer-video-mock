@@ -1,6 +1,8 @@
-import { ArrowDown, ArrowUp, ArrowUpDown, ChevronDown, Lock } from 'lucide-react'
+import { ArrowDown, ArrowUp, ArrowUpDown, ChevronDown, Lock, Wrench } from 'lucide-react'
 import { Fragment, type ReactNode } from 'react'
+import { Link } from 'react-router'
 import { productPage } from '../../data/catalogPages'
+import { partOwner, sparePartsFor, sparePartsPath } from '../../lib/catalog'
 import { formatPrice, type ModelSort, type ModelSortKey } from '../../lib/modelSpecs'
 import type { ProductModel } from '../../types'
 import { AvailabilityBadge } from './AvailabilityBadge'
@@ -216,20 +218,33 @@ export function ModelsTable({
                       } ${col.key === 'productNumber' ? 'text-text-muted tabular-nums' : 'text-text'}`}
                     >
                       {col.key === 'name' ? (
-                        // The click bubbles to the row, which toggles the panel.
-                        <button
-                          type="button"
-                          aria-expanded={expanded}
-                          aria-controls={expanded ? detailId : undefined}
-                          aria-label={copy.showDetails(model.name)}
-                          className="inline-flex items-center gap-2 font-semibold whitespace-nowrap text-primary"
-                        >
-                          <ChevronDown
-                            aria-hidden
-                            className={`size-4 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`}
-                          />
-                          {model.name}
-                        </button>
+                        <>
+                          {/* The click bubbles to the row, which toggles the panel. */}
+                          <button
+                            type="button"
+                            aria-expanded={expanded}
+                            aria-controls={expanded ? detailId : undefined}
+                            aria-label={copy.showDetails(model.name)}
+                            className="inline-flex items-center gap-2 font-semibold whitespace-nowrap text-primary"
+                          >
+                            <ChevronDown
+                              aria-hidden
+                              className={`size-4 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`}
+                            />
+                            {model.name}
+                          </button>
+                          {sparePartsFor(model.id) && (
+                            <Link
+                              to={sparePartsPath(partOwner(model.id)!)}
+                              onClick={(e) => e.stopPropagation()}
+                              aria-label={copy.sparePartsFor(model.name)}
+                              className="mt-1 ml-6 flex w-fit items-center gap-1 text-xs font-semibold text-primary underline-offset-4 hover:underline"
+                            >
+                              <Wrench aria-hidden className="size-3" />
+                              {copy.spareParts}
+                            </Link>
+                          )}
+                        </>
                       ) : (
                         col.render(model)
                       )}
