@@ -14,7 +14,7 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
 - **Sizing and My Projects** need no photos: their charts and curve thumbnails are drawn in SVG.
 - **Formats:** JPG for photos (quality 80–85), PNG for product cut-outs.
 
-142 images, 6 missing.
+142 images, 0 missing.
 
 | Priority | File | Folder | Aspect | Min. size | Kind | What it should show | Status |
 |----------|------|--------|--------|-----------|------|---------------------|--------|
@@ -57,12 +57,12 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
 | 1 · application finder, product finder, my assets | `ahlstar-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | AHLSTAR end-suction process pump | present |
 | 1 · my assets | `afp-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | AFP submersible sewage pump | present |
 | 1 · my assets | `j-dewatering-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | J dewatering pump, portable submersible drainage pump | present |
-| 1 · my assets | `riverside-intake.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Raw water intake on a river bank: low concrete intake structure and pump house, Nordic landscape, daylight | missing |
-| 1 · my assets | `norra-wtp.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Drinking water treatment plant: open filter basins and the main process building, daylight | missing |
-| 1 · my assets | `ekbacken-reservoir.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Drinking water reservoir, grass-covered, with a small booster pump station next to it | missing |
-| 1 · my assets | `sodra-pump-station.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Wastewater lift station: small concrete building with a control cabinet in a residential area | missing |
-| 1 · my assets | `hamnen-pump-station.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Inside a wastewater pumping station: a row of large pumps with blue pipework in a clean, bright room | missing |
-| 1 · my assets | `ostra-wwtp.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Sludge handling at a wastewater treatment plant: round sludge tanks and pipework, daylight | missing |
+| 1 · my assets | `riverside-intake.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Brick pump house on the shore with the intake below it, open water and sky, daylight | present |
+| 1 · my assets | `norra-wtp.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Round clarifier basin at a water treatment plant, process buildings and trees behind, daylight | present |
+| 1 · my assets | `ekbacken-reservoir.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Reservoir lake among wooded hills, with the intake and pump tower on a footbridge, daylight | present |
+| 1 · my assets | `sodra-pump-station.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Sulzer service van and a technician at the control cabinet of a roadside lift station, summer | present |
+| 1 · my assets | `hamnen-pump-station.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Inside a wastewater pump station: a row of dry-installed blue XFP pumps with stainless pipework | present |
+| 1 · my assets | `ostra-wwtp.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Clarifier at a wastewater treatment plant, with walkways and a low sun under a wide sky | present |
 | 1 · product finder | `ahlstar-bim-preview.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | 3D render of an AHLSTAR end-suction pump, isometric view | present |
 | 1 · product finder | `service-agreements.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Two Sulzer service technicians beside their service van | present |
 | 1 · product finder | `repair-overhaul.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer technician restoring a pump part with a laser cladding robot in a service center | present |

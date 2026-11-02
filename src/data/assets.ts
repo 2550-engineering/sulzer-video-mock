@@ -71,37 +71,37 @@ export const sites: Site[] = [
     'riverside-intake',
     'Riverside intake',
     'Raw water intake',
-    'Raw water intake on a river bank: low concrete intake structure and pump house, Nordic landscape, daylight',
+    'Brick pump house on the shore with the intake below it, open water and sky, daylight',
   ),
   site(
     'norra-wtp',
     'Norra water treatment plant',
     'Water treatment plant',
-    'Drinking water treatment plant: open filter basins and the main process building, daylight',
+    'Round clarifier basin at a water treatment plant, process buildings and trees behind, daylight',
   ),
   site(
     'ekbacken-reservoir',
     'Ekbacken reservoir',
     'Reservoir and booster station',
-    'Drinking water reservoir, grass-covered, with a small booster pump station next to it',
+    'Reservoir lake among wooded hills, with the intake and pump tower on a footbridge, daylight',
   ),
   site(
     'sodra-pump-station',
     'Södra pump station',
     'Wastewater lift station',
-    'Wastewater lift station: small concrete building with a control cabinet in a residential area',
+    'Sulzer service van and a technician at the control cabinet of a roadside lift station, summer',
   ),
   site(
     'hamnen-pump-station',
     'Hamnen pump station',
     'Wastewater pump station',
-    'Inside a wastewater pumping station: a row of large pumps with blue pipework in a clean, bright room',
+    'Inside a wastewater pump station: a row of dry-installed blue XFP pumps with stainless pipework',
   ),
   site(
     'ostra-wwtp',
     'Östra wastewater treatment plant',
     'Wastewater treatment plant',
-    'Sludge handling at a wastewater treatment plant: round sludge tanks and pipework, daylight',
+    'Clarifier at a wastewater treatment plant, with walkways and a low sun under a wide sky',
   ),
 ]
 
