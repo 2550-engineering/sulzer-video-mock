@@ -49,6 +49,10 @@
   --sz-color-danger: #b4341f;
   --sz-color-danger-strong: #8f2614;
   --sz-color-danger-tint: #fcefec;
+  /* Status on navy surfaces (Sulzer Connect): brighter, so they read on dark. */
+  --sz-color-success-on-dark: #4cc38a;
+  --sz-color-warning-on-dark: #f2b544;
+  --sz-color-danger-on-dark: #ff7a66;
 
   /* Focus ring. Navy sections switch it to primary-on-dark with the `on-dark` utility. */
   --sz-focus-ring: var(--sz-color-primary);

@@ -42,6 +42,9 @@
   --color-danger: var(--sz-color-danger);
   --color-danger-strong: var(--sz-color-danger-strong);
   --color-danger-tint: var(--sz-color-danger-tint);
+  --color-success-on-dark: var(--sz-color-success-on-dark);
+  --color-warning-on-dark: var(--sz-color-warning-on-dark);
+  --color-danger-on-dark: var(--sz-color-danger-on-dark);
 
   --font-sans: var(--sz-font-sans);
   --default-font-family: var(--sz-font-sans);
@@ -75,6 +78,30 @@
     0%,
     40% {
       background-color: var(--sz-color-primary-tint-strong);
+    }
+  }
+
+  /* Chart lines draw from left to right; use with pathLength="1" and stroke-dasharray 1. */
+  --animate-draw: sz-draw 800ms var(--sz-ease) backwards;
+  @keyframes sz-draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+  }
+
+  /* Bars grow up from the axis; set transform-origin to the bottom. */
+  --animate-grow: sz-grow 600ms var(--sz-ease) backwards;
+  @keyframes sz-grow {
+    from {
+      transform: scaleY(0);
+    }
+  }
+
+  /* Bars fill from the left; set transform-origin to the left. */
+  --animate-bar: sz-bar 700ms var(--sz-ease) backwards;
+  @keyframes sz-bar {
+    from {
+      transform: scaleX(0);
     }
   }
 

@@ -7,7 +7,14 @@ import { placeholderRoutes } from './config/placeholderRoutes'
 import { ApplicationPage } from './pages/ApplicationPage'
 import { AssetPage } from './pages/AssetPage'
 import { AssetsPage } from './pages/AssetsPage'
+import { ConnectAlertsPage } from './pages/ConnectAlertsPage'
+import { ConnectAssetPage } from './pages/ConnectAssetPage'
+import { ConnectAssetsPage } from './pages/ConnectAssetsPage'
+import { ConnectDashboardPage } from './pages/ConnectDashboardPage'
+import { ConnectLayout } from './pages/ConnectLayout'
 import { ConnectPage } from './pages/ConnectPage'
+import { ConnectReportsPage } from './pages/ConnectReportsPage'
+import { ConnectUsersPage } from './pages/ConnectUsersPage'
 import { HomePage } from './pages/HomePage'
 import { MyPagesPage } from './pages/MyPagesPage'
 import { MyProjectsPage } from './pages/MyProjectsPage'
@@ -57,7 +64,17 @@ export default function App() {
                 <Route path="*" element={<NotFoundPage />} />
               </Route>
               {/* Sulzer Connect is its own app, outside the website header and footer. */}
-              <Route path="/connect" element={<ConnectPage />} />
+              <Route path="/connect" element={<ConnectLayout />}>
+                <Route index element={<ConnectPage />} />
+                <Route path="dashboard" element={<ConnectDashboardPage />} />
+                <Route path="assets" element={<ConnectAssetsPage />} />
+                <Route path="assets/:id" element={<ConnectAssetPage />} />
+                <Route path="alerts" element={<ConnectAlertsPage />} />
+                <Route path="reports" element={<ConnectReportsPage />} />
+                <Route path="users" element={<ConnectUsersPage view="users" />} />
+                <Route path="teams" element={<ConnectUsersPage view="teams" />} />
+                <Route path="*" element={<Navigate to="/connect/dashboard" replace />} />
+              </Route>
             </Routes>
           </ToastProvider>
           <DemoControls />

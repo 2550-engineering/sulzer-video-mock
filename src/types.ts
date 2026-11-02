@@ -541,8 +541,11 @@ export type ConditionFinding = {
   title: string
   /** e.g. "Inspect within 14 days". */
   action: string
-  /** The spare part that fixes it, from data/spareParts.ts. */
+  /** What Sulzer Connect saw, in one or two sentences. */
+  detail: string
+  /** The spare part that fixes it, from data/spareParts.ts, and the button that orders it. */
   partId?: string
+  partAction?: string
 }
 
 export type ServiceKind = 'Service' | 'Repair' | 'Inspection' | 'Upgrade' | 'Commissioning'

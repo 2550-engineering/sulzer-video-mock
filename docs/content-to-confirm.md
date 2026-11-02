@@ -111,9 +111,8 @@ Recording path: `/my-pages` (cursor on **My assets: 2 need attention**) → clic
    and the asset page header, which crops them to a wide band.
 3. **Placeholder labels:** set `showPlaceholderLabels = false` in `src/config/demo.ts`.
 4. **Links that end on placeholder pages** (not on the recording path):
-   - "Open in Sulzer Connect", "Open Sulzer Connect" and "Open full monitoring in Sulzer Connect"
-     go to the `/connect` welcome screen until the Connect app (P2) has `/connect/assets/:id`.
-     Change `connectAssetPath` in `src/data/assetPages.ts`.
+   - "Open in Sulzer Connect" and "Open full monitoring in Sulzer Connect" open the asset's
+     condition page `/connect/assets/:id`; "Open Sulzer Connect" opens `/connect/dashboard`.
    - "Find replacement" goes to `/products/replacement?serial=…` ("Coming soon" until P6).
    - "Order spare parts" opens the Spare parts tab; the tab's own "Order spare parts" goes to
      `/spare-parts` ("Coming soon" until P5), "Request a quotation" to `/contact/quote`.
@@ -121,6 +120,28 @@ Recording path: `/my-pages` (cursor on **My assets: 2 need attention**) → clic
      `/products/sulzer-connect`.
    - "View my requests" after sending a service request goes to `/self-service/requests` (P4).
    - "Service report" only shows a toast; no file is downloaded.
+
+## Before recording Video A: Sulzer Connect (steps 5–10)
+
+Recording path: header → Quick links → Sulzer Connect → `/connect` (welcome, "Go to dashboard")
+→ `/connect/assets` (Asset Monitor, assets by site) → RW-02 → `/connect/assets/rw-02` (health
+score 62, vibration crossing 7.1 mm/s at 03:12, recommended action) → "Request service" →
+SR-2026-0142.
+
+1. **Sign in as the end user** (Shift+D). Every Connect page except the welcome screen asks you to
+   sign in first.
+2. **Time range:** the condition page opens on 7 days (the rising trend). `?range=24h` shows the
+   03:12 crossing mid-chart; `?range=30d` the whole month.
+3. **Acknowledging alerts** is local state: it resets when you leave Connect or reload. The header
+   bell counts the alerts nobody has acknowledged.
+4. **No images needed:** every chart and gauge is drawn in code.
+5. **Links that end on other pages:** "Connect device" and "Learn more" go to
+   `/products/sulzer-connect` (the P3 page); "Order bearing kit" opens the asset's Spare parts tab
+   on the website; "View asset in mySulzer" opens `/assets/:id`. "Settings", "Manage users",
+   "Invite user", "Invite to Sulzer Connect" and "Download PDF" only show a toast.
+6. **Partner persona:** `/connect/assets` shows the accounts table (Name, Contact person, Invite and
+   manage users, Customer number, Actions). Only Nordvatten has assets; the three other customers
+   show "Not on Sulzer Connect yet" with "Invite to Sulzer Connect".
 
 ## Product names (`src/config/demo.ts` → `products`, `productSeries`)
 
@@ -536,3 +557,16 @@ Placeholder, confirm with Sulzer.
 | Service request message     | Prefilled with the tag, serial number and the active alert, e.g. "vibration above warning limit since today 03:12"                        | Same fixed reference SR-2026-0142 as on the product page.                                           |
 | Documents per unit          | The product's documents, labelled "For serial no. …" (brochures are not labelled)                                                         | In a real portal these would be the unit's own as-built documents.                                  |
 | Spare parts per unit        | The product's spare parts list                                                                                                            | P5 replaces this with the sectional drawing and the unit's BOM.                                     |
+
+## Sulzer Connect app (P2, `src/data/connect.ts`, `src/lib/connect.ts`)
+
+| Item            | Value in the mock-up                                                                                                                                                                                 | Note                                                                                                     |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Health score    | 100 minus penalties for vibration (steeper in each ISO zone) and for bearing and motor temperature near their limits. Good 80+, Fair 60–79, Poor below 60. RW-02 = 62, P-211 = 55                    | Invented formula, not Sulzer's. Confirm whether Sulzer Connect shows a health score and how it is named. |
+| Vibration zones | ISO 10816-3-style A/B/C/D bands on the vibration chart                                                                                                                                               | Uses `conditionLimits` (already listed above).                                                           |
+| Alerts          | Active: RW-02 warning (today 03:12), P-211 alarm (today 07:41). History: zone C entry, escalations and five resolved alerts (high level, low battery, unexpected stop, gateway offline, service due) | Invented. Resolved alerts are in `alertHistory`.                                                         |
+| P-211 finding   | "High inflow has kept the pump running non-stop since last night … P-210 and P-212 can share the load"                                                                                               | Invented.                                                                                                |
+| Users           | Johan Berg, Sofia Ahlgren, Erik Nordin, Karin Holmqvist (pending) at Nordvatten; Mikael Sjöberg (Sulzer) and Lars Ek (partner) as service partners                                                   | Fictional people and `.example` addresses. Roles: Admin, Operator, Viewer, Service partner.              |
+| Teams           | Raw and drinking water, Wastewater network, Sulzer Service Västerås, with their alert channels                                                                                                       | Invented.                                                                                                |
+| Monthly report  | "Monthly condition report", October 2026, sent on the 1st of every month; figures computed from the condition data                                                                                   | Confirm whether Sulzer Connect sends a report like this.                                                 |
+| App sections    | Dashboard, Assets, Alerts, Reports, Users, Teams, Settings, Exit                                                                                                                                     | Teams added from the deck's slide 11 rail.                                                               |

@@ -10,11 +10,12 @@ import { FilterColumn } from '../components/search/FilterColumn'
 import { SegmentedToggle } from '../components/SegmentedToggle'
 import { SelectField } from '../components/SelectField'
 import { assetListPage as copy, syncLabel } from '../data/assetPages'
-import { assets as allAssets, sites } from '../data/assets'
+import { sites } from '../data/assets'
 import { signedOutRedirect } from '../data/myPages'
 import { useUrlParams } from '../hooks/useUrlParams'
 import { assetFilters, matchesQuery, sortAssets, type AssetSort } from '../lib/assetList'
 import { needsAttention, summarizeAssets } from '../lib/assetSummary'
+import { assetsFor } from '../lib/connect'
 import { applyFilters, filterGroups, type FilterSelection } from '../lib/filters'
 
 type View = 'list' | 'sites'
@@ -36,9 +37,7 @@ export function AssetsPage() {
   const [params, update] = useUrlParams()
   if (!user) return <Navigate to={signedOutRedirect} replace />
 
-  const owned = allAssets.filter(
-    (asset) => !user.customerId || asset.customerId === user.customerId,
-  )
+  const owned = assetsFor(user)
   const summary = summarizeAssets(owned)
 
   const selection: FilterSelection = Object.fromEntries(

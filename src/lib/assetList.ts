@@ -1,6 +1,6 @@
 import { conditionLimits, demoClock } from '../config/demo'
-import { assetListPage, assetPage, statusLabels } from '../data/assetPages'
-import { conditionFindings, siteById, sites } from '../data/assets'
+import { assetListPage, assetPage, channels, statusLabels } from '../data/assetPages'
+import { assetLocation, conditionFindings, siteById, sites } from '../data/assets'
 import type {
   Asset,
   AssetStatus,
@@ -152,4 +152,24 @@ export function readingTime(time: number) {
   const day = new Date(time).toISOString().slice(0, 10)
   if (day === demoClock.today) return assetPage.today(formatClock(time))
   return `${new Date(time).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' })}, ${formatClock(time)}`
+}
+
+/**
+ * Starting values for "Request service" on one asset: its site, a message
+ * that quotes the active alert (so the service team sees what Sulzer Connect
+ * saw), and a fitting service type.
+ */
+export function serviceRequestPrefill(asset: Asset) {
+  const alert = assetAlert(asset)
+  const unit = `${asset.tag}, serial no. ${asset.serialNumber}`
+  const message = alert
+    ? `${unit}: ${assetPage.alert.title(channels[alert.channel].label, alert.level).toLowerCase()}${
+        alert.since !== null ? ` ${assetPage.alert.since(readingTime(alert.since))}` : ''
+      }.${alert.finding ? ` ${alert.finding.title}.` : ''}`
+    : `${unit}.`
+  return {
+    site: assetLocation(asset),
+    message,
+    services: alert ? assetPage.requestServices.alert : assetPage.requestServices.routine,
+  }
 }

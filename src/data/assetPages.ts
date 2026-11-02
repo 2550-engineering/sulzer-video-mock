@@ -24,7 +24,7 @@ export const channels: Record<ConditionChannel, { label: string; unit: string; d
   }
 
 /** Where "Open in Sulzer Connect" goes. */
-export const connectAssetPath = (assetId: string) => `/connect?asset=${assetId}`
+export const connectAssetPath = (assetId: string) => `/connect/assets/${assetId}`
 
 export const syncLabel = `${products.connect} · Updated today, ${demoClock.lastSync}`
 
@@ -34,7 +34,7 @@ export const assetListPage = {
   description: (sites: number) =>
     `Every Sulzer pump you run, across your ${sites} sites: live condition, service and documentation in one place.`,
   openConnect: `Open ${products.connect}`,
-  connectTo: '/connect',
+  connectTo: '/connect/dashboard',
   summary: {
     label: 'Installed base summary',
     all: { label: 'assets', detail: 'Show all', icon: Server },

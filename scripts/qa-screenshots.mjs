@@ -66,7 +66,18 @@ const routes = [
   '/assets/p-211#condition',
   '/assets/cd-01#condition',
   '/assets/rs-02#documents',
+  // Sulzer Connect: its own app outside SiteLayout. Signed out, every page but the welcome asks to sign in.
   '/connect',
+  '/connect/dashboard',
+  '/connect/assets',
+  ...assets.filter((asset) => asset.connected).map((asset) => `/connect/assets/${asset.id}`),
+  '/connect/assets/rw-02?range=24h',
+  '/connect/assets/rw-02?range=30d',
+  '/connect/assets/cd-01',
+  '/connect/alerts',
+  '/connect/reports',
+  '/connect/users',
+  '/connect/teams',
   ...placeholderRoutes.map((route) => route.path),
   '/this-page-does-not-exist',
 ]

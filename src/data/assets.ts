@@ -192,12 +192,17 @@ export const conditionFindings: Record<string, ConditionFinding> = {
     channel: 'vibration',
     title: 'Bearing wear pattern detected',
     action: 'Inspect within 14 days',
+    detail:
+      'Vibration on the drive-end bearing has risen steadily for nine days, with the pattern typical of bearing wear. The bearing runs about 9 °C warmer than last week.',
     partId: 'sp-1003',
+    partAction: 'Order bearing kit',
   },
   'p-211': {
     channel: 'motorTemperature',
     title: 'Motor running hot under continuous load',
     action: 'Check the inflow and motor cooling today',
+    detail:
+      'High inflow has kept the pump running non-stop since last night, and the motor winding has heated past the alarm limit. P-210 and P-212 can share the load.',
   },
 }
 

@@ -26,3 +26,16 @@ export const formatClock = (time: number) =>
 /** Whole days from `fromIso` to `iso`; negative when `iso` is earlier. */
 export const daysBetween = (fromIso: string, iso: string) =>
   Math.round((Date.parse(iso) - Date.parse(fromIso)) / DAY)
+
+/** "Wed 28 Oct" from a wall-clock time stored as Date.UTC milliseconds. */
+export const formatDay = (time: number) =>
+  new Date(time).toLocaleDateString('en-GB', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    timeZone: 'UTC',
+  })
+
+/** "28 Oct" from a wall-clock time stored as Date.UTC milliseconds. */
+export const formatDayMonth = (time: number) =>
+  new Date(time).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' })
