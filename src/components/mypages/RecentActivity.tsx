@@ -11,13 +11,19 @@ export function RecentActivity() {
         {recentActivity.title}
       </h2>
       <ul className="divide-y divide-border">
-        {recentActivity.items.map(({ subject, text, time, to, icon: Icon }) => (
+        {recentActivity.items.map(({ subject, text, time, to, icon: Icon, tone }) => (
           <li key={subject}>
             <Link
               to={to}
               className="group flex items-center gap-4 px-7 py-3.5 transition-colors hover:bg-surface-subtle"
             >
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary-tint text-primary">
+              <span
+                className={`flex size-9 shrink-0 items-center justify-center rounded-full ${
+                  tone === 'warning'
+                    ? 'bg-warning-tint text-warning'
+                    : 'bg-primary-tint text-primary'
+                }`}
+              >
                 <Icon className="size-4" strokeWidth={1.75} />
               </span>
               <p className="min-w-0 flex-1 truncate text-[15px] text-text-muted">

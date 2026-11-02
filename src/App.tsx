@@ -5,6 +5,7 @@ import { ScrollToTop } from './components/ScrollToTop'
 import { SiteLayout } from './components/SiteLayout'
 import { placeholderRoutes } from './config/placeholderRoutes'
 import { ApplicationPage } from './pages/ApplicationPage'
+import { AssetPage } from './pages/AssetPage'
 import { AssetsPage } from './pages/AssetsPage'
 import { ConnectPage } from './pages/ConnectPage'
 import { HomePage } from './pages/HomePage'
@@ -45,6 +46,7 @@ export default function App() {
                 <Route path="/my-projects" element={<MyProjectsPage />} />
                 <Route path="/my-projects/:projectId" element={<MyProjectsPage />} />
                 <Route path="/assets" element={<AssetsPage />} />
+                <Route path="/assets/:id" element={<AssetPage />} />
                 {placeholderRoutes.map((route) => (
                   <Route
                     key={route.path}

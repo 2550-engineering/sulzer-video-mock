@@ -79,9 +79,9 @@ const specs = [
   },
   {
     match: /^\/images\/sites\//,
-    kind: 'Site photo',
+    kind: 'Site photo (also the asset page hero band; keep the subject centred)',
     aspect: '16:9',
-    minSize: '1600 × 900',
+    minSize: '1920 × 1080',
   },
 ]
 
@@ -95,7 +95,7 @@ const { documents, serviceVideos } = await load('/src/data/documents.ts')
 const { cadPreviews } = await load('/src/data/cad.ts')
 const { hero, connectPromo } = await load('/src/data/home.ts')
 const { intro } = await load('/src/data/mySulzer.ts')
-const { sites } = await load('/src/data/assets.ts')
+const { sites, assets } = await load('/src/data/assets.ts')
 await server.close()
 
 const byId = (items) => new Map(items.map((item) => [item.id, item]))
@@ -131,10 +131,21 @@ const onProductFinder = new Set([
   ...ahlstar.serviceIds.map((id) => byId(services).get(id).image.src),
 ])
 
+// Video A, My assets: site photos, the product image of every unit, and the Sulzer Connect
+// photo on the "Connect this asset" upsell.
+const onMyAssets = new Set([
+  ...sites.map((site) => site.image.src),
+  ...[...new Set(assets.map((asset) => asset.productId))].map(
+    (id) => byId(products).get(id).images[0].src,
+  ),
+  byId(products).get('sulzer-connect').images[0].src,
+])
+
 const recordings = (src) =>
   [
     onApplicationFinder.has(src) && 'application finder',
     onProductFinder.has(src) && 'product finder',
+    onMyAssets.has(src) && 'my assets',
   ].filter(Boolean)
 
 const images = [
@@ -185,7 +196,7 @@ with the file name (hide the labels with \`showPlaceholderLabels\` in \`src/conf
   Never Grundfos, KSB or Xylem images. Log web sources in the Sulzer project folder
   (\`docs/image-sources.md\`).
 - **Priority 1** images are visible in a recording; the column says which (application finder,
-  product finder).
+  product finder, my assets).
 - **Sizing and My Projects** need no photos: their charts and curve thumbnails are drawn in SVG.
 - **Formats:** JPG for photos (quality 80–85), PNG for product cut-outs.
 

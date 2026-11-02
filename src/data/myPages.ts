@@ -8,6 +8,7 @@ import {
   HandHelping,
   LayoutGrid,
   Server,
+  TriangleAlert,
   Truck,
   Wrench,
 } from 'lucide-react'
@@ -98,6 +99,7 @@ export const assetsCard = {
       detail: `Across ${summary.sites} sites`,
       tone: 'neutral',
       icon: Server,
+      to: '/assets',
     },
     {
       value: String(summary.needsAttention),
@@ -105,6 +107,7 @@ export const assetsCard = {
       detail: `${count(summary.alarms, 'alarm')} · ${count(summary.warnings, 'warning')}`,
       tone: 'warning',
       icon: CircleAlert,
+      to: '/assets?status=alarm&status=warning',
     },
     {
       value: String(summary.serviceDue),
@@ -112,6 +115,7 @@ export const assetsCard = {
       detail: `Within ${serviceDueWithinDays} days`,
       tone: 'info',
       icon: Wrench,
+      to: '/assets?service=due',
     },
   ] satisfies AssetStat[],
   source: `Monitored with ${products.iotOffering} · Updated today, ${demoClock.lastSync}`,
@@ -134,6 +138,14 @@ export const recentActivity = {
       time: 'Today, 07:58',
       to: '/my-projects/riverside-intake',
       icon: FolderOpen,
+    },
+    {
+      subject: 'RW-02',
+      text: 'vibration above warning limit · Riverside intake',
+      time: 'Today, 03:12',
+      to: '/assets/rw-02',
+      icon: TriangleAlert,
+      tone: 'warning',
     },
     {
       subject: 'Order SO-104382',

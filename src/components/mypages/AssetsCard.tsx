@@ -18,10 +18,10 @@ export function AssetsCard() {
     <DashboardPanel title={title} subtitle={subtitle} icon={icon} badge={badge}>
       <div className="flex flex-1 flex-col p-7">
         <ul className="grid gap-4 sm:grid-cols-3">
-          {stats.map(({ value, label, detail, tone, icon: Icon }) => (
+          {stats.map(({ value, label, detail, tone, icon: Icon, to }) => (
             <li key={label}>
               <Link
-                to={link.to}
+                to={to}
                 className="group block h-full rounded-md border border-border bg-surface-subtle p-5 transition-[border-color,background-color,box-shadow] duration-200 hover:border-primary-border hover:bg-surface hover:shadow-card"
               >
                 <span

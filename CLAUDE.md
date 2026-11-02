@@ -73,7 +73,6 @@ Personas: `endUser` (Emma Lindqvist, Nordvatten Utilities) and `channelPartner` 
 
 - Images come from Sulzer's own media (sulzer.com, Sulzer PDFs in `_asset-source/pdfs`) or licensed stock. **Never Grundfos, KSB or Xylem.**
 - Every image in `public/images` that came from the web is logged in `~/Documents/Claude/Projects/Sulzer/docs/image-sources.md` with its source URL.
-- Candidates live in `_asset-source/images/_candidates/` (gitignored). Only the chosen, cropped file goes into `public/images`.
 - `npm run images:doc` lists every image path in `src/data` with its aspect, minimum size and what it should show (`docs/images-needed.md`). New image folders need a spec in `scripts/images-needed.mjs`.
 
 ## Documents and plans

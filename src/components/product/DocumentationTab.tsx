@@ -21,6 +21,12 @@ const zipMs = 1000
 type DocumentationTabProps = {
   product: Product
   documents: Document[]
+  /** Defaults to "Documentation". */
+  title?: string
+  /** Line under the heading. */
+  intro?: string
+  /** Extra line after a document's number, e.g. "For serial no. AH-1918-04512". */
+  documentNote?: (document: Document) => string | undefined
 }
 
 /**
@@ -28,7 +34,13 @@ type DocumentationTabProps = {
  * and ?lang, defaulting to the market language), documents grouped by type,
  * preview, download, and "Download selected" as one ZIP.
  */
-export function DocumentationTab({ product, documents }: DocumentationTabProps) {
+export function DocumentationTab({
+  product,
+  documents,
+  title = productPage.documentationTitle,
+  intro,
+  documentNote,
+}: DocumentationTabProps) {
   const [params, update] = useUrlParams()
   const download = useDocumentDownload()
   const showToast = useToast()
@@ -109,7 +121,8 @@ export function DocumentationTab({ product, documents }: DocumentationTabProps) 
 
   return (
     <>
-      <TabHeading title={productPage.documentationTitle} />
+      <TabHeading title={title} />
+      {intro && <p className="mt-3 max-w-3xl text-lg text-text-muted">{intro}</p>}
 
       <div className="mt-8 flex flex-wrap items-end justify-between gap-x-10 gap-y-5">
         <div>
@@ -188,6 +201,7 @@ export function DocumentationTab({ product, documents }: DocumentationTabProps) 
                     key={doc.id}
                     document={doc}
                     language={language === allLanguages ? doc.languages[0] : language}
+                    note={documentNote?.(doc)}
                     checked={selected.includes(doc.id)}
                     onCheck={() => toggle(doc.id)}
                     onPreview={() => setPreview({ document: doc, open: true })}

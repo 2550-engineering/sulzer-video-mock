@@ -18,26 +18,36 @@ type ServiceRequestFormProps = {
   product: Product
   services: Service[]
   onDone: () => void
+  /** Where to start from, e.g. when requesting service for one asset. `services` are ids in order of preference. */
+  prefill?: { site: string; message: string; services?: string[] }
 }
 
 /**
  * "Request service" form. Signed in, it is prefilled with the demo user, their
- * company and the site where they run this product. Sending shows a fixed
+ * company and the site where they run this product (or `prefill`). Sending shows a fixed
  * reference number; nothing is stored.
  */
-export function ServiceRequestForm({ product, services, onDone }: ServiceRequestFormProps) {
+export function ServiceRequestForm({
+  product,
+  services,
+  onDone,
+  prefill,
+}: ServiceRequestFormProps) {
   const { user } = useAuth()
   const ids = useId()
   // Prefill the site of this product's unit that needs attention, else its first unit.
   const productAssets = assets.filter((asset) => asset.productId === product.id)
   const asset = productAssets.find(needsAttention) ?? productAssets[0]
   const [values, setValues] = useState({
-    service: services[0]?.id ?? other,
+    service:
+      prefill?.services?.find((id) => services.some((service) => service.id === id)) ??
+      services[0]?.id ??
+      other,
     date: '',
-    site: user && asset ? assetLocation(asset) : '',
+    site: prefill?.site ?? (user && asset ? assetLocation(asset) : ''),
     name: user?.name ?? '',
     company: user?.company ?? '',
-    message: '',
+    message: prefill?.message ?? '',
   })
   const [sent, setSent] = useState(false)
 

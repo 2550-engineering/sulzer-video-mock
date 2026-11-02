@@ -1,6 +1,6 @@
 # Recording QA — 1920×1080
 
-351 captures, 0 with issues. Screenshots in `_qa/screenshots/`.
+425 captures, 0 with issues. Screenshots in `_qa/screenshots/`.
 
 | Auth | Route | Lands on | Title |
 | --- | --- | --- | --- |
@@ -134,10 +134,47 @@
 | logged-out | `/products/blue-box#bim` | `/products/blue-box` | BLUE BOX | Sulzer |
 | logged-out | `/products/blue-box#spare-parts` | `/products/blue-box` | BLUE BOX | Sulzer |
 | logged-out | `/products/blue-box#services` | `/products/blue-box` | BLUE BOX | Sulzer |
-| logged-out | `/sizing` | `/sizing` | Sizing & configuration | Sulzer |
-| logged-out | `/sizing?product=ahlstar` | `/sizing?product=ahlstar` | Sizing & configuration | Sulzer |
+| logged-out | `/sizing` | `/sizing` | Size Product | Sulzer |
+| logged-out | `/sizing?product=ahlstar` | `/sizing?product=ahlstar` | Size Product | Sulzer |
+| logged-out | `/sizing/results` | `/sizing/results` | Sizing | Sulzer |
 | logged-out | `/my-projects` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/my-projects/riverside-intake` | `/my-sulzer` | mySulzer | Sulzer |
 | logged-out | `/assets` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets?status=alarm&status=warning` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets?service=due` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets?view=sites` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets?q=zzzz` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/rw-01` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/rw-02` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/rw-03` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/tw-01` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/tw-02` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/bw-01` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/cd-01` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/bp-01` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/bp-02` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/bp-03` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/p-101` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/p-102` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/p-103` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/p-104` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/p-210` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/p-211` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/p-212` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/in-01` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/in-02` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/rs-01` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/rs-02` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/sl-01` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/sl-02` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/dr-01` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/rw-02#condition` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/rw-02#documents` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/rw-02#spare-parts` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/rw-02#service-history` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/p-211#condition` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/cd-01#condition` | `/my-sulzer` | mySulzer | Sulzer |
+| logged-out | `/assets/rs-02#documents` | `/my-sulzer` | mySulzer | Sulzer |
 | logged-out | `/connect` | `/connect` | Sulzer Connect | Sulzer |
 | logged-out | `/products/replacement` | `/products/replacement` | Product replacement | Sulzer |
 | logged-out | `/spare-parts` | `/spare-parts` | Spare parts | Sulzer |
@@ -303,10 +340,47 @@
 | logged-in | `/products/blue-box#bim` | `/products/blue-box` | BLUE BOX | Sulzer |
 | logged-in | `/products/blue-box#spare-parts` | `/products/blue-box` | BLUE BOX | Sulzer |
 | logged-in | `/products/blue-box#services` | `/products/blue-box` | BLUE BOX | Sulzer |
-| logged-in | `/sizing` | `/sizing` | Sizing & configuration | Sulzer |
-| logged-in | `/sizing?product=ahlstar` | `/sizing?product=ahlstar` | Sizing & configuration | Sulzer |
-| logged-in | `/my-projects` | `/my-projects` | My projects | Sulzer |
-| logged-in | `/assets` | `/assets` | My assets | Sulzer |
+| logged-in | `/sizing` | `/sizing` | Size Product | Sulzer |
+| logged-in | `/sizing?product=ahlstar` | `/sizing?product=ahlstar` | Size Product | Sulzer |
+| logged-in | `/sizing/results` | `/sizing/results` | Sizing | Sulzer |
+| logged-in | `/my-projects` | `/my-projects/riverside-intake` | Riverside intake – My Projects | Sulzer |
+| logged-in | `/my-projects/riverside-intake` | `/my-projects/riverside-intake` | Riverside intake – My Projects | Sulzer |
+| logged-in | `/assets` | `/assets` | My assets | mySulzer | Sulzer |
+| logged-in | `/assets?status=alarm&status=warning` | `/assets?status=alarm&status=warning` | My assets | mySulzer | Sulzer |
+| logged-in | `/assets?service=due` | `/assets?service=due` | My assets | mySulzer | Sulzer |
+| logged-in | `/assets?view=sites` | `/assets?view=sites` | My assets | mySulzer | Sulzer |
+| logged-in | `/assets?q=zzzz` | `/assets?q=zzzz` | My assets | mySulzer | Sulzer |
+| logged-in | `/assets/rw-01` | `/assets/rw-01` | RW-01 Raw water pump | My assets | Sulzer |
+| logged-in | `/assets/rw-02` | `/assets/rw-02` | RW-02 Raw water pump | My assets | Sulzer |
+| logged-in | `/assets/rw-03` | `/assets/rw-03` | RW-03 Raw water pump | My assets | Sulzer |
+| logged-in | `/assets/tw-01` | `/assets/tw-01` | TW-01 Treated water pump | My assets | Sulzer |
+| logged-in | `/assets/tw-02` | `/assets/tw-02` | TW-02 Treated water pump | My assets | Sulzer |
+| logged-in | `/assets/bw-01` | `/assets/bw-01` | BW-01 Backwash pump | My assets | Sulzer |
+| logged-in | `/assets/cd-01` | `/assets/cd-01` | CD-01 Dosing feed pump | My assets | Sulzer |
+| logged-in | `/assets/bp-01` | `/assets/bp-01` | BP-01 Booster pump | My assets | Sulzer |
+| logged-in | `/assets/bp-02` | `/assets/bp-02` | BP-02 Booster pump | My assets | Sulzer |
+| logged-in | `/assets/bp-03` | `/assets/bp-03` | BP-03 Booster pump | My assets | Sulzer |
+| logged-in | `/assets/p-101` | `/assets/p-101` | P-101 Lift pump | My assets | Sulzer |
+| logged-in | `/assets/p-102` | `/assets/p-102` | P-102 Lift pump | My assets | Sulzer |
+| logged-in | `/assets/p-103` | `/assets/p-103` | P-103 Lift pump | My assets | Sulzer |
+| logged-in | `/assets/p-104` | `/assets/p-104` | P-104 Lift pump | My assets | Sulzer |
+| logged-in | `/assets/p-210` | `/assets/p-210` | P-210 Lift pump | My assets | Sulzer |
+| logged-in | `/assets/p-211` | `/assets/p-211` | P-211 Lift pump | My assets | Sulzer |
+| logged-in | `/assets/p-212` | `/assets/p-212` | P-212 Lift pump | My assets | Sulzer |
+| logged-in | `/assets/in-01` | `/assets/in-01` | IN-01 Inlet pump | My assets | Sulzer |
+| logged-in | `/assets/in-02` | `/assets/in-02` | IN-02 Inlet pump | My assets | Sulzer |
+| logged-in | `/assets/rs-01` | `/assets/rs-01` | RS-01 Return sludge pump | My assets | Sulzer |
+| logged-in | `/assets/rs-02` | `/assets/rs-02` | RS-02 Return sludge pump | My assets | Sulzer |
+| logged-in | `/assets/sl-01` | `/assets/sl-01` | SL-01 Sludge transfer pump | My assets | Sulzer |
+| logged-in | `/assets/sl-02` | `/assets/sl-02` | SL-02 Sludge transfer pump | My assets | Sulzer |
+| logged-in | `/assets/dr-01` | `/assets/dr-01` | DR-01 Drainage pump | My assets | Sulzer |
+| logged-in | `/assets/rw-02#condition` | `/assets/rw-02` | RW-02 Raw water pump | My assets | Sulzer |
+| logged-in | `/assets/rw-02#documents` | `/assets/rw-02` | RW-02 Raw water pump | My assets | Sulzer |
+| logged-in | `/assets/rw-02#spare-parts` | `/assets/rw-02` | RW-02 Raw water pump | My assets | Sulzer |
+| logged-in | `/assets/rw-02#service-history` | `/assets/rw-02` | RW-02 Raw water pump | My assets | Sulzer |
+| logged-in | `/assets/p-211#condition` | `/assets/p-211` | P-211 Lift pump | My assets | Sulzer |
+| logged-in | `/assets/cd-01#condition` | `/assets/cd-01` | CD-01 Dosing feed pump | My assets | Sulzer |
+| logged-in | `/assets/rs-02#documents` | `/assets/rs-02` | RS-02 Return sludge pump | My assets | Sulzer |
 | logged-in | `/connect` | `/connect` | Sulzer Connect | Sulzer |
 | logged-in | `/products/replacement` | `/products/replacement` | Product replacement | Sulzer |
 | logged-in | `/spare-parts` | `/spare-parts` | Spare parts | Sulzer |

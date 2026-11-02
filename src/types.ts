@@ -123,6 +123,8 @@ export type AssetStat = {
   detail: string
   tone: StatusTone
   icon: LucideIcon
+  /** The asset list, filtered to what the stat counts. */
+  to: string
 }
 
 /** A row in the My Pages "Recent activity" list. */
@@ -133,6 +135,8 @@ export type ActivityItem = {
   time: string
   to: string
   icon: LucideIcon
+  /** Amber icon, for alerts. */
+  tone?: 'warning'
 }
 
 /* ── Catalogue (Phase 2 templates) ─────────────────────────────────────────── */
@@ -529,6 +533,33 @@ export type ConditionPoint = {
 
 export type ConditionChannel = 'vibration' | 'bearingTemperature' | 'motorTemperature'
 
+/** What Sulzer Connect concludes from an asset's alert, and what to do about it. */
+export type ConditionFinding = {
+  /** The channel that raised the alert. */
+  channel: ConditionChannel
+  /** e.g. "Bearing wear pattern detected". */
+  title: string
+  /** e.g. "Inspect within 14 days". */
+  action: string
+  /** The spare part that fixes it, from data/spareParts.ts. */
+  partId?: string
+}
+
+export type ServiceKind = 'Service' | 'Repair' | 'Inspection' | 'Upgrade' | 'Commissioning'
+
+/** One visit in an asset's service history. */
+export type ServiceHistoryEntry = {
+  id: string
+  /** ISO date. */
+  date: string
+  kind: ServiceKind
+  title: string
+  text: string
+  technician: string
+  /** Work order number, e.g. "WO-260317-RW02". */
+  reference: string
+}
+
 /** A tab in a page's sticky tab bar. `id` is also the URL hash. */
 export type TabDef = {
   id: string
@@ -539,16 +570,6 @@ export type TabDef = {
 export type TabComingSoonCopy = {
   title: string
   text: string
-}
-
-/** Copy for a feature page that isn't built yet. */
-export type ComingSoonContent = {
-  title: string
-  description: string
-  panelTitle: string
-  panelText: string
-  /** What the finished page will offer, shown as a checklist. */
-  features: string[]
 }
 
 /* ── Sizing (Phase 2, module 3) ────────────────────────────────────────────── */

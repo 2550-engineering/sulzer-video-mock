@@ -1,5 +1,5 @@
 import { personas } from '../config/demo'
-import type { Asset, AssetStatus, Customer, Site } from '../types'
+import type { Asset, AssetStatus, ConditionFinding, Customer, Site } from '../types'
 
 /*
  * Installed base ("/assets", Sulzer Connect). Deterministic: condition readings come from
@@ -185,6 +185,21 @@ export const assets: Asset[] = rows.map(
     status,
   }),
 )
+
+/** Sulzer Connect's diagnosis for the assets that need attention. Invented: see docs/content-to-confirm.md. */
+export const conditionFindings: Record<string, ConditionFinding> = {
+  'rw-02': {
+    channel: 'vibration',
+    title: 'Bearing wear pattern detected',
+    action: 'Inspect within 14 days',
+    partId: 'sp-1003',
+  },
+  'p-211': {
+    channel: 'motorTemperature',
+    title: 'Motor running hot under continuous load',
+    action: 'Check the inflow and motor cooling today',
+  },
+}
 
 export const assetById = (id: string) => assets.find((asset) => asset.id === id)
 

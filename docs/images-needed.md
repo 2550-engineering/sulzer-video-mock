@@ -10,7 +10,7 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
   Never Grundfos, KSB or Xylem images. Log web sources in the Sulzer project folder
   (`docs/image-sources.md`).
 - **Priority 1** images are visible in a recording; the column says which (application finder,
-  product finder).
+  product finder, my assets).
 - **Sizing and My Projects** need no photos: their charts and curve thumbnails are drawn in SVG.
 - **Formats:** JPG for photos (quality 80–85), PNG for product cut-outs.
 
@@ -42,19 +42,27 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
 | 1 · application finder | `sns-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | SNS end-suction single-stage pump | present |
 | 1 · application finder | `smd-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | SMD axially split double-suction pump | present |
 | 1 · application finder | `sjt-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | SJT vertical turbine pump, shown in cutaway | present |
-| 1 · application finder | `xfp-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | XFP submersible pumps in several sizes | present |
-| 1 · application finder | `sulzer-connect-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | Sulzer Connect wireless sensor mounted on a pump motor | present |
 | 1 · application finder | `motor-protection-relay-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | DIN-rail motor protection relay | present |
 | 1 · application finder | `remote-expert-support.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer digital expert reviewing pump data on a laptop | present |
 | 1 · application finder | `installation.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Installation crew lifting a large rotor into place with a chain hoist | present |
 | 1 · application finder | `story-river-intake.jpg` | `public/images/stories/` | 4:5 (portrait; headline sits on the lower third) | 1200 × 1500 | Customer story card | Brick raw water pumping station on a riverbank, with its intake below the waterline | present |
 | 1 · application finder | `story-paper-mill.jpg` | `public/images/stories/` | 4:5 (portrait; headline sits on the lower third) | 1200 × 1500 | Customer story card | AHLSTAR process pump and motor in a paper mill pump room | present |
 | 1 · application finder | `story-desalination.jpg` | `public/images/stories/` | 4:5 (portrait; headline sits on the lower third) | 1200 × 1500 | Customer story card | Sulzer engineers in the high-pressure pump hall of a seawater desalination plant | present |
-| 1 · application finder, product finder | `ahlstar-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | AHLSTAR end-suction process pump | present |
+| 1 · application finder, my assets | `xfp-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | XFP submersible pumps in several sizes | present |
+| 1 · application finder, my assets | `sulzer-connect-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | Sulzer Connect wireless sensor mounted on a pump motor | present |
 | 1 · application finder, product finder | `connect-asset-monitoring.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Operator checking live pump data on a tablet | present |
 | 1 · application finder, product finder | `commissioning.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer engineer assembling a pump on site | present |
 | 1 · application finder, product finder | `inspection.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer service engineer inspecting a large pump casing | present |
 | 1 · application finder, product finder | `vibration-analysis.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer wireless vibration sensor fitted to a pump bearing housing | present |
+| 1 · application finder, product finder, my assets | `ahlstar-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | AHLSTAR end-suction process pump | present |
+| 1 · my assets | `afp-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | AFP submersible sewage pump | present |
+| 1 · my assets | `j-dewatering-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | J dewatering pump, portable submersible drainage pump | present |
+| 1 · my assets | `riverside-intake.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Raw water intake on a river bank: low concrete intake structure and pump house, Nordic landscape, daylight | missing |
+| 1 · my assets | `norra-wtp.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Drinking water treatment plant: open filter basins and the main process building, daylight | missing |
+| 1 · my assets | `ekbacken-reservoir.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Drinking water reservoir, grass-covered, with a small booster pump station next to it | missing |
+| 1 · my assets | `sodra-pump-station.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Wastewater lift station: small concrete building with a control cabinet in a residential area | missing |
+| 1 · my assets | `hamnen-pump-station.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Inside a wastewater pumping station: a row of large pumps with blue pipework in a clean, bright room | missing |
+| 1 · my assets | `ostra-wwtp.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Sludge handling at a wastewater treatment plant: round sludge tanks and pipework, daylight | missing |
 | 1 · product finder | `ahlstar-bim-preview.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | 3D render of an AHLSTAR end-suction pump, isometric view | present |
 | 1 · product finder | `service-agreements.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Two Sulzer service technicians beside their service van | present |
 | 1 · product finder | `repair-overhaul.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer technician restoring a pump part with a laser cladding robot in a service center | present |
@@ -145,17 +153,9 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
 | 2 | `connect-promo.jpg` | `public/images/home/` | 4:3 | 1200 × 900 | Home promo | Pumps in a plant linked by a wireless monitoring network | present |
 | 2 | `mysulzer-intro.jpg` | `public/images/mysulzer/` | 5:4 | 1200 × 960 | mySulzer intro | Two engineers checking pump data on a laptop in a plant | present |
 | 2 | `sjm-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | SJM vertical mixed-flow pump with discharge head | present |
-| 2 | `afp-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | AFP submersible sewage pump | present |
-| 2 | `j-dewatering-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | J dewatering pump, portable submersible drainage pump | present |
 | 2 | `pump-controller-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | PC 441 pump controller touchscreen with plug-in I/O modules | present |
 | 2 | `blue-box-main.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | Sulzer pump surrounded by data, illustrating BLUE BOX analytics | present |
 | 2 | `energy-audit.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Engineers reviewing pump performance data on a screen | present |
-| 2 | `riverside-intake.jpg` | `public/images/sites/` | 16:9 | 1600 × 900 | Site photo | Raw water intake on a river bank: low concrete intake structure and pump house, Nordic landscape, daylight | missing |
-| 2 | `norra-wtp.jpg` | `public/images/sites/` | 16:9 | 1600 × 900 | Site photo | Drinking water treatment plant: open filter basins and the main process building, daylight | missing |
-| 2 | `ekbacken-reservoir.jpg` | `public/images/sites/` | 16:9 | 1600 × 900 | Site photo | Drinking water reservoir, grass-covered, with a small booster pump station next to it | missing |
-| 2 | `sodra-pump-station.jpg` | `public/images/sites/` | 16:9 | 1600 × 900 | Site photo | Wastewater lift station: small concrete building with a control cabinet in a residential area | missing |
-| 2 | `hamnen-pump-station.jpg` | `public/images/sites/` | 16:9 | 1600 × 900 | Site photo | Inside a wastewater pumping station: a row of large pumps with blue pipework in a clean, bright room | missing |
-| 2 | `ostra-wwtp.jpg` | `public/images/sites/` | 16:9 | 1600 × 900 | Site photo | Sludge handling at a wastewater treatment plant: round sludge tanks and pipework, daylight | missing |
 | 2 | `ahlstar-video-seal-replacement.jpg` | `public/images/videos/` | 16:9 | 1280 × 720 | Service video thumbnail | Two Sulzer mechanical seal cartridges | present |
 | 2 | `ahlstar-video-back-pull-out.jpg` | `public/images/videos/` | 16:9 | 1280 × 720 | Service video thumbnail | Two Sulzer engineers working on a pump | present |
 | 2 | `ahlstar-video-shaft-alignment.jpg` | `public/images/videos/` | 16:9 | 1280 × 720 | Service video thumbnail | Engineer checking a pump shaft assembly in the workshop | present |

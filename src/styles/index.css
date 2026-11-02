@@ -40,6 +40,8 @@
   --color-warning-strong: var(--sz-color-warning-strong);
   --color-warning-tint: var(--sz-color-warning-tint);
   --color-danger: var(--sz-color-danger);
+  --color-danger-strong: var(--sz-color-danger-strong);
+  --color-danger-tint: var(--sz-color-danger-tint);
 
   --font-sans: var(--sz-font-sans);
   --default-font-family: var(--sz-font-sans);

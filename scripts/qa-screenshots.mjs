@@ -30,6 +30,8 @@ const { applications, rootApplicationId } = await server.ssrLoadModule('/src/dat
 const { products } = await server.ssrLoadModule('/src/data/products.ts')
 const { applicationPath } = await server.ssrLoadModule('/src/lib/catalog.ts')
 const { productPage } = await server.ssrLoadModule('/src/data/catalogPages.ts')
+const { assets } = await server.ssrLoadModule('/src/data/assets.ts')
+const { assetPage } = await server.ssrLoadModule('/src/data/assetPages.ts')
 
 const routes = [
   '/',
@@ -54,6 +56,16 @@ const routes = [
   '/my-projects',
   '/my-projects/riverside-intake',
   '/assets',
+  '/assets?status=alarm&status=warning',
+  '/assets?service=due',
+  '/assets?view=sites',
+  '/assets?q=zzzz',
+  ...assets.map((asset) => `/assets/${asset.id}`),
+  // RW-02 is the Video A unit: every tab. CD-01 is not connected, RS-02 has no documents yet.
+  ...assetPage.tabs.slice(1).map((tab) => `/assets/rw-02#${tab.id}`),
+  '/assets/p-211#condition',
+  '/assets/cd-01#condition',
+  '/assets/rs-02#documents',
   '/connect',
   ...placeholderRoutes.map((route) => route.path),
   '/this-page-does-not-exist',
@@ -157,7 +169,7 @@ for (const auth of ['logged-out', 'logged-in']) {
   const context = await browser.newContext({ viewport: { width, height } })
   await context.addInitScript((signedIn) => {
     if (signedIn && !sessionStorage.getItem('qa-init')) {
-      localStorage.setItem('sz-demo-signed-in', 'true')
+      localStorage.setItem('sz-demo-persona', 'endUser')
       sessionStorage.setItem('qa-init', '1')
     }
   }, auth === 'logged-in')

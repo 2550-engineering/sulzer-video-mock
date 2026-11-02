@@ -98,6 +98,30 @@ results page.
    - Service "Learn more" links go to `/support`, `/support/service-portal` or `/connect`.
    - The Spare parts tab shows "Coming soon".
 
+## Before recording Video A: My assets (steps 1–4)
+
+Recording path: `/my-pages` (cursor on **My assets: 2 need attention**) → click it →
+`/assets?status=alarm&status=warning` (2 rows: P-211 alarm, RW-02 warning) → RW-02 →
+`/assets/rw-02` → Overview, Condition, Documents, Spare parts, Service history → "AHLSTAR
+150-125-315" → `/products/ahlstar` (optional).
+
+1. **Sign in as the end user** (Shift+D). `/assets` and `/assets/:id` are signed-in only.
+2. **Images:** the 6 site photos are still missing (marked "my assets" in
+   [images-needed.md](images-needed.md)). They show in the list's site column, the "By site" cards
+   and the asset page header, which crops them to a wide band.
+3. **Placeholder labels:** set `showPlaceholderLabels = false` in `src/config/demo.ts`.
+4. **Links that end on placeholder pages** (not on the recording path):
+   - "Open in Sulzer Connect", "Open Sulzer Connect" and "Open full monitoring in Sulzer Connect"
+     go to the `/connect` welcome screen until the Connect app (P2) has `/connect/assets/:id`.
+     Change `connectAssetPath` in `src/data/assetPages.ts`.
+   - "Find replacement" goes to `/products/replacement?serial=…` ("Coming soon" until P6).
+   - "Order spare parts" opens the Spare parts tab; the tab's own "Order spare parts" goes to
+     `/spare-parts` ("Coming soon" until P5), "Request a quotation" to `/contact/quote`.
+   - "Get it connected" and "How it works" on the "Connect this asset" card go to
+     `/products/sulzer-connect`.
+   - "View my requests" after sending a service request goes to `/self-service/requests` (P4).
+   - "Service report" only shows a toast; no file is downloaded.
+
 ## Product names (`src/config/demo.ts` → `products`, `productSeries`)
 
 | Item                   | Value in the mock-up                   | Note                                                                                                                                                                                                 |
@@ -498,3 +522,17 @@ Placeholder, confirm with Sulzer.
 | RW-02 story                | Bearing wear: vibration rises over 9 days and crosses 7.1 mm/s today at 03:12, now 7.4 mm/s | Invented.                                                             |
 | P-211 story                | Motor temperature climbs overnight to 118 °C (alarm)                                        | Invented.                                                             |
 | Data                       | Hourly vibration, bearing and motor temperature and run status for 30 days                  | Generated from a seeded function, the same on every run.              |
+
+## My assets (P1, `src/data/assetPages.ts`, `src/data/assets.ts`, `src/lib/serviceHistory.ts`)
+
+| Item                        | Value in the mock-up                                                                                                                      | Note                                                                                                |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| RW-02 recommended action    | "Bearing wear pattern detected – inspect within 14 days", recommends the bearing kit (pos. 321, 62016308)                                 | Invented, `conditionFindings`. Also what the Connect app (P2) shows.                                |
+| P-211 recommended action    | "Motor running hot under continuous load – check the inflow and motor cooling today"                                                      | Invented.                                                                                           |
+| Service center              | Sulzer Service Center Västerås                                                                                                            | Placeholder, confirm the nearest real Sulzer service center for the region.                         |
+| Technicians                 | Mikael Sjöberg, Anna Forsell, Jonas Wikström, Elin Bergqvist                                                                              | Fictional names.                                                                                    |
+| Service history             | Commissioning, a repair or inspection, the Sulzer Connect sensor retrofit (8 Oct 2024) and the last two annual services, with work orders | Generated from each asset's dates. Work descriptions are plausible, not Sulzer's service checklist. |
+| "Connect this asset" claims | "Retrofit in under an hour", "No changes to the pump", "Alerts by e-mail and app"                                                         | Placeholder, confirm with Sulzer.                                                                   |
+| Service request message     | Prefilled with the tag, serial number and the active alert, e.g. "vibration above warning limit since today 03:12"                        | Same fixed reference SR-2026-0142 as on the product page.                                           |
+| Documents per unit          | The product's documents, labelled "For serial no. …" (brochures are not labelled)                                                         | In a real portal these would be the unit's own as-built documents.                                  |
+| Spare parts per unit        | The product's spare parts list                                                                                                            | P5 replaces this with the sectional drawing and the unit's BOM.                                     |

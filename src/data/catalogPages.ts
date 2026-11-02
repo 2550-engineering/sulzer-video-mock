@@ -1,4 +1,4 @@
-import type { ComingSoonContent, NavItem, TabComingSoonCopy, TabDef } from '../types'
+import type { NavItem, TabComingSoonCopy, TabDef } from '../types'
 
 /* Copy for the application, product and product search templates. */
 
@@ -357,20 +357,3 @@ export const catalogList = {
   viewLabel: 'View',
   sizeRangeLabel: 'Size range',
 }
-
-/** Copy for feature pages that aren't built yet. */
-export const comingSoon = {
-  assets: {
-    title: 'My assets',
-    description: 'Your installed base with live condition, alerts and service history.',
-    panelTitle: 'Your installed base, live',
-    panelText:
-      'See the condition of every Sulzer pump and mixer you own, get alerts before problems turn into downtime and plan service on real data.',
-    features: [
-      'Live status and readings for every asset',
-      'Alerts when vibration or temperature drifts',
-      'Service history and spare parts per asset',
-      'Book service straight from an alert',
-    ],
-  },
-} satisfies Record<string, ComingSoonContent>
