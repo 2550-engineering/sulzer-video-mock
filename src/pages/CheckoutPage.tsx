@@ -9,7 +9,7 @@ import { EshopHeader } from '../components/eshop/EshopHeader'
 import { OrderSummary } from '../components/eshop/OrderSummary'
 import { SignInRequired } from '../components/eshop/SignInRequired'
 import { NumberedStep } from '../components/product/NumberedStep'
-import { customerAccount, demoUser, eshop } from '../config/demo'
+import { customerAccount, eshop } from '../config/demo'
 import { eshopPages } from '../data/eshopPages'
 import { deliveryWindow } from '../lib/cart'
 import { formatDate } from '../lib/dates'
@@ -150,8 +150,8 @@ export function CheckoutPage() {
                     <dl className="grid gap-x-8 gap-y-4 text-[15px] sm:grid-cols-3">
                       <div>
                         <dt className="text-sm text-text-muted">{copy.orderedBy}</dt>
-                        <dd className="font-semibold text-navy-900">{demoUser.name}</dd>
-                        <dd className="text-text-muted">{demoUser.company}</dd>
+                        <dd className="font-semibold text-navy-900">{user?.name}</dd>
+                        <dd className="text-text-muted">{user?.company}</dd>
                       </div>
                       <div>
                         <dt className="text-sm text-text-muted">{copy.deliverTo}</dt>

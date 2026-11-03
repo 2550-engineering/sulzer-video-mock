@@ -1,3 +1,4 @@
+import { market } from '../config/demo'
 import type { ComingSoonContent, NavItem, SearchScope, TabComingSoonCopy, TabDef } from '../types'
 
 /* Copy for the application, product and product search templates. */
@@ -77,6 +78,18 @@ export const productPage = {
   viewMoreLabel: 'View more',
   viewLessLabel: 'View less',
   documentationLink: 'Product documentation',
+  /** The buy box under the key specs, for products sold as models. */
+  buy: {
+    priceFrom: 'Price from',
+    exclVat: `${market.currency}, excl. VAT · list price`,
+    models: (count: number) => `${count} models, from stock or made to order`,
+    choose: 'Choose model and buy',
+    requestQuote: 'Request quotation',
+    quoteLink: (productId: string) => `/contact/quote?product=${productId}`,
+    whereToBuy: 'Where to buy',
+    signIn: 'Sign in to see prices and buy',
+    signedOut: 'Prices and ordering for your company’s account',
+  },
   stories: {
     title: 'See how customers benefit',
     text: 'Plants around the world run on Sulzer pumps every day. Here is what that means for them.',
@@ -90,6 +103,11 @@ export const productPage = {
     maxPressure: 'Max. pressure',
   },
   models: {
+    addToCart: 'Add to cart',
+    addToCartFor: (name: string) => `Add ${name} to cart`,
+    quantityFor: (name: string) => `Quantity of ${name}`,
+    order: 'Order',
+    openModel: (name: string) => `Open the ${name} page`,
     title: 'Models',
     count: (shown: number, total: number) =>
       shown === total ? `${total} models` : `${shown} of ${total} models`,
@@ -134,8 +152,6 @@ export const productPage = {
       dimensionsTitle: 'Dimensions',
       size: 'Size this model',
       addToProject: 'Add to project',
-      addedToProject: 'Added to My projects',
-      viewProjects: 'View',
       compare: 'Add to compare',
       comparing: 'Remove from compare',
     },

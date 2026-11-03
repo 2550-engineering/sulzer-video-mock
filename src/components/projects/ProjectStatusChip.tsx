@@ -1,9 +1,11 @@
 import type { ProjectStatus } from '../../types'
 
 const tones: Record<ProjectStatus, string> = {
-  Draft: 'bg-surface-sunken text-navy-700',
-  'In progress': 'bg-primary-tint text-primary',
-  Quoted: 'bg-success-tint text-success-strong',
+  'Concept design': 'bg-surface-sunken text-navy-700',
+  'Detailed design': 'bg-primary-tint text-primary',
+  Tender: 'bg-warning-tint text-warning-strong',
+  Ordered: 'bg-success-tint text-success-strong',
+  Archived: 'bg-surface-muted text-text-muted',
 }
 
 export function ProjectStatusChip({ status }: { status: ProjectStatus }) {

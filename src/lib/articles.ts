@@ -1,11 +1,19 @@
 import type {
   Availability,
+  DutyPoint,
   ModelAvailability,
   ProductModel,
   ProductVariant,
   ResultArticle,
 } from '../types'
-import { getModel, getProduct, modelsFor, variantPath, variantsFor } from './catalog'
+import {
+  getModel,
+  getProduct,
+  getProductVariant,
+  modelsFor,
+  variantPath,
+  variantsFor,
+} from './catalog'
 import { bepFlowAt, headAt } from './pumpCurves'
 import { maxFlowRatio, modelCurve, ratedPoint, variantPerformance } from './variantCurves'
 
@@ -26,6 +34,13 @@ const modelLeadDays: Record<ModelAvailability, number> = {
   'Fast delivery': 10,
   'Made to order': 60,
 }
+
+/** A model's or sized pump's availability ("In stock", "Made to order" …) as a cart availability. */
+export const toAvailability = (availability: ModelAvailability, leadTime: string): Availability => ({
+  status: modelAvailability[availability],
+  leadTime,
+  leadTimeDays: modelLeadDays[availability],
+})
 
 function fromVariant(variant: ProductVariant): ResultArticle {
   const rated = ratedPoint(variant)
@@ -90,11 +105,7 @@ function fromModel(model: ProductModel): ResultArticle {
     impellerDiameter: model.impeller,
     ipClass: 'IP55',
     listPrice: model.listPrice,
-    availability: {
-      status: modelAvailability[model.availability],
-      leadTime: model.leadTime,
-      leadTimeDays: modelLeadDays[model.availability],
-    },
+    availability: toAvailability(model.availability, model.leadTime),
     to: `/products/${model.productId}/${model.id}`,
     curve: { id: model.id, name: model.name, curve, scale: 1, trimRatio: 1, operatingPoint: rated },
     speedRatio: 1,
@@ -119,6 +130,21 @@ export function articlesFor(productId: string): ResultArticle[] {
 export function getArticle(productId: string, id: string) {
   return articlesFor(productId).find((article) => article.id === id)
 }
+
+/** The result item for any catalogue variant or model id, e.g. a project item's. */
+export function articleById(id: string) {
+  const productId = getProductVariant(id)?.productId ?? getModel(id)?.productId
+  return productId ? getArticle(productId, id) : undefined
+}
+
+/** A catalogue article's rated point as a duty point, for adding it to a project. */
+export const articleDutyPoint = (article: ResultArticle): DutyPoint => ({
+  flow: article.rated.flow,
+  head: article.rated.head,
+  liquid: 'water',
+  temperature: 20,
+  frequency: article.frequency,
+})
 
 /** The model's own article, or its variants' when the product is sold as variants. */
 export function articlesOfModel(modelId: string) {

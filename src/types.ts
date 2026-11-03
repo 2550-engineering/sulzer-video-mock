@@ -6,7 +6,11 @@ export type User = {
   initials: string
   company: string
   role: string
+  email: string
 }
+
+/** Who the presenter signs in as: the end user (maintenance) or the consultant. */
+export type PersonaId = 'endUser' | 'consultant'
 
 export type NavItem = {
   label: string
@@ -121,6 +125,8 @@ export type ActivityItem = {
   time: string
   to: string
   icon: LucideIcon
+  /** Shown only to this persona, e.g. a link to one of their projects. */
+  persona?: PersonaId
 }
 
 /* ── Catalogue (Phase 2 templates) ─────────────────────────────────────────── */
@@ -423,6 +429,70 @@ export type ResultArticle = {
   rated: OperatingPoint
 }
 
+/** What a tender text says about a pump: built from a sized pump, a variant or a model. */
+export type TenderSubject = {
+  productId: string
+  kind: 'end-suction' | 'submersible'
+  /** Full model name or code. */
+  model: string
+  productNumber: string | null
+  quantity: number
+  /** In a project: position number and the customer's tag. */
+  position?: { number: number; tag: string }
+  /** Application name, e.g. "Surface water intake". */
+  application?: string
+  /** The duty point it was sized for, if any. */
+  duty?: { flow: number; head: number; liquid: string; temperature: number }
+  /** Where it runs: the operating point (sized) or the rated point. */
+  hydraulic: {
+    flow: number
+    head: number
+    efficiency: number
+    npshr?: number
+    speed: number
+    impeller: number
+  }
+  materials: { casing: string; impeller: string; shaft: string; wearParts: string }
+  /** "SD" / "DD" (sized), the model's shaft seal, or "submersible". */
+  seal:
+    'SD' | 'DD' | 'Packing' | 'Single mechanical seal' | 'Double mechanical seal' | 'submersible'
+  motor: {
+    power: number
+    voltage: string
+    frequency: 50 | 60
+    poles: number
+    efficiencyClass: string
+    enclosure: string
+  }
+  connections: { suction?: number; discharge: number }
+  exApproved?: boolean
+  /** m, submersibles. */
+  cableLength?: number
+}
+
+export type TenderLanguage = 'en' | 'sv' | 'de'
+
+export type TenderOptions = {
+  language: TenderLanguage
+  detail: 'short' | 'full'
+  includeDuty: boolean
+  orEqual: boolean
+}
+
+export type TenderSection = {
+  title: string
+  paragraphs: string[]
+  /** Label–value lines, e.g. ["Flow rate", "220 m³/h"]. */
+  rows?: [string, string][]
+  /** Bulleted items. */
+  items?: string[]
+}
+
+/** One product's text; in a project document, headed by its position. */
+export type TenderPart = { heading?: string; sections: TenderSection[] }
+
+export type TenderDocument = { title: string; subtitle?: string; parts: TenderPart[] }
+
 /** A recommended service interval, in years of operation. */
 export type ServiceInterval = 2 | 5
 
@@ -606,6 +676,7 @@ export type DocumentType =
   | 'Certificate'
   | 'Service video'
   | 'Dimensional drawing'
+  | 'Sectional drawing'
   | 'Exploded view'
   | 'Wiring diagram'
 
@@ -674,7 +745,11 @@ export type SearchResult = { score: number } & (
   | { kind: 'application'; application: Application }
 )
 
-export type ProjectStatus = 'Draft' | 'In progress' | 'Quoted'
+/** Project lifecycle, in order. Ordered and Archived projects are no longer active. */
+export type ProjectStatus = 'Concept design' | 'Detailed design' | 'Tender' | 'Ordered' | 'Archived'
+
+/** Where a product in a project stands. */
+export type ProjectItemStatus = 'Proposed' | 'For review' | 'Approved' | 'Quoted' | 'Ordered'
 
 /** A sized pump in a project. Rebuilt from its variant id and duty point, so curves and prices stay in step. */
 export type ProjectItem = {
@@ -688,6 +763,14 @@ export type ProjectItem = {
   quantity: number
   /** The sizing record this product came from, if any. */
   sizingId?: string
+  /** Saved from a comparison: "A", "B" or "C". */
+  alternative?: string
+  /** The alternative chosen in the comparison. */
+  preferred?: boolean
+  /** Alternatives saved from one comparison share this id. */
+  alternativeGroup?: string
+  /** Missing on older items: shown as "Proposed". */
+  status?: ProjectItemStatus
 }
 
 /** A whole sizing saved in a project: its input, filters and chosen products. */
@@ -711,9 +794,98 @@ export type SizingRecord = {
   note?: string
 }
 
+export type ProjectAccess = 'owner' | 'editor' | 'viewer'
+
 export type ProjectMember = {
+  id: string
   name: string
+  initials: string
+  email: string
+  company: string
   role: string
+  access: ProjectAccess
+  status: 'active' | 'invited'
+}
+
+/** A comment in the project discussion. Mentions are written as @[member id]. */
+export type ProjectComment = {
+  id: string
+  /** ProjectMember id. */
+  authorId: string
+  /** Display label, e.g. "Yesterday, 14:20" or "Just now". */
+  at: string
+  text: string
+  /** The product item the comment is about, if any. */
+  itemId?: string
+  /** One reply level. */
+  parentId?: string
+  resolved?: boolean
+}
+
+export type ProjectActivityKind =
+  | 'created'
+  | 'sizing'
+  | 'items'
+  | 'status'
+  | 'member'
+  | 'comment'
+  | 'tender'
+  | 'cad'
+  | 'upload'
+  | 'report'
+  | 'details'
+  | 'renamed'
+  | 'alternative'
+  | 'itemStatus'
+  | 'access'
+  | 'share'
+
+/** One entry in the project's activity log, newest first. */
+export type ProjectActivity = {
+  id: string
+  kind: ProjectActivityKind
+  /** ProjectMember id. */
+  actorId: string
+  at: string
+  /** Values for the entry's sentence, e.g. { status: 'Tender' } or { file: 'P&ID rev B.pdf' }. */
+  detail: Record<string, string>
+}
+
+export type ProjectDocumentKind =
+  'datasheet' | 'curves' | 'tender' | 'cad' | 'bim' | 'report' | 'package' | 'upload'
+
+/** A file in the project. Uploads are metadata only: nothing is read or stored. */
+export type ProjectDocument = {
+  id: string
+  kind: ProjectDocumentKind
+  /** File name, e.g. "P&ID rev B.pdf". */
+  title: string
+  /** PDF, DWG, DOCX, ZIP … */
+  format: string
+  size: string
+  /** ProjectMember id. */
+  addedBy: string
+  at: string
+  itemId?: string
+}
+
+/** Who a project is shared with. */
+export type ProjectShare = {
+  access: 'project' | 'specific'
+  /** With "specific": the member ids. */
+  memberIds: string[]
+  /** A read-only link for the client contact. */
+  clientReadOnly: boolean
+}
+
+export type ProjectClient = {
+  company: string
+  contact: string
+  /** Postal address, one line. */
+  address?: string
+  /** Site or location of the installation. */
+  site: string
+  email: string
 }
 
 export type Project = {
@@ -734,9 +906,20 @@ export type Project = {
   modifiedOrder: number
   deadline?: string
   members: ProjectMember[]
-  client: { company: string; contact: string; site: string; email: string }
+  client: ProjectClient
+  description?: string
+  /** The engineering firm the project is run by, e.g. the consultant's. */
+  consultantFirm?: string
+  /** EUR. */
+  budget?: number
+  /** Key requirements: duty points, standards, site conditions. */
+  requirements?: string[]
+  share?: ProjectShare
   items: ProjectItem[]
   sizings: SizingRecord[]
+  comments: ProjectComment[]
+  activity: ProjectActivity[]
+  documents: ProjectDocument[]
 }
 
 export type AssetStatus = 'ok' | 'warning' | 'alarm'

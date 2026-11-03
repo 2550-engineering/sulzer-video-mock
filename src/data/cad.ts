@@ -73,9 +73,12 @@ export const cadFormats: CadFormatSpec[] = [
   },
 ]
 
+/** File size in MB: heavier pumps have more geometry; gentle, so sizes stay realistic. */
+export const cadSizeMb = (spec: CadFormatSpec, weight: number) =>
+  spec.baseSize * (1 + Math.log10(weight / 100 + 1))
+
 function cadFile(model: ProductModel, spec: CadFormatSpec): CadFile {
-  // Heavier pumps have more geometry; keep it gentle so sizes stay realistic.
-  const size = spec.baseSize * (1 + Math.log10(model.weight / 100 + 1))
+  const size = cadSizeMb(spec, model.weight)
   return {
     id: `${model.id}-${spec.extension}`,
     productId: model.productId,

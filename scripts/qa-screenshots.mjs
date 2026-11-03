@@ -68,6 +68,7 @@ const routes = [
   '/eshop/cart',
   '/eshop/checkout',
   '/my-projects/riverside-intake',
+  '/my-projects/riverside-intake/report',
   '/assets',
   '/connect',
   ...placeholderRoutes.map((route) => route.path),

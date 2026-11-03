@@ -1,7 +1,7 @@
 import { CircleCheck, UserCheck } from 'lucide-react'
 import { useId, useState, type FormEvent, type ReactNode } from 'react'
 import { useAuth } from '../../auth/useAuth'
-import { demoUser, quotationReference } from '../../config/demo'
+import { quotationReference } from '../../config/demo'
 import { variantPage } from '../../data/variantPages'
 import type { ResultArticle } from '../../types'
 import { TabHeading } from '../TabHeading'
@@ -21,7 +21,7 @@ export function QuotationTab({ article }: { article: ResultArticle }) {
   const [values, setValues] = useState({
     name: user?.name ?? '',
     company: user?.company ?? '',
-    email: user ? demoUser.email : '',
+    email: user?.email ?? '',
     quantity: '1',
     delivery: copy.deliveryOptions[0],
     message: '',
@@ -56,9 +56,7 @@ export function QuotationTab({ article }: { article: ResultArticle }) {
             <h3 className="mt-5 text-2xl font-bold tracking-tight text-navy-900">
               {copy.sentTitle}
             </h3>
-            <p className="mt-2 max-w-md text-text-muted">
-              {copy.sentText(values.email || demoUser.email)}
-            </p>
+            <p className="mt-2 max-w-md text-text-muted">{copy.sentText(values.email)}</p>
             <p className="mt-7 rounded-md border border-border bg-surface-subtle px-6 py-3">
               <span className="block text-xs font-semibold tracking-[0.12em] text-text-muted uppercase">
                 {copy.reference}

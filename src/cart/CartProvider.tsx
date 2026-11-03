@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { useAuth } from '../auth/useAuth'
-import { demoUser, eshop } from '../config/demo'
+import { eshop, personas } from '../config/demo'
 import { eshopPages } from '../data/eshopPages'
 import { cartTotals, deliveryWindow } from '../lib/cart'
 import { useToast } from '../toast/useToast'
@@ -54,25 +54,32 @@ export function CartProvider({ children }: { children: ReactNode }) {
   useEffect(() => write(ORDERS_KEY, orders), [orders])
   useEffect(() => write(QUOTATIONS_KEY, quotations), [quotations])
 
-  const put = useCallback(
-    (article: CartArticle, quantity: number) => {
-      const id = `${article.kind}:${article.refId}`
-      setBasket((current) => {
-        const existing = current.items.find((item) => item.id === id)
-        const items = existing
-          ? current.items.map((item) =>
+  /** Adds lines to the basket; the same article again raises its quantity. */
+  const merge = useCallback((lines: { article: CartArticle; quantity: number }[]) => {
+    setBasket((current) => {
+      let items = current.items
+      for (const { article, quantity } of lines) {
+        const id = `${article.kind}:${article.refId}`
+        items = items.some((item) => item.id === id)
+          ? items.map((item) =>
               item.id === id ? { ...item, quantity: item.quantity + quantity } : item,
             )
-          : [...current.items, { ...article, id, quantity }]
-        return { ...current, items }
-      })
+          : [...items, { ...article, id, quantity }]
+      }
+      return { ...current, items }
+    })
+  }, [])
+
+  const put = useCallback(
+    (article: CartArticle, quantity: number) => {
+      merge([{ article, quantity }])
       showToast({
         message: eshopPages.toasts.added,
         detail: eshopPages.toasts.addedDetail(quantity, article.name),
         action: eshopPages.toasts.viewCart,
       })
     },
-    [showToast],
+    [showToast, merge],
   )
 
   const value = useMemo<CartState>(() => {
@@ -83,6 +90,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
       setReference: (reference) => setBasket((current) => ({ ...current, reference })),
       add: (article, quantity) =>
         user ? put(article, quantity) : setPending({ article, quantity }),
+      addAll: (lines, detail) => {
+        if (lines.length === 0) return
+        merge(lines)
+        const pieces = lines.reduce((sum, line) => sum + line.quantity, 0)
+        showToast({
+          message: eshopPages.toasts.addedMany(pieces),
+          detail,
+          action: eshopPages.toasts.viewCart,
+        })
+      },
       setQuantity: (id, quantity) =>
         setBasket((current) => ({
           ...current,
@@ -101,8 +118,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
         const dates = deliveryWindow(basket.items)
         const order: Order = {
           id,
-          placedBy: demoUser.name,
-          company: demoUser.company,
+          placedBy: (user ?? personas.endUser).name,
+          company: (user ?? personas.endUser).company,
           lines: basket.items,
           reference: basket.reference,
           deliveryAddressId,
@@ -126,7 +143,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         return quotation
       },
     }
-  }, [basket, orders, quotations, user, put])
+  }, [basket, orders, quotations, user, put, merge, showToast])
 
   return (
     <CartContext.Provider value={value}>

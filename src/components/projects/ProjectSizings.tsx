@@ -69,7 +69,7 @@ export function ProjectSizings({ project, onDuplicate, onDelete }: ProjectSizing
                   <p className="font-semibold text-navy-900">{sizing.name}</p>
                   <p className="text-xs text-text-muted">{copy.hits(sizing.hits)}</p>
                 </td>
-                <td className={`${cell} whitespace-nowrap tabular-nums`}>
+                <td className={`${cell} tabular-nums`}>
                   {copy.dutyPoint(
                     groupThousands(sizing.dutyPoint.flow),
                     groupThousands(sizing.dutyPoint.head),
@@ -103,18 +103,20 @@ export function ProjectSizings({ project, onDuplicate, onDelete }: ProjectSizing
                     <button
                       type="button"
                       onClick={() => onDuplicate(sizing.id)}
-                      className={`${iconButton} text-primary hover:bg-primary-tint`}
+                      aria-label={`${copy.duplicate}: ${sizing.name}`}
+                      title={copy.duplicate}
+                      className={`$text-primary flex size-8 items-center justify-center rounded-full transition-colors hover:bg-primary-tint`}
                     >
-                      <Copy className="size-3.5" />
-                      {copy.duplicate}
+                      <Copy className="size-4" />
                     </button>
                     <button
                       type="button"
                       onClick={() => onDelete(sizing.id)}
-                      className={`${iconButton} text-danger hover:bg-surface-muted`}
+                      aria-label={`${copy.delete}: ${sizing.name}`}
+                      title={copy.delete}
+                      className={`$text-danger flex size-8 items-center justify-center rounded-full transition-colors hover:bg-surface-muted`}
                     >
-                      <Trash2 className="size-3.5" />
-                      {copy.delete}
+                      <Trash2 className="size-4" />
                     </button>
                   </div>
                 </td>

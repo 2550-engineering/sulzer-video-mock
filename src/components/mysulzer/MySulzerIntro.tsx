@@ -69,7 +69,7 @@ export function MySulzerIntro() {
         {user && (
           <p className="mt-4 flex items-center gap-2 text-sm text-text-muted">
             <span aria-hidden className="size-2 rounded-full bg-success" />
-            {intro.signedInNote}
+            {user && intro.signedInNote(user.name, user.company)}
           </p>
         )}
       </div>

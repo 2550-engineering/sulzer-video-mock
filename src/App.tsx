@@ -21,10 +21,12 @@ import { PlaceholderPage } from './pages/PlaceholderPage'
 import { ProductPage } from './pages/ProductPage'
 import { ProductSearchPage } from './pages/ProductSearchPage'
 import { ReplacementPage } from './pages/ReplacementPage'
+import { SizingComparePage } from './pages/SizingComparePage'
 import { SizingPage } from './pages/SizingPage'
 import { SparePartsPage } from './pages/SparePartsPage'
 import { SizingResultsPage } from './pages/SizingResultsPage'
 import { VariantPage } from './pages/VariantPage'
+import { ProjectReportPage } from './pages/ProjectReportPage'
 import { VariantPrintPage } from './pages/VariantPrintPage'
 import { ProjectsProvider } from './projects/ProjectsProvider'
 import { ToastProvider } from './toast/ToastProvider'
@@ -57,6 +59,7 @@ export default function App() {
                   <Route path="/products/:id/:variantId" element={<VariantPage />} />
                   <Route path="/sizing" element={<SizingPage />} />
                   <Route path="/sizing/results" element={<SizingResultsPage />} />
+                  <Route path="/sizing/compare" element={<SizingComparePage />} />
                   <Route path="/spare-parts" element={<SparePartsPage />} />
                   <Route path="/my-projects" element={<MyProjectsPage />} />
                   <Route path="/my-projects/:projectId" element={<MyProjectsPage />} />
@@ -77,6 +80,7 @@ export default function App() {
                 {/* A clean print view of a configured product, without the site header and footer. */}
                 <Route path="/products/:id/:variantId/print" element={<VariantPrintPage />} />
                 <Route path="/products/:id/:variantId/bom" element={<BomPrintPage />} />
+                <Route path="/my-projects/:projectId/report" element={<ProjectReportPage />} />
                 {/* Sulzer Connect is its own app, outside the website header and footer. */}
                 <Route path="/connect" element={<ConnectPage />} />
               </Routes>

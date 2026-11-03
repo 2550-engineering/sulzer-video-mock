@@ -177,7 +177,11 @@ with the file name (hide the labels with \`showPlaceholderLabels\` in \`src/conf
   Never Grundfos images.
 - **Priority 1** images are visible in a recording; the column says which (application finder,
   product finder).
-- **Sizing and My Projects** need no photos: their charts and curve thumbnails are drawn in SVG.
+- **Sizing, compare and My Projects** need no photos: their charts and curve thumbnails are drawn
+  in SVG. Member avatars are initials. The project report uses the Sulzer logo and the
+  consultant firm's name as text; a consultant logo would be optional.
+- **"Size your product" in the mega menu** uses \`src/assets/images/sulzer-dynamical-still.jpg\`
+  (bundled, not in \`public/\`).
 - **Spare parts, cart and replacement** need no new photos either. The exploded drawings, part
   thumbnails and kit icons are SVG. Pumps reuse the product cut-outs (\`xfp-main.png\`,
   \`ahlstar-main.png\`). \`public/images/spare-parts/\` still holds \`service-kits.jpg\` and

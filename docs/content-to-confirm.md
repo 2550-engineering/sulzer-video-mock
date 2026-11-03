@@ -369,12 +369,152 @@ shows numbers from sizing.
 
 Head in bar or kPa is converted with the liquid's density.
 
+## Consultant persona
+
+Invented for the demo. **Placeholder, confirm with Sulzer.** All people, companies and
+addresses are fictional; emails use `.example` domains.
+
+- **Persona** (`consultantUser` in `src/config/demo.ts`): Anna Berg, Senior Consulting
+  Engineer, Nordic Water Consulting AB, `anna.berg@nordicwater.example`, market Sweden.
+  - The end user (Emma Lindqvist, Nordvatten Utilities AB) is unchanged and stays the default.
+  - **Presenter panel (Shift+D):** "Sign in as end user", "Sign in as consultant", "Reset
+    demo". The header's "Sign in" signs in the end user.
+- **Project statuses (all projects):** Concept design, Detailed design, Tender, Ordered,
+  Archived. Ordered and Archived projects count as no longer active.
+  - The end user's Draft projects became Concept design; the Quoted one became Tender.
+- **Projects per persona:** each persona has its own projects, saved separately in the browser
+  (`sz-demo-projects-v4-<persona>`).
+- **Consultant's projects** (`src/data/projects.ts`):
+  - **Riverside raw water intake upgrade:** P-2026-0412, project ID 397140, Concept design,
+    deadline 20 Jan 2027, budget EUR 420,000 (INVENTED).
+    - Client: Älvstad Vatten AB (fictional municipal water utility), contact Maria Lund,
+      `maria.lund@alvstadvatten.example`, Hamngatan 4, 652 24 Älvstad (fictional address).
+    - Consultant firm: Nordic Water Consulting AB.
+    - Description and key requirements (INVENTED):
+      - 2 × 220 m³/h at 38 m, duty/assist, river water 2–20 °C.
+      - Backwash at 150 m³/h at 55 m.
+      - NPSH margin of at least 1.0 m.
+      - IE3 motors suitable for VSD.
+      - EN 1092-1 PN 16 flanges.
+      - ISO 9906 grade 2B acceptance test.
+    - Members:
+      - Anna Berg (owner).
+      - Erik Sandberg (Electrical Engineer, Nordic Water Consulting, `erik.sandberg@nordicwater.example`).
+      - Mikael Ahonen (Application engineer, Sulzer, `mikael.ahonen@sulzer.example`).
+      - Maria Lund (client, Viewer).
+    - Products:
+      - RW-P1/P2: alternatives A and B, the best and second-best sizing results for 2 pumps at 220 m³/h @ 38 m. A is chosen, "For review".
+      - FW-P1 (150 m³/h @ 55 m), now position 30.
+    - Comments:
+      - Mikael: "both duty points checked against the lowest river level, 1.5 m extra suction
+        lift".
+      - Erik: "@Anna, variable speed drives for both intake pumps?".
+      - Anna's reply: "Yes, let's go for drives. I'll add them to the tender text".
+    - Activity from 2 Oct 2026 to "Today, 08:42".
+    - Uploads: "P&ID rev B.pdf" (2.4 MB) and "Site layout.dwg" (5.8 MB).
+  - **Mill Creek pump station renewal:** P-2026-0377, project ID 396902, Tender, Älvstad
+    Vatten AB, Anna and Erik, 2 pumps at 500 m³/h @ 25 m, "Hydraulic report rev A.pdf"
+    (1.7 MB).
+  - **Kustby booster station study:** P-2026-0109, project ID 392215, Archived. Client: Kustby
+    Vatten AB, contact Johanna Ek (`johanna.ek@kustbyvatten.example`). 3 pumps at 150 m³/h @
+    55 m.
+- **Uploads** are names and sizes only; there are no files behind them.
+
+### Project collaboration (My projects)
+
+- **Product statuses (INVENTED):** Proposed, For review, Approved, Quoted, Ordered. Older items
+  show "Proposed".
+- **Alternatives:**
+  - Products saved together from the compare page form one group.
+  - "Choose this alternative" marks one as selected. The others stay in the list, greyed, and
+    are left out of the total, the project tender texts and the project package. The project
+    report shows all of them.
+- **Roles:**
+  - Owner, Editor, Viewer. Only the owner can change roles; the owner's role is fixed.
+  - Invites take the name from the email ("johan.berg@…" → Johan Berg) and show "Invited".
+  - Role descriptions in the invite dialog are INVENTED.
+- **Share:**
+  - The link is `https://my.sulzer.com/projects/<project ID>` (`shareLinkBase` in
+    `src/config/demo.ts`). PLACEHOLDER: confirm the mySulzer URL.
+  - Nothing is sent; settings are saved with the project.
+- **Activity sentences:**
+  - Written in `myProjectsPage.activity` with the actor's first name, e.g. "Anna added AHLSTAR
+    … and 2 more to …".
+  - New entries read "Just now", and "Today" after a reload.
+- **Project report:** "Prepared by <consultant firm>". The footer note "Performance data are
+  calculated for the duty point shown and are subject to confirmation by Sulzer" is INVENTED.
+  "Print or save as PDF" adds "Project report – <name>.pdf" (2.1 MB) to the documents.
+- **New project:** starts in Concept design, owned by the signed-in user. For the consultant, the
+  consultant firm is preset.
+- **My Pages:**
+  - The "My projects" badge counts the persona's active projects.
+  - Recent activity links the persona's own project; the consultant gets "Riverside raw water
+    intake upgrade, updated by Erik Sandberg, Today 08:42".
+- **Catalogue products in projects:** "Add to project" on a configured product or a Models-tab
+  model adds it at its rated point (water, 20 °C).
+
+### Tender texts (`src/data/tenderTexts.ts`, `src/lib/tenderText.ts`)
+
+All wording is our own specification style, not Sulzer text. **Confirm or replace with a Sulzer
+template.**
+
+- **Sections (Full):** General description, Application and duty point, Hydraulic data,
+  Design, Materials, Shaft seal, Motor, Connections, Accessories, Testing and standards,
+  Documentation, Manufacturer.
+  - **Short:** general, duty, hydraulic, materials, motor, manufacturer.
+  - **Manufacturer line:** "Manufacturer: Sulzer, type <model> (product no. …), or equal."
+- **Invented clauses (marked INVENTED in the data file):**
+  - Operating point between 70 % and 120 % of best-efficiency flow.
+  - **Design, end-suction:** integral feet, back pull-out, dimensions to ISO 2858 / EN 22858,
+    bearings ≥ 25 000 h L10.
+  - **Design, submersible:** S1 duty submerged, guide rails and auto-coupling, cooling jacket.
+  - **Seal wording per seal type:** SiC/carbon, EPDM, EN 12756; double seal with barrier fluid;
+    for XFP, two seals in an oil chamber with moisture sensor.
+  - **Motor:** insulation class F with class B rise, PTC thermistors, ATEX "II 2G Ex db IIB T4
+    Gb" for Ex variants.
+  - **Defaults:** IE3 class and IP55 for AHLSTAR models; IP55 with the cooling method for sized
+    pumps.
+  - **Flanges:** EN 1092-2, PN 16.
+  - **Accessories:** base plate, spacer coupling, guard to EN ISO 14120, foundation bolts; for
+    XFP: auto-coupling, lifting chain, cable.
+  - **Testing:** ISO 9906 grade 2B with certificate, hydrostatic test at 1.5 × the maximum
+    working pressure, EN 10204 3.1 certificates on request, CE and the Machinery Directive.
+  - **Documentation list.**
+  - **Shaft:** 1.4021. **Wear parts:** bronze CuSn10 / duplex; XFP: 1.4460.
+- **Languages:** only English is written. Swedish and German are shown as "coming soon".
+- **Files:**
+  - **.docx:** a real Word file built in the browser (Arial, A4).
+  - **"Download PDF":** opens the browser's print dialog with only the tender text.
+  - **Copy:** puts plain text on the clipboard.
+- **In a project:** "Tender texts" makes one document with every product, numbered by
+  position ("Pos. 10 – <tag> – <model>", sections 1.1, 1.2 …), with the quantity in the
+  general description.
+
+### Consultant: sizing entry and compare
+
+- **Mega menu (Products & services):** Categories, Applications, Products A–Z, Sizing,
+  Industries, Product replacement, Liquids, Spare parts, Digital solutions.
+  - "Industries" (Municipal water, Wastewater, Industrial water, Energy, Fertilizers, Mining
+    and metals, Pulp and paper) opens the matching application areas. Its own page and
+    "Liquids" are "Coming soon" pages.
+  - Card text: "Find the right pump solution for your installation requirements. Size,
+    select and compare pumps and pump systems." Confirm the wording.
+- **Compare (`/sizing/compare`):** pump unit weight is an estimate, 1.15 × (0.0045 ×
+  impeller^1.9 + 8 × motor kW^0.85), rounded to 5 kg. Illustrative, not Sulzer data.
+  - List price is the pump unit's purchase price used in sizing. Lead time is the
+    variant's.
+  - The best value is the lowest, except efficiency (highest). Speed, impeller and materials
+    have no best.
+- **"Save comparison to project":** saves every compared pump in a project as "Alternative
+  A/B/C"; the selected one is also marked "Selected".
+
 ## My Projects (module 3)
 
 Invented for the demo. **Placeholder, confirm with Sulzer.**
 
-- **Projects** (`src/data/projects.ts`): Riverside intake (P-2026-0318, Draft), North pump
-  station upgrade (P-2026-0291, Quoted) and Harbour district booster station (P-2026-0274, Draft).
+- **Projects** (`src/data/projects.ts`, end user): Riverside intake (P-2026-0318, Concept
+  design), North pump station upgrade (P-2026-0291, Tender) and Harbour district booster station
+  (P-2026-0274, Concept design).
   Their ref numbers, project IDs, dates, deadlines and members (Johan Berg, Sara Nyström, Lars
   Holm, and Mikael Ahonen as the Sulzer application engineer) are fictional. Each product in them
   is the best sizing result for an invented duty point.
@@ -779,3 +919,17 @@ All four are invented publications. Placeholder, confirm with Sulzer, or swap in
 - "Need service?" → claims "remote help from a Sulzer expert"
 
 Placeholder, confirm with Sulzer.
+
+### Project files and package (`src/data/projectFiles.ts`, `src/lib/projectPackage.ts`)
+
+- **Files drawer per project product (INVENTED):**
+  - CAD/BIM file names and sizes. Sizes use the BIM tab formula with an estimated unit weight for sized pumps: 150 kg plus 12 kg per motor kW.
+  - Drawing and document numbers: `DD-`, `SD-`, `WD-`, `DS-`, `IOM-…-EN`, `DoC-`, `PC-`.
+  - Sizes: data sheet 1.1 MB, manual 2.4 MB, declaration of conformity 0.3 MB, curve 0.8 MB; dimensional, sectional and wiring drawings 0.6, 0.9 and 0.3 MB.
+  - Dates and revisions.
+  - New document type "Sectional drawing".
+- **Project package:**
+  - The size adds up the files above. Defaults are CAD STEP and BIM Revit, everything ticked.
+  - For "Riverside raw water intake upgrade" the defaults give 21 files, 48 MB.
+  - The package's "Project files" are the team's uploads only.
+- **Documents section:** generated files are shown as by "mySulzer", dated "Today". Uploads keep only the file name and size; the file is not read or stored.

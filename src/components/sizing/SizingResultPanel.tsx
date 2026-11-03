@@ -1,4 +1,5 @@
-import { FileText, FolderPlus } from 'lucide-react'
+import { FileText, FolderPlus, ScrollText } from 'lucide-react'
+import { tenderDialog } from '../../data/tenderTexts'
 import { sizingResultsPage as copy } from '../../data/sizingPages'
 import { seriesColors } from '../../lib/chartColors'
 import { keyFigureRows } from '../../lib/keyFigures'
@@ -22,6 +23,7 @@ type SizingResultPanelProps = {
   onClose: () => void
   onAddToProject: (results: SizingResult[]) => void
   onDataSheet: (result: SizingResult) => void
+  onTenderText: (result: SizingResult) => void
 }
 
 /**
@@ -37,6 +39,7 @@ export function SizingResultPanel({
   onClose,
   onAddToProject,
   onDataSheet,
+  onTenderText,
 }: SizingResultPanelProps) {
   const shown = mode === 'compare' ? results.slice(0, 3) : results.slice(0, seriesColors.length)
   const first = shown[0]
@@ -102,6 +105,14 @@ export function SizingResultPanel({
                 >
                   <FileText className="size-4" />
                   {copy.panel.dataSheet}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onTenderText(first)}
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-pill border border-primary px-5 text-sm font-semibold text-primary transition-colors hover:bg-primary-tint"
+                >
+                  <ScrollText className="size-4" />
+                  {tenderDialog.open}
                 </button>
               </div>
             </div>

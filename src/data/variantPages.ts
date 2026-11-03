@@ -1,4 +1,4 @@
-import { demoUser, market } from '../config/demo'
+import { market } from '../config/demo'
 import type { NavItem, StockStatus, TabDef } from '../types'
 
 /* Copy for the configured product page, /products/<productId>/<variantId>. */
@@ -66,6 +66,7 @@ export const variantPage = {
       inStock: 'In stock',
       leadTime: (time: string) => `Lead time ${time}`,
       confirm: 'To be confirmed in sales order',
+      madeToOrder: (time: string) => `Made to order – ${time}`,
     },
     discountGroup: (code: string) => `Discount group: ${code}`,
     signIn: 'Sign in',
@@ -75,6 +76,8 @@ export const variantPage = {
     leadTime: 'Lead time',
     whereToBuy: 'Where to buy',
     addToCart: 'Add to cart',
+    quantityFor: (code: string) => `Quantity of ${code}`,
+    requestQuote: 'Request quotation',
   },
   stock: {
     'in-stock': 'In stock',
@@ -94,7 +97,7 @@ export const variantPage = {
     title: 'Where to buy',
     close: 'Close',
     intro: `Your nearest Sulzer service centre in ${market.country}:`,
-    distance: (km: string) => `${km} from ${demoUser.company}`,
+    distance: (km: string, company: string) => `${km} from ${company}`,
     phone: 'Phone',
     email: 'Email',
     hours: 'Opening hours',

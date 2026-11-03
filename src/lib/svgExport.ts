@@ -1,4 +1,4 @@
-import { downloadText } from './bom'
+import { downloadText } from './download'
 
 /* Saving an on-screen SVG chart as a file that looks the same outside the page. */
 

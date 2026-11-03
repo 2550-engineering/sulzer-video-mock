@@ -57,7 +57,7 @@ export function OrderConfirmationPage() {
                   <p className="text-3xl font-bold tracking-wide text-brand tabular-nums">
                     {order.id}
                   </p>
-                  <p className="mt-1 text-text">{copy.text}</p>
+                  <p className="mt-1 text-text">{copy.text(user?.email ?? '')}</p>
                 </div>
                 <div className="flex flex-wrap gap-3">
                   <Link

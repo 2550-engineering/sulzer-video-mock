@@ -2,6 +2,7 @@ import { eshop } from '../config/demo'
 import type { CartItem, PartOwner } from '../types'
 import { ownerProductNumber, partOwner } from './catalog'
 import { addWorkingDays } from './dates'
+import { getVariant } from './variants'
 
 /* Cart arithmetic: totals, delivery dates and the bill-of-material grouping. */
 
@@ -28,6 +29,10 @@ export function deliveryWindow(items: CartItem[]) {
   }
 }
 
+/** When a line is expected: its lead time plus transit, in working days from today. */
+export const lineDelivery = (item: CartItem) =>
+  addWorkingDays(eshop.today, item.availability.leadTimeDays + eshop.transitDays)
+
 /** Lines grouped by the variant or model they are for, in the order first added. */
 export function groupByProduct(items: CartItem[]) {
   const groups: {
@@ -41,11 +46,13 @@ export function groupByProduct(items: CartItem[]) {
     let group = groups.find((g) => g.variantId === item.variantId)
     if (!group) {
       const owner = partOwner(item.variantId)
+      // A sized pump (from sizing or a project) has no product page of its own.
+      const sized = owner ? undefined : getVariant(item.variantId)
       group = {
         variantId: item.variantId,
         owner,
-        title: owner?.name ?? item.variantId,
-        productNumber: owner ? ownerProductNumber(owner) : '',
+        title: owner?.name ?? sized?.name ?? item.name,
+        productNumber: owner ? ownerProductNumber(owner) : (sized?.productNumber ?? ''),
         items: [],
       }
       groups.push(group)
