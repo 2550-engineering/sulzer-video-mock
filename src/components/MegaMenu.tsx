@@ -91,8 +91,8 @@ export function MegaMenu({ open, session, onNavigate }: MegaMenuProps) {
             Size your product
           </h2>
           <p className="mt-2 max-w-md text-[15px] leading-relaxed text-text-muted">
-            Enter your duty point and get matching Sulzer pumps with performance curves, energy data
-            and drawings in minutes.
+            Find the right pump solution for your installation requirements. Size, select and
+            compare pumps and pump systems.
           </p>
           <Link
             to="/sizing"

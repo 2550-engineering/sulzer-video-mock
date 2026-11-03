@@ -131,3 +131,18 @@
     }
   }
 }
+
+/* Tender text "Download PDF": while the print view is mounted, print only it. */
+.tender-print {
+  display: none;
+}
+
+@media print {
+  body:has(> .tender-print) > :not(.tender-print) {
+    display: none !important;
+  }
+
+  body > .tender-print {
+    display: block;
+  }
+}

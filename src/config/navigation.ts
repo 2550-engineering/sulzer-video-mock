@@ -13,7 +13,7 @@ import {
   ShoppingCart,
   Wrench,
 } from 'lucide-react'
-import { applicationPath, childApplications, rootApplication } from '../lib/catalog'
+import { applicationPath, childApplications, getApplication, rootApplication } from '../lib/catalog'
 import { categoryPath, productCategories } from '../lib/productFilters'
 import { products } from './demo'
 import type { FooterColumn, IconLink, MegaMenuItem, NavItem } from '../types'
@@ -43,9 +43,29 @@ export const megaMenu: MegaMenuItem[] = [
     })),
   },
   { label: 'Products A–Z', to: '/products' },
-  { label: 'Product replacement', to: '/products/replacement' },
-  { label: 'Spare parts', to: '/spare-parts' },
   { label: 'Sizing', to: '/sizing' },
+  {
+    label: 'Industries',
+    to: '/industries',
+    // Each industry opens its application area.
+    children: (
+      [
+        ['Municipal water', 'municipal-water-supply'],
+        ['Wastewater', 'wastewater'],
+        ['Industrial water', 'water-treatment'],
+        ['Energy', 'energy-transition'],
+        ['Fertilizers', 'fertilizers'],
+        ['Mining and metals', 'mining-metals'],
+        ['Pulp and paper', 'pulp-paper'],
+      ] as const
+    ).flatMap(([label, id]) => {
+      const area = getApplication(id)
+      return area ? [{ label, to: applicationPath(area) }] : []
+    }),
+  },
+  { label: 'Product replacement', to: '/products/replacement' },
+  { label: 'Liquids', to: '/liquids' },
+  { label: 'Spare parts', to: '/spare-parts' },
   {
     label: 'Digital solutions',
     to: '/digital-solutions',
@@ -70,6 +90,7 @@ export const quickLinks: IconLink[] = [
 export const digitalOfferings: IconLink[] = [
   { label: 'Sulzer Connect', to: '/connect', icon: Activity },
   { label: 'My assets', to: '/assets', icon: Gauge },
+  { label: 'My projects', to: '/my-projects', icon: FolderKanban },
 ]
 
 /** Search chips in the header search and on "No results". Each one finds something. */

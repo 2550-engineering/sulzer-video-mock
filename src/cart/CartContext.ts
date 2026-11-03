@@ -13,6 +13,8 @@ export type CartState = {
   setReference: (reference: string) => void
   /** Signed in: adds and confirms with a toast. Signed out: asks to sign in first. */
   add: (article: CartArticle, quantity: number) => void
+  /** Adds several lines at once, confirmed with one toast (signed in only). */
+  addAll: (lines: { article: CartArticle; quantity: number }[], detail?: string) => void
   setQuantity: (id: string, quantity: number) => void
   remove: (id: string) => void
   orders: Order[]

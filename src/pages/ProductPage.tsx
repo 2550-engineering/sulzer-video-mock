@@ -4,6 +4,7 @@ import { ConfiguredProductsBand } from '../components/product/ConfiguredProducts
 import { DocumentationTab } from '../components/product/DocumentationTab'
 import { ModelsTab } from '../components/product/ModelsTab'
 import { ProductExploreTab } from '../components/product/ProductExploreTab'
+import { ProductBuyBox } from '../components/product/ProductBuyBox'
 import { ProductHeader } from '../components/product/ProductHeader'
 import { ServicesTab } from '../components/product/ServicesTab'
 import { VariantSparePartsPointer } from '../components/product/VariantSparePartsPointer'
@@ -48,6 +49,15 @@ export function ProductPage() {
         key={product.id}
         product={product}
         onShowDocumentation={() => selectTab('documentation')}
+        buyBox={
+          models.length > 0 && (
+            <ProductBuyBox
+              product={product}
+              models={models}
+              onChooseModel={() => selectTab('models')}
+            />
+          )
+        }
       />
 
       {featured && (

@@ -1,3 +1,5 @@
+import type { PersonaId, User } from '../types'
+
 /*
  * Demo content used across the mock-up. Change it here, not in components.
  *
@@ -16,6 +18,26 @@ export const demoUser = {
   // Placeholder address on a reserved example domain.
   email: 'emma.lindqvist@nordvatten.example',
 } as const
+
+/**
+ * The consultant persona (deck slide "Consultant"): sizes pumps early in
+ * projects, writes tenders and works with the project team.
+ * PLACEHOLDER — fictional person and company; confirm with Sulzer.
+ */
+export const consultantUser = {
+  firstName: 'Anna',
+  name: 'Anna Berg',
+  initials: 'AB',
+  company: 'Nordic Water Consulting AB',
+  role: 'Senior Consulting Engineer',
+  email: 'anna.berg@nordicwater.example',
+} as const
+
+/** Who "Sign in" signs in as, per persona. The end user is the default everywhere. */
+export const personas = {
+  endUser: demoUser,
+  consultant: consultantUser,
+} as const satisfies Record<PersonaId, User>
 
 export const market = {
   // Placeholder market — confirm with Sulzer.
@@ -154,3 +176,6 @@ export const serviceRequestReference = 'SR-2026-0142'
  * Set to false before recording.
  */
 export const showPlaceholderLabels = true
+
+/** Base of the project share link in the Share dialog. Placeholder — confirm the mySulzer URL with Sulzer. */
+export const shareLinkBase = 'https://my.sulzer.com/projects/'

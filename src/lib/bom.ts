@@ -65,15 +65,3 @@ export function bomCsv(parts: SparePart[], kits: ServiceKit[], withPrices: boole
   })
   return '﻿' + [header, ...rows].map((row) => row.map(csvCell).join(',')).join('\r\n')
 }
-
-/** Starts a real file download in the browser. */
-export function downloadText(fileName: string, text: string, type = 'text/csv;charset=utf-8') {
-  const url = URL.createObjectURL(new Blob([text], { type }))
-  const link = document.createElement('a')
-  link.href = url
-  link.download = fileName
-  document.body.append(link)
-  link.click()
-  link.remove()
-  window.setTimeout(() => URL.revokeObjectURL(url), 1000)
-}

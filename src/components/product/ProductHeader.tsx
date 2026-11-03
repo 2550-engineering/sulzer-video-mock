@@ -1,5 +1,5 @@
 import { ArrowRight, FileText } from 'lucide-react'
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { Link } from 'react-router'
 import { productPage as copy } from '../../data/catalogPages'
 import { applicationPath, getApplication } from '../../lib/catalog'
@@ -12,14 +12,16 @@ type ProductHeaderProps = {
   product: Product
   /** Opens the Documentation tab. */
   onShowDocumentation: () => void
+  /** Under the key specs, e.g. the buy box. */
+  buyBox?: ReactNode
 }
 
 /**
  * Product page header: breadcrumb, badge, name, "Suitable for" links (first three,
  * then "View more"), standard, documentation link and "Size product" on the left;
- * product image and key specs on the right.
+ * product image, key specs and the buy box on the right.
  */
-export function ProductHeader({ product, onShowDocumentation }: ProductHeaderProps) {
+export function ProductHeader({ product, onShowDocumentation, buyBox }: ProductHeaderProps) {
   const [showAllApplications, setShowAllApplications] = useState(false)
   const suitableFor = product.applications.map(getApplication).filter((app) => app !== undefined)
   const shown = showAllApplications ? suitableFor : suitableFor.slice(0, copy.suitableForMax)
@@ -95,6 +97,7 @@ export function ProductHeader({ product, onShowDocumentation }: ProductHeaderPro
             <SmartImage src={product.images[0].src} alt={product.images[0].alt} fit="contain" />
           </div>
           {product.keySpecs && <KeySpecStrip specs={product.keySpecs} />}
+          {buyBox}
         </div>
       </div>
     </section>

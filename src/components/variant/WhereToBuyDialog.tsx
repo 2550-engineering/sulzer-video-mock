@@ -1,5 +1,6 @@
 import { Clock, Mail, MapPin, Phone } from 'lucide-react'
-import { serviceCentre } from '../../config/demo'
+import { useAuth } from '../../auth/useAuth'
+import { personas, serviceCentre } from '../../config/demo'
 import { variantPage } from '../../data/variantPages'
 import { Modal } from '../Modal'
 
@@ -14,6 +15,7 @@ type WhereToBuyDialogProps = {
 
 /** The nearest (fictional) Sulzer service centre for the demo user's market. */
 export function WhereToBuyDialog({ open, onClose, onRequestQuote }: WhereToBuyDialogProps) {
+  const { user } = useAuth()
   const row = 'flex gap-3'
   const icon = 'mt-0.5 size-4 shrink-0 text-primary'
   return (
@@ -27,7 +29,9 @@ export function WhereToBuyDialog({ open, onClose, onRequestQuote }: WhereToBuyDi
       <div className="px-7 py-6">
         <p className="text-sm text-text-muted">{copy.intro}</p>
         <p className="mt-3 text-xl font-bold tracking-tight text-navy-900">{serviceCentre.name}</p>
-        <p className="text-sm text-text-muted">{copy.distance(serviceCentre.distance)}</p>
+        <p className="text-sm text-text-muted">
+          {copy.distance(serviceCentre.distance, (user ?? personas.endUser).company)}
+        </p>
 
         <ul className="mt-5 space-y-3 text-[15px] text-text">
           <li className={row}>

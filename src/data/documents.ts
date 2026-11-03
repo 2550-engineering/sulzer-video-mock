@@ -26,6 +26,7 @@ export const documentTypeOrder: DocumentType[] = [
   'Certificate',
   'Service video',
   'Dimensional drawing',
+  'Sectional drawing',
   'Exploded view',
   'Wiring diagram',
 ]

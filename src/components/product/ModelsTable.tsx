@@ -2,10 +2,13 @@ import { ArrowDown, ArrowUp, ArrowUpDown, ChevronDown, Lock, Wrench } from 'luci
 import { Fragment, type ReactNode } from 'react'
 import { Link } from 'react-router'
 import { productPage } from '../../data/catalogPages'
+import { articleById } from '../../lib/articles'
+import { articleCartArticle } from '../../lib/cartArticles'
 import { partOwner, sparePartsFor, sparePartsPath } from '../../lib/catalog'
 import { formatPrice, type ModelSort, type ModelSortKey } from '../../lib/modelSpecs'
 import type { ProductModel } from '../../types'
 import { AvailabilityBadge } from './AvailabilityBadge'
+import { ModelCartCell } from './ModelCartCell'
 
 const copy = productPage.models
 
@@ -91,6 +94,7 @@ const cell = 'px-4 py-3.5'
 
 /**
  * Models tab table: sortable columns, zebra rows, a compare checkbox per row,
+ * the model name linking to its page, quantity and "Add to cart" (signed in),
  * and a row that expands into its detail panel when clicked.
  */
 export function ModelsTable({
@@ -106,8 +110,8 @@ export function ModelsTable({
   detail,
 }: ModelsTableProps) {
   const visible = columns.filter((col) => signedIn || !col.priced)
-  // Compare checkbox + columns (+ the sign-in column when signed out).
-  const columnCount = 1 + visible.length + (signedIn ? 0 : 1)
+  // Compare checkbox + columns + the order column (signed in) or the sign-in column.
+  const columnCount = 1 + visible.length + 1
   const compareFull = compareIds.length >= 3
 
   return (
@@ -162,6 +166,14 @@ export function ModelsTable({
                 </th>
               )
             })}
+            {signedIn && (
+              <th
+                scope="col"
+                className={`${stickyHeader} border-b border-border ${cell} text-right`}
+              >
+                {copy.order}
+              </th>
+            )}
             {!signedIn && (
               <th
                 scope="col"
@@ -185,6 +197,9 @@ export function ModelsTable({
             const expanded = model.id === expandedId
             const comparing = compareIds.includes(model.id)
             const detailId = `model-detail-${model.id}`
+            // Models sold as such (AHLSTAR) have their own page and go straight in the cart.
+            const article = articleById(model.id)
+            const cartArticle = article && articleCartArticle(article)
             const rowTone = expanded
               ? 'bg-primary-tint'
               : index % 2 === 1
@@ -219,26 +234,41 @@ export function ModelsTable({
                     >
                       {col.key === 'name' ? (
                         <>
-                          {/* The click bubbles to the row, which toggles the panel. */}
-                          <button
-                            type="button"
-                            aria-expanded={expanded}
-                            aria-controls={expanded ? detailId : undefined}
-                            aria-label={copy.showDetails(model.name)}
-                            className="inline-flex items-center gap-2 font-semibold whitespace-nowrap text-primary"
-                          >
-                            <ChevronDown
-                              aria-hidden
-                              className={`size-4 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`}
-                            />
-                            {model.name}
-                          </button>
+                          <span className="inline-flex items-center gap-1">
+                            {/* The click bubbles to the row, which toggles the panel. */}
+                            <button
+                              type="button"
+                              aria-expanded={expanded}
+                              aria-controls={expanded ? detailId : undefined}
+                              aria-label={copy.showDetails(model.name)}
+                              className="flex size-7 items-center justify-center rounded-full text-primary transition-colors hover:bg-primary-tint"
+                            >
+                              <ChevronDown
+                                aria-hidden
+                                className={`size-4 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`}
+                              />
+                            </button>
+                            {article ? (
+                              <Link
+                                to={article.to}
+                                onClick={(e) => e.stopPropagation()}
+                                aria-label={copy.openModel(model.name)}
+                                className="font-semibold whitespace-nowrap text-primary underline-offset-4 hover:underline"
+                              >
+                                {model.name}
+                              </Link>
+                            ) : (
+                              <span className="font-semibold whitespace-nowrap text-primary">
+                                {model.name}
+                              </span>
+                            )}
+                          </span>
                           {sparePartsFor(model.id) && (
                             <Link
                               to={sparePartsPath(partOwner(model.id)!)}
                               onClick={(e) => e.stopPropagation()}
                               aria-label={copy.sparePartsFor(model.name)}
-                              className="mt-1 ml-6 flex w-fit items-center gap-1 text-xs font-semibold text-primary underline-offset-4 hover:underline"
+                              className="mt-1 ml-8 flex w-fit items-center gap-1 text-xs font-semibold text-primary underline-offset-4 hover:underline"
                             >
                               <Wrench aria-hidden className="size-3" />
                               {copy.spareParts}
@@ -250,6 +280,14 @@ export function ModelsTable({
                       )}
                     </td>
                   ))}
+                  {signedIn && (
+                    <td
+                      className={`${cell} border-b border-border`}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {cartArticle && <ModelCartCell article={cartArticle} />}
+                    </td>
+                  )}
                   {!signedIn && (
                     <td className={`${cell} border-b border-border text-right text-text-subtle`}>
                       —

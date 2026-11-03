@@ -7,6 +7,7 @@ import { useProjects } from '../../projects/useProjects'
 import { useToast } from '../../toast/useToast'
 import { Modal } from '../Modal'
 import { ProjectStatusChip } from './ProjectStatusChip'
+import { isActiveProject } from '../../lib/projects'
 
 const newProject = 'new'
 
@@ -14,6 +15,8 @@ type AddToProjectDialogProps = {
   open: boolean
   /** The products to add, each with the duty point it was chosen for. */
   entries: ProductEntry[]
+  /** Defaults to "Add <n> products to a project". */
+  title?: string
   onClose: () => void
 }
 
@@ -23,16 +26,14 @@ type AddToProjectDialogProps = {
  * then Save. Confirms with a toast that opens the project with the new rows
  * highlighted. Remount (via `key`) for each opening to start fresh.
  */
-export function AddToProjectDialog({ open, entries, onClose }: AddToProjectDialogProps) {
+export function AddToProjectDialog({ open, entries, title, onClose }: AddToProjectDialogProps) {
   const ids = useId()
   const { user, signIn } = useAuth()
   const { projects, addItems, createProject } = useProjects()
   const showToast = useToast()
 
   // Active = not yet quoted. Most recently modified first, so "Riverside intake" leads.
-  const active = projects
-    .filter((project) => project.status !== 'Quoted')
-    .sort((a, b) => b.modifiedOrder - a.modifiedOrder)
+  const active = projects.filter(isActiveProject).sort((a, b) => b.modifiedOrder - a.modifiedOrder)
   const [choice, setChoice] = useState(active[0]?.id ?? newProject)
   const [name, setName] = useState('')
 
@@ -60,7 +61,7 @@ export function AddToProjectDialog({ open, entries, onClose }: AddToProjectDialo
   return (
     <Modal
       open={open}
-      title={copy.title(entries.length)}
+      title={title ?? copy.title(entries.length)}
       closeLabel={copy.close}
       onClose={onClose}
       width="max-w-xl"
@@ -72,7 +73,7 @@ export function AddToProjectDialog({ open, entries, onClose }: AddToProjectDialo
           <p className="mt-2 max-w-sm text-text-muted">{copy.signIn.text}</p>
           <button
             type="button"
-            onClick={signIn}
+            onClick={() => signIn()}
             className="mt-6 inline-flex h-11 items-center gap-2 rounded-pill bg-primary px-6 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
           >
             <LogIn className="size-4" />

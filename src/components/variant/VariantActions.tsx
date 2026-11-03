@@ -1,8 +1,15 @@
-import { FileDown, Printer } from 'lucide-react'
+import { FileDown, FolderPlus, Printer, ScrollText } from 'lucide-react'
+import { useState } from 'react'
 import { Link } from 'react-router'
+import { useAuth } from '../../auth/useAuth'
+import { tenderDialog } from '../../data/tenderTexts'
 import { variantPage } from '../../data/variantPages'
+import { tenderFileName, useTenderDialog } from '../../hooks/useTenderDialog'
+import { articleDutyPoint } from '../../lib/articles'
+import { articleSubject } from '../../lib/tenderSubjects'
 import { useToast } from '../../toast/useToast'
 import type { ResultArticle } from '../../types'
+import { AddToProjectDialog } from '../projects/AddToProjectDialog'
 import { ExportMenu } from './ExportMenu'
 
 const copy = variantPage.actions
@@ -15,9 +22,15 @@ const outlined = `${button} border-2 border-primary text-primary hover:bg-primar
 const fileName = (article: ResultArticle, extension: string) =>
   `${article.code.replace(/[^A-Za-z0-9.]+/g, '_').replace(/_+$/, '')}.${extension}`
 
-/** Right column actions: Print / PDF (print view), Download documentation, Export as. */
+/**
+ * Right column actions: Print / PDF (print view), Add to project (signed in),
+ * Tender text, Download documentation, Export as.
+ */
 export function VariantActions({ article }: { article: ResultArticle }) {
+  const { user } = useAuth()
   const showToast = useToast()
+  const { openTender, tenderDialog: tenderDialogElement } = useTenderDialog()
+  const [projectDialog, setProjectDialog] = useState({ open: false, session: 0 })
   return (
     <div className="flex flex-col gap-3">
       <Link
@@ -27,6 +40,31 @@ export function VariantActions({ article }: { article: ResultArticle }) {
         <Printer className="size-[18px]" strokeWidth={2} />
         {copy.print}
       </Link>
+      {user && (
+        <button
+          type="button"
+          onClick={() => setProjectDialog((d) => ({ open: true, session: d.session + 1 }))}
+          className={outlined}
+        >
+          <FolderPlus className="size-[18px]" strokeWidth={2} />
+          {variantPage.toolbar.addToProject}
+        </button>
+      )}
+      <button
+        type="button"
+        onClick={() =>
+          openTender({
+            label: article.code,
+            documentTitle: tenderDialog.documentTitle(article.code),
+            subjects: [articleSubject(article)],
+            fileName: tenderFileName(article.code),
+          })
+        }
+        className={outlined}
+      >
+        <ScrollText className="size-[18px]" strokeWidth={2} />
+        {tenderDialog.open}
+      </button>
       <button
         type="button"
         onClick={() =>
@@ -51,6 +89,13 @@ export function VariantActions({ article }: { article: ResultArticle }) {
             detail: fileName(article, id),
           })
         }}
+      />
+      {tenderDialogElement}
+      <AddToProjectDialog
+        key={`project-${projectDialog.session}`}
+        open={projectDialog.open}
+        entries={[{ variantId: article.id, dutyPoint: articleDutyPoint(article) }]}
+        onClose={() => setProjectDialog((d) => ({ ...d, open: false }))}
       />
     </div>
   )

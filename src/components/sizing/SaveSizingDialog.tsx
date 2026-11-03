@@ -7,6 +7,7 @@ import { useProjects } from '../../projects/useProjects'
 import { useToast } from '../../toast/useToast'
 import { Modal } from '../Modal'
 import { ProjectStatusChip } from '../projects/ProjectStatusChip'
+import { isActiveProject } from '../../lib/projects'
 
 const copy = sizingResultsPage.saveDialog
 
@@ -39,9 +40,7 @@ export function SaveSizingDialog({
   const { user, signIn } = useAuth()
   const { projects, saveSizing } = useProjects()
   const showToast = useToast()
-  const active = projects
-    .filter((p) => p.status !== 'Quoted')
-    .sort((a, b) => b.modifiedOrder - a.modifiedOrder)
+  const active = projects.filter(isActiveProject).sort((a, b) => b.modifiedOrder - a.modifiedOrder)
 
   const [target, setTarget] = useState<'new' | 'existing'>('new')
   const [projectId, setProjectId] = useState(active[0]?.id ?? '')
@@ -108,7 +107,7 @@ export function SaveSizingDialog({
           <p className="mt-2 max-w-sm text-text-muted">{copy.signIn.text}</p>
           <button
             type="button"
-            onClick={signIn}
+            onClick={() => signIn()}
             className="mt-6 inline-flex h-11 items-center gap-2 rounded-pill bg-primary px-6 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
           >
             <LogIn className="size-4" />

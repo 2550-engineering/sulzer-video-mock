@@ -1,6 +1,7 @@
-import { ArrowRight, Check, FolderPlus, GitCompareArrows } from 'lucide-react'
+import { ArrowRight, Check, FolderPlus, GitCompareArrows, ScrollText } from 'lucide-react'
 import { Link } from 'react-router'
 import { productPage } from '../../data/catalogPages'
+import { tenderDialog } from '../../data/tenderTexts'
 import { modelDimensions } from '../../lib/modelSpecs'
 import type { ProductModel } from '../../types'
 import { PerformanceCurve } from './PerformanceCurve'
@@ -14,6 +15,7 @@ type ModelDetailProps = {
   canCompare: boolean
   onAddToProject: () => void
   onToggleCompare: () => void
+  onTenderText: () => void
 }
 
 const outlined =
@@ -26,6 +28,7 @@ export function ModelDetail({
   canCompare,
   onAddToProject,
   onToggleCompare,
+  onTenderText,
 }: ModelDetailProps) {
   return (
     <div className="grid animate-fade-in gap-x-12 gap-y-8 px-6 py-7 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)_14rem]">
@@ -74,6 +77,10 @@ export function ModelDetail({
         >
           {comparing ? <Check className="size-4" /> : <GitCompareArrows className="size-4" />}
           {comparing ? copy.comparing : copy.compare}
+        </button>
+        <button type="button" onClick={onTenderText} className={outlined}>
+          <ScrollText className="size-4" />
+          {tenderDialog.open}
         </button>
       </div>
     </div>

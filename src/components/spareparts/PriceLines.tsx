@@ -21,7 +21,7 @@ export function PriceLines({ price, unit, availability }: PriceLinesProps) {
     return (
       <button
         type="button"
-        onClick={signIn}
+        onClick={() => signIn()}
         className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary underline-offset-4 hover:underline"
       >
         <LogIn className="size-4" />

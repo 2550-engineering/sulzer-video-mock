@@ -1,4 +1,4 @@
-import { demoUser, eshop, market } from '../config/demo'
+import { eshop, market } from '../config/demo'
 import type { NavItem } from '../types'
 
 /* Copy for the cart, checkout and order confirmation (/eshop). */
@@ -11,6 +11,7 @@ export const eshopPages = {
   toasts: {
     added: 'Added to cart',
     addedDetail: (quantity: number, name: string) => `${quantity} × ${name}`,
+    addedMany: (pieces: number) => `Added ${pieces} ${pieces === 1 ? 'product' : 'products'} to cart`,
     viewCart: { label: 'View cart', to: '/eshop/cart' } satisfies NavItem,
     quotation: (id: string) => `Quotation ${id} saved`,
     quotationDetail: 'A Sulzer sales engineer confirms prices and dates within one working day.',
@@ -37,8 +38,18 @@ export const eshopPages = {
     goToCart: 'Go to cart',
   },
 
+  /** "Add to cart" or "Request quotation" on sizing results, compare and projects. */
+  buy: {
+    addToCart: 'Add to cart',
+    addToCartFor: (name: string) => `Add ${name} to cart`,
+    requestQuote: 'Request quotation',
+    requestQuoteFor: (name: string) => `Request a quotation for ${name}`,
+    quoteHint:
+      'Configured to your duty point, so it has no product number yet. Sulzer confirms price and delivery in a quotation.',
+  },
   cart: {
     title: 'Cart',
+    expected: (date: string) => `Expected ${date}`,
     count: (count: number) => `${count} ${count === 1 ? 'item' : 'items'}`,
     columns: {
       item: 'Item',
@@ -54,6 +65,9 @@ export const eshopPages = {
     kit: 'Service kit',
     product: 'Pump',
     forProduct: 'Parts for',
+    /** Group heading when the pump itself is in the cart. */
+    pump: 'Pump',
+    pumpAndParts: 'Pump and parts',
     reference: 'Your reference / PO number',
     referencePlaceholder: 'e.g. PO-88412',
     saveQuotation: 'Save as quotation',
@@ -103,7 +117,7 @@ export const eshopPages = {
 
   confirmation: {
     title: 'Thank you, your order is confirmed',
-    text: `We have sent the order confirmation to ${demoUser.email}.`,
+    text: (email: string) => `We have sent the order confirmation to ${email}.`,
     orderNumber: 'Order number',
     expected: 'Expected delivery',
     deliverTo: 'Delivery address',

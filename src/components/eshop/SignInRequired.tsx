@@ -14,7 +14,7 @@ export function SignInRequired() {
       <p className="mt-2 text-text-muted">{copy.pageText}</p>
       <button
         type="button"
-        onClick={signIn}
+        onClick={() => signIn()}
         className="mt-6 inline-flex h-11 items-center gap-2 rounded-pill bg-primary px-6 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
       >
         <LogIn className="size-4" />

@@ -5,12 +5,19 @@ type QuantityStepperProps = {
   onChange: (value: number) => void
   label: string
   max?: number
+  /** `sm` for table rows. */
+  size?: 'md' | 'sm'
 }
 
 /** − / quantity / + (1 to `max`). */
-export function QuantityStepper({ value, onChange, label, max = 99 }: QuantityStepperProps) {
-  const button =
-    'flex size-10 items-center justify-center text-navy-900 transition-colors hover:text-primary disabled:text-text-subtle'
+export function QuantityStepper({
+  value,
+  onChange,
+  label,
+  max = 99,
+  size = 'md',
+}: QuantityStepperProps) {
+  const button = `flex ${size === 'sm' ? 'size-8' : 'size-10'} items-center justify-center text-navy-900 transition-colors hover:text-primary disabled:text-text-subtle`
   return (
     <div
       role="group"
@@ -26,7 +33,10 @@ export function QuantityStepper({ value, onChange, label, max = 99 }: QuantitySt
       >
         <Minus className="size-4" />
       </button>
-      <span aria-live="polite" className="w-8 text-center font-semibold text-navy-900 tabular-nums">
+      <span
+        aria-live="polite"
+        className={`${size === 'sm' ? 'w-6 text-sm' : 'w-8'} text-center font-semibold text-navy-900 tabular-nums`}
+      >
         {value}
       </span>
       <button

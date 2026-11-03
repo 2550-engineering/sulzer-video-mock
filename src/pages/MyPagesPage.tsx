@@ -7,6 +7,8 @@ import { AssetsCard } from '../components/mypages/AssetsCard'
 import { LinksCard } from '../components/mypages/LinksCard'
 import { RecentActivity } from '../components/mypages/RecentActivity'
 import { dashboardCards, signedOutRedirect, welcome } from '../data/myPages'
+import { isActiveProject } from '../lib/projects'
+import { useProjects } from '../projects/useProjects'
 
 // Cards fade in one after another on arrival, 50 ms apart.
 const enter = 'animate-fade-in [animation-fill-mode:backwards]'
@@ -17,9 +19,18 @@ function delay(index: number): CSSProperties {
 /** Signed-in dashboard: welcome, card grid (self-service, learning, projects, portals, assets) and recent activity. */
 export function MyPagesPage() {
   const { user } = useAuth()
+  const { projects } = useProjects()
   if (!user) return <Navigate to={signedOutRedirect} replace />
 
-  const { selfService, learning, productsProjects, portals } = dashboardCards
+  const { selfService, learning, portals } = dashboardCards
+  // "My projects" counts the signed-in persona's active projects.
+  const activeProjects = projects.filter(isActiveProject).length
+  const productsProjects = {
+    ...dashboardCards.productsProjects,
+    links: dashboardCards.productsProjects.links.map((link) =>
+      link.to === '/my-projects' ? { ...link, badge: { label: String(activeProjects) } } : link,
+    ),
+  }
 
   return (
     <div className="bg-surface-muted">
@@ -33,7 +44,7 @@ export function MyPagesPage() {
         <header className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <h1 className="text-[2.75rem] leading-tight font-bold tracking-tight text-brand">
-              {welcome.title}
+              {welcome.title(user?.firstName ?? '')}
             </h1>
             <p className="mt-2 text-lg text-text-muted">{welcome.subtitle}</p>
           </div>

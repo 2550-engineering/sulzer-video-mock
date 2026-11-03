@@ -2,7 +2,8 @@ import { Trash2 } from 'lucide-react'
 import { Link } from 'react-router'
 import { useCart } from '../../cart/useCart'
 import { eshopPages } from '../../data/eshopPages'
-import { groupByProduct } from '../../lib/cart'
+import { groupByProduct, lineDelivery } from '../../lib/cart'
+import { formatDate } from '../../lib/dates'
 import { ownerPath } from '../../lib/catalog'
 import { formatPartPrice } from '../../lib/modelSpecs'
 import type { CartItem } from '../../types'
@@ -24,7 +25,8 @@ function kindLabel(item: CartItem) {
 }
 
 /**
- * The cart as a bill of material: lines grouped under the pump they are for,
+ * The cart as a bill of material: lines grouped by pump (the pump itself and
+ * its parts),
  * each with picture, name, part number, quantity, unit price, lead time, line
  * total and remove. `readOnly` drops the stepper and remove (checkout review).
  */
@@ -66,7 +68,13 @@ export function CartLines({ items, readOnly = false }: { items: CartItem[]; read
                   colSpan={readOnly ? 5 : 6}
                   className="border-b border-border bg-surface-subtle px-4 py-2.5 text-left text-sm font-semibold text-navy-900"
                 >
-                  <span className="text-text-muted">{copy.forProduct} </span>
+                  <span className="text-text-muted">
+                    {group.items.some((item) => item.kind === 'product')
+                      ? group.items.every((item) => item.kind === 'product')
+                        ? copy.pump
+                        : copy.pumpAndParts
+                      : copy.forProduct}{' '}
+                  </span>
                   {group.owner ? (
                     <Link
                       to={ownerPath(group.owner)}
@@ -123,6 +131,9 @@ export function CartLines({ items, readOnly = false }: { items: CartItem[]; read
                       <StockIndicator status={item.availability.status} />
                     </span>
                     <span className="block text-text-muted">{item.availability.leadTime}</span>
+                    <span className="block text-xs whitespace-nowrap text-text-muted tabular-nums">
+                      {copy.expected(formatDate(lineDelivery(item)))}
+                    </span>
                   </td>
                   <td
                     className={`${cell} text-right font-semibold whitespace-nowrap text-navy-900 tabular-nums`}

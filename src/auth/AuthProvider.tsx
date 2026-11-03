@@ -1,44 +1,55 @@
 import { useMemo, useState, type ReactNode } from 'react'
-import { demoUser } from '../config/demo'
+import { personas } from '../config/demo'
+import type { PersonaId } from '../types'
 import { AuthContext, type AuthState } from './AuthContext'
 
-// Only the signed-in flag is stored, so the user always reflects config/demo.ts.
-const STORAGE_KEY = 'sz-demo-signed-in'
+// Only the signed-in flag and the persona are stored, so the user always reflects config/demo.ts.
+const SIGNED_IN_KEY = 'sz-demo-signed-in'
+const PERSONA_KEY = 'sz-demo-persona'
 
-function readSignedIn() {
+const isPersona = (value: unknown): value is PersonaId =>
+  typeof value === 'string' && value in personas
+
+function read() {
   try {
-    return localStorage.getItem(STORAGE_KEY) === 'true'
+    const persona = localStorage.getItem(PERSONA_KEY)
+    return {
+      signedIn: localStorage.getItem(SIGNED_IN_KEY) === 'true',
+      persona: isPersona(persona) ? persona : ('endUser' as const),
+    }
   } catch {
-    return false
+    return { signedIn: false, persona: 'endUser' as const }
   }
 }
 
-function writeSignedIn(signedIn: boolean) {
+function write(signedIn: boolean, persona: PersonaId) {
   try {
-    if (signedIn) localStorage.setItem(STORAGE_KEY, 'true')
-    else localStorage.removeItem(STORAGE_KEY)
+    if (signedIn) localStorage.setItem(SIGNED_IN_KEY, 'true')
+    else localStorage.removeItem(SIGNED_IN_KEY)
+    localStorage.setItem(PERSONA_KEY, persona)
   } catch {
     // Storage unavailable (private mode etc.) — keep the in-memory state only.
   }
 }
 
-/** Fake auth: signIn() logs the demo user in instantly. */
+/** Fake auth: signIn(persona) logs that persona's demo user in instantly. */
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [signedIn, setSignedIn] = useState(readSignedIn)
+  const [state, setState] = useState(read)
 
   const value = useMemo<AuthState>(
     () => ({
-      user: signedIn ? demoUser : null,
-      signIn: () => {
-        writeSignedIn(true)
-        setSignedIn(true)
+      user: state.signedIn ? personas[state.persona] : null,
+      persona: state.persona,
+      signIn: (persona = 'endUser') => {
+        write(true, persona)
+        setState({ signedIn: true, persona })
       },
       signOut: () => {
-        writeSignedIn(false)
-        setSignedIn(false)
+        write(false, state.persona)
+        setState((current) => ({ ...current, signedIn: false }))
       },
     }),
-    [signedIn],
+    [state],
   )
 
   return <AuthContext value={value}>{children}</AuthContext>

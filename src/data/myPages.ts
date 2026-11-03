@@ -11,14 +11,13 @@ import {
   Truck,
   Wrench,
 } from 'lucide-react'
-import { demoUser, products } from '../config/demo'
+import { products } from '../config/demo'
 import type { ActivityItem, AssetStat, DashboardCard, NavItem } from '../types'
-import { projects } from './projects'
 
 /* Copy and demo data for the signed-in dashboard ("/my-pages"). Deterministic — no live values. */
 
 export const welcome = {
-  title: `Welcome back, ${demoUser.firstName}`,
+  title: (firstName: string) => `Welcome back, ${firstName}`,
   subtitle: 'Connecting you to all your Sulzer things',
 }
 
@@ -62,10 +61,11 @@ export const dashboardCards = {
     title: 'Products & projects',
     subtitle: 'Access your saved product information',
     icon: FolderKanban,
+    // The My projects badge is the signed-in persona's project count, set on the page.
     links: [
+      { label: 'My projects', to: '/my-projects' },
       { label: 'My saved items', to: '/my-pages/saved', badge: { label: '12' } },
-      { label: 'My projects', to: '/my-projects', badge: { label: String(projects.length) } },
-      { label: 'My recently viewed products', to: '/my-pages/recently-viewed' },
+      { label: 'Recently viewed products', to: '/my-pages/recently-viewed' },
     ],
   },
   portals: {
@@ -116,6 +116,15 @@ export const recentActivity = {
       time: 'Today, 07:58',
       to: '/my-projects/riverside-intake',
       icon: FolderOpen,
+      persona: 'endUser',
+    },
+    {
+      subject: 'Project ‘Riverside raw water intake upgrade’',
+      text: 'updated by Erik Sandberg',
+      time: 'Today, 08:42',
+      to: '/my-projects/riverside-raw-water',
+      icon: FolderOpen,
+      persona: 'consultant',
     },
     {
       subject: 'Order SO-104382',

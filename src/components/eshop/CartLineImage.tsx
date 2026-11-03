@@ -1,5 +1,6 @@
 import { Package } from 'lucide-react'
-import { getDrawing, getProduct, getProductVariant } from '../../lib/catalog'
+import { productIdOf } from '../../lib/cartArticles'
+import { getDrawing, getProduct } from '../../lib/catalog'
 import type { CartItem } from '../../types'
 import { SmartImage } from '../SmartImage'
 import { PartThumbnail } from '../spareparts/PartThumbnail'
@@ -13,8 +14,8 @@ export function CartLineImage({ item, size = 'size-14' }: { item: CartItem; size
     if (hotspot) return <PartThumbnail hotspot={hotspot} className={size} />
   }
   if (item.kind === 'product') {
-    const variant = getProductVariant(item.variantId)
-    const image = variant && getProduct(variant.productId)?.images[0]
+    const productId = productIdOf(item.variantId)
+    const image = productId && getProduct(productId)?.images[0]
     if (image) {
       return (
         <span
