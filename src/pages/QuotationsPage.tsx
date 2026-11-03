@@ -7,10 +7,11 @@ import { signedOutRedirect } from '../data/myPages'
 import { quotationsPage as copy } from '../data/selfServicePages'
 import { useUrlParams } from '../hooks/useUrlParams'
 import { quotationsFor } from '../lib/selfService'
+import { useSelfService } from '../selfService/useSelfService'
 import type { Quotation } from '../types'
 
 const filters = {
-  open: (q: Quotation) => q.status === 'Sent' || q.status === 'Requested',
+  open: (q: Quotation) => q.status === 'Sent' || q.status === 'Requested' || q.status === 'Draft',
   accepted: (q: Quotation) => q.status === 'Accepted',
   expired: (q: Quotation) => q.status === 'Expired',
 } satisfies Record<string, (q: Quotation) => boolean>
@@ -28,10 +29,13 @@ const isFilter = (value: string | null): value is Filter =>
 export function QuotationsPage() {
   const { user } = useAuth()
   const [params, update] = useUrlParams()
+  const { quotations } = useSelfService()
   if (!user) return <Navigate to={signedOutRedirect} replace />
 
   const partner = user.kind === 'partner'
-  const all = quotationsFor(user).sort((a, b) => b.updated.at.localeCompare(a.updated.at))
+  const all = quotationsFor(user, quotations).sort((a, b) =>
+    b.updated.at.localeCompare(a.updated.at),
+  )
   const status = params.get('status')
   const filter = isFilter(status) ? status : null
   const shown = filter ? all.filter(filters[filter]) : all

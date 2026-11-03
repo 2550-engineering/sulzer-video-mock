@@ -28,6 +28,8 @@ import { NotFoundPage } from './pages/NotFoundPage'
 import { OrderConfirmationPage } from './pages/OrderConfirmationPage'
 import { OrderPage } from './pages/OrderPage'
 import { OrdersPage } from './pages/OrdersPage'
+import { PartnerCustomerPage } from './pages/PartnerCustomerPage'
+import { PartnerCustomersPage } from './pages/PartnerCustomersPage'
 import { PlaceholderPage } from './pages/PlaceholderPage'
 import { ProductPage } from './pages/ProductPage'
 import { ProductSearchPage } from './pages/ProductSearchPage'
@@ -84,6 +86,8 @@ export default function App() {
                       <Route path="/my-projects/:projectId" element={<MyProjectsPage />} />
                       <Route path="/assets" element={<AssetsPage />} />
                       <Route path="/assets/:id" element={<AssetPage />} />
+                      <Route path="/partner/customers" element={<PartnerCustomersPage />} />
+                      <Route path="/partner/customers/:id" element={<PartnerCustomerPage />} />
                       <Route path="/self-service/requests" element={<RequestsPage />} />
                       <Route path="/self-service/orders" element={<OrdersPage />} />
                       <Route path="/self-service/orders/:id" element={<OrderPage />} />

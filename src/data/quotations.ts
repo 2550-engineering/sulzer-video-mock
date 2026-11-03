@@ -1,6 +1,6 @@
 import { demoUser, personas, products } from '../config/demo'
 import { getVariant } from '../lib/variants'
-import type { Quotation, QuotationIssuer, QuotationLine, SparePart } from '../types'
+import type { ProjectItem, Quotation, QuotationIssuer, QuotationLine, SparePart } from '../types'
 import { projects } from './projects'
 import { partOfKind } from './spareParts'
 
@@ -39,7 +39,8 @@ const sulzerContact = {
   phone: '+46 21 400 18 26',
 }
 
-const partnerContact = {
+/** The partner's contact on their quotations: the partner persona. */
+export const partnerContact = {
   name: personas.channelPartner.name,
   role: personas.channelPartner.role,
   email: personas.channelPartner.email,
@@ -64,10 +65,12 @@ function partLine(position: number, part: SparePart, quantity: number, delivery:
   } satisfies QuotationLine
 }
 
-/** Project items as quotation lines, priced like the project's own table (pump + motor). */
-function projectLines(projectId: string, delivery: string): QuotationLine[] {
-  const project = projects.find((p) => p.id === projectId)
-  return (project?.items ?? []).flatMap((item) => {
+/**
+ * Project items as quotation lines, priced like the project's own table (pump + motor).
+ * Delivery is the variant's own lead time unless given.
+ */
+export function projectItemLines(items: ProjectItem[], delivery?: string): QuotationLine[] {
+  return items.flatMap((item) => {
     const variant = getVariant(item.variantId)
     if (!variant) return []
     const { flow, head } = item.dutyPoint
@@ -75,22 +78,27 @@ function projectLines(projectId: string, delivery: string): QuotationLine[] {
       position: item.position,
       number: variant.productNumber ?? undefined,
       description: variant.name,
-      detail: `Duty point ${flow} m³/h at ${head} m · ${variant.motorPower} kW ${variant.motorClass} motor · your pos. ${item.customerPosition}`,
+      detail: `Duty point ${flow} m³/h at ${head} m · ${variant.motorPower} kW ${variant.motorClass} motor${
+        item.customerPosition ? ` · your pos. ${item.customerPosition}` : ''
+      }`,
       quantity: item.quantity,
       unit: 'pcs',
       listPrice: variant.pumpPrice + variant.motorPrice,
       kind: 'sulzer',
-      delivery,
+      delivery: delivery ?? variant.leadTime,
     }
   })
 }
+
+const projectLines = (projectId: string, delivery: string) =>
+  projectItemLines(projects.find((p) => p.id === projectId)?.items ?? [], delivery)
 
 const sulzerTerms = {
   deliveryTerms: 'FCA Sulzer distribution center, Norrköping (Incoterms 2020)',
   paymentTerms: '30 days net from invoice date',
 }
 
-const partnerTerms = {
+export const partnerTerms = {
   deliveryTerms: 'Delivered to site, freight included',
   paymentTerms: '30 days net from invoice date',
 }

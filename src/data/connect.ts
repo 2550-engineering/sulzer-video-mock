@@ -309,9 +309,10 @@ export const connectTeams: ConnectTeam[] = [
 /** Sulzer Connect users per customer account, for the partner's accounts table. */
 export const accountUserCounts: Record<string, number> = {
   nordvatten: connectUsers.length + 1,
-  malarbruk: 0,
+  malarbruk: 4,
+  // Not on Sulzer Connect yet: the table offers "Invite to Sulzer Connect".
   'sorby-livsmedel': 0,
-  'vastmalm-energi': 0,
+  'vastmalm-energi': 3,
 }
 
 export const usersPage = {

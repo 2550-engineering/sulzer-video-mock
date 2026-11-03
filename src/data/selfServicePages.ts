@@ -34,6 +34,7 @@ export const orderStatus: Record<OrderStatus, { label: string; tone: PillTone }>
 }
 
 export const quotationStatus: Record<QuotationStatus, { label: string; tone: PillTone }> = {
+  Draft: { label: 'Draft', tone: 'neutral' },
   Requested: { label: 'In preparation', tone: 'neutral' },
   Sent: { label: 'Open', tone: 'info' },
   Accepted: { label: 'Accepted', tone: 'success' },
@@ -246,11 +247,15 @@ export const quotationPage = {
   contact: 'Your contact',
   history: 'History',
   requested: 'Requested',
+  createdStep: 'Created',
   issuedStep: 'Sent',
+  send: (name: string) => `Send to ${name}`,
+  sent: (id: string, name: string) => `Quotation ${id} sent to ${name}`,
   margin: {
     title: 'Your margin',
     note: 'Only you see this. It isn’t on the PDF.',
-    cost: (discount: number) => `Sulzer net price (−${discount}%)`,
+    list: 'Sulzer list price',
+    cost: (discount: number) => `Your net price (−${discount}%)`,
     sell: 'Sold to customer',
     margin: 'Margin on Sulzer items',
     services: 'Your services',

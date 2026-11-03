@@ -1,11 +1,14 @@
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
 import { Link } from 'react-router'
+import { useAuth } from '../../auth/useAuth'
 import { sizingResultsPage as copy } from '../../data/sizingPages'
 import { groupThousands } from '../../lib/format'
 import { formatPrice } from '../../lib/modelSpecs'
+import { discountFor, priceFor } from '../../lib/pricing'
 import type { SizingSort, SizingSortKey } from '../../lib/sizingFilters'
 import type { DutyPoint, SizingResult } from '../../types'
 import { AvailabilityBadge } from '../product/AvailabilityBadge'
+import { PartPrice } from '../spareparts/PartPrice'
 import { CurveThumbnail } from './CurveThumbnail'
 import { KeyFiguresPopover } from './KeyFiguresPopover'
 
@@ -41,6 +44,9 @@ export function SizingResultsTable({
   onToggle,
   onOpen,
 }: SizingResultsTableProps) {
+  const { user } = useAuth()
+  // Partners see their net price under the list price.
+  const discount = user ? discountFor(user) : 0
   const sortHeader = (key: SizingSortKey, label: string, unit?: string) => {
     const active = sort.key === key
     const Icon = !active ? ArrowUpDown : sort.direction === 'asc' ? ArrowUp : ArrowDown
@@ -174,7 +180,15 @@ export function SizingResultsTable({
                 <td className={`${cell} text-right tabular-nums`}>{result.npshr.toFixed(1)}</td>
                 {signedIn && (
                   <td className={`${cell} text-right tabular-nums`}>
-                    {formatPrice(result.purchasePrice)}
+                    {discount > 0 ? (
+                      <PartPrice
+                        price={priceFor(result.purchasePrice, user)!}
+                        format={formatPrice}
+                        compact
+                      />
+                    ) : (
+                      formatPrice(result.purchasePrice)
+                    )}
                   </td>
                 )}
                 {signedIn && (

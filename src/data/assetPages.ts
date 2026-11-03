@@ -102,6 +102,8 @@ export const assetListPage = {
 
 export const assetPage = {
   breadcrumbParents: [...parents, { label: 'My assets', to: '/assets' }],
+  /** Partner mode: the chip above the tag. */
+  customer: 'Customer',
   serial: 'Serial no.',
   viewProduct: 'View product',
   actions: {

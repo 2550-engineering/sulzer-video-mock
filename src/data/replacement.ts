@@ -107,6 +107,7 @@ export const replacementPage = {
     motor: 'Motor',
     power: 'Power input P1',
     listPrice: 'List price',
+    netPrice: (discount: number) => `Your net price (−${discount}%)`,
     select: (name: string) => `Show ${name}`,
   },
   curve: {

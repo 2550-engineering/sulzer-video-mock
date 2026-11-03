@@ -14,15 +14,14 @@ import {
 } from 'lucide-react'
 import { demoClock, demoUser, products } from '../config/demo'
 import { serviceDueWithinDays, summarizeAssets } from '../lib/assetSummary'
-import type { ActivityItem, AssetStat, DashboardCard, NavItem } from '../types'
+import type { ActivityItem, DashboardCard, StatsCardData } from '../types'
 import { assets } from './assets'
-import { projects } from './projects'
 import { orderPath, ordersPath, quotationPath, requestsPath } from './selfServicePages'
 
 /* Copy and demo data for the signed-in dashboard ("/my-pages"). Deterministic — no live values. */
 
 export const welcome = {
-  title: `Welcome back, ${demoUser.firstName}`,
+  title: (firstName: string) => `Welcome back, ${firstName}`,
   subtitle: 'Connecting you to all your Sulzer things',
 }
 
@@ -64,9 +63,9 @@ export const dashboardCards = {
     subtitle: 'Access your saved product information',
     icon: FolderKanban,
     links: [
-      // The count comes from the personal toolbar state (MyPagesPage).
+      // The counts come from the personal toolbar and projects state (MyPagesPage).
       { label: 'My saved items', to: '/my-pages/saved' },
-      { label: 'My projects', to: '/my-projects', badge: { label: String(projects.length) } },
+      { label: 'My projects', to: '/my-projects' },
       { label: 'My recently viewed products', to: '/my-pages/recently-viewed' },
     ],
   },
@@ -92,7 +91,7 @@ const summary = summarizeAssets(assets.filter((asset) => asset.customerId === de
 
 const count = (n: number, noun: string) => `${n} ${noun}${n === 1 ? '' : 's'}`
 
-export const assetsCard = {
+export const assetsCard: StatsCardData = {
   title: 'My assets',
   badge: 'New',
   subtitle: 'Your installed base at a glance',
@@ -122,9 +121,9 @@ export const assetsCard = {
       icon: Wrench,
       to: '/assets?service=due',
     },
-  ] satisfies AssetStat[],
+  ],
   source: `Monitored with ${products.iotOffering} · Updated today, ${demoClock.lastSync}`,
-  link: { label: 'View all assets', to: '/assets' } satisfies NavItem,
+  link: { label: 'View all assets', to: '/assets' },
 }
 
 export const recentActivity = {

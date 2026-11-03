@@ -1,16 +1,19 @@
 import { FileText, Link2, Minus, Plus } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router'
+import { useAuth } from '../../auth/useAuth'
 import { myProjectsPage } from '../../data/projectPages'
 import { sizingResultsPage } from '../../data/sizingPages'
 import { tenderText } from '../../data/tenderTexts'
 import { groupThousands } from '../../lib/format'
 import { formatPrice } from '../../lib/modelSpecs'
+import { discountFor, priceFor } from '../../lib/pricing'
 import { evaluateVariant } from '../../lib/sizing'
 import { itemTenderText } from '../../lib/tenderText'
 import { getVariant } from '../../lib/variants'
 import type { ProjectItem, SizingRecord } from '../../types'
 import { CurveThumbnail } from '../sizing/CurveThumbnail'
+import { PartPrice } from '../spareparts/PartPrice'
 import { TenderTextDialog } from '../tender/TenderTextDialog'
 
 const copy = myProjectsPage.items
@@ -44,6 +47,9 @@ export function ProjectItemsTable({
   sizings,
   onChange,
 }: ProjectItemsTableProps) {
+  const { user } = useAuth()
+  // Partners see their net price under the list price.
+  const discount = user ? discountFor(user) : 0
   const [selected, setSelected] = useState<string[]>([])
   const [tenderItemId, setTenderItemId] = useState<string | null>(null)
   const rows = items.map((item) => {
@@ -212,7 +218,17 @@ export function ProjectItemsTable({
                   <td
                     className={`${cell} text-right font-semibold whitespace-nowrap text-navy-900 tabular-nums`}
                   >
-                    {result ? formatPrice(result.purchasePrice * item.quantity) : '–'}
+                    {result && discount > 0 ? (
+                      <PartPrice
+                        price={priceFor(result.purchasePrice * item.quantity, user)!}
+                        format={formatPrice}
+                        compact
+                      />
+                    ) : result ? (
+                      formatPrice(result.purchasePrice * item.quantity)
+                    ) : (
+                      '–'
+                    )}
                   </td>
                 )}
               </tr>
@@ -229,7 +245,11 @@ export function ProjectItemsTable({
                 {copy.total}
               </td>
               <td className="px-3 py-3 text-right text-lg font-bold whitespace-nowrap text-navy-900 tabular-nums">
-                {formatPrice(total)}
+                {discount > 0 ? (
+                  <PartPrice price={priceFor(total, user)!} format={formatPrice} compact />
+                ) : (
+                  formatPrice(total)
+                )}
               </td>
             </tr>
           </tfoot>

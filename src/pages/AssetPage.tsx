@@ -13,8 +13,9 @@ import { TabBar } from '../components/TabBar'
 import { TabComingSoon } from '../components/TabComingSoon'
 import { TabPanel } from '../components/TabPanel'
 import { assetPage as copy } from '../data/assetPages'
-import { assetById, siteById } from '../data/assets'
+import { assetById, customers, siteById } from '../data/assets'
 import { signedOutRedirect } from '../data/myPages'
+import { partnerAssetBreadcrumb, partnerCustomerPath } from '../data/partner'
 import { useHashTab } from '../hooks/useHashTab'
 import { assetAlert } from '../lib/assetList'
 import { documentsFor, getModel, getProduct } from '../lib/catalog'
@@ -40,6 +41,9 @@ export function AssetPage() {
   const unit = model?.name ?? product.name
   const alert = assetAlert(asset)
   const documents = documentsFor(product.id)
+  // A partner sees the same page, reached through the customer.
+  const owner =
+    user.kind === 'partner' ? customers.find((c) => c.id === asset.customerId) : undefined
 
   const openRequest = () => setRequestOpen(true)
 
@@ -53,6 +57,12 @@ export function AssetPage() {
         site={site}
         onRequestService={openRequest}
         onOrderParts={() => select('spare-parts')}
+        {...(owner
+          ? {
+              breadcrumbParents: partnerAssetBreadcrumb(owner.id),
+              customer: { customer: owner, to: partnerCustomerPath(owner.id) },
+            }
+          : {})}
       />
 
       <div className="bg-surface-muted">

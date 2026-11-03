@@ -127,6 +127,19 @@ export type AssetStat = {
   to: string
 }
 
+/** Wide My Pages card with three headline stats: "My assets", or the partner's "My customers". */
+export type StatsCardData = {
+  title: string
+  subtitle: string
+  icon: LucideIcon
+  /** Small yellow pill after the title, e.g. "New". */
+  badge?: string
+  stats: AssetStat[]
+  /** Small line with a green dot, e.g. where the numbers come from. */
+  source: string
+  link: NavItem
+}
+
 /** A row in the My Pages "Recent activity" list. */
 export type ActivityItem = {
   /** Bold lead-in, e.g. the document or project name. */
@@ -598,6 +611,8 @@ export type ProjectMember = {
 
 export type Project = {
   id: string
+  /** The persona who owns it (a key of `personas` in config/demo.ts). Members also see it. */
+  owner: string
   /** Shown as "Ref no.", e.g. "P-2026-0318". */
   refNo: string
   /** Shown as "Project ID", e.g. "396088". */
@@ -614,6 +629,11 @@ export type Project = {
   modifiedOrder: number
   deadline?: string
   members: ProjectMember[]
+  /**
+   * The customer account it is for (data/assets.ts `customers`), when a partner runs
+   * it for a customer. "Share with customer" adds the client contact as a member.
+   */
+  clientAccount?: string
   client: { company: string; contact: string; site: string; email: string }
   items: ProjectItem[]
   sizings: SizingRecord[]
@@ -630,6 +650,37 @@ export type Customer = {
   city: string
   industry: string
   contact: { name: string; role: string; email: string }
+}
+
+/** A contact person, e.g. at a customer. */
+export type Contact = { name: string; role: string; email: string; phone: string }
+
+/** A delivery address on an account. `lines` are printed as they are. */
+export type DeliveryAddress = { id: string; label: string; lines: string[] }
+
+/** How a customer's wordmark is drawn (components/CustomerLogo.tsx). Made for the demo. */
+export type CustomerLogoSpec = {
+  mark: 'wave' | 'sheets' | 'leaf' | 'flame'
+  /** Mark and first line. */
+  color: string
+  /** Second line. */
+  accent: string
+  name: string
+  tagline: string
+}
+
+/** The channel partner's side of a customer account (data/partner.ts). */
+export type PartnerAccount = {
+  customerId: string
+  /** The partner's own salesperson for this customer. */
+  accountManager: string
+  customerSince: number
+  /** % off list on the partner's quotations to this customer. */
+  quotationDiscount: number
+  /** The first is the main contact (the customer's `contact`). */
+  contacts: Contact[]
+  deliveryAddresses: DeliveryAddress[]
+  logo: CustomerLogoSpec
 }
 
 export type Site = {
@@ -801,7 +852,8 @@ export type Order = {
   lines: OrderLine[]
 }
 
-export type QuotationStatus = 'Requested' | 'Sent' | 'Accepted' | 'Expired'
+/** Draft: a partner's quotation, created from a project and not sent yet. */
+export type QuotationStatus = 'Draft' | 'Requested' | 'Sent' | 'Accepted' | 'Expired'
 
 /** Who a quotation is from: Sulzer (to an end user), or the signed-in channel partner (to their customer). */
 export type QuotationIssuer = 'sulzer' | 'partner'

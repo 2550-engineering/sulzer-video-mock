@@ -1,6 +1,6 @@
 import { Trash2 } from 'lucide-react'
 import { assetById } from '../../data/assets'
-import { cartCopy as copy } from '../../data/eshop'
+import { bom, cartCopy as copy } from '../../data/eshop'
 import type { Price } from '../../lib/pricing'
 import { formatMoney } from '../../lib/selfService'
 import type { CartLine, SparePart } from '../../types'
@@ -66,13 +66,19 @@ export function CartLineItem({
                 min={0}
                 label={`${copy.title}, ${part.name}`}
               />
-              <div className="w-28 text-right">
+              <div className={`text-right ${price.discount > 0 ? 'w-36' : 'w-28'}`}>
                 <p className="font-semibold text-navy-900 tabular-nums">
                   {formatMoney(price.net * line.quantity)}
                 </p>
                 <p className="text-xs text-text-muted tabular-nums">
                   {copy.each(formatMoney(price.net))}
                 </p>
+                {price.discount > 0 && (
+                  <p className="text-xs whitespace-nowrap text-text-muted tabular-nums">
+                    <span className="line-through">{bom.listPrice(formatMoney(price.list))}</span>
+                    <span className="font-semibold text-success-strong"> · −{price.discount}%</span>
+                  </p>
+                )}
               </div>
             </div>
           )}

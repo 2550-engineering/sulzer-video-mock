@@ -19,7 +19,7 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
   shared by every part of one kind (all AHLSTAR impellers use `ahlstar-impeller.jpg`).
 - **Formats:** JPG for photos (quality 80–85), PNG for product cut-outs.
 
-196 images, 46 missing.
+200 images, 50 missing.
 
 | Priority | File | Folder | Aspect | Min. size | Kind | What it should show | Status |
 |----------|------|--------|--------|-----------|------|---------------------|--------|
@@ -71,6 +71,10 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
 | 1 · my assets | `sodra-pump-station.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Sulzer service van and a technician at the control cabinet of a roadside lift station, summer | present |
 | 1 · my assets | `hamnen-pump-station.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Inside a wastewater pump station: a row of dry-installed blue XFP pumps with stainless pipework | present |
 | 1 · my assets | `ostra-wwtp.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Clarifier at a wastewater treatment plant, with walkways and a low sun under a wide sky | present |
+| 1 · my assets | `koping-mill.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Paper machine hall with a long paper web and stock piping, warm industrial light | missing |
+| 1 · my assets | `sorby-dairy.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Clean stainless steel process room in a dairy with tanks and hygienic pipework | missing |
+| 1 · my assets | `sala-chp.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Biomass combined heat and power plant with a tall chimney and wood-chip store, winter daylight | missing |
+| 1 · my assets | `heby-dh.jpg` | `public/images/sites/` | 16:9 | 1920 × 1080 | Site photo (also the asset page hero band; keep the subject centred) | Insulated district heating pipes and circulation pumps inside a small heating station | missing |
 | 1 · product finder | `ahlstar-bim-preview.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | 3D render of an AHLSTAR end-suction pump, isometric view | present |
 | 1 · product finder | `service-agreements.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Two Sulzer service technicians beside their service van | present |
 | 1 · product finder | `repair-overhaul.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer technician restoring a pump part with a laser cladding robot in a service center | present |

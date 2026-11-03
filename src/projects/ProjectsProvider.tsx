@@ -1,11 +1,14 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
-import { demoUser } from '../config/demo'
-import { projects as seed } from '../data/projects'
-import type { Project, ProjectItem, SizingRecord } from '../types'
+import { useAuth } from '../auth/useAuth'
+import { defaultPersona, personas } from '../config/demo'
+import { customers } from '../data/assets'
+import { customerMember, projects as seed } from '../data/projects'
+import { isVisibleTo } from '../lib/projects'
+import type { Project, ProjectItem, SizingRecord, User } from '../types'
 import { ProjectsContext, type ProductEntry, type ProjectsState } from './ProjectsContext'
 
 // Versioned, so a change to the Project shape starts from the seed instead of old data.
-const STORAGE_KEY = 'sz-demo-projects-v2'
+const STORAGE_KEY = 'sz-demo-projects-v3'
 
 function readProjects(): Project[] {
   try {
@@ -25,10 +28,10 @@ function writeProjects(projects: Project[]) {
   }
 }
 
-/** A change made now: shown as "Just now" by the demo user, sorted first. */
-const touched = (projects: Project[]) => ({
+/** A change made now: shown as "Just now" by `user`, sorted first. */
+const touched = (projects: Project[], user: User) => ({
   lastModified: 'Just now',
-  lastModifiedBy: demoUser.name,
+  lastModifiedBy: user.name,
   modifiedOrder: Math.max(0, ...projects.map((p) => p.modifiedOrder)) + 1,
 })
 
@@ -57,32 +60,43 @@ function nextSizingId(project: Project) {
 }
 
 /**
- * The demo user's projects, seeded from data/projects.ts and kept in
- * localStorage, so saved sizings and products survive a reload. "Reset demo"
- * clears it. Ids and numbers are sequential (project-4, P-2026-0143,
- * riverside-intake-30, project-4-s1 …), never random.
+ * Every persona's projects, seeded from data/projects.ts and kept in localStorage,
+ * so saved sizings and products survive a reload. "Reset demo" clears it. The
+ * signed-in persona sees their own projects and the ones they are a member of, so
+ * a project the partner shares shows up for the customer too. Ids and numbers are
+ * sequential (project-7, P-2026-0146, riverside-intake-30, project-7-s1 …), never random.
  */
 export function ProjectsProvider({ children }: { children: ReactNode }) {
+  const { user: signedIn, persona: signedInAs } = useAuth()
   const [projects, setProjects] = useState(readProjects)
 
   useEffect(() => writeProjects(projects), [projects])
 
   const value = useMemo<ProjectsState>(() => {
-    /** A new empty Draft project; not yet stored. */
+    // Only signed-in pages change projects; the default persona keeps the types simple.
+    const persona = signedInAs ?? defaultPersona
+    const user = signedIn ?? personas[persona]
+
+    /** A new empty Draft project owned by the signed-in persona; not yet stored. */
     function blankProject(name: string, site = ''): Project {
       let n = projects.length + 1
       while (projects.some((p) => p.id === `project-${n}`)) n += 1
       return {
         id: `project-${n}`,
+        owner: persona,
         refNo: `P-2026-${String(139 + n).padStart(4, '0')}`,
         projectNumber: String(396088 + n),
         name,
         status: 'Draft',
         created: 'Today',
-        createdBy: demoUser.name,
-        ...touched(projects),
-        members: [{ name: demoUser.name, role: 'Owner' }],
-        client: { company: demoUser.company, contact: demoUser.name, site, email: demoUser.email },
+        createdBy: user.name,
+        ...touched(projects, user),
+        members: [{ name: user.name, role: 'Owner' }],
+        // A customer's project is for their own company; a partner picks the customer later.
+        client:
+          user.kind === 'customer'
+            ? { company: user.company, contact: user.name, site, email: user.email }
+            : { company: '', contact: '', site, email: '' },
         items: [],
         sizings: [],
       }
@@ -90,11 +104,11 @@ export function ProjectsProvider({ children }: { children: ReactNode }) {
 
     const update = (projectId: string, change: (p: Project) => Project) =>
       setProjects((current) =>
-        current.map((p) => (p.id === projectId ? { ...change(p), ...touched(current) } : p)),
+        current.map((p) => (p.id === projectId ? { ...change(p), ...touched(current, user) } : p)),
       )
 
     return {
-      projects,
+      projects: signedIn ? projects.filter((p) => isVisibleTo(p, persona, signedIn)) : [],
       addItems(projectId, entries) {
         const project = projects.find((p) => p.id === projectId)
         if (!project) return []
@@ -125,7 +139,7 @@ export function ProjectsProvider({ children }: { children: ReactNode }) {
           ...(isNew && target.note ? { note: target.note } : {}),
           id: nextSizingId(project),
           created: 'Today',
-          createdBy: demoUser.name,
+          createdBy: user.name,
         }
         const entries = sizing.variantIds.map((variantId) => ({
           variantId,
@@ -170,7 +184,7 @@ export function ProjectsProvider({ children }: { children: ReactNode }) {
           id: nextSizingId(project),
           name: `${original.name} (copy)`,
           created: 'Today',
-          createdBy: demoUser.name,
+          createdBy: user.name,
         }
         update(projectId, (p) => ({ ...p, sizings: [...p.sizings, copy] }))
       },
@@ -183,8 +197,29 @@ export function ProjectsProvider({ children }: { children: ReactNode }) {
           ),
         }))
       },
+      setClientAccount(projectId, customerId) {
+        const customer = customers.find((c) => c.id === customerId)
+        if (!customer) return
+        update(projectId, (p) => ({
+          ...p,
+          clientAccount: customerId,
+          client: {
+            company: customer.name,
+            contact: customer.contact.name,
+            site: p.client.site,
+            email: customer.contact.email,
+          },
+        }))
+      },
+      shareWithClient(projectId) {
+        update(projectId, (p) =>
+          p.members.some((member) => member.name === p.client.contact)
+            ? p
+            : { ...p, members: [...p.members, customerMember(p)] },
+        )
+      },
     }
-  }, [projects])
+  }, [projects, signedIn, signedInAs])
 
   return <ProjectsContext value={value}>{children}</ProjectsContext>
 }

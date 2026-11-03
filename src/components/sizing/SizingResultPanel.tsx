@@ -1,8 +1,11 @@
 import { FileText, FolderPlus } from 'lucide-react'
+import { useAuth } from '../../auth/useAuth'
+import { bom } from '../../data/eshop'
 import { sizingResultsPage as copy } from '../../data/sizingPages'
 import { seriesColors } from '../../lib/chartColors'
 import { keyFigureRows } from '../../lib/keyFigures'
 import { formatPrice } from '../../lib/modelSpecs'
+import { priceFor } from '../../lib/pricing'
 import type { DutyPoint, SizingResult } from '../../types'
 import { Drawer } from '../Drawer'
 import { AvailabilityBadge } from '../product/AvailabilityBadge'
@@ -37,8 +40,10 @@ export function SizingResultPanel({
   onAddToProject,
   onDataSheet,
 }: SizingResultPanelProps) {
+  const { user } = useAuth()
   const shown = mode === 'compare' ? results.slice(0, 3) : results.slice(0, seriesColors.length)
   const first = shown[0]
+  const price = first ? priceFor(first.purchasePrice, user) : null
   const title =
     mode === 'detail' || shown.length === 1
       ? (first?.variant.name ?? '')
@@ -75,8 +80,19 @@ export function SizingResultPanel({
                   <div className="mb-2 rounded-md border border-border px-4 py-3 text-sm">
                     <p className="text-text-muted">{copy.columns.price}</p>
                     <p className="text-lg font-bold text-navy-900 tabular-nums">
-                      {formatPrice(first.purchasePrice)}
+                      {formatPrice(price?.net ?? first.purchasePrice)}
                     </p>
+                    {price && price.discount > 0 && (
+                      <p className="text-xs text-text-muted tabular-nums">
+                        <span className="line-through">
+                          {bom.listPrice(formatPrice(price.list))}
+                        </span>
+                        <span className="font-semibold text-success-strong">
+                          {' '}
+                          · {bom.discount(price.discount)}
+                        </span>
+                      </p>
+                    )}
                     <p className="mt-1">
                       <AvailabilityBadge model={first.variant} />
                     </p>

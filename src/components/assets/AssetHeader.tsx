@@ -1,11 +1,12 @@
-import { ArrowRight, MapPin, Package, Radio, RefreshCw, Wrench } from 'lucide-react'
+import { ArrowRight, Building2, MapPin, Package, Radio, RefreshCw, Wrench } from 'lucide-react'
 import { Link } from 'react-router'
 import { demoClock } from '../../config/demo'
 import { assetPage as copy, connectAssetPath } from '../../data/assetPages'
 import { getModel, getProduct, productPath } from '../../lib/catalog'
 import { formatDate, groupThousands } from '../../lib/format'
-import type { Asset, Site } from '../../types'
+import type { Asset, Customer, NavItem, Site } from '../../types'
 import { Breadcrumb } from '../Breadcrumb'
+import { CustomerLogo } from '../CustomerLogo'
 import { SmartImage } from '../SmartImage'
 import { AssetStatusChip } from './AssetStatusChip'
 
@@ -15,6 +16,10 @@ type AssetHeaderProps = {
   onRequestService: () => void
   /** Opens the Spare parts tab. */
   onOrderParts: () => void
+  /** Defaults to My Pages › My assets; the partner comes through the customer. */
+  breadcrumbParents?: NavItem[]
+  /** Partner mode: whose asset it is, linking to the customer page. */
+  customer?: { customer: Customer; to: string }
 }
 
 const outlineOnDark =
@@ -25,7 +30,14 @@ const outlineOnDark =
  * (links to the product page) and the actions, with the product image on the
  * right. Below it, a strip of key facts.
  */
-export function AssetHeader({ asset, site, onRequestService, onOrderParts }: AssetHeaderProps) {
+export function AssetHeader({
+  asset,
+  site,
+  onRequestService,
+  onOrderParts,
+  breadcrumbParents = copy.breadcrumbParents,
+  customer,
+}: AssetHeaderProps) {
   const product = getProduct(asset.productId)
   const model = asset.modelId ? getModel(asset.modelId) : undefined
   const image = product?.images[0]
@@ -59,11 +71,31 @@ export function AssetHeader({ asset, site, onRequestService, onOrderParts }: Ass
         </div>
 
         <div className="site-container py-5">
-          <Breadcrumb tone="dark" items={[...copy.breadcrumbParents, { label: asset.tag }]} />
+          <Breadcrumb tone="dark" items={[...breadcrumbParents, { label: asset.tag }]} />
         </div>
 
         <div className="site-container grid items-end gap-x-16 gap-y-10 pt-6 pb-14 lg:grid-cols-[minmax(0,1fr)_25rem]">
           <div className="animate-fade-in">
+            {customer && (
+              <Link
+                to={customer.to}
+                className="group mb-5 inline-flex items-center gap-3 rounded-pill bg-white/10 py-1.5 pr-4 pl-1.5 text-sm text-white ring-1 ring-white/20 backdrop-blur-sm transition-colors hover:bg-white/15"
+              >
+                <span className="flex size-8 items-center justify-center rounded-full bg-white">
+                  <CustomerLogo
+                    customerId={customer.customer.id}
+                    variant="mark"
+                    className="h-[18px]"
+                  />
+                </span>
+                <span className="text-text-on-dark">
+                  <Building2 aria-hidden className="-mt-0.5 mr-1.5 inline size-4" />
+                  {copy.customer}
+                </span>
+                <span className="font-semibold">{customer.customer.name}</span>
+                <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+              </Link>
+            )}
             <div className="flex flex-wrap items-center gap-3">
               <AssetStatusChip status={asset.status} />
               <span className="inline-flex items-center gap-1.5 text-sm text-text-on-dark">

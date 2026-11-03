@@ -44,12 +44,13 @@ export const bom = {
     part: 'Part',
     quantity: 'Per pump',
     price: 'Your price',
+    netPrice: 'Your net price',
     leadTime: 'Lead time',
     order: 'Order',
   },
   signInForPrices: 'Sign in to see your prices',
   listPrice: (price: string) => `List ${price}`,
-  discount: (percent: number) => `−${percent}%`,
+  discount: (percent: number) => `Your discount ${percent}%`,
   kit: {
     show: (n: number) => `${n} parts in this kit`,
     hide: 'Hide kit contents',
@@ -245,9 +246,17 @@ export const checkoutCopy = {
   breadcrumb: [...cartCopy.breadcrumb, { label: cartCopy.title, to: cartPath }] satisfies NavItem[],
   intro: 'Check the delivery and add your reference. You can follow the order under Orders.',
   orderedBy: (name: string, company: string) => `Ordering as ${name}, ${company}`,
+  orderedFor: (name: string, company: string, customer: string) =>
+    `Ordering as ${name}, ${company}, for ${customer}`,
+  customer: {
+    title: 'Order on behalf of customer',
+    hint: 'The order shows up under this customer, at your partner prices',
+    number: (number: string, city: string) => `Customer no. ${number} · ${city}`,
+  },
   address: {
     title: 'Delivery address',
     fromAccount: 'From your mySulzer account',
+    fromCustomer: (customer: string) => `From ${customer}’s account, or to your warehouse`,
   },
   delivery: {
     title: 'Delivery',
@@ -263,6 +272,7 @@ export const checkoutCopy = {
   },
   summary: {
     expected: 'Expected delivery',
+    customer: 'Ordered for',
     place: 'Place order',
     terms: 'By placing the order you accept the Sulzer terms of sale.',
     termsLink: { label: 'Terms of sale', to: '/terms-of-sale' } satisfies NavItem,

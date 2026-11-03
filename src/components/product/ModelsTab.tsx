@@ -5,6 +5,7 @@ import { useAuth } from '../../auth/useAuth'
 import { productPage } from '../../data/catalogPages'
 import { useUrlParams } from '../../hooks/useUrlParams'
 import { maxCompare } from '../../lib/personal'
+import { discountFor } from '../../lib/pricing'
 import {
   filterModels,
   modelFilterOptions,
@@ -33,6 +34,7 @@ const copy = productPage.models
  */
 export function ModelsTab({ models }: { models: ProductModel[] }) {
   const { user, signIn } = useAuth()
+  const discount = user ? discountFor(user) : 0
   const showToast = useToast()
   const [params, update] = useUrlParams()
   const [sort, setSort] = useState<ModelSort | null>(null)
@@ -117,6 +119,7 @@ export function ModelsTab({ models }: { models: ProductModel[] }) {
           <ModelsTable
             models={shown}
             signedIn={user !== null}
+            discount={discount}
             onSignIn={() => signIn()}
             sort={sort}
             onSort={toggleSort}
@@ -147,7 +150,11 @@ export function ModelsTab({ models }: { models: ProductModel[] }) {
             </button>
           </div>
         )}
-        {user && <p className="mt-3 text-right text-xs text-text-muted">{copy.priceNote}</p>}
+        {user && (
+          <p className="mt-3 text-right text-xs text-text-muted">
+            {discount > 0 ? copy.partnerPriceNote(discount) : copy.priceNote}
+          </p>
+        )}
       </div>
 
       {/* In <body>: the tab panel's fade-in uses a transform, which would anchor fixed elements to it. */}
@@ -163,6 +170,7 @@ export function ModelsTab({ models }: { models: ProductModel[] }) {
             open={compareOpen && compared.length > 1}
             models={compared}
             signedIn={user !== null}
+            discount={discount}
             onClose={() => setCompareOpen(false)}
           />
         </>,

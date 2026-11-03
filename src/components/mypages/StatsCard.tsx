@@ -1,7 +1,6 @@
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router'
-import { assetsCard } from '../../data/myPages'
-import type { StatusTone } from '../../types'
+import type { StatsCardData, StatusTone } from '../../types'
 import { DashboardPanel } from './DashboardPanel'
 
 const tones: Record<StatusTone, { icon: string; value: string }> = {
@@ -10,9 +9,12 @@ const tones: Record<StatusTone, { icon: string; value: string }> = {
   warning: { icon: 'bg-warning-tint text-warning', value: 'text-warning-strong' },
 }
 
-/** "My assets" card: three headline stats on the installed base and a link to the asset list. */
-export function AssetsCard() {
-  const { title, subtitle, icon, badge, stats, source, link } = assetsCard
+/**
+ * Wide My Pages card with three headline stats, each a link, and a button: "My assets"
+ * for the end user, "My customers" for the partner.
+ */
+export function StatsCard({ card }: { card: StatsCardData }) {
+  const { title, subtitle, icon, badge, stats, source, link } = card
 
   return (
     <DashboardPanel title={title} subtitle={subtitle} icon={icon} badge={badge}>

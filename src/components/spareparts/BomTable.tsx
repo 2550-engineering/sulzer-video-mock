@@ -38,6 +38,8 @@ export function BomTable({
   grouped,
 }: BomTableProps) {
   const columns = signedIn ? 5 : 4
+  // Partners see their net price, with list price and discount under it.
+  const discounted = parts.some((part) => (priceOf(part)?.discount ?? 0) > 0)
 
   return (
     <div className="overflow-hidden rounded-lg border border-border bg-white">
@@ -56,7 +58,7 @@ export function BomTable({
             {signedIn ? (
               <>
                 <th scope="col" className={`${head} text-right`}>
-                  {copy.columns.price}
+                  {discounted ? copy.columns.netPrice : copy.columns.price}
                 </th>
                 <th scope="col" className={`${head} text-right`}>
                   <span className="sr-only">{copy.columns.order}</span>

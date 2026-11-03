@@ -1,9 +1,11 @@
 import { Download } from 'lucide-react'
 import { useId, useState, type ReactNode } from 'react'
+import { customers } from '../../data/assets'
 import { myProjectsPage } from '../../data/projectPages'
 import { getVariant } from '../../lib/variants'
 import type { Project } from '../../types'
 import { FileTypeIcon } from '../product/FileTypeIcon'
+import { SelectField } from '../SelectField'
 import { ProjectStatusChip } from './ProjectStatusChip'
 
 const copy = myProjectsPage.panel
@@ -27,13 +29,19 @@ const detailRows = (rows: [string, ReactNode][]) => (
   </dl>
 )
 
-/** Right column: tabs Project details, Members and Documents. */
+/**
+ * Right column: tabs Project details, Members and Documents. A partner can pick the
+ * customer account the project is for.
+ */
 export function ProjectDetailsPanel({
   project,
   onDownload,
+  onClientAccount,
 }: {
   project: Project
   onDownload: (title: string) => void
+  /** Partners: sets the client account. */
+  onClientAccount?: (customerId: string) => void
 }) {
   const ids = useId()
   const [tab, setTab] = useState<Tab>('details')
@@ -98,11 +106,30 @@ export function ProjectDetailsPanel({
             <h3 className="mt-6 text-xs font-semibold tracking-[0.08em] text-text-muted uppercase">
               {copy.client}
             </h3>
+            {onClientAccount && (
+              <div className="pt-3 pb-2">
+                <SelectField
+                  layout="stacked"
+                  label={copy.clientAccount}
+                  value={project.clientAccount ?? ''}
+                  onChange={(id) => id && onClientAccount(id)}
+                  options={[
+                    ...(project.clientAccount
+                      ? []
+                      : [{ value: '', label: copy.chooseClient, disabled: true }]),
+                    ...customers.map((c) => ({ value: c.id, label: c.name })),
+                  ]}
+                />
+                {!project.clientAccount && (
+                  <p className="mt-1.5 text-xs text-text-muted">{copy.chooseClientHint}</p>
+                )}
+              </div>
+            )}
             {detailRows([
-              [copy.company, project.client.company],
-              [copy.contact, project.client.contact],
+              [copy.company, project.client.company || copy.notSet],
+              [copy.contact, project.client.contact || copy.notSet],
               [copy.site, project.client.site || copy.notSet],
-              [copy.email, project.client.email],
+              [copy.email, project.client.email || copy.notSet],
             ])}
           </>
         )}

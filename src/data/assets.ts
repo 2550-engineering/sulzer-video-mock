@@ -58,11 +58,18 @@ export const customers: Customer[] = [
   },
 ]
 
-const site = (id: string, name: string, type: string, shows: string): Site => ({
+const site = (
+  id: string,
+  name: string,
+  type: string,
+  shows: string,
+  customerId: string = endUser.customerId,
+  city = 'Västerås',
+): Site => ({
   id,
-  customerId: endUser.customerId,
+  customerId,
   name,
-  city: 'Västerås',
+  city,
   type,
   image: { src: `/images/sites/${id}.jpg`, alt: shows },
 })
@@ -104,6 +111,39 @@ export const sites: Site[] = [
     'Wastewater treatment plant',
     'Clarifier at a wastewater treatment plant, with walkways and a low sun under a wide sky',
   ),
+  // The channel partner's other customers.
+  site(
+    'koping-mill',
+    'Köping paper mill',
+    'Paper mill',
+    'Paper machine hall with a long paper web and stock piping, warm industrial light',
+    'malarbruk',
+    'Köping',
+  ),
+  site(
+    'sorby-dairy',
+    'Eskilstuna dairy',
+    'Food production',
+    'Clean stainless steel process room in a dairy with tanks and hygienic pipework',
+    'sorby-livsmedel',
+    'Eskilstuna',
+  ),
+  site(
+    'sala-chp',
+    'Sala CHP plant',
+    'Combined heat and power plant',
+    'Biomass combined heat and power plant with a tall chimney and wood-chip store, winter daylight',
+    'vastmalm-energi',
+    'Sala',
+  ),
+  site(
+    'heby-dh',
+    'Heby district heating station',
+    'District heating pump station',
+    'Insulated district heating pipes and circulation pumps inside a small heating station',
+    'vastmalm-energi',
+    'Heby',
+  ),
 ]
 
 type Row = [
@@ -122,7 +162,7 @@ type Row = [
   status: AssetStatus,
 ]
 
-// Exactly what the My Pages card says: 24 assets on 6 sites, 18 connected,
+// Nordvatten: exactly what the My Pages card says: 24 assets on 6 sites, 18 connected,
 // 2 need attention (RW-02 warning, P-211 alarm), 1 service due within 30 days (BW-01).
 // prettier-ignore
 const rows: Row[] = [
@@ -153,8 +193,30 @@ const rows: Row[] = [
   ['DR-01', 'Drainage pump',        'ostra-wwtp',          'j-dewatering', null,                  'JD-2440-00918', '2024-09-30', '2027-09-30',  1260, '2025-12-15', '2026-12-15', false, 'ok'],
 ]
 
-export const assets: Asset[] = rows.map(
-  ([
+// The channel partner's other customers: 14 assets on 4 sites, all running normally,
+// so Nordvatten is the one account that needs attention.
+// prettier-ignore
+const partnerRows: [customerId: string, ...Row][] = [
+  // customer          tag      role                      site            product    model                  serial no.       installed     warranty      run h   last service  next service  conn.  status
+  ['malarbruk',        'PM3-01', 'Stock pump',             'koping-mill',  'ahlstar', 'ahlstar-125-100-315', 'AH-2019-06311', '2020-05-11', '2022-05-11', 47120, '2026-05-26', '2027-05-26', true,  'ok'],
+  ['malarbruk',        'PM3-02', 'Stock pump',             'koping-mill',  'ahlstar', 'ahlstar-125-100-315', 'AH-2019-06312', '2020-05-11', '2022-05-11', 46380, '2026-05-26', '2027-05-26', true,  'ok'],
+  ['malarbruk',        'WW-01',  'White water pump',       'koping-mill',  'ahlstar', 'ahlstar-150-125-315', 'AH-2236-09917', '2022-09-05', '2024-09-05', 18240, '2026-08-31', '2027-08-31', true,  'ok'],
+  ['malarbruk',        'FW-01',  'Fresh water pump',       'koping-mill',  'ahlstar', 'ahlstar-80-65-160',   'AH-2236-09918', '2022-09-05', '2024-09-05', 17860, '2026-08-31', '2027-08-31', false, 'ok'],
+  ['malarbruk',        'EF-01',  'Effluent pump',          'koping-mill',  'xfp',     'xfp-100-c',           'XF-2318-34102', '2023-05-02', '2025-05-02',  9420, '2026-04-14', '2027-04-14', false, 'ok'],
+  ['sorby-livsmedel',  'CIP-01', 'CIP supply pump',        'sorby-dairy',  'ahlstar', 'ahlstar-50-32-200',   'AH-2142-08035', '2021-11-15', '2023-11-15', 21650, '2026-06-22', '2027-06-22', false, 'ok'],
+  ['sorby-livsmedel',  'CIP-02', 'CIP supply pump',        'sorby-dairy',  'ahlstar', 'ahlstar-50-32-200',   'AH-2142-08036', '2021-11-15', '2023-11-15', 20980, '2026-06-22', '2027-06-22', false, 'ok'],
+  ['sorby-livsmedel',  'PW-01',  'Process water pump',     'sorby-dairy',  'ahlstar', 'ahlstar-80-65-160',   'AH-2405-13370', '2024-02-19', '2026-02-19',  6110, '2026-02-10', '2027-02-10', false, 'ok'],
+  ['vastmalm-energi',  'DH-01',  'District heating pump',  'sala-chp',     'ahlstar', 'ahlstar-200-150-400', 'AH-1934-05502', '2019-08-26', '2021-08-26', 49870, '2026-06-15', '2027-06-15', true,  'ok'],
+  ['vastmalm-energi',  'DH-02',  'District heating pump',  'sala-chp',     'ahlstar', 'ahlstar-200-150-400', 'AH-1934-05503', '2019-08-26', '2021-08-26', 48210, '2026-06-15', '2027-06-15', true,  'ok'],
+  ['vastmalm-energi',  'FW-11',  'Boiler feed water pump', 'sala-chp',     'ahlstar', 'ahlstar-65-40-250',   'AH-2026-06618', '2020-07-06', '2022-07-06', 39940, '2025-11-20', '2026-11-20', true,  'ok'],
+  ['vastmalm-energi',  'CW-01',  'Cooling water pump',     'sala-chp',     'ahlstar', 'ahlstar-150-125-315', 'AH-2026-06619', '2020-07-06', '2022-07-06', 41530, '2026-06-15', '2027-06-15', true,  'ok'],
+  ['vastmalm-energi',  'HB-01',  'Circulation pump',       'heby-dh',      'ahlstar', 'ahlstar-100-80-250',  'AH-2328-12251', '2023-07-17', '2025-07-17', 24830, '2026-07-01', '2027-07-01', true,  'ok'],
+  ['vastmalm-energi',  'HB-02',  'Circulation pump',       'heby-dh',      'ahlstar', 'ahlstar-100-80-250',  'AH-2328-12252', '2023-07-17', '2025-07-17', 23960, '2026-07-01', '2027-07-01', false, 'ok'],
+]
+
+const toAsset = (
+  customerId: string,
+  [
     tag,
     role,
     siteId,
@@ -168,24 +230,30 @@ export const assets: Asset[] = rows.map(
     nextServiceDue,
     connected,
     status,
-  ]) => ({
-    id: tag.toLowerCase(),
-    tag,
-    name: `${role} ${tag}`,
-    customerId: endUser.customerId,
-    siteId,
-    productId,
-    ...(modelId ? { modelId } : {}),
-    serialNumber,
-    installedOn,
-    warrantyUntil,
-    runHours,
-    lastService,
-    nextServiceDue,
-    connected,
-    status,
-  }),
-)
+  ]: Row,
+): Asset => ({
+  id: tag.toLowerCase(),
+  tag,
+  name: `${role} ${tag}`,
+  customerId,
+  siteId,
+  productId,
+  ...(modelId ? { modelId } : {}),
+  serialNumber,
+  installedOn,
+  warrantyUntil,
+  runHours,
+  lastService,
+  nextServiceDue,
+  connected,
+  status,
+})
+
+/** Nordvatten's 24 first (the end user's installed base), then the partner's other customers. */
+export const assets: Asset[] = [
+  ...rows.map((row) => toAsset(endUser.customerId, row)),
+  ...partnerRows.map(([customerId, ...row]) => toAsset(customerId, row)),
+]
 
 /** Sulzer Connect's diagnosis for the assets that need attention. Invented: see docs/content-to-confirm.md. */
 export const conditionFindings: Record<string, ConditionFinding> = {

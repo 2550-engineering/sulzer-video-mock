@@ -3,11 +3,12 @@ import { useId, useState, type FormEvent, type ReactNode } from 'react'
 import { Link } from 'react-router'
 import { useAuth } from '../../auth/useAuth'
 import { serviceRequestReference } from '../../config/demo'
-import { assetLocation, assets } from '../../data/assets'
+import { assetLocation } from '../../data/assets'
 import { requestsPage, requestsPath } from '../../data/selfServicePages'
 import { newRequestDefaults, newRequestReceivedAt, serviceCenter } from '../../data/serviceRequests'
 import { assetAlert } from '../../lib/assetList'
 import { needsAttention } from '../../lib/assetSummary'
+import { assetsFor } from '../../lib/connect'
 import { productPage } from '../../data/catalogPages'
 import { useSelfService } from '../../selfService/useSelfService'
 import { useToast } from '../../toast/useToast'
@@ -47,7 +48,9 @@ export function ServiceRequestForm({
   const showToast = useToast()
   const ids = useId()
   // Prefill the site of this product's unit that needs attention, else its first unit.
-  const productAssets = assets.filter((asset) => asset.productId === product.id)
+  const productAssets = (user ? assetsFor(user) : []).filter(
+    (asset) => asset.productId === product.id,
+  )
   const asset = forAsset ?? productAssets.find(needsAttention) ?? productAssets[0]
   const [values, setValues] = useState({
     service:

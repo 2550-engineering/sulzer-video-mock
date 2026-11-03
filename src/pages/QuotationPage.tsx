@@ -1,4 +1,4 @@
-import { Download, FileClock, FileText, Mail, Phone } from 'lucide-react'
+import { Download, FileClock, FileText, Mail, Phone, Send } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Link, Navigate, useParams } from 'react-router'
 import { useAuth } from '../auth/useAuth'
@@ -9,7 +9,6 @@ import { StatusPill } from '../components/selfservice/StatusPill'
 import { demoClock, partnerPricing } from '../config/demo'
 import { customers } from '../data/assets'
 import { signedOutRedirect } from '../data/myPages'
-import { projects } from '../data/projects'
 import {
   orderPath,
   quotationPage as copy,
@@ -18,7 +17,10 @@ import {
   quotationsPath,
 } from '../data/selfServicePages'
 import { formatDate, formatDateTime } from '../lib/format'
+import { sentQuotation } from '../lib/partner'
 import { formatMoney, partnerMargin, quotationsFor, quotationTotals } from '../lib/selfService'
+import { useProjects } from '../projects/useProjects'
+import { useSelfService } from '../selfService/useSelfService'
 import { useToast } from '../toast/useToast'
 
 const card = 'rounded-lg border border-border bg-white px-6 py-5'
@@ -41,13 +43,16 @@ export function QuotationPage() {
   const { user } = useAuth()
   const { id } = useParams()
   const showToast = useToast()
+  const { quotations, saveQuotation } = useSelfService()
+  const { projects } = useProjects()
   if (!user) return <Navigate to={signedOutRedirect} replace />
 
-  const quotation = quotationsFor(user).find((q) => q.id === id)
+  const quotation = quotationsFor(user, quotations).find((q) => q.id === id)
   if (!quotation) return <Navigate to={quotationsPath} replace />
 
   const partner = quotation.issuer === 'partner'
   const preparing = quotation.status === 'Requested'
+  const draft = quotation.status === 'Draft'
   const customer = customers.find((c) => c.id === quotation.customerId)
   const project = projects.find((p) => p.id === quotation.projectId)
   const totals = quotationTotals(quotation)
@@ -85,12 +90,16 @@ export function QuotationPage() {
   ]
 
   const history = [
-    { at: formatDateTime(quotation.requestedAt, demoClock.today), text: copy.requested },
+    {
+      at: formatDateTime(quotation.requestedAt, demoClock.today),
+      // A quotation the partner made from a project was never requested.
+      text: quotation.projectId && partner ? copy.createdStep : copy.requested,
+    },
     // An update on the day it was sent is the sending itself, e.g. "Sent to Emma Lindqvist".
     ...(quotation.issuedOn && !quotation.updated.at.startsWith(quotation.issuedOn)
       ? [{ at: formatDate(quotation.issuedOn), text: copy.issuedStep }]
       : []),
-    ...(quotation.updated.at !== quotation.requestedAt
+    ...(quotation.updated.at !== quotation.requestedAt && !draft
       ? [
           {
             at: formatDateTime(quotation.updated.at, demoClock.today),
@@ -115,16 +124,38 @@ export function QuotationPage() {
         description={quotation.title}
         aside={
           !preparing && (
-            <button
-              type="button"
-              onClick={() =>
-                showToast({ message: copy.downloaded(quotation.id), detail: copy.fileDetail })
-              }
-              className="inline-flex h-11 items-center gap-2 rounded-pill bg-primary px-6 text-sm font-semibold text-white shadow-raised transition-colors hover:bg-primary-hover"
-            >
-              <Download className="size-4" />
-              {copy.download}
-            </button>
+            <>
+              <button
+                type="button"
+                onClick={() =>
+                  showToast({ message: copy.downloaded(quotation.id), detail: copy.fileDetail })
+                }
+                className={
+                  draft
+                    ? 'inline-flex h-11 items-center gap-2 rounded-pill border border-primary bg-white px-6 text-sm font-semibold text-primary transition-colors hover:bg-primary-tint'
+                    : 'inline-flex h-11 items-center gap-2 rounded-pill bg-primary px-6 text-sm font-semibold text-white shadow-raised transition-colors hover:bg-primary-hover'
+                }
+              >
+                <Download className="size-4" />
+                {copy.download}
+              </button>
+              {draft && customer && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    saveQuotation(sentQuotation(quotation))
+                    showToast({
+                      message: copy.sent(quotation.id, customer.contact.name),
+                      detail: customer.name,
+                    })
+                  }}
+                  className="inline-flex h-11 items-center gap-2 rounded-pill bg-primary px-6 text-sm font-semibold text-white shadow-raised transition-colors hover:bg-primary-hover"
+                >
+                  <Send className="size-4" />
+                  {copy.send(customer.contact.name)}
+                </button>
+              )}
+            </>
           )
         }
       />
@@ -192,6 +223,10 @@ export function QuotationPage() {
               </p>
               <p className="text-sm text-text-muted">{copy.margin.margin}</p>
               <dl className="mt-4 space-y-2 border-t border-primary-border pt-4 text-sm">
+                <div className="flex justify-between gap-4">
+                  <dt className="text-text-muted">{copy.margin.list}</dt>
+                  <dd className="text-text-muted tabular-nums">{formatMoney(margin.list)}</dd>
+                </div>
                 <div className="flex justify-between gap-4">
                   <dt className="text-text-muted">{copy.margin.cost(partnerPricing.discount)}</dt>
                   <dd className="font-semibold text-navy-900 tabular-nums">

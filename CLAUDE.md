@@ -53,7 +53,7 @@ Goal: viewers should go "Wow!" It must look like a real, polished, production Su
 
 ## Phase 3 – Personas (current)
 
-Deck slides 11 (end user / asset owner), 12 (end user IoT) and 13 (channel partner). Plan, assumptions and recording scripts (Video A and B): `~/Documents/Claude/Projects/Sulzer/plans/persona-plan.md`.
+Deck slides 11 (end user / asset owner), 12 (end user IoT) and 13 (channel partner). Plan, assumptions and demo flows (Video A and B): `~/Documents/Claude/Projects/Sulzer/plans/persona-plan.md`.
 
 - **P0 Foundations:** personas (`personas` in `src/config/demo.ts`), installed base (`src/data/assets.ts`), condition time series (`src/lib/conditionData.ts`).
 - **P1 My assets:** `/assets` and `/assets/:id`.
@@ -63,7 +63,6 @@ Deck slides 11 (end user / asset owner), 12 (end user IoT) and 13 (channel partn
 - **P5 Spare parts, sectional drawing and eShop.**
 - **P6 Replacement finder and tender texts.**
 - **P7 Channel partner:** partner My Pages, customers, partner prices.
-- **P8 Recording polish.**
 
 P5 and P6 are also needed by the service provider (slide 9) and consultant (slide 10) videos. Build them persona-agnostic and reusable: no end-user or partner wording baked into the components, persona-specific bits (prices, "on behalf of" a customer) passed in as props or read from the signed-in persona.
 
@@ -77,7 +76,7 @@ Personas: `endUser` (Emma Lindqvist, Nordvatten Utilities) and `channelPartner` 
 
 ## Documents and plans
 
-- Plans (phase, module and persona plans) and other non-code documents (recording scripts, image source logs, notes) do **not** go in this repo.
+- Plans (phase, module and persona plans) and other non-code documents (image source logs, notes) do **not** go in this repo.
 - They live in the Sulzer project folder `~/Documents/Claude/Projects/Sulzer`: plans in `plans/`, other documents in `docs/`. See its `CLAUDE.md`.
 - Start Claude Code with `claude --add-dir ~/Documents/Claude/Projects/Sulzer` so you can read and write there, and use absolute paths.
 - Only code and files the code or scripts need (this file, generated reports like `docs/images-needed.md`, `docs/content-to-confirm.md`, tests) stay in the repo.

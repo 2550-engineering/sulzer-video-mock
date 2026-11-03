@@ -1,19 +1,33 @@
 import { demoClock } from '../config/demo'
 import { customers } from '../data/assets'
 import { checkoutTime } from '../data/eshop'
+import { partnerAccounts } from '../data/partner'
 import { nordvattenAddress } from '../data/orders'
 import { issuers } from '../data/quotations'
-import type { CartLine, DeliveryOption, Order, OrderLine, SparePart, User } from '../types'
+import type {
+  CartLine,
+  DeliveryAddress,
+  DeliveryOption,
+  Order,
+  OrderLine,
+  SparePart,
+  User,
+} from '../types'
 import { discountFor, leadTime } from './pricing'
 
 /* Checkout: delivery addresses, delivery dates and the order a cart becomes. */
 
-export type DeliveryAddress = { id: string; label: string; lines: string[] }
-
-/** The addresses on the user's account. Partners get their own warehouse. */
-export function deliveryAddressesFor(user: User): DeliveryAddress[] {
+/**
+ * The addresses on the user's account. Partners ordering for a customer get that
+ * customer's addresses first, then their own warehouse.
+ */
+export function deliveryAddressesFor(user: User, customerId?: string): DeliveryAddress[] {
   if (user.kind === 'partner') {
+    const customerAddresses = customerId
+      ? (partnerAccounts[customerId]?.deliveryAddresses ?? [])
+      : []
     return [
+      ...customerAddresses,
       {
         id: 'warehouse',
         label: `${user.company} warehouse`,
@@ -70,13 +84,23 @@ type NewOrder = {
   poNumber: string
   /** Every order so far, for the next number. */
   orders: Order[]
+  /** Partners: the customer the order is for. */
+  customerId?: string
 }
 
 /**
- * The order a checkout places: confirmed now, at the user's discount. Partners order for
- * their customer; until the partner layer adds a customer choice, that is the first one.
+ * The order a checkout places: confirmed now, at the user's discount. Partners order on
+ * behalf of the customer they chose (the first one if none).
  */
-export function buildOrder({ user, lines, option, address, poNumber, orders }: NewOrder): Order {
+export function buildOrder({
+  user,
+  lines,
+  option,
+  address,
+  poNumber,
+  orders,
+  customerId,
+}: NewOrder): Order {
   const placedAt = `${demoClock.today}T${checkoutTime}`
   const orderLines: OrderLine[] = lines.map(({ line, part }, i) => ({
     position: (i + 1) * 10,
@@ -88,7 +112,7 @@ export function buildOrder({ user, lines, option, address, poNumber, orders }: N
   }))
   return {
     id: nextOrderId(orders),
-    customerId: user.customerId ?? customers[0].id,
+    customerId: user.customerId ?? customerId ?? customers[0].id,
     channel: user.kind === 'partner' ? 'partner' : 'direct',
     placedAt,
     placedBy: user.name,

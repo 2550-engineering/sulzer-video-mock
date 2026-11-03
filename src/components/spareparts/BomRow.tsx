@@ -107,7 +107,7 @@ export function BomRow({
         </td>
         {price ? (
           <>
-            <td className={`${cell} w-32 text-right`}>
+            <td className={`${cell} w-36 text-right`}>
               <PartPrice price={price} />
             </td>
             <td className={`${cell} w-[13.5rem]`}>

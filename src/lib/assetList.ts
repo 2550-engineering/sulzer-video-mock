@@ -20,6 +20,8 @@ const copy = assetListPage.filters
 
 export const statusOrder: AssetStatus[] = ['alarm', 'warning', 'ok']
 
+const siteOrder = (id: string) => sites.findIndex((site) => site.id === id)
+
 /** Filter groups, in the order of the filter column. Their ids are the URL params. */
 export const assetFilters: FilterDef<Asset>[] = [
   {
@@ -33,7 +35,8 @@ export const assetFilters: FilterDef<Asset>[] = [
     id: 'site',
     label: copy.site,
     value: (asset) => asset.siteId,
-    options: sites.map((site) => site.id),
+    // Only the sites in the list (a customer never sees another's), in data order.
+    compare: (a, b) => siteOrder(a) - siteOrder(b),
     optionLabel: (id) => siteById(id)?.name ?? id,
   },
   {

@@ -1,7 +1,9 @@
 import { BadgeCheck, CircleDollarSign, Info } from 'lucide-react'
+import { useAuth } from '../../auth/useAuth'
 import { replacementPage } from '../../data/replacement'
 import { groupThousands } from '../../lib/format'
 import { formatPrice } from '../../lib/modelSpecs'
+import { priceFor } from '../../lib/pricing'
 import type { ReplacementOption } from '../../lib/replacement'
 import { AvailabilityBadge } from '../product/AvailabilityBadge'
 
@@ -22,13 +24,19 @@ export function ReplacementOptionCard({
   signedIn,
   onSelect,
 }: ReplacementOptionCardProps) {
+  const { user } = useAuth()
   const { result, fits, lowestCost } = option
   const { variant } = result
+  const price = signedIn ? priceFor(result.purchasePrice, user) : null
   const figures: [string, string][] = [
     [copy.efficiency, `${groupThousands(result.efficiency, 1)} %`],
     [copy.motor, `${variant.motorPower} kW ${variant.motorClass}`],
     [copy.power, `${groupThousands(result.p1, 1)} kW`],
-    ...(signedIn ? [[copy.listPrice, formatPrice(result.purchasePrice)] as [string, string]] : []),
+    ...(price ? [[copy.listPrice, formatPrice(price.list)] as [string, string]] : []),
+    // Partners also see their net price.
+    ...(price && price.discount > 0
+      ? [[copy.netPrice(price.discount), formatPrice(price.net)] as [string, string]]
+      : []),
   ]
 
   return (

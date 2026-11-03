@@ -1,5 +1,6 @@
 import {
   Activity,
+  Building2,
   CircleUserRound,
   Factory,
   FolderKanban,
@@ -86,6 +87,11 @@ export const accountMenuLinks: IconLink[] = [
   { label: 'My Pages', to: '/my-pages', icon: LayoutDashboard },
   { label: 'My projects', to: '/my-projects', icon: FolderKanban },
   { label: 'Settings', to: '/settings', icon: Settings },
+]
+
+/** Added for the channel partner, after My Pages. */
+export const partnerMenuLinks: IconLink[] = [
+  { label: 'My customers', to: '/partner/customers', icon: Building2 },
 ]
 
 /** Canned options in the floating chat card. */

@@ -9,7 +9,8 @@ import { products } from './products'
 
 describe('installed base', () => {
   it('matches the My Pages story: 24 assets, 6 sites, 18 connected, 1 alarm, 1 warning, 1 service due', () => {
-    expect(summarizeAssets(assets)).toEqual({
+    const nordvatten = assets.filter((asset) => asset.customerId === personas.endUser.customerId)
+    expect(summarizeAssets(nordvatten)).toEqual({
       total: 24,
       sites: 6,
       connected: 18,
@@ -43,6 +44,16 @@ describe('installed base', () => {
     }
     expect(customers).toHaveLength(4)
     expect(customers[0].id).toBe(personas.endUser.customerId)
+  })
+
+  it('gives every customer an installed base, and only Nordvatten needs attention', () => {
+    for (const customer of customers) {
+      expect(assets.some((asset) => asset.customerId === customer.id)).toBe(true)
+    }
+    const attention = assets.filter((asset) => asset.status !== 'ok')
+    expect(new Set(attention.map((asset) => asset.customerId))).toEqual(
+      new Set([personas.endUser.customerId]),
+    )
   })
 
   it('has dates in order: installed, warranty, last service, next service', () => {

@@ -1,18 +1,22 @@
 import {
+  Check,
   Copy,
   Download,
+  FilePlus2,
   FileText,
   FolderOpen,
   Pencil,
   Printer,
   Settings2,
+  Share2,
   Trash2,
   Wallet,
 } from 'lucide-react'
 import { useState } from 'react'
-import { Link, Navigate, useParams, useSearchParams } from 'react-router'
+import { Link, Navigate, useNavigate, useParams, useSearchParams } from 'react-router'
 import { useAuth } from '../auth/useAuth'
 import { Breadcrumb } from '../components/Breadcrumb'
+import { CustomerLogo } from '../components/CustomerLogo'
 import { IconButton } from '../components/IconButton'
 import { ProjectDetailsPanel } from '../components/projects/ProjectDetailsPanel'
 import { ProjectItemsTable } from '../components/projects/ProjectItemsTable'
@@ -20,13 +24,18 @@ import { ProjectList } from '../components/projects/ProjectList'
 import { ProjectSizings } from '../components/projects/ProjectSizings'
 import { ProjectStatusChip } from '../components/projects/ProjectStatusChip'
 import { Switch } from '../components/Switch'
+import { customers } from '../data/assets'
 import { signedOutRedirect } from '../data/myPages'
 import { myProjectsPage as copy } from '../data/projectPages'
+import { quotationPath } from '../data/selfServicePages'
 import { tenderText } from '../data/tenderTexts'
 import { downloadFile } from '../lib/download'
+import { quotationFromProject } from '../lib/partner'
+import { isSharedWithClient } from '../lib/projects'
 import { itemTenderText, tenderRtf } from '../lib/tenderText'
 import { getVariant } from '../lib/variants'
 import { useProjects } from '../projects/useProjects'
+import { useSelfService } from '../selfService/useSelfService'
 import { useToast } from '../toast/useToast'
 import { NotFoundPage } from './NotFoundPage'
 
@@ -36,13 +45,17 @@ const outlined =
 /**
  * My Projects: /my-projects (opens the most recently modified project) and
  * /my-projects/:projectId. Signed-in only. ?added=<item ids> highlights rows
- * that were just added from sizing.
+ * that were just added from sizing. A partner's project for a customer can be
+ * shared with the customer's contact and turned into a quotation.
  */
 export function MyProjectsPage() {
-  const { user } = useAuth()
+  const { user, persona } = useAuth()
   const { projectId } = useParams()
   const [searchParams] = useSearchParams()
-  const { projects, updateItem, duplicateSizing, deleteSizing } = useProjects()
+  const { projects, updateItem, duplicateSizing, deleteSizing, setClientAccount, shareWithClient } =
+    useProjects()
+  const { quotations, saveQuotation } = useSelfService()
+  const navigate = useNavigate()
   const showToast = useToast()
   const [advanced, setAdvanced] = useState(false)
 
@@ -63,6 +76,29 @@ export function MyProjectsPage() {
     const document = itemTenderText(item, getVariant(item.variantId))
     return document ? [document] : []
   })
+
+  // The partner's own project for a customer account: share it and quote it.
+  const forCustomer = user.kind === 'partner' && project.owner === persona
+  const shared = isSharedWithClient(project)
+  const quotation = forCustomer ? quotationFromProject(project, quotations) : null
+
+  function share() {
+    shareWithClient(project!.id)
+    showToast({
+      message: copy.toasts.shared(project!.client.contact),
+      detail: copy.toasts.sharedDetail(project!.client.company),
+    })
+  }
+
+  function createQuotation() {
+    if (!quotation) return
+    saveQuotation(quotation)
+    showToast({
+      message: copy.toasts.quotation(quotation.id),
+      detail: copy.toasts.quotationDetail(project!.client.company),
+    })
+    navigate(quotationPath(quotation.id))
+  }
 
   const projectName = project.name
   function downloadTenderTexts() {
@@ -98,6 +134,26 @@ export function MyProjectsPage() {
                     <p className="mt-1 text-sm text-text-muted tabular-nums">
                       {project.refNo} · {project.lastModified}
                     </p>
+                    {forCustomer && project.clientAccount && (
+                      <p className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm">
+                        <span className="inline-flex items-center gap-2 font-semibold text-navy-900">
+                          <span className="flex size-7 items-center justify-center rounded-full border border-border bg-white">
+                            <CustomerLogo
+                              customerId={project.clientAccount}
+                              variant="mark"
+                              className="h-4"
+                            />
+                          </span>
+                          {copy.actions.forClient(project.client.company)}
+                        </span>
+                        {shared && (
+                          <span className="inline-flex animate-fade-in items-center gap-1.5 rounded-pill bg-success-tint px-2.5 py-0.5 text-xs font-semibold text-success-strong">
+                            <Check className="size-3.5" strokeWidth={2.5} />
+                            {copy.actions.shared(project.client.contact)}
+                          </span>
+                        )}
+                      </p>
+                    )}
                   </div>
                   <div className="flex items-center">
                     <IconButton
@@ -135,6 +191,22 @@ export function MyProjectsPage() {
                     <FolderOpen className="size-4" />
                     {copy.actions.addProduct}
                   </Link>
+                  {forCustomer && quotation && (
+                    <button
+                      type="button"
+                      onClick={createQuotation}
+                      className="inline-flex h-10 items-center gap-2 rounded-pill bg-navy-900 px-5 text-sm font-semibold text-white transition-colors hover:bg-navy-800"
+                    >
+                      <FilePlus2 className="size-4" />
+                      {copy.actions.quotation}
+                    </button>
+                  )}
+                  {forCustomer && project.clientAccount && !shared && (
+                    <button type="button" onClick={share} className={outlined}>
+                      <Share2 className="size-4" />
+                      {copy.actions.share}
+                    </button>
+                  )}
                   <button
                     type="button"
                     onClick={() => toast(copy.toasts.margins)}
@@ -223,6 +295,15 @@ export function MyProjectsPage() {
               key={`panel-${project.id}`}
               project={project}
               onDownload={(title) => toast(copy.toasts.document(title))}
+              {...(forCustomer
+                ? {
+                    onClientAccount: (customerId: string) => {
+                      setClientAccount(project.id, customerId)
+                      const customer = customers.find((c) => c.id === customerId)
+                      if (customer) toast(copy.toasts.client(customer.name))
+                    },
+                  }
+                : {})}
             />
           </div>
         </div>

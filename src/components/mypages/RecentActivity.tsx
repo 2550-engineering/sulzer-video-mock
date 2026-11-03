@@ -1,9 +1,10 @@
 import { ChevronRight, History } from 'lucide-react'
 import { Link } from 'react-router'
 import { recentActivity } from '../../data/myPages'
+import type { ActivityItem } from '../../types'
 
 /** Slim list of the latest changes to the user's quotations, projects, orders and courses. */
-export function RecentActivity() {
+export function RecentActivity({ items = recentActivity.items }: { items?: ActivityItem[] }) {
   return (
     <section className="overflow-hidden rounded-lg border border-border bg-surface shadow-card">
       <h2 className="flex items-center gap-2.5 border-b border-border px-7 py-4 text-base font-bold tracking-tight text-brand">
@@ -11,7 +12,7 @@ export function RecentActivity() {
         {recentActivity.title}
       </h2>
       <ul className="divide-y divide-border">
-        {recentActivity.items.map(({ subject, text, time, to, icon: Icon, tone }) => (
+        {items.map(({ subject, text, time, to, icon: Icon, tone }) => (
           <li key={subject}>
             <Link
               to={to}

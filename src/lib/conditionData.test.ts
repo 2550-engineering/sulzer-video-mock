@@ -41,7 +41,7 @@ describe('conditionSeries', () => {
   })
 
   it('has data for connected assets only', () => {
-    expect(connected).toHaveLength(18)
+    expect(connected.filter((asset) => asset.customerId === 'nordvatten')).toHaveLength(18)
     for (const asset of assets) {
       expect(conditionSeries(asset.id) !== null).toBe(asset.connected)
     }

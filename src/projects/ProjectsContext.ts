@@ -12,10 +12,11 @@ export type SaveTarget =
   | { kind: 'existing'; projectId: string }
 
 export type ProjectsState = {
+  /** The signed-in persona's projects: their own and the ones they are a member of. */
   projects: Project[]
   /** Adds sized products; returns the new item ids. */
   addItems: (projectId: string, entries: ProductEntry[]) => string[]
-  /** Creates a Draft project owned by the demo user, with these products; returns the new ids. */
+  /** Creates a Draft project owned by the signed-in persona, with these products; returns the new ids. */
   createProject: (name: string, entries: ProductEntry[]) => { projectId: string; itemIds: string[] }
   updateItem: (
     projectId: string,
@@ -33,6 +34,10 @@ export type ProjectsState = {
   duplicateSizing: (projectId: string, sizingId: string) => void
   /** Removes the sizing record; its products stay, unlinked. */
   deleteSizing: (projectId: string, sizingId: string) => void
+  /** Partners: runs the project for a customer account, with its contact as client data. */
+  setClientAccount: (projectId: string, customerId: string) => void
+  /** Partners: adds the client contact as a member, so the customer sees the project. */
+  shareWithClient: (projectId: string) => void
 }
 
 export const ProjectsContext = createContext<ProjectsState | null>(null)

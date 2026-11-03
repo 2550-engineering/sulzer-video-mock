@@ -87,6 +87,18 @@ export const placeholderRoutes: PlaceholderRoute[] = [
     parent: '/learn',
   },
   {
+    path: '/partner/sales-material',
+    title: 'Sales material',
+    description: 'Presentations, brochures and reference cases to use with your customers.',
+    parent: '/my-pages',
+  },
+  {
+    path: '/partner/brand',
+    title: 'Logos & partner branding',
+    description: 'The authorised Sulzer distributor logo and guidelines for your own material.',
+    parent: '/my-pages',
+  },
+  {
     path: '/about',
     title: 'About us',
     description: 'Sulzer is a global leader in fluid engineering.',

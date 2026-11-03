@@ -49,7 +49,10 @@ export function ordersFor(user: User, orders: Order[]) {
   )
 }
 
-/** Sulzer's quotations to a customer, or a partner's own quotations to their customers. */
+/**
+ * Sulzer's quotations to a customer, or a partner's own quotations to their customers
+ * (drafts included: only the partner sees those).
+ */
 export function quotationsFor(user: User, all: Quotation[] = quotations) {
   return all.filter((quotation) =>
     user.kind === 'partner'
@@ -123,6 +126,7 @@ export function quotationTotals(quotation: Quotation) {
  */
 export function partnerMargin(quotation: Quotation) {
   const sulzerLines = quotation.lines.filter((l) => l.kind === 'sulzer')
+  const list = cents(sulzerLines.reduce((sum, l) => sum + l.listPrice * l.quantity, 0))
   const sell = cents(
     sulzerLines.reduce((sum, l) => sum + netPrice(l.listPrice, quotation.discount) * l.quantity, 0),
   )
@@ -134,6 +138,7 @@ export function partnerMargin(quotation: Quotation) {
   )
   const services = cents(quotationTotals(quotation).net - sell)
   return {
+    list,
     cost,
     margin: cents(sell - cost),
     marginPercent: sell > 0 ? Math.round(((sell - cost) / sell) * 1000) / 10 : 0,
