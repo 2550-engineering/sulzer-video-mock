@@ -1,6 +1,6 @@
 import { RefreshCw, Save, SearchX } from 'lucide-react'
 import { useRef, useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useAuth } from '../auth/useAuth'
 import { ActiveFilterChips } from '../components/ActiveFilterChips'
 import { AnimatedNumber } from '../components/AnimatedNumber'
@@ -18,11 +18,15 @@ import { SizingToolbar } from '../components/sizing/SizingToolbar'
 import { sizingDemo } from '../config/demo'
 import { applications } from '../data/applications'
 import { sizingResultsPage as copy } from '../data/sizingPages'
+import { tenderDialog } from '../data/tenderTexts'
 import { useCalculating } from '../hooks/useCalculating'
+import { tenderFileName, useTenderDialog } from '../hooks/useTenderDialog'
 import { useUrlParams } from '../hooks/useUrlParams'
 import { getProduct } from '../lib/catalog'
+import { maxCompared } from '../lib/compare'
 import { applyFilters } from '../lib/filters'
 import { sizePumps, temperatureRange } from '../lib/sizing'
+import { sizedSubject } from '../lib/tenderSubjects'
 import {
   configurationFilterDefs,
   defaultSizingSort,
@@ -62,7 +66,9 @@ const inputIds = configurationFilterDefs.map((d) => d.id).filter((id) => !result
  */
 export function SizingResultsPage() {
   const { user } = useAuth()
+  const navigate = useNavigate()
   const showToast = useToast()
+  const { openTender, tenderDialog: tenderDialogElement } = useTenderDialog()
   const { projects, updateSizing } = useProjects()
   const [params, update] = useUrlParams()
   const listRef = useRef<HTMLDivElement>(null)
@@ -194,6 +200,14 @@ export function SizingResultsPage() {
 
   const openPanel = (mode: PanelMode, results: SizingResult[]) =>
     setPanel({ mode, ids: results.map((result) => result.variant.id), open: true })
+
+  /** 2–3 ticked pumps open the compare page; otherwise a toast says what to pick. */
+  const canCompare = selected.length >= 2 && selected.length <= maxCompared
+  function compare() {
+    if (!canCompare) return showToast({ message: copy.selectionBar.compareHint })
+    const ids = selected.map((result) => result.variant.id).join(',')
+    navigate(`/sizing/compare${query ? `${query}&` : '?'}ids=${ids}`)
+  }
   function openDialog(kind: 'add' | 'save', results: SizingResult[] = []) {
     setPanel((p) => ({ ...p, open: false }))
     setDialog((d) => ({ kind, results, session: d.session + 1 }))
@@ -321,7 +335,7 @@ export function SizingResultsPage() {
                   onToggleAll={() =>
                     setSelected(allSelected ? [] : filtered.map((result) => result.variant.id))
                   }
-                  onCompare={() => openPanel('compare', selected)}
+                  onCompare={compare}
                   onDownload={() => showToast({ message: copy.toasts.download(selected.length) })}
                   onAddToProject={() => openDialog('add', selected)}
                   onBookmark={() => showToast({ message: copy.toasts.bookmarked(selected.length) })}
@@ -369,6 +383,8 @@ export function SizingResultsPage() {
 
       <SelectionBar
         count={selected.length}
+        onCompare={compare}
+        canCompare={canCompare}
         onAddToProject={() => openDialog('add', selected)}
         saveLabel={saveLabel}
         onSave={saveOrUpdate}
@@ -378,8 +394,10 @@ export function SizingResultsPage() {
       <AddToProjectDialog
         key={`add-${dialog.session}`}
         open={dialog.kind === 'add'}
-        results={dialog.results}
-        duty={duty}
+        entries={dialog.results.map((result) => ({
+          variantId: result.variant.id,
+          dutyPoint: duty,
+        }))}
         onClose={closeDialog}
       />
       <SaveSizingDialog
@@ -408,7 +426,17 @@ export function SizingResultsPage() {
             message: copy.toasts.dataSheet(result.variant.productNumber ?? result.variant.name),
           })
         }
+        onTenderText={(result) => {
+          setPanel((p) => ({ ...p, open: false }))
+          openTender({
+            label: result.variant.name,
+            documentTitle: tenderDialog.documentTitle(result.variant.name),
+            subjects: [sizedSubject(result.variant, result, duty, applicationName)],
+            fileName: tenderFileName(result.variant.name),
+          })
+        }}
       />
+      {tenderDialogElement}
     </>
   )
 }

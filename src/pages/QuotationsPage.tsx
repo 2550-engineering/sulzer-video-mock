@@ -8,13 +8,14 @@ import { quotationsPage as copy } from '../data/selfServicePages'
 import { useUrlParams } from '../hooks/useUrlParams'
 import { quotationsFor } from '../lib/selfService'
 import { useSelfService } from '../selfService/useSelfService'
-import type { Quotation } from '../types'
+import type { SalesQuotation } from '../types'
 
 const filters = {
-  open: (q: Quotation) => q.status === 'Sent' || q.status === 'Requested' || q.status === 'Draft',
-  accepted: (q: Quotation) => q.status === 'Accepted',
-  expired: (q: Quotation) => q.status === 'Expired',
-} satisfies Record<string, (q: Quotation) => boolean>
+  open: (q: SalesQuotation) =>
+    q.status === 'Sent' || q.status === 'Requested' || q.status === 'Draft',
+  accepted: (q: SalesQuotation) => q.status === 'Accepted',
+  expired: (q: SalesQuotation) => q.status === 'Expired',
+} satisfies Record<string, (q: SalesQuotation) => boolean>
 
 type Filter = keyof typeof filters
 

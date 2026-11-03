@@ -7,6 +7,7 @@ import { formatPrice } from '../../lib/modelSpecs'
 import { discountFor, priceFor } from '../../lib/pricing'
 import type { SizingSort, SizingSortKey } from '../../lib/sizingFilters'
 import type { DutyPoint, SizingResult } from '../../types'
+import { BuyAction } from '../eshop/BuyAction'
 import { AvailabilityBadge } from '../product/AvailabilityBadge'
 import { PartPrice } from '../spareparts/PartPrice'
 import { CurveThumbnail } from './CurveThumbnail'
@@ -78,7 +79,7 @@ export function SizingResultsTable({
 
   return (
     <div className="max-h-[calc(100vh-var(--sz-header-height)-7rem)] overflow-auto rounded-b-lg border border-border bg-white">
-      <table className="w-full min-w-[68rem] border-separate border-spacing-0 text-left text-[15px]">
+      <table className="w-full min-w-[76rem] border-separate border-spacing-0 text-left text-[15px]">
         <thead className="text-sm text-navy-900">
           <tr>
             <th scope="col" className={`${head} ${stickyLeft[0]} z-20`}>
@@ -105,6 +106,9 @@ export function SizingResultsTable({
             {sortHeader('npshr', copy.columns.npshr, 'm')}
             {signedIn && sortHeader('price', copy.columns.price, 'EUR')}
             {signedIn && sortHeader('lead', copy.columns.leadTime)}
+            <th scope="col" className={head}>
+              <span className="sr-only">{copy.columns.order}</span>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -196,6 +200,9 @@ export function SizingResultsTable({
                     <AvailabilityBadge model={variant} />
                   </td>
                 )}
+                <td className={`${cell} text-right`}>
+                  <BuyAction id={variant.id} name={variant.name} />
+                </td>
               </tr>
             )
           })}

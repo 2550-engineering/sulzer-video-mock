@@ -1,7 +1,8 @@
 import { ArrowRight, Lightbulb, Package, Wrench } from 'lucide-react'
 import { Link } from 'react-router'
 import { conditionPage } from '../../data/connect'
-import { spareParts } from '../../data/spareParts'
+import { partsInVersion, sparePartsFor } from '../../lib/catalog'
+import { partsOwnerId } from '../../lib/catalogParts'
 import { formatDate } from '../../lib/format'
 import type { Asset, ConditionFinding } from '../../types'
 
@@ -19,7 +20,12 @@ type RecommendedActionProps = {
  * finding, a calm "No action needed".
  */
 export function RecommendedAction({ asset, finding, onRequestService }: RecommendedActionProps) {
-  const part = finding?.partId && spareParts.find((p) => p.id === finding.partId)
+  // The part or kit in this unit's parts list.
+  const ownerId = asset.modelId ? partsOwnerId(asset.modelId) : undefined
+  const catalogue = ownerId ? sparePartsFor(ownerId) : undefined
+  const kit = catalogue?.kits.find((k) => k.id === finding?.partId)
+  const part = kit ?? (catalogue && partsInVersion(catalogue).find((p) => p.id === finding?.partId))
+  const position = part && 'position' in part ? part.position : undefined
   const severe = asset.status === 'alarm'
 
   return (
@@ -58,7 +64,7 @@ export function RecommendedAction({ asset, finding, onRequestService }: Recommen
               <span className="min-w-0">
                 <span className="block truncate font-semibold text-white">{part.name}</span>
                 <span className="text-xs text-text-on-dark-muted tabular-nums">
-                  {copy.position(part.position, part.partNumber)}
+                  {copy.position(position, part.partNumber)}
                 </span>
               </span>
             </p>
@@ -84,7 +90,7 @@ export function RecommendedAction({ asset, finding, onRequestService }: Recommen
         </button>
         {part && finding?.partAction && (
           <Link
-            to={`/assets/${asset.id}#spare-parts`}
+            to={`/assets/${asset.id}?${kit ? 'kit' : 'part'}=${part.id}#spare-parts`}
             className="inline-flex h-11 items-center justify-center gap-2 rounded-pill border border-white/25 px-6 text-sm font-semibold text-white transition-colors hover:border-white hover:bg-white/10"
           >
             <Package className="size-4" />

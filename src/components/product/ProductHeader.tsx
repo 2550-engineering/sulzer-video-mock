@@ -1,5 +1,5 @@
 import { ArrowRight, FileText } from 'lucide-react'
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { Link } from 'react-router'
 import { useAuth } from '../../auth/useAuth'
 import { productPage as copy } from '../../data/catalogPages'
@@ -14,15 +14,17 @@ type ProductHeaderProps = {
   product: Product
   /** Opens the Documentation tab. */
   onShowDocumentation: () => void
+  /** Under the key specs, e.g. the buy box. */
+  buyBox?: ReactNode
 }
 
 /**
  * Product page header: breadcrumb, badge, name with a bookmark (signed in),
  * "Suitable for" links (first three, then "View more"), standard, documentation
  * link and the product's action ("Size product" unless it names another) on the
- * left; product image and key specs on the right.
+ * left; product image, key specs and the buy box on the right.
  */
-export function ProductHeader({ product, onShowDocumentation }: ProductHeaderProps) {
+export function ProductHeader({ product, onShowDocumentation, buyBox }: ProductHeaderProps) {
   const { user } = useAuth()
   const [showAllApplications, setShowAllApplications] = useState(false)
   const action = product.action ?? { label: copy.sizeLabel, to: `/sizing?product=${product.id}` }
@@ -103,6 +105,7 @@ export function ProductHeader({ product, onShowDocumentation }: ProductHeaderPro
             <SmartImage src={product.images[0].src} alt={product.images[0].alt} fit="contain" />
           </div>
           {product.keySpecs && <KeySpecStrip specs={product.keySpecs} />}
+          {buyBox}
         </div>
       </div>
     </section>

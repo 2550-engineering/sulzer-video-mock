@@ -1,49 +1,55 @@
 import { useMemo, useState, type ReactNode } from 'react'
-import { defaultPersona, personas, type PersonaId } from '../config/demo'
+import { personas } from '../config/demo'
+import type { PersonaId } from '../types'
 import { AuthContext, type AuthState } from './AuthContext'
 
-// Only the persona id is stored, so the user always reflects config/demo.ts.
-const STORAGE_KEY = 'sz-demo-persona'
+// Only the signed-in flag and the persona are stored, so the user always reflects config/demo.ts.
+const SIGNED_IN_KEY = 'sz-demo-signed-in'
+const PERSONA_KEY = 'sz-demo-persona'
 
-const isPersonaId = (value: string | null): value is PersonaId =>
-  value !== null && Object.hasOwn(personas, value)
+const isPersona = (value: unknown): value is PersonaId =>
+  typeof value === 'string' && value in personas
 
-function readPersona() {
+function read() {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    return isPersonaId(stored) ? stored : null
+    const persona = localStorage.getItem(PERSONA_KEY)
+    return {
+      signedIn: localStorage.getItem(SIGNED_IN_KEY) === 'true',
+      persona: isPersona(persona) ? persona : ('endUser' as const),
+    }
   } catch {
-    return null
+    return { signedIn: false, persona: 'endUser' as const }
   }
 }
 
-function writePersona(persona: PersonaId | null) {
+function write(signedIn: boolean, persona: PersonaId) {
   try {
-    if (persona) localStorage.setItem(STORAGE_KEY, persona)
-    else localStorage.removeItem(STORAGE_KEY)
+    if (signedIn) localStorage.setItem(SIGNED_IN_KEY, 'true')
+    else localStorage.removeItem(SIGNED_IN_KEY)
+    localStorage.setItem(PERSONA_KEY, persona)
   } catch {
     // Storage unavailable (private mode etc.) — keep the in-memory state only.
   }
 }
 
-/** Fake auth: signIn() logs a demo persona in instantly. */
+/** Fake auth: signIn(persona) logs that persona's demo user in instantly. */
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [persona, setPersona] = useState(readPersona)
+  const [state, setState] = useState(read)
 
   const value = useMemo<AuthState>(
     () => ({
-      user: persona ? personas[persona] : null,
-      persona,
-      signIn: (next = defaultPersona) => {
-        writePersona(next)
-        setPersona(next)
+      user: state.signedIn ? personas[state.persona] : null,
+      persona: state.persona,
+      signIn: (persona = 'endUser') => {
+        write(true, persona)
+        setState({ signedIn: true, persona })
       },
       signOut: () => {
-        writePersona(null)
-        setPersona(null)
+        write(false, state.persona)
+        setState((current) => ({ ...current, signedIn: false }))
       },
     }),
-    [persona],
+    [state],
   )
 
   return <AuthContext value={value}>{children}</AuthContext>

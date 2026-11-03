@@ -3,60 +3,50 @@ import { Minus, Plus } from 'lucide-react'
 type QuantityStepperProps = {
   value: number
   onChange: (value: number) => void
-  /** e.g. "Quantity" or "Quantity, Bearing kit". */
   label: string
-  /** 0 lets the minus button remove a cart line. */
-  min?: number
   max?: number
+  /** `sm` for table rows. */
+  size?: 'md' | 'sm'
 }
 
-const step =
-  'flex size-8 items-center justify-center rounded-full text-navy-900 transition-colors hover:bg-primary-tint hover:text-primary disabled:pointer-events-none disabled:text-text-subtle'
-
-/** − 1 + in a pill. The number can be typed too. */
+/** − / quantity / + (1 to `max`). */
 export function QuantityStepper({
   value,
   onChange,
   label,
-  min = 1,
   max = 99,
+  size = 'md',
 }: QuantityStepperProps) {
-  const set = (next: number) => onChange(Math.min(max, Math.max(min, next)))
+  const button = `flex ${size === 'sm' ? 'size-8' : 'size-10'} items-center justify-center text-navy-900 transition-colors hover:text-primary disabled:text-text-subtle`
   return (
     <div
       role="group"
       aria-label={label}
-      className="inline-flex h-10 shrink-0 items-center rounded-pill border border-border-strong bg-white px-1"
+      className="flex items-center rounded-pill border border-border-strong bg-white"
     >
       <button
         type="button"
-        aria-label="Decrease"
-        onClick={() => set(value - 1)}
-        disabled={value <= min}
-        className={step}
+        onClick={() => onChange(value - 1)}
+        disabled={value <= 1}
+        aria-label={`${label} −1`}
+        className={button}
       >
-        <Minus className="size-3.5" strokeWidth={2.25} />
+        <Minus className="size-4" />
       </button>
-      <input
-        type="text"
-        inputMode="numeric"
-        aria-label={label}
-        value={value}
-        onChange={(e) => {
-          const next = Number(e.target.value.replace(/\D/g, ''))
-          if (next) set(next)
-        }}
-        onFocus={(e) => e.target.select()}
-        className="w-7 bg-transparent text-center text-[15px] font-semibold text-navy-900 tabular-nums focus-visible:outline-none"
-      />
+      <span
+        aria-live="polite"
+        className={`${size === 'sm' ? 'w-6 text-sm' : 'w-8'} text-center font-semibold text-navy-900 tabular-nums`}
+      >
+        {value}
+      </span>
       <button
         type="button"
-        aria-label="Increase"
-        onClick={() => set(value + 1)}
+        onClick={() => onChange(value + 1)}
         disabled={value >= max}
-        className={step}
+        aria-label={`${label} +1`}
+        className={button}
       >
-        <Plus className="size-3.5" strokeWidth={2.25} />
+        <Plus className="size-4" />
       </button>
     </div>
   )

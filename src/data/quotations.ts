@@ -1,8 +1,8 @@
 import { demoUser, personas, products } from '../config/demo'
 import { getVariant } from '../lib/variants'
-import type { ProjectItem, Quotation, QuotationIssuer, QuotationLine, SparePart } from '../types'
-import { projects } from './projects'
-import { partOfKind } from './spareParts'
+import type { ProjectItem, SalesQuotation, QuotationIssuer, QuotationLine } from '../types'
+import { projectsSeed } from './projects'
+import { catalogueItem as partOfKind, type CatalogueItem } from '../lib/catalogParts'
 
 /*
  * Quotations ("/self-service/quotations"). End users see Sulzer's quotations to their
@@ -51,7 +51,12 @@ export const partnerContact = {
 const rw02 = 'ahlstar-150-125-315'
 const xfp150 = 'xfp-150-e'
 
-function partLine(position: number, part: SparePart, quantity: number, delivery: string) {
+function partLine(
+  position: number,
+  part: Pick<CatalogueItem, 'partNumber' | 'name' | 'listPrice'>,
+  quantity: number,
+  delivery: string,
+) {
   const { partNumber, name, listPrice } = part
   return {
     position,
@@ -91,7 +96,12 @@ export function projectItemLines(items: ProjectItem[], delivery?: string): Quota
 }
 
 const projectLines = (projectId: string, delivery: string) =>
-  projectItemLines(projects.find((p) => p.id === projectId)?.items ?? [], delivery)
+  projectItemLines(
+    Object.values(projectsSeed)
+      .flat()
+      .find((p) => p.id === projectId)?.items ?? [],
+    delivery,
+  )
 
 const sulzerTerms = {
   deliveryTerms: 'FCA Sulzer distribution center, Norrköping (Incoterms 2020)',
@@ -105,7 +115,7 @@ export const partnerTerms = {
 
 const nordvatten = demoUser.customerId
 
-export const quotations: Quotation[] = [
+export const quotations: SalesQuotation[] = [
   // ── Sulzer to Nordvatten (the end user) ─────────────────────────────────────
   {
     id: 'Q-10234',
@@ -254,9 +264,9 @@ export const quotations: Quotation[] = [
     requestedAt: '2026-10-15T11:30',
     issuedOn: '2026-10-16',
     validUntil: '2026-11-15',
-    updated: { at: '2026-10-22T09:12', text: 'accepted, ordered as SO-104393' },
+    updated: { at: '2026-10-22T09:12', text: 'accepted, ordered as SO-104387' },
     yourReference: 'PO 4500-2231',
-    orderId: 'SO-104393',
+    orderId: 'SO-104387',
     contact: partnerContact,
     discount: 6,
     lines: [partLine(10, partOfKind('ahlstar-80-65-160', 'seal'), 4, '2 days')],

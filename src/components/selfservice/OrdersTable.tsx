@@ -4,14 +4,14 @@ import { customers } from '../../data/assets'
 import { orderPath, orderStatus, ordersPage as copy } from '../../data/selfServicePages'
 import { formatDate } from '../../lib/format'
 import { formatMoney, orderSteps, orderTotals } from '../../lib/selfService'
-import type { Order } from '../../types'
+import type { SalesOrder } from '../../types'
 import { StatusPill } from './StatusPill'
 
 const head = 'border-b border-border bg-surface-sunken px-5 py-3 text-left font-semibold'
 const cell = 'border-b border-border px-5 py-4 align-top group-last:border-b-0'
 
 type OrdersTableProps = {
-  orders: Order[]
+  orders: SalesOrder[]
   showCustomer: boolean
 }
 

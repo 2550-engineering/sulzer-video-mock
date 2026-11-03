@@ -257,7 +257,7 @@ export const partnerDashboard = {
           badge: { label: `−${partnerPricing.discount}%`, tone: 'info' },
         },
         { label: 'Pump models: net price & lead time', to: '/products/ahlstar#models' },
-        { label: 'Replacement finder', to: '/products/replacement' },
+        { label: 'Replacement finder', to: '/products/replacement/existing-pump' },
         { label: 'Download your price list', to: '/self-service/export' },
       ],
     },
@@ -269,7 +269,7 @@ export const partnerDashboard = {
         { label: 'My projects', to: '/my-projects' },
         { label: 'Shared with customers', to: '/my-projects?shared=1' },
         { label: 'Size a pump', to: '/sizing' },
-        { label: 'Find a replacement', to: '/products/replacement' },
+        { label: 'Find a replacement', to: '/products/replacement/existing-pump' },
       ],
     },
     academy: {
@@ -305,10 +305,10 @@ export const partnerDashboard = {
       tone: 'warning',
     },
     {
-      subject: 'Order SO-104393',
+      subject: 'Order SO-104387',
       text: 'arrived at Västerås terminal – for Mälarbruk Paper',
       time: 'Today, 06:10',
-      to: orderPath('SO-104393'),
+      to: orderPath('SO-104387'),
       icon: Truck,
     },
     {
@@ -465,4 +465,13 @@ export const projectQuotation = {
     'Genuine Sulzer pumps, tested to ISO 9906 grade 2B before dispatch.',
     'Delivery times are confirmed by Sulzer when you order.',
   ],
+}
+
+/** eShop checkout for partners: ordering on behalf of a customer. */
+export const partnerCheckout = {
+  title: 'Order on behalf of customer',
+  hint: 'The order shows up under this customer, at your partner prices.',
+  number: (customerNumber: string, city: string) => `Customer no. ${customerNumber} · ${city}`,
+  orderedFor: 'Ordered for',
+  warehouse: (company: string) => `${company} warehouse`,
 }

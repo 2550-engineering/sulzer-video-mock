@@ -2,18 +2,21 @@ import { FolderPlus, LogIn } from 'lucide-react'
 import { useId, useState, type FormEvent } from 'react'
 import { useAuth } from '../../auth/useAuth'
 import { addToProjectDialog as copy } from '../../data/projectPages'
+import type { ProductEntry } from '../../projects/ProjectsContext'
 import { useProjects } from '../../projects/useProjects'
 import { useToast } from '../../toast/useToast'
-import type { DutyPoint, SizingResult } from '../../types'
 import { Modal } from '../Modal'
 import { ProjectStatusChip } from './ProjectStatusChip'
+import { isActiveProject } from '../../lib/projects'
 
 const newProject = 'new'
 
 type AddToProjectDialogProps = {
   open: boolean
-  results: SizingResult[]
-  duty: DutyPoint
+  /** The products to add, each with the duty point it was chosen for. */
+  entries: ProductEntry[]
+  /** Defaults to "Add <n> products to a project". */
+  title?: string
   onClose: () => void
 }
 
@@ -23,23 +26,20 @@ type AddToProjectDialogProps = {
  * then Save. Confirms with a toast that opens the project with the new rows
  * highlighted. Remount (via `key`) for each opening to start fresh.
  */
-export function AddToProjectDialog({ open, results, duty, onClose }: AddToProjectDialogProps) {
+export function AddToProjectDialog({ open, entries, title, onClose }: AddToProjectDialogProps) {
   const ids = useId()
   const { user, signIn } = useAuth()
   const { projects, addItems, createProject } = useProjects()
   const showToast = useToast()
 
   // Active = not yet quoted. Most recently modified first, so "Riverside intake" leads.
-  const active = projects
-    .filter((project) => project.status !== 'Quoted')
-    .sort((a, b) => b.modifiedOrder - a.modifiedOrder)
+  const active = projects.filter(isActiveProject).sort((a, b) => b.modifiedOrder - a.modifiedOrder)
   const [choice, setChoice] = useState(active[0]?.id ?? newProject)
   const [name, setName] = useState('')
 
   function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const newName = name.trim() || copy.newProjectDefault
-    const entries = results.map((result) => ({ variantId: result.variant.id, dutyPoint: duty }))
     const { projectId, itemIds } =
       choice === newProject
         ? createProject(newName, entries)
@@ -47,7 +47,7 @@ export function AddToProjectDialog({ open, results, duty, onClose }: AddToProjec
     const projectName =
       choice === newProject ? newName : (projects.find((p) => p.id === choice)?.name ?? '')
     showToast({
-      message: copy.added(results.length, projectName),
+      message: copy.added(entries.length, projectName),
       action: { label: copy.open, to: `/my-projects/${projectId}?added=${itemIds.join(',')}` },
     })
     onClose()
@@ -61,7 +61,7 @@ export function AddToProjectDialog({ open, results, duty, onClose }: AddToProjec
   return (
     <Modal
       open={open}
-      title={copy.title(results.length)}
+      title={title ?? copy.title(entries.length)}
       closeLabel={copy.close}
       onClose={onClose}
       width="max-w-xl"

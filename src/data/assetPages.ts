@@ -110,7 +110,7 @@ export const assetPage = {
     requestService: 'Request service',
     orderParts: 'Order spare parts',
     findReplacement: 'Find replacement',
-    replacementTo: (serial: string) => `/products/replacement?serial=${serial}`,
+    replacementTo: (serial: string) => `/products/replacement/existing-pump?serial=${serial}`,
     openConnect: `Open in ${products.connect}`,
   },
   facts: {
@@ -208,7 +208,7 @@ export const assetPage = {
     intro: (model: string, serial: string) =>
       `Genuine Sulzer parts that fit ${model}, serial no. ${serial}. Select a number on the drawing to find the part.`,
     recommended: 'Recommended for the current alert',
-    addRecommended: 'Add to cart',
+    showRecommended: 'Show it',
     quote: 'Request a quotation',
     quoteTo: '/contact/quote',
     empty: {

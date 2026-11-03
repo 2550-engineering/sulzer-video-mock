@@ -1,19 +1,18 @@
 import { ChevronDown, LayoutGrid, Search, X } from 'lucide-react'
 import { useCallback, useRef, useState } from 'react'
-import { useAuth } from '../auth/useAuth'
 import { Link, NavLink, useLocation } from 'react-router'
+import { useAuth } from '../auth/useAuth'
 import { market } from '../config/demo'
 import { mainNav } from '../config/navigation'
 import { useDismiss } from '../hooks/useDismiss'
 import { AccountMenu } from './AccountMenu'
-import { CartButton } from './eshop/CartButton'
-import { CartDrawer } from './eshop/CartDrawer'
+import { CartMenu } from './eshop/CartMenu'
 import { MegaMenu } from './MegaMenu'
 import { QuickLinksPanel } from './QuickLinksPanel'
 import { SearchPanel } from './SearchPanel'
 import { SulzerLogo } from './SulzerLogo'
 
-type Panel = 'products' | 'quick-links' | 'search' | 'account'
+type Panel = 'products' | 'quick-links' | 'search' | 'account' | 'cart'
 
 const utilityButton =
   'flex h-10 items-center gap-2 rounded-sm px-3 text-navy-900 transition-colors hover:bg-surface-muted hover:text-primary'
@@ -93,7 +92,14 @@ export function SiteHeader() {
                 <QuickLinksPanel open={open === 'quick-links'} onNavigate={close} />
               </div>
 
-              {user && <CartButton className={utilityButton} />}
+              {user && (
+                <CartMenu
+                  open={open === 'cart'}
+                  onToggle={() => toggle('cart')}
+                  onClose={close}
+                  buttonClassName={utilityButton}
+                />
+              )}
 
               <AccountMenu
                 open={open === 'account'}
@@ -154,7 +160,6 @@ export function SiteHeader() {
 
       <MegaMenu open={open === 'products'} session={megaMenuSession} onNavigate={close} />
       <SearchPanel open={open === 'search'} onClose={close} />
-      <CartDrawer />
 
       <div
         aria-hidden

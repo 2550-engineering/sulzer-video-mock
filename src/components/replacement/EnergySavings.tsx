@@ -3,7 +3,7 @@ import { sizingDemo } from '../../config/demo'
 import { replacementPage } from '../../data/replacement'
 import { groupThousands } from '../../lib/format'
 import { formatPrice } from '../../lib/modelSpecs'
-import type { ReplacementOption } from '../../lib/replacement'
+import type { ReplacementOption } from '../../lib/pumpReplacement'
 
 const copy = replacementPage.savings
 

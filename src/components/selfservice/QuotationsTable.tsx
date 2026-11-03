@@ -5,7 +5,7 @@ import { customers } from '../../data/assets'
 import { quotationPath, quotationStatus, quotationsPage as copy } from '../../data/selfServicePages'
 import { daysBetween, formatDate, formatDateTime } from '../../lib/format'
 import { formatMoney, quotationTotals } from '../../lib/selfService'
-import type { Quotation } from '../../types'
+import type { SalesQuotation } from '../../types'
 import { StatusPill } from './StatusPill'
 
 const head = 'border-b border-border bg-surface-sunken px-5 py-3 text-left font-semibold'
@@ -15,7 +15,7 @@ const cell = 'border-b border-border px-5 py-4 align-top group-last:border-b-0'
 const shortDays = 14
 
 type QuotationsTableProps = {
-  quotations: Quotation[]
+  quotations: SalesQuotation[]
   showCustomer: boolean
 }
 

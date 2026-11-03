@@ -26,6 +26,10 @@ export const documentTypeOrder: DocumentType[] = [
   'Certificate',
   'Data privacy sheet',
   'Service video',
+  'Dimensional drawing',
+  'Sectional drawing',
+  'Exploded view',
+  'Wiring diagram',
 ]
 
 const allLanguages = ['English', 'German', 'French', 'Spanish', 'Finnish', 'Swedish']

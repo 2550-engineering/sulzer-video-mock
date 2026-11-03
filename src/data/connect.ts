@@ -177,7 +177,7 @@ export const conditionPage = {
     title: 'Recommended action',
     requestService: 'Request service',
     viewAsset: 'View asset in mySulzer',
-    position: (position: number | undefined, partNumber: string) =>
+    position: (position: string | undefined, partNumber: string) =>
       position === undefined ? partNumber : `Pos. ${position} · ${partNumber}`,
     noneTitle: 'No action needed',
     noneText: (date: string) => `All readings are within limits. Next service ${date}.`,

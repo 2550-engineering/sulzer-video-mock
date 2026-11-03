@@ -1,21 +1,17 @@
-/** Saves `content` as a file in the browser's downloads. */
-export function downloadFile(fileName: string, content: string, type: string) {
-  const url = URL.createObjectURL(new Blob([content], { type }))
+/* Real file downloads made in the browser. */
+
+/** Starts a download of `blob` as `fileName`. */
+export function downloadBlob(fileName: string, blob: Blob) {
+  const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
   link.download = fileName
   document.body.append(link)
   link.click()
   link.remove()
-  URL.revokeObjectURL(url)
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000)
 }
 
-/** Copies text to the clipboard; false when the browser refuses. */
-export async function copyText(text: string) {
-  try {
-    await navigator.clipboard.writeText(text)
-    return true
-  } catch {
-    return false
-  }
-}
+/** Starts a download of a text file. */
+export const downloadText = (fileName: string, text: string, type = 'text/csv;charset=utf-8') =>
+  downloadBlob(fileName, new Blob([text], { type }))

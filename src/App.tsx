@@ -8,6 +8,7 @@ import { placeholderRoutes } from './config/placeholderRoutes'
 import { ApplicationPage } from './pages/ApplicationPage'
 import { AssetPage } from './pages/AssetPage'
 import { AssetsPage } from './pages/AssetsPage'
+import { BomPrintPage } from './pages/BomPrintPage'
 import { CartPage } from './pages/CartPage'
 import { CheckoutPage } from './pages/CheckoutPage'
 import { ConnectAlertsPage } from './pages/ConnectAlertsPage'
@@ -19,7 +20,6 @@ import { ConnectPage } from './pages/ConnectPage'
 import { ConnectReportsPage } from './pages/ConnectReportsPage'
 import { ConnectUsersPage } from './pages/ConnectUsersPage'
 import { DigitalSolutionsPage } from './pages/DigitalSolutionsPage'
-import { EshopPage } from './pages/EshopPage'
 import { HomePage } from './pages/HomePage'
 import { MyPagesPage } from './pages/MyPagesPage'
 import { MyProjectsPage } from './pages/MyProjectsPage'
@@ -33,15 +33,20 @@ import { PartnerCustomersPage } from './pages/PartnerCustomersPage'
 import { PlaceholderPage } from './pages/PlaceholderPage'
 import { ProductPage } from './pages/ProductPage'
 import { ProductSearchPage } from './pages/ProductSearchPage'
+import { ProjectReportPage } from './pages/ProjectReportPage'
+import { PumpReplacementPage } from './pages/PumpReplacementPage'
 import { QuotationPage } from './pages/QuotationPage'
 import { QuotationsPage } from './pages/QuotationsPage'
 import { RecentlyViewedPage } from './pages/RecentlyViewedPage'
 import { ReplacementPage } from './pages/ReplacementPage'
 import { RequestsPage } from './pages/RequestsPage'
 import { SavedItemsPage } from './pages/SavedItemsPage'
+import { SizingComparePage } from './pages/SizingComparePage'
 import { SizingPage } from './pages/SizingPage'
 import { SizingResultsPage } from './pages/SizingResultsPage'
 import { SparePartsPage } from './pages/SparePartsPage'
+import { VariantPage } from './pages/VariantPage'
+import { VariantPrintPage } from './pages/VariantPrintPage'
 import { PersonalProvider } from './personal/PersonalProvider'
 import { ProjectsProvider } from './projects/ProjectsProvider'
 import { SelfServiceProvider } from './selfService/SelfServiceProvider'
@@ -53,9 +58,9 @@ export default function App() {
       <ProjectsProvider>
         <PersonalProvider>
           <SelfServiceProvider>
-            <CartProvider>
-              <BrowserRouter>
-                <ToastProvider>
+            <BrowserRouter>
+              <ToastProvider>
+                <CartProvider>
                   <ScrollToTop />
                   <Routes>
                     <Route element={<SiteLayout />}>
@@ -72,16 +77,24 @@ export default function App() {
                       />
                       <Route path="/products" element={<ProductSearchPage />} />
                       {/* Products A–Z and Categories are the results page without a query; keeps old links working. */}
+                      <Route path="/products/replacement" element={<ReplacementPage />} />
+                      {/* Replacing an installed pump (asset, serial number, type or other brand) with energy savings. */}
+                      <Route
+                        path="/products/replacement/existing-pump"
+                        element={<PumpReplacementPage />}
+                      />
                       <Route path="/products/a-z" element={<Navigate to="/products" replace />} />
                       <Route
                         path="/products/categories"
                         element={<Navigate to="/products" replace />}
                       />
-                      <Route path="/products/replacement" element={<ReplacementPage />} />
                       <Route path="/products/:id" element={<ProductPage />} />
+                      <Route path="/products/:id/:variantId" element={<VariantPage />} />
                       <Route path="/digital-solutions" element={<DigitalSolutionsPage />} />
                       <Route path="/sizing" element={<SizingPage />} />
                       <Route path="/sizing/results" element={<SizingResultsPage />} />
+                      <Route path="/sizing/compare" element={<SizingComparePage />} />
+                      <Route path="/spare-parts" element={<SparePartsPage />} />
                       <Route path="/my-projects" element={<MyProjectsPage />} />
                       <Route path="/my-projects/:projectId" element={<MyProjectsPage />} />
                       <Route path="/assets" element={<AssetsPage />} />
@@ -93,11 +106,10 @@ export default function App() {
                       <Route path="/self-service/orders/:id" element={<OrderPage />} />
                       <Route path="/self-service/quotations" element={<QuotationsPage />} />
                       <Route path="/self-service/quotations/:id" element={<QuotationPage />} />
-                      <Route path="/spare-parts" element={<SparePartsPage />} />
-                      <Route path="/eshop" element={<EshopPage />} />
+                      <Route path="/eshop" element={<Navigate to="/eshop/cart" replace />} />
                       <Route path="/eshop/cart" element={<CartPage />} />
                       <Route path="/eshop/checkout" element={<CheckoutPage />} />
-                      <Route path="/eshop/confirmation/:id" element={<OrderConfirmationPage />} />
+                      <Route path="/eshop/order/:orderId" element={<OrderConfirmationPage />} />
                       {placeholderRoutes.map((route) => (
                         <Route
                           key={route.path}
@@ -107,6 +119,10 @@ export default function App() {
                       ))}
                       <Route path="*" element={<NotFoundPage />} />
                     </Route>
+                    {/* A clean print view of a configured product, without the site header and footer. */}
+                    <Route path="/products/:id/:variantId/print" element={<VariantPrintPage />} />
+                    <Route path="/products/:id/:variantId/bom" element={<BomPrintPage />} />
+                    <Route path="/my-projects/:projectId/report" element={<ProjectReportPage />} />
                     {/* Sulzer Connect is its own app, outside the website header and footer. */}
                     <Route path="/connect" element={<ConnectLayout />}>
                       <Route index element={<ConnectPage />} />
@@ -120,10 +136,10 @@ export default function App() {
                       <Route path="*" element={<Navigate to="/connect/dashboard" replace />} />
                     </Route>
                   </Routes>
-                </ToastProvider>
-                <DemoControls />
-              </BrowserRouter>
-            </CartProvider>
+                </CartProvider>
+              </ToastProvider>
+              <DemoControls />
+            </BrowserRouter>
           </SelfServiceProvider>
         </PersonalProvider>
       </ProjectsProvider>

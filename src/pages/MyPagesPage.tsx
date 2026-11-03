@@ -19,7 +19,7 @@ import { partnerCustomersPath, partnerDashboard as partnerCopy, shortName } from
 import { personalToolbar } from '../data/personal'
 import { ordersPath, quotationsPath, requestsPath } from '../data/selfServicePages'
 import { customerSummaries, type CustomerSummary } from '../lib/partner'
-import { isSharedWithClient } from '../lib/projects'
+import { isActiveProject, isSharedWithClient } from '../lib/projects'
 import {
   isInTransit,
   isOpenRequest,
@@ -68,7 +68,8 @@ export function MyPagesPage() {
       ? { label: selfServiceBadges.open(openQuotations), tone: 'info' }
       : undefined,
     [personalToolbar.saved.to]: { label: String(saved.length) },
-    '/my-projects': { label: String(projects.length) },
+    // "My projects" counts the signed-in persona's active projects.
+    '/my-projects': { label: String(projects.filter(isActiveProject).length) },
     '/my-projects?shared=1': { label: String(shared) },
   }
   const withBadges = (card: DashboardCard): DashboardCard => ({

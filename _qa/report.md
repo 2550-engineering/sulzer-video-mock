@@ -1,6 +1,6 @@
 # Recording QA — 1920×1080
 
-495 captures, 0 with issues. Screenshots in `_qa/screenshots/`.
+351 captures, 0 with issues. Screenshots in `_qa/screenshots/`.
 
 | Auth | Route | Lands on | Title |
 | --- | --- | --- | --- |
@@ -93,13 +93,17 @@
 | logged-out | `/products/xfp#spare-parts` | `/products/xfp` | XFP | Sulzer |
 | logged-out | `/products/xfp#services` | `/products/xfp` | XFP | Sulzer |
 | logged-out | `/products/sulzer-connect` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
-| logged-out | `/products/sulzer-connect#variants` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-out | `/products/sulzer-connect#models` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
 | logged-out | `/products/sulzer-connect#documentation` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
-| logged-out | `/products/sulzer-connect#learn` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-out | `/products/sulzer-connect#bim` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-out | `/products/sulzer-connect#spare-parts` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-out | `/products/sulzer-connect#services` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
 | logged-out | `/products/motor-protection-relay` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
-| logged-out | `/products/motor-protection-relay#variants` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-out | `/products/motor-protection-relay#models` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
 | logged-out | `/products/motor-protection-relay#documentation` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
-| logged-out | `/products/motor-protection-relay#learn` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-out | `/products/motor-protection-relay#bim` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-out | `/products/motor-protection-relay#spare-parts` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-out | `/products/motor-protection-relay#services` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
 | logged-out | `/products/sjm` | `/products/sjm` | SJM | Sulzer |
 | logged-out | `/products/sjm#models` | `/products/sjm` | SJM | Sulzer |
 | logged-out | `/products/sjm#documentation` | `/products/sjm` | SJM | Sulzer |
@@ -119,107 +123,34 @@
 | logged-out | `/products/j-dewatering#spare-parts` | `/products/j-dewatering` | J dewatering pump | Sulzer |
 | logged-out | `/products/j-dewatering#services` | `/products/j-dewatering` | J dewatering pump | Sulzer |
 | logged-out | `/products/pump-controller` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
-| logged-out | `/products/pump-controller#variants` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-out | `/products/pump-controller#models` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
 | logged-out | `/products/pump-controller#documentation` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
-| logged-out | `/products/pump-controller#learn` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-out | `/products/pump-controller#bim` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-out | `/products/pump-controller#spare-parts` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-out | `/products/pump-controller#services` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
 | logged-out | `/products/blue-box` | `/products/blue-box` | BLUE BOX | Sulzer |
-| logged-out | `/products/blue-box#variants` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-out | `/products/blue-box#models` | `/products/blue-box` | BLUE BOX | Sulzer |
 | logged-out | `/products/blue-box#documentation` | `/products/blue-box` | BLUE BOX | Sulzer |
-| logged-out | `/products/blue-box#learn` | `/products/blue-box` | BLUE BOX | Sulzer |
-| logged-out | `/digital-solutions` | `/digital-solutions` | Digital solutions | Sulzer |
-| logged-out | `/my-pages/saved` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/my-pages/saved?kind=document` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/my-pages/recently-viewed` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/sizing` | `/sizing` | Size Product | Sulzer |
-| logged-out | `/sizing?product=ahlstar` | `/sizing?product=ahlstar` | Size Product | Sulzer |
-| logged-out | `/sizing/results` | `/sizing/results` | Sizing | Sulzer |
+| logged-out | `/products/blue-box#bim` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-out | `/products/blue-box#spare-parts` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-out | `/products/blue-box#services` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-out | `/sizing` | `/sizing` | Sizing & configuration | Sulzer |
+| logged-out | `/sizing?product=ahlstar` | `/sizing?product=ahlstar` | Sizing & configuration | Sulzer |
 | logged-out | `/my-projects` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/my-projects/riverside-intake` | `/my-sulzer` | mySulzer | Sulzer |
 | logged-out | `/assets` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets?status=alarm&status=warning` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets?service=due` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets?view=sites` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets?q=zzzz` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/rw-01` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/rw-02` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/rw-03` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/tw-01` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/tw-02` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/bw-01` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/cd-01` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/bp-01` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/bp-02` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/bp-03` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/p-101` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/p-102` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/p-103` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/p-104` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/p-210` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/p-211` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/p-212` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/in-01` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/in-02` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/rs-01` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/rs-02` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/sl-01` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/sl-02` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/dr-01` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/rw-02#condition` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/rw-02#documents` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/rw-02#spare-parts` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/rw-02#service-history` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/p-211#condition` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/cd-01#condition` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/assets/rs-02#documents` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/self-service/requests` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/self-service/orders` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/self-service/orders?status=transit` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/self-service/orders?q=zzzz` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/self-service/orders/SO-104396` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/self-service/orders/SO-104390` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/self-service/orders/SO-104382` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/self-service/orders/SO-104301` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/self-service/orders/SO-104255` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/self-service/quotations` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/self-service/quotations?status=open` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/self-service/quotations/Q-10234` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/self-service/quotations/Q-10241` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/self-service/quotations/Q-10198` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/self-service/quotations/Q-10163` | `/my-sulzer` | mySulzer | Sulzer |
-| logged-out | `/connect` | `/connect` | Sulzer Connect |
-| logged-out | `/connect/dashboard` | `/connect/dashboard` | Sulzer Connect |
-| logged-out | `/connect/assets` | `/connect/assets` | Sulzer Connect |
-| logged-out | `/connect/assets/rw-01` | `/connect/assets/rw-01` | Sulzer Connect |
-| logged-out | `/connect/assets/rw-02` | `/connect/assets/rw-02` | Sulzer Connect |
-| logged-out | `/connect/assets/rw-03` | `/connect/assets/rw-03` | Sulzer Connect |
-| logged-out | `/connect/assets/tw-01` | `/connect/assets/tw-01` | Sulzer Connect |
-| logged-out | `/connect/assets/tw-02` | `/connect/assets/tw-02` | Sulzer Connect |
-| logged-out | `/connect/assets/bw-01` | `/connect/assets/bw-01` | Sulzer Connect |
-| logged-out | `/connect/assets/bp-01` | `/connect/assets/bp-01` | Sulzer Connect |
-| logged-out | `/connect/assets/bp-02` | `/connect/assets/bp-02` | Sulzer Connect |
-| logged-out | `/connect/assets/p-102` | `/connect/assets/p-102` | Sulzer Connect |
-| logged-out | `/connect/assets/p-103` | `/connect/assets/p-103` | Sulzer Connect |
-| logged-out | `/connect/assets/p-104` | `/connect/assets/p-104` | Sulzer Connect |
-| logged-out | `/connect/assets/p-210` | `/connect/assets/p-210` | Sulzer Connect |
-| logged-out | `/connect/assets/p-211` | `/connect/assets/p-211` | Sulzer Connect |
-| logged-out | `/connect/assets/p-212` | `/connect/assets/p-212` | Sulzer Connect |
-| logged-out | `/connect/assets/in-01` | `/connect/assets/in-01` | Sulzer Connect |
-| logged-out | `/connect/assets/in-02` | `/connect/assets/in-02` | Sulzer Connect |
-| logged-out | `/connect/assets/rs-01` | `/connect/assets/rs-01` | Sulzer Connect |
-| logged-out | `/connect/assets/sl-01` | `/connect/assets/sl-01` | Sulzer Connect |
-| logged-out | `/connect/assets/rw-02?range=24h` | `/connect/assets/rw-02?range=24h` | Sulzer Connect |
-| logged-out | `/connect/assets/rw-02?range=30d` | `/connect/assets/rw-02?range=30d` | Sulzer Connect |
-| logged-out | `/connect/assets/cd-01` | `/connect/assets/cd-01` | Sulzer Connect |
-| logged-out | `/connect/alerts` | `/connect/alerts` | Sulzer Connect |
-| logged-out | `/connect/reports` | `/connect/reports` | Sulzer Connect |
-| logged-out | `/connect/users` | `/connect/users` | Sulzer Connect |
-| logged-out | `/connect/teams` | `/connect/teams` | Sulzer Connect |
+| logged-out | `/connect` | `/connect` | Sulzer Connect | Sulzer |
 | logged-out | `/products/replacement` | `/products/replacement` | Product replacement | Sulzer |
 | logged-out | `/spare-parts` | `/spare-parts` | Spare parts | Sulzer |
+| logged-out | `/digital-solutions` | `/digital-solutions` | Digital solutions | Sulzer |
 | logged-out | `/eshop` | `/eshop` | eShop | Sulzer |
+| logged-out | `/my-pages/saved` | `/my-pages/saved` | My saved items | Sulzer |
+| logged-out | `/my-pages/recently-viewed` | `/my-pages/recently-viewed` | Recently viewed products | Sulzer |
 | logged-out | `/settings` | `/settings` | Account settings | Sulzer |
 | logged-out | `/self-service/list-price` | `/self-service/list-price` | List price & availability | Sulzer |
 | logged-out | `/self-service/export` | `/self-service/export` | Export information | Sulzer |
+| logged-out | `/self-service/quotations` | `/self-service/quotations` | Quotations | Sulzer |
+| logged-out | `/self-service/requests` | `/self-service/requests` | Requests | Sulzer |
+| logged-out | `/self-service/orders` | `/self-service/orders` | Order status | Sulzer |
 | logged-out | `/register` | `/register` | Create a Sulzer account | Sulzer |
 | logged-out | `/support` | `/support` | Support | Sulzer |
 | logged-out | `/support/service-centers` | `/support/service-centers` | Service centers | Sulzer |
@@ -331,13 +262,17 @@
 | logged-in | `/products/xfp#spare-parts` | `/products/xfp` | XFP | Sulzer |
 | logged-in | `/products/xfp#services` | `/products/xfp` | XFP | Sulzer |
 | logged-in | `/products/sulzer-connect` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
-| logged-in | `/products/sulzer-connect#variants` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-in | `/products/sulzer-connect#models` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
 | logged-in | `/products/sulzer-connect#documentation` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
-| logged-in | `/products/sulzer-connect#learn` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-in | `/products/sulzer-connect#bim` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-in | `/products/sulzer-connect#spare-parts` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
+| logged-in | `/products/sulzer-connect#services` | `/products/sulzer-connect` | Sulzer Connect | Sulzer |
 | logged-in | `/products/motor-protection-relay` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
-| logged-in | `/products/motor-protection-relay#variants` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-in | `/products/motor-protection-relay#models` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
 | logged-in | `/products/motor-protection-relay#documentation` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
-| logged-in | `/products/motor-protection-relay#learn` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-in | `/products/motor-protection-relay#bim` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-in | `/products/motor-protection-relay#spare-parts` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
+| logged-in | `/products/motor-protection-relay#services` | `/products/motor-protection-relay` | Motor protection relay | Sulzer |
 | logged-in | `/products/sjm` | `/products/sjm` | SJM | Sulzer |
 | logged-in | `/products/sjm#models` | `/products/sjm` | SJM | Sulzer |
 | logged-in | `/products/sjm#documentation` | `/products/sjm` | SJM | Sulzer |
@@ -357,107 +292,34 @@
 | logged-in | `/products/j-dewatering#spare-parts` | `/products/j-dewatering` | J dewatering pump | Sulzer |
 | logged-in | `/products/j-dewatering#services` | `/products/j-dewatering` | J dewatering pump | Sulzer |
 | logged-in | `/products/pump-controller` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
-| logged-in | `/products/pump-controller#variants` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-in | `/products/pump-controller#models` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
 | logged-in | `/products/pump-controller#documentation` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
-| logged-in | `/products/pump-controller#learn` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-in | `/products/pump-controller#bim` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-in | `/products/pump-controller#spare-parts` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
+| logged-in | `/products/pump-controller#services` | `/products/pump-controller` | PC 441 pump controller | Sulzer |
 | logged-in | `/products/blue-box` | `/products/blue-box` | BLUE BOX | Sulzer |
-| logged-in | `/products/blue-box#variants` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-in | `/products/blue-box#models` | `/products/blue-box` | BLUE BOX | Sulzer |
 | logged-in | `/products/blue-box#documentation` | `/products/blue-box` | BLUE BOX | Sulzer |
-| logged-in | `/products/blue-box#learn` | `/products/blue-box` | BLUE BOX | Sulzer |
-| logged-in | `/digital-solutions` | `/digital-solutions` | Digital solutions | Sulzer |
-| logged-in | `/my-pages/saved` | `/my-pages/saved` | My saved items | mySulzer | Sulzer |
-| logged-in | `/my-pages/saved?kind=document` | `/my-pages/saved?kind=document` | My saved items | mySulzer | Sulzer |
-| logged-in | `/my-pages/recently-viewed` | `/my-pages/recently-viewed` | Recently viewed products | mySulzer | Sulzer |
-| logged-in | `/sizing` | `/sizing` | Size Product | Sulzer |
-| logged-in | `/sizing?product=ahlstar` | `/sizing?product=ahlstar` | Size Product | Sulzer |
-| logged-in | `/sizing/results` | `/sizing/results` | Sizing | Sulzer |
-| logged-in | `/my-projects` | `/my-projects/riverside-intake` | Riverside intake – My Projects | Sulzer |
-| logged-in | `/my-projects/riverside-intake` | `/my-projects/riverside-intake` | Riverside intake – My Projects | Sulzer |
-| logged-in | `/assets` | `/assets` | My assets | mySulzer | Sulzer |
-| logged-in | `/assets?status=alarm&status=warning` | `/assets?status=alarm&status=warning` | My assets | mySulzer | Sulzer |
-| logged-in | `/assets?service=due` | `/assets?service=due` | My assets | mySulzer | Sulzer |
-| logged-in | `/assets?view=sites` | `/assets?view=sites` | My assets | mySulzer | Sulzer |
-| logged-in | `/assets?q=zzzz` | `/assets?q=zzzz` | My assets | mySulzer | Sulzer |
-| logged-in | `/assets/rw-01` | `/assets/rw-01` | RW-01 Raw water pump | My assets | Sulzer |
-| logged-in | `/assets/rw-02` | `/assets/rw-02` | RW-02 Raw water pump | My assets | Sulzer |
-| logged-in | `/assets/rw-03` | `/assets/rw-03` | RW-03 Raw water pump | My assets | Sulzer |
-| logged-in | `/assets/tw-01` | `/assets/tw-01` | TW-01 Treated water pump | My assets | Sulzer |
-| logged-in | `/assets/tw-02` | `/assets/tw-02` | TW-02 Treated water pump | My assets | Sulzer |
-| logged-in | `/assets/bw-01` | `/assets/bw-01` | BW-01 Backwash pump | My assets | Sulzer |
-| logged-in | `/assets/cd-01` | `/assets/cd-01` | CD-01 Dosing feed pump | My assets | Sulzer |
-| logged-in | `/assets/bp-01` | `/assets/bp-01` | BP-01 Booster pump | My assets | Sulzer |
-| logged-in | `/assets/bp-02` | `/assets/bp-02` | BP-02 Booster pump | My assets | Sulzer |
-| logged-in | `/assets/bp-03` | `/assets/bp-03` | BP-03 Booster pump | My assets | Sulzer |
-| logged-in | `/assets/p-101` | `/assets/p-101` | P-101 Lift pump | My assets | Sulzer |
-| logged-in | `/assets/p-102` | `/assets/p-102` | P-102 Lift pump | My assets | Sulzer |
-| logged-in | `/assets/p-103` | `/assets/p-103` | P-103 Lift pump | My assets | Sulzer |
-| logged-in | `/assets/p-104` | `/assets/p-104` | P-104 Lift pump | My assets | Sulzer |
-| logged-in | `/assets/p-210` | `/assets/p-210` | P-210 Lift pump | My assets | Sulzer |
-| logged-in | `/assets/p-211` | `/assets/p-211` | P-211 Lift pump | My assets | Sulzer |
-| logged-in | `/assets/p-212` | `/assets/p-212` | P-212 Lift pump | My assets | Sulzer |
-| logged-in | `/assets/in-01` | `/assets/in-01` | IN-01 Inlet pump | My assets | Sulzer |
-| logged-in | `/assets/in-02` | `/assets/in-02` | IN-02 Inlet pump | My assets | Sulzer |
-| logged-in | `/assets/rs-01` | `/assets/rs-01` | RS-01 Return sludge pump | My assets | Sulzer |
-| logged-in | `/assets/rs-02` | `/assets/rs-02` | RS-02 Return sludge pump | My assets | Sulzer |
-| logged-in | `/assets/sl-01` | `/assets/sl-01` | SL-01 Sludge transfer pump | My assets | Sulzer |
-| logged-in | `/assets/sl-02` | `/assets/sl-02` | SL-02 Sludge transfer pump | My assets | Sulzer |
-| logged-in | `/assets/dr-01` | `/assets/dr-01` | DR-01 Drainage pump | My assets | Sulzer |
-| logged-in | `/assets/rw-02#condition` | `/assets/rw-02` | RW-02 Raw water pump | My assets | Sulzer |
-| logged-in | `/assets/rw-02#documents` | `/assets/rw-02` | RW-02 Raw water pump | My assets | Sulzer |
-| logged-in | `/assets/rw-02#spare-parts` | `/assets/rw-02` | RW-02 Raw water pump | My assets | Sulzer |
-| logged-in | `/assets/rw-02#service-history` | `/assets/rw-02` | RW-02 Raw water pump | My assets | Sulzer |
-| logged-in | `/assets/p-211#condition` | `/assets/p-211` | P-211 Lift pump | My assets | Sulzer |
-| logged-in | `/assets/cd-01#condition` | `/assets/cd-01` | CD-01 Dosing feed pump | My assets | Sulzer |
-| logged-in | `/assets/rs-02#documents` | `/assets/rs-02` | RS-02 Return sludge pump | My assets | Sulzer |
-| logged-in | `/self-service/requests` | `/self-service/requests` | Service requests | mySulzer | Sulzer |
-| logged-in | `/self-service/orders` | `/self-service/orders` | Orders | mySulzer | Sulzer |
-| logged-in | `/self-service/orders?status=transit` | `/self-service/orders?status=transit` | Orders | mySulzer | Sulzer |
-| logged-in | `/self-service/orders?q=zzzz` | `/self-service/orders?q=zzzz` | Orders | mySulzer | Sulzer |
-| logged-in | `/self-service/orders/SO-104396` | `/self-service/orders/SO-104396` | Order SO-104396 | mySulzer | Sulzer |
-| logged-in | `/self-service/orders/SO-104390` | `/self-service/orders/SO-104390` | Order SO-104390 | mySulzer | Sulzer |
-| logged-in | `/self-service/orders/SO-104382` | `/self-service/orders/SO-104382` | Order SO-104382 | mySulzer | Sulzer |
-| logged-in | `/self-service/orders/SO-104301` | `/self-service/orders/SO-104301` | Order SO-104301 | mySulzer | Sulzer |
-| logged-in | `/self-service/orders/SO-104255` | `/self-service/orders/SO-104255` | Order SO-104255 | mySulzer | Sulzer |
-| logged-in | `/self-service/quotations` | `/self-service/quotations` | Quotations | mySulzer | Sulzer |
-| logged-in | `/self-service/quotations?status=open` | `/self-service/quotations?status=open` | Quotations | mySulzer | Sulzer |
-| logged-in | `/self-service/quotations/Q-10234` | `/self-service/quotations/Q-10234` | Quotation Q-10234 | mySulzer | Sulzer |
-| logged-in | `/self-service/quotations/Q-10241` | `/self-service/quotations/Q-10241` | Quotation Q-10241 | mySulzer | Sulzer |
-| logged-in | `/self-service/quotations/Q-10198` | `/self-service/quotations/Q-10198` | Quotation Q-10198 | mySulzer | Sulzer |
-| logged-in | `/self-service/quotations/Q-10163` | `/self-service/quotations/Q-10163` | Quotation Q-10163 | mySulzer | Sulzer |
-| logged-in | `/connect` | `/connect` | Sulzer Connect |
-| logged-in | `/connect/dashboard` | `/connect/dashboard` | Fleet overview – Sulzer Connect |
-| logged-in | `/connect/assets` | `/connect/assets` | Assets – Sulzer Connect |
-| logged-in | `/connect/assets/rw-01` | `/connect/assets/rw-01` | RW-01 – Sulzer Connect |
-| logged-in | `/connect/assets/rw-02` | `/connect/assets/rw-02` | RW-02 – Sulzer Connect |
-| logged-in | `/connect/assets/rw-03` | `/connect/assets/rw-03` | RW-03 – Sulzer Connect |
-| logged-in | `/connect/assets/tw-01` | `/connect/assets/tw-01` | TW-01 – Sulzer Connect |
-| logged-in | `/connect/assets/tw-02` | `/connect/assets/tw-02` | TW-02 – Sulzer Connect |
-| logged-in | `/connect/assets/bw-01` | `/connect/assets/bw-01` | BW-01 – Sulzer Connect |
-| logged-in | `/connect/assets/bp-01` | `/connect/assets/bp-01` | BP-01 – Sulzer Connect |
-| logged-in | `/connect/assets/bp-02` | `/connect/assets/bp-02` | BP-02 – Sulzer Connect |
-| logged-in | `/connect/assets/p-102` | `/connect/assets/p-102` | P-102 – Sulzer Connect |
-| logged-in | `/connect/assets/p-103` | `/connect/assets/p-103` | P-103 – Sulzer Connect |
-| logged-in | `/connect/assets/p-104` | `/connect/assets/p-104` | P-104 – Sulzer Connect |
-| logged-in | `/connect/assets/p-210` | `/connect/assets/p-210` | P-210 – Sulzer Connect |
-| logged-in | `/connect/assets/p-211` | `/connect/assets/p-211` | P-211 – Sulzer Connect |
-| logged-in | `/connect/assets/p-212` | `/connect/assets/p-212` | P-212 – Sulzer Connect |
-| logged-in | `/connect/assets/in-01` | `/connect/assets/in-01` | IN-01 – Sulzer Connect |
-| logged-in | `/connect/assets/in-02` | `/connect/assets/in-02` | IN-02 – Sulzer Connect |
-| logged-in | `/connect/assets/rs-01` | `/connect/assets/rs-01` | RS-01 – Sulzer Connect |
-| logged-in | `/connect/assets/sl-01` | `/connect/assets/sl-01` | SL-01 – Sulzer Connect |
-| logged-in | `/connect/assets/rw-02?range=24h` | `/connect/assets/rw-02?range=24h` | RW-02 – Sulzer Connect |
-| logged-in | `/connect/assets/rw-02?range=30d` | `/connect/assets/rw-02?range=30d` | RW-02 – Sulzer Connect |
-| logged-in | `/connect/assets/cd-01` | `/connect/assets/cd-01` | Sulzer |
-| logged-in | `/connect/alerts` | `/connect/alerts` | Alerts – Sulzer Connect |
-| logged-in | `/connect/reports` | `/connect/reports` | Reports – Sulzer Connect |
-| logged-in | `/connect/users` | `/connect/users` | Users – Sulzer Connect |
-| logged-in | `/connect/teams` | `/connect/teams` | Teams – Sulzer Connect |
+| logged-in | `/products/blue-box#bim` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-in | `/products/blue-box#spare-parts` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-in | `/products/blue-box#services` | `/products/blue-box` | BLUE BOX | Sulzer |
+| logged-in | `/sizing` | `/sizing` | Sizing & configuration | Sulzer |
+| logged-in | `/sizing?product=ahlstar` | `/sizing?product=ahlstar` | Sizing & configuration | Sulzer |
+| logged-in | `/my-projects` | `/my-projects` | My projects | Sulzer |
+| logged-in | `/assets` | `/assets` | My assets | Sulzer |
+| logged-in | `/connect` | `/connect` | Sulzer Connect | Sulzer |
 | logged-in | `/products/replacement` | `/products/replacement` | Product replacement | Sulzer |
 | logged-in | `/spare-parts` | `/spare-parts` | Spare parts | Sulzer |
+| logged-in | `/digital-solutions` | `/digital-solutions` | Digital solutions | Sulzer |
 | logged-in | `/eshop` | `/eshop` | eShop | Sulzer |
+| logged-in | `/my-pages/saved` | `/my-pages/saved` | My saved items | Sulzer |
+| logged-in | `/my-pages/recently-viewed` | `/my-pages/recently-viewed` | Recently viewed products | Sulzer |
 | logged-in | `/settings` | `/settings` | Account settings | Sulzer |
 | logged-in | `/self-service/list-price` | `/self-service/list-price` | List price & availability | Sulzer |
 | logged-in | `/self-service/export` | `/self-service/export` | Export information | Sulzer |
+| logged-in | `/self-service/quotations` | `/self-service/quotations` | Quotations | Sulzer |
+| logged-in | `/self-service/requests` | `/self-service/requests` | Requests | Sulzer |
+| logged-in | `/self-service/orders` | `/self-service/orders` | Order status | Sulzer |
 | logged-in | `/register` | `/register` | Create a Sulzer account | Sulzer |
 | logged-in | `/support` | `/support` | Support | Sulzer |
 | logged-in | `/support/service-centers` | `/support/service-centers` | Service centers | Sulzer |

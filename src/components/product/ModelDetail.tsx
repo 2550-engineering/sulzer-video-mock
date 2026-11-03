@@ -1,12 +1,9 @@
-import { ArrowRight, Check, FileText, FolderPlus, GitCompareArrows } from 'lucide-react'
-import { useState } from 'react'
+import { ArrowRight, Check, FolderPlus, GitCompareArrows, ScrollText } from 'lucide-react'
 import { Link } from 'react-router'
 import { productPage } from '../../data/catalogPages'
-import { tenderText } from '../../data/tenderTexts'
+import { tenderDialog } from '../../data/tenderTexts'
 import { modelDimensions } from '../../lib/modelSpecs'
-import { modelTenderText } from '../../lib/tenderText'
 import type { ProductModel } from '../../types'
-import { TenderTextDialog } from '../tender/TenderTextDialog'
 import { PerformanceCurve } from './PerformanceCurve'
 
 const copy = productPage.models.detail
@@ -18,20 +15,21 @@ type ModelDetailProps = {
   canCompare: boolean
   onAddToProject: () => void
   onToggleCompare: () => void
+  onTenderText: () => void
 }
 
 const outlined =
   'inline-flex h-11 w-full items-center justify-center gap-2 rounded-pill border border-primary px-5 text-sm font-semibold text-primary transition-colors duration-150 hover:bg-primary-tint disabled:cursor-not-allowed disabled:border-border-strong disabled:text-text-subtle disabled:hover:bg-transparent'
 
-/** Expanded model row: performance curve, dimensions and actions (size, project, compare, tender text). */
+/** Expanded model row: performance curve, dimensions and actions. */
 export function ModelDetail({
   model,
   comparing,
   canCompare,
   onAddToProject,
   onToggleCompare,
+  onTenderText,
 }: ModelDetailProps) {
-  const [tenderOpen, setTenderOpen] = useState(false)
   return (
     <div className="grid animate-fade-in gap-x-12 gap-y-8 px-6 py-7 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)_14rem]">
       <section>
@@ -80,15 +78,10 @@ export function ModelDetail({
           {comparing ? <Check className="size-4" /> : <GitCompareArrows className="size-4" />}
           {comparing ? copy.comparing : copy.compare}
         </button>
-        <button type="button" onClick={() => setTenderOpen(true)} className={outlined}>
-          <FileText className="size-4" />
-          {tenderText.open}
+        <button type="button" onClick={onTenderText} className={outlined}>
+          <ScrollText className="size-4" />
+          {tenderDialog.open}
         </button>
-        <TenderTextDialog
-          open={tenderOpen}
-          document={modelTenderText(model)}
-          onClose={() => setTenderOpen(false)}
-        />
       </div>
     </div>
   )

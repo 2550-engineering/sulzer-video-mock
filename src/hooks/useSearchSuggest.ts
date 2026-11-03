@@ -1,8 +1,8 @@
 import { useId, useMemo, useState, type KeyboardEvent } from 'react'
 import { useNavigate } from 'react-router'
-import { applicationPath, getProduct, productPath } from '../lib/catalog'
-import { minSuggestLength, normalizeQuery, searchPath, suggestGroups } from '../lib/search'
-import type { Application, Document, Product } from '../types'
+import { applicationPath, getProduct, partPath, productPath, variantPath } from '../lib/catalog'
+import { minSuggestLength, normalizeQuery, scopePath, suggestGroups } from '../lib/search'
+import type { Application, Document, PartHit, Product, ProductVariant, SearchScope } from '../types'
 import { useDebouncedValue } from './useDebouncedValue'
 
 /** Wait after the last keystroke before suggestions update. */
@@ -11,18 +11,20 @@ const debounceMs = 120
 /** One row in the suggestion panel, in keyboard order. `all` is the "See all results" footer. */
 export type SuggestOption = { to: string } & (
   | { kind: 'product'; product: Product }
+  | { kind: 'variant'; variant: ProductVariant; product: Product }
   | { kind: 'application'; application: Application }
   | { kind: 'document'; document: Document; products: Product[] }
+  | ({ kind: 'part' } & PartHit)
   | { kind: 'all' }
 )
 
 /**
- * Combobox behaviour for a search field: debounced grouped suggestions, arrow
- * keys, Enter on the highlighted row, Esc to close. Spread `inputProps` on the
- * input and pass `panelProps` to <SearchSuggestions>. Enter with no row
- * highlighted is left to the form's own submit.
+ * Combobox behaviour for a search field: debounced grouped suggestions for the
+ * scope, arrow keys, Enter on the highlighted row, Esc to close. Spread
+ * `inputProps` on the input and pass `panelProps` to <SearchSuggestions>.
+ * Enter with no row highlighted is left to the form's own submit.
  */
-export function useSearchSuggest(term: string, onNavigate?: () => void) {
+export function useSearchSuggest(term: string, scope: SearchScope, onNavigate?: () => void) {
   const navigate = useNavigate()
   const listboxId = useId()
   const query = useDebouncedValue(term, debounceMs)
@@ -33,13 +35,13 @@ export function useSearchSuggest(term: string, onNavigate?: () => void) {
   const [active, setActive] = useState({ query: '', index: -1 })
 
   const options = useMemo<SuggestOption[]>(() => {
-    const groups = suggestGroups(query)
+    const groups = suggestGroups(query, scope)
     return [
-      ...groups.products.map((product) => ({
-        kind: 'product' as const,
-        product,
-        to: productPath(product),
-      })),
+      ...groups.products.map((suggestion) =>
+        suggestion.kind === 'variant'
+          ? { ...suggestion, to: variantPath(suggestion.variant) }
+          : { ...suggestion, to: suggestion.product.viewTo ?? productPath(suggestion.product) },
+      ),
       ...groups.applications.map((application) => ({
         kind: 'application' as const,
         application,
@@ -51,12 +53,13 @@ export function useSearchSuggest(term: string, onNavigate?: () => void) {
           kind: 'document' as const,
           document,
           products,
-          to: products[0] ? `${productPath(products[0])}#documentation` : searchPath(query),
+          to: products[0] ? `${productPath(products[0])}#documentation` : scopePath(query, scope),
         }
       }),
-      { kind: 'all' as const, to: searchPath(query) },
+      ...groups.parts.map((hit) => ({ kind: 'part' as const, ...hit, to: partPath(hit) })),
+      { kind: 'all' as const, to: scopePath(query, scope) },
     ]
-  }, [query])
+  }, [query, scope])
 
   const long = (text: string) => normalizeQuery(text).length >= minSuggestLength
   const open = focused && long(term) && long(query) && closedFor !== term

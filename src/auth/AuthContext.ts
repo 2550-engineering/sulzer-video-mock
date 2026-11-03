@@ -1,12 +1,11 @@
 import { createContext } from 'react'
-import type { PersonaId } from '../config/demo'
-import type { User } from '../types'
+import type { PersonaId, User } from '../types'
 
 export type AuthState = {
   user: User | null
-  /** Which persona is signed in, or null when signed out. */
-  persona: PersonaId | null
-  /** Signs in as `persona` (the end user by default). Also switches persona while signed in. */
+  /** The persona signed in, or last signed in. */
+  persona: PersonaId
+  /** Signs in as a persona; the end user by default. */
   signIn: (persona?: PersonaId) => void
   signOut: () => void
 }

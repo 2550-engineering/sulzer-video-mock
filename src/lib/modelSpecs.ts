@@ -142,6 +142,16 @@ const priceFormat = new Intl.NumberFormat('en-GB', {
 
 export const formatPrice = (amount: number) => priceFormat.format(amount)
 
+const partPriceFormat = new Intl.NumberFormat('en-GB', {
+  style: 'currency',
+  currency: market.currency,
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+})
+
+/** Spare part prices, to the cent: "€9.80". */
+export const formatPartPrice = (amount: number) => partPriceFormat.format(amount)
+
 /** "In stock" in green; anything with a lead time in amber, showing the lead time. */
 export function availabilityLabel(model: Pick<ProductModel, 'availability' | 'leadTime'>) {
   return model.availability === 'In stock'

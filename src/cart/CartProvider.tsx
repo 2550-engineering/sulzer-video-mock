@@ -1,81 +1,176 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react'
-import type { CartLine } from '../types'
-import { CartContext, type CartState } from './CartContext'
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useAuth } from '../auth/useAuth'
+import { eshop, personas } from '../config/demo'
+import { eshopPages } from '../data/eshopPages'
+import { cartTotals, deliveryWindow } from '../lib/cart'
+import { priceFor } from '../lib/pricing'
+import { useToast } from '../toast/useToast'
+import type { CartItem, Order, Quotation } from '../types'
+import { SignInToOrderDialog } from '../components/eshop/SignInToOrderDialog'
+import { CartContext, type CartArticle, type CartState } from './CartContext'
 
-// Versioned, so a change to the CartLine shape starts from an empty cart.
-const STORAGE_KEY = 'sz-demo-cart-v1'
+const CART_KEY = 'sz-demo-cart-v1'
+const ORDERS_KEY = 'sz-demo-orders-v1'
+const QUOTATIONS_KEY = 'sz-demo-quotations-v1'
 
-const isLine = (value: unknown): value is CartLine =>
-  typeof (value as CartLine)?.partId === 'string' &&
-  typeof (value as CartLine)?.quantity === 'number'
-
-function readLines(): CartLine[] {
+function read<T>(key: string, fallback: T, valid: (value: unknown) => boolean): T {
   try {
-    const parsed: unknown = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null')
-    return Array.isArray(parsed) ? parsed.filter(isLine) : []
+    const stored = localStorage.getItem(key)
+    const parsed: unknown = stored ? JSON.parse(stored) : null
+    return valid(parsed) ? (parsed as T) : fallback
   } catch {
-    return []
+    return fallback
   }
 }
 
-function writeLines(lines: CartLine[]) {
+function write(key: string, value: unknown) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(lines))
+    localStorage.setItem(key, JSON.stringify(value))
   } catch {
     // Storage unavailable (private mode etc.): keep the in-memory state only.
   }
 }
 
-const sameLine = (a: CartLine, b: Pick<CartLine, 'partId' | 'assetId'>) =>
-  a.partId === b.partId && a.assetId === b.assetId
-
-/** Up to 99 of one line, like most shops. */
-const clamp = (quantity: number) => Math.min(99, Math.max(0, Math.round(quantity)))
+type Basket = { items: CartItem[]; reference: string }
+const emptyBasket: Basket = { items: [], reference: '' }
+const isBasket = (value: unknown) =>
+  typeof value === 'object' && value !== null && Array.isArray((value as Basket).items)
 
 /**
- * The eShop cart, shared by every persona and kept in localStorage, so it survives a
- * reload. "Reset demo" clears it. Checkout turns it into an order (lib/eshop.ts).
+ * Cart, orders and saved quotations, kept in localStorage ("Reset demo"
+ * clears them). Adding while signed out opens a sign-in step that then adds
+ * the article. Order and quotation numbers count up from fixed numbers.
  */
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [lines, setLines] = useState(readLines)
-  const [drawerOpen, setDrawerOpen] = useState(false)
+  const { user, signIn } = useAuth()
+  const showToast = useToast()
+  const [basket, setBasket] = useState<Basket>(() => read(CART_KEY, emptyBasket, isBasket))
+  const [orders, setOrders] = useState<Order[]>(() => read(ORDERS_KEY, [], Array.isArray))
+  const [quotations, setQuotations] = useState<Quotation[]>(() =>
+    read(QUOTATIONS_KEY, [], Array.isArray),
+  )
+  const [pending, setPending] = useState<{ article: CartArticle; quantity: number } | null>(null)
 
-  useEffect(() => writeLines(lines), [lines])
+  useEffect(() => write(CART_KEY, basket), [basket])
+  useEffect(() => write(ORDERS_KEY, orders), [orders])
+  useEffect(() => write(QUOTATIONS_KEY, quotations), [quotations])
 
-  const value = useMemo<CartState>(
-    () => ({
-      lines,
-      count: lines.reduce((sum, line) => sum + line.quantity, 0),
-      add(partId, quantity, assetId) {
-        setLines((current) => {
-          const existing = current.find((line) => sameLine(line, { partId, assetId }))
-          if (!existing) {
-            return [
-              ...current,
-              { partId, quantity: clamp(quantity), ...(assetId ? { assetId } : {}) },
-            ]
-          }
-          return current.map((line) =>
-            line === existing ? { ...line, quantity: clamp(line.quantity + quantity) } : line,
-          )
-        })
-      },
-      setQuantity(target, quantity) {
-        setLines((current) =>
-          current
-            .map((line) => (sameLine(line, target) ? { ...line, quantity: clamp(quantity) } : line))
-            .filter((line) => line.quantity > 0),
-        )
-      },
-      remove(target) {
-        setLines((current) => current.filter((line) => !sameLine(line, target)))
-      },
-      clear: () => setLines([]),
-      drawerOpen,
-      setDrawerOpen,
-    }),
-    [lines, drawerOpen],
+  /** Adds lines to the basket; the same article again raises its quantity. */
+  const merge = useCallback((lines: { article: CartArticle; quantity: number }[]) => {
+    setBasket((current) => {
+      let items = current.items
+      for (const { article, quantity } of lines) {
+        const id = `${article.kind}:${article.refId}`
+        items = items.some((item) => item.id === id)
+          ? items.map((item) =>
+              item.id === id ? { ...item, quantity: item.quantity + quantity } : item,
+            )
+          : [...items, { ...article, id, quantity }]
+      }
+      return { ...current, items }
+    })
+  }, [])
+
+  /** Partners pay their net price; the line keeps the list price to show the discount. */
+  const priced = useCallback(
+    (article: CartArticle): CartArticle => {
+      const price = priceFor(article.unitPrice, user)
+      return price && price.discount > 0
+        ? { ...article, unitPrice: price.net, listPrice: price.list }
+        : article
+    },
+    [user],
   )
 
-  return <CartContext value={value}>{children}</CartContext>
+  const put = useCallback(
+    (article: CartArticle, quantity: number) => {
+      merge([{ article: priced(article), quantity }])
+      showToast({
+        message: eshopPages.toasts.added,
+        detail: eshopPages.toasts.addedDetail(quantity, article.name),
+        action: eshopPages.toasts.viewCart,
+      })
+    },
+    [showToast, merge, priced],
+  )
+
+  const value = useMemo<CartState>(() => {
+    return {
+      items: basket.items,
+      count: basket.items.reduce((sum, item) => sum + item.quantity, 0),
+      reference: basket.reference,
+      setReference: (reference) => setBasket((current) => ({ ...current, reference })),
+      add: (article, quantity) =>
+        user ? put(article, quantity) : setPending({ article, quantity }),
+      addAll: (lines, detail) => {
+        if (lines.length === 0) return
+        merge(lines.map((line) => ({ ...line, article: priced(line.article) })))
+        const pieces = lines.reduce((sum, line) => sum + line.quantity, 0)
+        showToast({
+          message: eshopPages.toasts.addedMany(pieces),
+          detail,
+          action: eshopPages.toasts.viewCart,
+        })
+      },
+      setQuantity: (id, quantity) =>
+        setBasket((current) => ({
+          ...current,
+          items: current.items.map((item) =>
+            item.id === id ? { ...item, quantity: Math.max(1, Math.min(99, quantity)) } : item,
+          ),
+        })),
+      remove: (id) =>
+        setBasket((current) => ({
+          ...current,
+          items: current.items.filter((item) => item.id !== id),
+        })),
+      orders,
+      placeOrder: ({ deliveryAddressId, delivery, deliveryAddress, customer }) => {
+        const id = `SO-${eshop.firstOrderNumber + orders.length}`
+        const dates = deliveryWindow(basket.items)
+        const order: Order = {
+          id,
+          placedBy: (user ?? personas.endUser).name,
+          company: (user ?? personas.endUser).company,
+          lines: basket.items,
+          reference: basket.reference,
+          deliveryAddressId,
+          ...(deliveryAddress ? { deliveryAddress } : {}),
+          ...(customer ? { customer } : {}),
+          delivery,
+          ...cartTotals(basket.items),
+          earliestDelivery: delivery === 'partial' ? dates.earliest : dates.latest,
+          latestDelivery: dates.latest,
+        }
+        setOrders((current) => [...current, order])
+        setBasket(emptyBasket)
+        return id
+      },
+      saveQuotation: () => {
+        const quotation: Quotation = {
+          id: `Q-${eshop.firstQuotationNumber + quotations.length}`,
+          reference: basket.reference,
+          lines: basket.items,
+          total: cartTotals(basket.items).total,
+        }
+        setQuotations((current) => [...current, quotation])
+        return quotation
+      },
+    }
+  }, [basket, orders, quotations, user, put, merge, priced, showToast])
+
+  return (
+    <CartContext.Provider value={value}>
+      {children}
+      <SignInToOrderDialog
+        open={pending !== null}
+        onClose={() => setPending(null)}
+        onConfirm={() => {
+          signIn()
+          if (pending) put(pending.article, pending.quantity)
+          setPending(null)
+        }}
+      />
+    </CartContext.Provider>
+  )
 }

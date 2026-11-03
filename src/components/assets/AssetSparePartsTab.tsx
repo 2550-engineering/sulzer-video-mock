@@ -1,33 +1,31 @@
-import { Lightbulb, ShoppingCart } from 'lucide-react'
+import { Lightbulb, Search } from 'lucide-react'
 import { Link } from 'react-router'
-import { useAuth } from '../../auth/useAuth'
-import { useAddToCart } from '../../cart/useAddToCart'
 import { assetPage } from '../../data/assetPages'
 import { conditionFindings } from '../../data/assets'
-import { getModel } from '../../lib/catalog'
-import { partPrice } from '../../lib/pricing'
-import { bomFor, getPart } from '../../lib/spareParts'
+import { useUrlParams } from '../../hooks/useUrlParams'
+import { getModel, partOwner, partsInVersion, sparePartsFor } from '../../lib/catalog'
+import { partsOwnerId } from '../../lib/catalogParts'
 import type { Asset } from '../../types'
-import { PartPrice } from '../spareparts/PartPrice'
-import { SparePartsExplorer } from '../spareparts/SparePartsExplorer'
+import { SparePartsBrowser } from '../spareparts/SparePartsBrowser'
 import { TabComingSoon } from '../TabComingSoon'
 import { TabHeading } from '../TabHeading'
 
 const copy = assetPage.spareParts
 
 /**
- * Spare parts tab: the sectional drawing and parts list for this unit's model. The part
- * an active alert calls for is on top and selected on the drawing.
+ * Spare parts tab: the exploded drawing, parts tree and BOM of this unit's
+ * parts list (the shared spare parts browser). The part or kit an active
+ * alert calls for is named on top; ?kit= or ?part= selects it, e.g. from
+ * "Order bearing kit" in Sulzer Connect.
  */
 export function AssetSparePartsTab({ asset }: { asset: Asset }) {
-  const { user } = useAuth()
-  const addToCart = useAddToCart()
+  const [params, update] = useUrlParams()
   const model = asset.modelId ? getModel(asset.modelId) : undefined
-  const partId = conditionFindings[asset.id]?.partId
-  const recommended = model && partId ? getPart(partId) : undefined
-  const price = recommended && partPrice(recommended, user)
+  const ownerId = asset.modelId ? partsOwnerId(asset.modelId) : undefined
+  const catalogue = ownerId && sparePartsFor(ownerId)
+  const owner = ownerId && partOwner(ownerId)
 
-  if (!model || bomFor(model.id).length === 0) {
+  if (!model || !catalogue || !owner) {
     return (
       <>
         <TabHeading title={copy.title} />
@@ -36,6 +34,20 @@ export function AssetSparePartsTab({ asset }: { asset: Asset }) {
         </div>
       </>
     )
+  }
+
+  const recommendedId = conditionFindings[asset.id]?.partId
+  const kit = catalogue.kits.find((k) => k.id === recommendedId)
+  const part = partsInVersion(catalogue).find((p) => p.id === recommendedId)
+  const recommended = kit ?? part
+  const showing = params.get('kit') === recommendedId || params.get('part') === recommendedId
+
+  function showRecommended() {
+    update((next) => {
+      next.delete('part')
+      next.delete('kit')
+      next.set(kit ? 'kit' : 'part', recommendedId!)
+    })
   }
 
   return (
@@ -58,32 +70,25 @@ export function AssetSparePartsTab({ asset }: { asset: Asset }) {
           <p className="min-w-0 flex-1">
             <span className="font-semibold">{copy.recommended}:</span> {recommended.name}{' '}
             <span className="text-text-muted tabular-nums">
-              (pos. {recommended.position}, {recommended.partNumber})
+              ({part ? `pos. ${part.position}, ` : ''}
+              {recommended.partNumber})
             </span>
           </p>
-          {price && (
-            <div className="flex items-center gap-4">
-              <PartPrice price={price} />
-              <button
-                type="button"
-                onClick={() => addToCart(recommended, 1, asset.id)}
-                className="inline-flex h-10 items-center gap-2 rounded-pill bg-primary px-5 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
-              >
-                <ShoppingCart className="size-4" strokeWidth={1.75} />
-                {copy.addRecommended}
-              </button>
-            </div>
+          {!showing && (
+            <button
+              type="button"
+              onClick={showRecommended}
+              className="inline-flex h-10 items-center gap-2 rounded-pill bg-primary px-5 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
+            >
+              <Search className="size-4" strokeWidth={1.75} />
+              {copy.showRecommended}
+            </button>
           )}
         </div>
       )}
 
       <div className="mt-8">
-        <SparePartsExplorer
-          key={model.id}
-          model={model}
-          asset={asset}
-          initialPosition={recommended?.position}
-        />
+        <SparePartsBrowser key={catalogue.id} catalogue={catalogue} owner={owner} />
       </div>
     </>
   )

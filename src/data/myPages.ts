@@ -62,11 +62,11 @@ export const dashboardCards = {
     title: 'Products & projects',
     subtitle: 'Access your saved product information',
     icon: FolderKanban,
+    // The My projects badge is the signed-in persona's project count, set on the page.
     links: [
-      // The counts come from the personal toolbar and projects state (MyPagesPage).
-      { label: 'My saved items', to: '/my-pages/saved' },
       { label: 'My projects', to: '/my-projects' },
-      { label: 'My recently viewed products', to: '/my-pages/recently-viewed' },
+      { label: 'My saved items', to: '/my-pages/saved', badge: { label: '12' } },
+      { label: 'Recently viewed products', to: '/my-pages/recently-viewed' },
     ],
   },
   portals: {
@@ -142,6 +142,15 @@ export const recentActivity = {
       time: 'Today, 07:58',
       to: '/my-projects/riverside-intake',
       icon: FolderOpen,
+      persona: 'endUser',
+    },
+    {
+      subject: 'Project ‘Riverside raw water intake upgrade’',
+      text: 'updated by Erik Sandberg',
+      time: 'Today, 08:42',
+      to: '/my-projects/riverside-raw-water',
+      icon: FolderOpen,
+      persona: 'consultant',
     },
     {
       subject: 'RW-02',
@@ -150,6 +159,7 @@ export const recentActivity = {
       to: '/assets/rw-02',
       icon: TriangleAlert,
       tone: 'warning',
+      persona: 'endUser',
     },
     {
       subject: 'Order SO-104382',

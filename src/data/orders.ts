@@ -1,8 +1,8 @@
 import { demoUser, partnerPricing } from '../config/demo'
-import type { Order, OrderLine, SparePart, TrackingEvent } from '../types'
+import type { SalesOrder, OrderLine, TrackingEvent } from '../types'
 import { customers } from './assets'
 import { issuers } from './quotations'
-import { partOfKind } from './spareParts'
+import { catalogueItem as partOfKind, type CatalogueItem } from '../lib/catalogParts'
 
 /*
  * Orders with track & trace ("/self-service/orders"). End users see their own direct
@@ -39,7 +39,12 @@ function customerAddress(customerId: string, street: string, postcode: string) {
   ]
 }
 
-function line(position: number, part: SparePart, quantity: number, assetId?: string): OrderLine {
+function line(
+  position: number,
+  part: Pick<CatalogueItem, 'partNumber' | 'name' | 'listPrice'>,
+  quantity: number,
+  assetId?: string,
+): OrderLine {
   const { partNumber, name, listPrice } = part
   return {
     position,
@@ -49,6 +54,22 @@ function line(position: number, part: SparePart, quantity: number, assetId?: str
     listPrice,
     ...(assetId ? { assetId } : {}),
   }
+}
+
+/** When an eShop order placed in the demo is confirmed, on `demoClock.today`. */
+export const checkoutTime = '09:48'
+
+/** How an eShop order ships, as the order page shows it. */
+export const eshopDeliveryMethods = {
+  complete: 'Complete delivery, standard freight',
+  partial: 'Partial deliveries as items are ready, standard freight',
+}
+
+/** XFP 100C has no online parts list yet, so its past order keeps the part as ordered. */
+const xfp100BottomPlate = {
+  partNumber: '71540101',
+  name: 'Contrablock bottom plate, adjustable, grey cast iron',
+  listPrice: 410,
 }
 
 /** The track & trace steps an order went through, oldest first. */
@@ -117,10 +138,10 @@ const parcel = (trackingNumber: string, packages: number, weight: string) => ({
   weight,
 })
 
-export const orderSeeds: Order[] = [
+export const orderSeeds: SalesOrder[] = [
   // ── Nordvatten's own orders ─────────────────────────────────────────────────
   {
-    id: 'SO-104396',
+    id: 'SO-104388',
     ...direct,
     placedAt: '2026-10-26T11:02',
     poNumber: 'PO 2026-1187',
@@ -136,7 +157,7 @@ export const orderSeeds: Order[] = [
     ],
   },
   {
-    id: 'SO-104390',
+    id: 'SO-104386',
     ...direct,
     placedAt: '2026-10-23T09:30',
     poNumber: 'PO 2026-1172',
@@ -224,15 +245,15 @@ export const orderSeeds: Order[] = [
     }),
     shippingCost: 45,
     lines: [
-      line(10, partOfKind('xfp-100-c', 'bottom-plate'), 1, 'p-102'),
-      line(20, partOfKind('xfp-100-c', 'bottom-plate'), 1, 'p-103'),
-      line(30, partOfKind('xfp-100-c', 'bottom-plate'), 1, 'p-104'),
+      line(10, xfp100BottomPlate, 1, 'p-102'),
+      line(20, xfp100BottomPlate, 1, 'p-103'),
+      line(30, xfp100BottomPlate, 1, 'p-104'),
     ],
   },
 
   // ── Aqua Pumpteknik's orders for their customers ────────────────────────────
   {
-    id: 'SO-104399',
+    id: 'SO-104389',
     ...partner('vastmalm-energi'),
     placedAt: '2026-10-27T13:15',
     poNumber: 'AP-PO 26-0733',
@@ -245,7 +266,7 @@ export const orderSeeds: Order[] = [
     lines: [line(10, partOfKind(rw, 'impeller'), 1), line(20, partOfKind(rw, 'bearing-kit'), 2)],
   },
   {
-    id: 'SO-104393',
+    id: 'SO-104387',
     ...partner('malarbruk'),
     placedAt: '2026-10-22T09:12',
     poNumber: 'AP-PO 26-0721',

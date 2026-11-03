@@ -1,156 +1,197 @@
-import type { CasingMaterial, ShaftSeal } from '../types'
+import type { TenderLanguage, TenderSubject } from '../types'
 
 /*
- * Tender texts (Models tab, My projects, replacement finder). The wording, material
- * grades, seal details and standards are written for the mock-up: see
- * docs/content-to-confirm.md.
+ * Wording of the generated tender texts (src/lib/tenderText.ts) and of the
+ * tender text dialog. Clauses marked INVENTED are our own specification
+ * style, not Sulzer text: see docs/content-to-confirm.md.
  */
 
-/** Opening paragraph and standards per product. Products without an entry use the generic text. */
-export const tenderProducts: Record<string, { description: string; standards: string[] }> = {
-  ahlstar: {
-    description:
-      'Horizontal, single-stage end-suction centrifugal pump of back pull-out design, so the rotating unit can be removed without disturbing the pipework or the motor. Closed impeller with renewable wear rings, mounted on a common base frame with the motor and a flexible coupling.',
-    standards: [
-      'Dimensions and design to ISO 2858 and ISO 5199',
-      'Flanges to EN 1092-2, PN 16',
-      'Performance test to ISO 9906, grade 2B',
-      'CE marked to the Machinery Directive 2006/42/EC',
-      'Ecodesign Regulation (EU) 547/2012 for water pumps, MEI ≥ 0.4',
-    ],
-  },
-  xfp: {
-    description:
-      'Submersible, non-clogging wastewater pump for wet-well installation on an auto-coupling duck foot. Contrablock wear plate and clog-resistant impeller, premium-efficiency motor cooled by the surrounding liquid, with moisture and temperature sensors.',
-    standards: [
-      'Discharge flange to EN 1092-2, PN 10',
-      'Performance test to ISO 9906, grade 2B',
-      'Motor to IEC 60034-30-1',
-      'CE marked to the Machinery Directive 2006/42/EC',
-      'Explosion-proof version to ATEX on request',
-    ],
-  },
-}
+const numberWords = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
 
-export const genericTenderProduct = {
-  description: 'Centrifugal pump unit, complete with motor, for the duty below.',
-  standards: [
-    'Performance test to ISO 9906, grade 2B',
-    'CE marked to the Machinery Directive 2006/42/EC',
-  ],
-}
+/** "Two (2)" for 1–9, otherwise the digits. */
+export const quantityWords = (n: number) =>
+  n >= 1 && n <= 9 ? `${numberWords[n]} (${n})` : String(n)
 
-/** Materials of the wetted parts for each casing material on the Models tab. */
-export const tenderMaterials: Record<
-  CasingMaterial,
-  { casing: string; impeller: string; shaft: string; wearRings: string }
-> = {
-  'Grey cast iron': {
-    casing: 'Grey cast iron EN-GJL-250',
-    impeller: 'Grey cast iron EN-GJL-250',
-    shaft: 'Stainless steel EN 1.4021',
-    wearRings: 'Grey cast iron EN-GJL-250',
-  },
-  'Ductile iron': {
-    casing: 'Ductile iron EN-GJS-400-15',
-    impeller: 'Ductile iron EN-GJS-400-15',
-    shaft: 'Stainless steel EN 1.4462',
-    wearRings: 'Stainless steel EN 1.4408',
-  },
-  'Duplex stainless steel': {
-    casing: 'Duplex stainless steel EN 1.4470',
-    impeller: 'Duplex stainless steel EN 1.4470',
-    shaft: 'Duplex stainless steel EN 1.4462',
-    wearRings: 'Duplex stainless steel EN 1.4470',
-  },
-}
-
-/** Shaft seal details by type. */
-export const tenderSeals: Record<ShaftSeal, string> = {
-  Packing:
-    'Gland packing, PTFE-impregnated aramid, 5 rings with lantern ring and external flushing connection',
-  'Single mechanical seal':
-    'Single mechanical seal to EN 12756, silicon carbide against carbon faces, EPDM elastomers',
-  'Double mechanical seal':
-    'Double mechanical seal in back-to-back arrangement, silicon carbide faces on both seals, FKM elastomers, with a barrier fluid connection',
-}
-
-export const tenderText = {
-  open: 'Tender text',
-  dialogTitle: (name: string) => `Tender text – ${name}`,
-  close: 'Close',
-  language: 'Language',
-  languages: [
-    { value: 'en', label: 'English' },
-    { value: 'de', label: 'Deutsch (coming soon)', disabled: true },
-    { value: 'fr', label: 'Français (coming soon)', disabled: true },
-    { value: 'sv', label: 'Svenska (coming soon)', disabled: true },
-    { value: 'es', label: 'Español (coming soon)', disabled: true },
-  ],
-  copy: 'Copy',
-  copied: 'Copied',
-  download: 'Download .docx',
-  downloadAll: 'Download all tender texts',
-  downloadedAll: (count: number, project: string) =>
-    `${count} tender ${count === 1 ? 'text' : 'texts'} for ${project} downloaded`,
-  note: 'Generated from the product data. Check it against your project specification before you issue the tender.',
-  heading: 'Specification',
-  /** Line under the title. */
-  reference: (productNumber: string | null) =>
-    productNumber ? `Sulzer product no. ${productNumber}` : 'Sulzer product no. on request',
-  position: (position: number, yours: string, quantity: number) =>
-    `Item ${position}${yours ? ` · Your position ${yours}` : ''} · Quantity ${quantity}`,
+export const tenderCopy = {
   sections: {
-    general: 'General',
-    hydraulics: 'Hydraulic data',
+    general: 'General description',
+    duty: 'Application and duty point',
+    hydraulic: 'Hydraulic data',
+    design: 'Design',
     materials: 'Materials',
     seal: 'Shaft seal',
     motor: 'Motor',
-    standards: 'Standards and testing',
-    make: 'Make and type',
+    connections: 'Connections',
+    accessories: 'Accessories',
+    testing: 'Testing and standards',
+    documentation: 'Documentation',
+    manufacturer: 'Manufacturer',
   },
-  rows: {
-    dutyFlow: 'Duty flow',
-    dutyHead: 'Duty head',
-    operatingPoint: 'Operating point',
-    ratedFlow: 'Rated flow',
-    ratedHead: 'Rated head',
-    efficiency: 'Pump efficiency at duty point',
-    ratedEfficiency: 'Pump efficiency at rated point',
-    npshr: 'NPSH required',
+
+  general: {
+    'end-suction': (quantity: number) =>
+      `${quantityWords(quantity)} horizontal, single-stage, end-suction centrifugal ${quantity === 1 ? 'pump' : 'pumps'} with closed impeller, of back pull-out design, each complete with electric motor, flexible spacer coupling, coupling guard and common base plate.`,
+    submersible: (quantity: number) =>
+      `${quantityWords(quantity)} submersible wastewater ${quantity === 1 ? 'pump' : 'pumps'} for wet-well installation on an auto-coupling, with closed two-channel impeller, integrated motor and power cable.`,
+  } satisfies Record<TenderSubject['kind'], (quantity: number) => string>,
+
+  application: (application: string) => `Application: ${application.toLowerCase()}.`,
+  dutyRows: {
     liquid: 'Liquid',
+    temperature: 'Liquid temperature',
+    flow: 'Required flow rate',
+    head: 'Required total head',
+  },
+  ratedOnly: 'No duty point is given; the data below is the pump’s rated point.',
+
+  hydraulicRows: {
+    flow: 'Flow rate at operating point',
+    head: 'Head at operating point',
+    efficiency: 'Pump efficiency',
+    npshr: 'NPSH required',
     speed: 'Speed',
     impeller: 'Impeller diameter',
-    suction: 'Suction connection',
-    discharge: 'Discharge connection',
-    maxPressure: 'Max. operating pressure',
-    weight: 'Weight, pump unit',
+  },
+  // INVENTED clause.
+  operatingRange:
+    'The operating point shall lie between 70 % and 120 % of the best-efficiency flow of the selected impeller.',
+
+  design: {
+    // INVENTED clauses.
+    'end-suction': [
+      'Volute casing with integral feet and axial suction, radial top discharge.',
+      'Back pull-out design: the rotating unit can be removed without disconnecting the suction and discharge pipework or moving the motor.',
+      'Main dimensions to ISO 2858 / EN 22858 where the size is covered by the standard.',
+      'Shaft supported by grease- or oil-lubricated rolling bearings rated for at least 25 000 hours (L10).',
+    ],
+    submersible: [
+      'Suitable for continuous operation (S1) submerged and for intermittent operation with the motor partly exposed.',
+      'Installed on guide rails with an auto-coupling, so the pump can be lifted out without entering the wet well.',
+      'Motor cooled by the pumped liquid; cooling jacket where the motor is not submerged.',
+    ],
+  } satisfies Record<TenderSubject['kind'], string[]>,
+
+  materialRows: {
     casing: 'Pump casing',
-    impellerMaterial: 'Impeller',
+    impeller: 'Impeller',
     shaft: 'Shaft',
-    wearRings: 'Wear rings',
-    seal: 'Type',
-    coupling: 'Coupling',
-    motorPower: 'Rated power',
-    motorSpeed: 'Poles / speed',
+    wearParts: 'Wear rings / wear parts',
+  },
+
+  seals: {
+    // INVENTED clauses.
+    SD: 'Single mechanical seal, balanced, silicon carbide against carbon faces, EPDM elastomers, to EN 12756.',
+    DD: 'Double mechanical seal with barrier fluid, silicon carbide faces on the product side, to EN 12756.',
+    'Single mechanical seal': 'Single mechanical seal, balanced, to EN 12756.',
+    'Double mechanical seal': 'Double mechanical seal with barrier fluid, to EN 12756.',
+    Packing: 'Gland packing with lantern ring and flushing connection.',
+    submersible:
+      'Two independent mechanical seals in an oil-filled seal chamber, the liquid-side seal in silicon carbide; moisture sensor in the seal chamber.',
+  } satisfies Record<TenderSubject['seal'], string>,
+
+  motorRows: {
+    power: 'Rated power P2',
     supply: 'Supply',
+    poles: 'Poles / speed',
     efficiencyClass: 'Efficiency class',
-    motorEfficiency: 'Motor efficiency',
     enclosure: 'Enclosure',
-    insulation: 'Insulation',
-    manufacturer: 'Manufacturer',
-    type: 'Type',
-    productNumber: 'Product no.',
+    insulation: 'Insulation class',
+    protection: 'Motor protection',
+    ex: 'Explosion protection',
   },
-  motorDefaults: {
-    efficiencyClass: 'IE3, IE4 on request',
-    supply: (hz: number) => `400 V, 3~, ${hz} Hz`,
-    enclosure: 'IP55',
-    insulation: 'Class F, temperature rise class B',
+  // INVENTED values.
+  insulation: 'F, temperature rise to class B',
+  protection: {
+    'end-suction': 'PTC thermistors in the stator winding',
+    submersible: 'PTC thermistors in the stator, moisture sensor in the seal chamber',
+  } satisfies Record<TenderSubject['kind'], string>,
+  exYes: 'ATEX II 2G Ex db IIB T4 Gb',
+
+  connectionRows: {
+    suction: 'Suction',
+    discharge: 'Discharge',
+    flanges: 'Flanges',
   },
-  manufacturer: 'Sulzer',
-  orEqual: 'or approved equal.',
-  /** File names. */
-  fileName: (name: string) => `Tender text ${name}.rtf`,
-  projectFileName: (project: string) => `Tender texts ${project}.rtf`,
+  // INVENTED: flange standard and pressure class.
+  flanges: 'EN 1092-2, PN 16',
+
+  accessories: {
+    // INVENTED lists.
+    'end-suction': [
+      'Common base plate in welded steel, prepared for grouting',
+      'Flexible spacer coupling',
+      'Coupling guard to EN ISO 14120',
+      'Foundation bolts',
+    ],
+    submersible: [
+      'Auto-coupling base elbow with guide rail brackets',
+      'Lifting chain in stainless steel',
+    ],
+  } satisfies Record<TenderSubject['kind'], string[]>,
+  cable: (m: number) => `Power cable, ${m} m`,
+
+  testing: [
+    // INVENTED clauses.
+    'Performance test at the manufacturer’s works to ISO 9906, grade 2B, with test certificate.',
+    'Hydrostatic test of pressure-bearing parts at 1.5 × the maximum working pressure.',
+    'Material certificates to EN 10204 3.1 for casing and impeller, on request.',
+    'CE marking; declaration of conformity to the Machinery Directive 2006/42/EC.',
+  ],
+
+  documentation: [
+    // INVENTED list.
+    'Installation, operating and maintenance instructions',
+    'Data sheet with performance curve at the operating point',
+    'Dimensional drawing',
+    'Spare parts list with recommended spare parts',
+    'Declaration of conformity',
+  ],
+
+  manufacturer: (model: string, productNumber: string | null, orEqual: boolean) =>
+    `Manufacturer: Sulzer, type ${model}${productNumber ? ` (product no. ${productNumber})` : ''}${orEqual ? ', or equal' : ''}.`,
+
+  positionHeading: (position: number, tag: string, model: string) =>
+    `Pos. ${position}${tag ? ` – ${tag}` : ''} – ${model}`,
+}
+
+/** Values the product data doesn't hold, used in every tender text. INVENTED. */
+export const tenderDefaults = {
+  shaft: 'Stainless steel 1.4021',
+  wearParts: {
+    'end-suction': 'Bronze CuSn10; duplex stainless steel for duplex pumps',
+    submersible: 'Stainless steel 1.4460',
+  } satisfies Record<TenderSubject['kind'], string>,
+  /** Motor enclosure of sized and catalogue end-suction pumps. */
+  enclosure: 'IP55',
+  efficiencyClass: 'IE3',
+}
+
+/** The tender text dialog and its buttons. */
+export const tenderDialog = {
+  title: (subject: string) => `Tender text – ${subject}`,
+  projectTitle: (project: string) => `Tender texts – ${project}`,
+  documentTitle: (subject: string) => `Tender text: ${subject}`,
+  close: 'Close',
+  options: 'Options',
+  language: 'Language',
+  languages: {
+    en: 'English',
+    sv: 'Swedish',
+    de: 'German',
+  } satisfies Record<TenderLanguage, string>,
+  comingSoon: 'coming soon',
+  detail: 'Detail level',
+  short: 'Short',
+  full: 'Full',
+  includeDuty: 'Include duty point',
+  orEqual: 'Include “or equal” clause',
+  copy: 'Copy to clipboard',
+  copied: 'Tender text copied',
+  copiedDetail: 'Paste it into your tender document.',
+  docx: 'Download .docx',
+  downloaded: 'Tender text downloaded',
+  pdf: 'Download PDF',
+  pdfHint: 'Opens the print dialog; choose “Save as PDF”.',
+  open: 'Tender text',
+  openAll: 'Tender texts',
 }

@@ -4,7 +4,7 @@ import { siteById } from '../../data/assets'
 import { replacementPage } from '../../data/replacement'
 import { getProduct } from '../../lib/catalog'
 import { formatDate, groupThousands } from '../../lib/format'
-import { energyPerYear, type ExistingPump } from '../../lib/replacement'
+import { energyPerYear, type ExistingPump } from '../../lib/pumpReplacement'
 import { ProductThumb } from '../ProductThumb'
 
 const copy = replacementPage.existing

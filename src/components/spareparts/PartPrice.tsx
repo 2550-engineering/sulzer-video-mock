@@ -1,4 +1,4 @@
-import { bom as copy } from '../../data/eshop'
+import { priceCopy as copy } from '../../data/pricing'
 import type { Price } from '../../lib/pricing'
 import { formatMoney } from '../../lib/selfService'
 

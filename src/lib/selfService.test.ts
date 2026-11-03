@@ -4,7 +4,7 @@ import { orderSeeds } from '../data/orders'
 import { quotations } from '../data/quotations'
 import { recentActivity } from '../data/myPages'
 import { serviceRequestSeeds } from '../data/serviceRequests'
-import { partOfKind } from '../data/spareParts'
+import { catalogueItem as partOfKind } from './catalogParts'
 import {
   isInTransit,
   isOpenRequest,
@@ -56,7 +56,7 @@ describe('My Pages', () => {
       ordersFor(endUser, orderSeeds)
         .filter(isInTransit)
         .map((o) => o.id),
-    ).toEqual(['SO-104390', 'SO-104382'])
+    ).toEqual(['SO-104386', 'SO-104382'])
     expect(serviceRequestSeeds.filter(isOpenRequest)).toHaveLength(1)
   })
 })

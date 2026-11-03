@@ -1,24 +1,39 @@
-import { Search } from 'lucide-react'
+import { FolderPlus, Search } from 'lucide-react'
 import { useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { myProjectsPage } from '../../data/projectPages'
-import type { Project } from '../../types'
+import { isActiveProject, projectStatuses } from '../../lib/projects'
+import { useProjects } from '../../projects/useProjects'
+import { useToast } from '../../toast/useToast'
+import type { Project, ProjectStatus } from '../../types'
 import { SelectField } from '../SelectField'
+import { NewProjectDialog } from './NewProjectDialog'
 import { ProjectStatusChip } from './ProjectStatusChip'
 
 const copy = myProjectsPage.list
 
-type Scope = 'active' | 'all'
+/** "active", "all" or one status. */
+type Scope = 'active' | 'all' | ProjectStatus
 type Sort = 'date' | 'name'
 
-/** Left column: scope and sort selects, search, and the projects (name, products, status, last modified). */
+const inScope = (project: Project, scope: Scope) =>
+  scope === 'all' || (scope === 'active' ? isActiveProject(project) : project.status === scope)
+
+/**
+ * Left column: "New project", status filter, sort, search, and the projects
+ * (name, products, status, last modified).
+ */
 export function ProjectList({ projects, currentId }: { projects: Project[]; currentId: string }) {
+  const navigate = useNavigate()
+  const showToast = useToast()
+  const { createProject } = useProjects()
   const [scope, setScope] = useState<Scope>('active')
   const [sort, setSort] = useState<Sort>('date')
   const [query, setQuery] = useState('')
+  const [dialog, setDialog] = useState({ open: false, session: 0 })
 
   const shown = projects
-    .filter((p) => scope === 'all' || p.status !== 'Quoted' || p.id === currentId)
+    .filter((p) => inScope(p, scope) || p.id === currentId)
     .filter((p) => p.name.toLowerCase().includes(query.trim().toLowerCase()))
     .sort((a, b) =>
       sort === 'name' ? a.name.localeCompare(b.name, 'en') : b.modifiedOrder - a.modifiedOrder,
@@ -27,6 +42,14 @@ export function ProjectList({ projects, currentId }: { projects: Project[]; curr
   return (
     <aside className="self-start rounded-lg border border-border bg-white">
       <div className="space-y-3 border-b border-border p-4">
+        <button
+          type="button"
+          onClick={() => setDialog((d) => ({ open: true, session: d.session + 1 }))}
+          className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-pill bg-primary text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
+        >
+          <FolderPlus className="size-4" />
+          {copy.newProject}
+        </button>
         <div className="grid grid-cols-2 gap-3">
           <SelectField
             layout="stacked"
@@ -36,6 +59,7 @@ export function ProjectList({ projects, currentId }: { projects: Project[]; curr
             options={[
               { value: 'active', label: copy.scopes.active },
               { value: 'all', label: copy.scopes.all },
+              ...projectStatuses.map((status) => ({ value: status, label: status })),
             ]}
           />
           <SelectField
@@ -97,6 +121,18 @@ export function ProjectList({ projects, currentId }: { projects: Project[]; curr
       ) : (
         <p className="px-4 py-6 text-sm text-text-muted">{copy.empty}</p>
       )}
+
+      <NewProjectDialog
+        key={dialog.session}
+        open={dialog.open}
+        onClose={() => setDialog((d) => ({ ...d, open: false }))}
+        onCreate={(name, info) => {
+          const { projectId } = createProject(name, [], info)
+          setDialog((d) => ({ ...d, open: false }))
+          showToast({ message: myProjectsPage.newProject.created(name) })
+          navigate(`/my-projects/${projectId}#products`)
+        }}
+      />
     </aside>
   )
 }

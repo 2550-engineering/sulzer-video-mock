@@ -1,9 +1,9 @@
 import { market, partnerPricing } from '../config/demo'
 import { quotations } from '../data/quotations'
 import type {
-  Order,
+  SalesOrder,
   OrderStatus,
-  Quotation,
+  SalesQuotation,
   ServiceRequest,
   ServiceRequestStatus,
   User,
@@ -41,7 +41,7 @@ export function requestsFor(user: User, requests: ServiceRequest[]) {
 }
 
 /** A customer's direct orders, or the orders a partner placed for their customers. */
-export function ordersFor(user: User, orders: Order[]) {
+export function ordersFor(user: User, orders: SalesOrder[]) {
   return orders.filter((order) =>
     user.kind === 'partner'
       ? order.channel === 'partner'
@@ -53,7 +53,7 @@ export function ordersFor(user: User, orders: Order[]) {
  * Sulzer's quotations to a customer, or a partner's own quotations to their customers
  * (drafts included: only the partner sees those).
  */
-export function quotationsFor(user: User, all: Quotation[] = quotations) {
+export function quotationsFor(user: User, all: SalesQuotation[] = quotations) {
   return all.filter((quotation) =>
     user.kind === 'partner'
       ? quotation.issuer === 'partner'
@@ -65,12 +65,12 @@ export function quotationsFor(user: User, all: Quotation[] = quotations) {
 
 export const isOpenRequest = (request: ServiceRequest) => request.status !== 'Done'
 
-export const isInTransit = (order: Order) => order.status === 'Shipped'
+export const isInTransit = (order: SalesOrder) => order.status === 'Shipped'
 
-export const isOpenOrder = (order: Order) => order.status !== 'Delivered'
+export const isOpenOrder = (order: SalesOrder) => order.status !== 'Delivered'
 
 /** When each order step was reached, from its track & trace events. */
-export function orderStepTimes(order: Order) {
+export function orderStepTimes(order: SalesOrder) {
   return Object.fromEntries(
     order.events.flatMap((event) => (event.status ? [[event.status, event.at]] : [])),
   ) as Partial<Record<OrderStatus, string>>
@@ -94,7 +94,7 @@ const cents = (amount: number) => Math.round(amount * 100) / 100
 export const netPrice = (listPrice: number, discount: number) =>
   cents(listPrice * (1 - discount / 100))
 
-export function orderTotals(order: Order) {
+export function orderTotals(order: SalesOrder) {
   const list = cents(order.lines.reduce((sum, l) => sum + l.listPrice * l.quantity, 0))
   const net = cents(
     order.lines.reduce((sum, l) => sum + netPrice(l.listPrice, order.discount) * l.quantity, 0),
@@ -109,7 +109,7 @@ export function orderTotals(order: Order) {
   }
 }
 
-export function quotationTotals(quotation: Quotation) {
+export function quotationTotals(quotation: SalesQuotation) {
   const list = cents(quotation.lines.reduce((sum, l) => sum + l.listPrice * l.quantity, 0))
   const net = cents(
     quotation.lines.reduce(
@@ -124,7 +124,7 @@ export function quotationTotals(quotation: Quotation) {
  * The partner's view of their own quotation: what the Sulzer lines cost them at the
  * partner discount, and the margin on those lines. Services are their own work.
  */
-export function partnerMargin(quotation: Quotation) {
+export function partnerMargin(quotation: SalesQuotation) {
   const sulzerLines = quotation.lines.filter((l) => l.kind === 'sulzer')
   const list = cents(sulzerLines.reduce((sum, l) => sum + l.listPrice * l.quantity, 0))
   const sell = cents(

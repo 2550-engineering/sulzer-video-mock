@@ -2,14 +2,14 @@ import { describe, expect, it } from 'vitest'
 import { personas } from '../config/demo'
 import { customers } from '../data/assets'
 import { partnerAccounts } from '../data/partner'
-import { customerMember, projects } from '../data/projects'
+import { projectsSeed } from '../data/projects'
 import { quotations } from '../data/quotations'
 import { serviceRequestSeeds } from '../data/serviceRequests'
 import { customerSummaries, quotationFromProject, sentQuotation } from './partner'
-import { isSharedWithClient, isVisibleTo } from './projects'
+import { isSharedWithClient } from './projects'
 
 const { endUser, channelPartner } = personas
-const project = (id: string) => projects.find((p) => p.id === id)!
+const project = (id: string) => projectsSeed.channelPartner.find((p) => p.id === id)!
 
 describe('partner customers', () => {
   it('has a partner account, logo and delivery address for every customer', () => {
@@ -29,21 +29,16 @@ describe('partner customers', () => {
   })
 })
 
-describe('projects per persona', () => {
-  it('shows each persona their own projects', () => {
-    const own = (persona: 'endUser' | 'channelPartner') =>
-      projects.filter((p) => isVisibleTo(p, persona, personas[persona])).map((p) => p.owner)
-    expect(new Set(own('endUser'))).toEqual(new Set(['endUser']))
-    expect(new Set(own('channelPartner'))).toEqual(new Set(['channelPartner']))
+describe('partner projects', () => {
+  it('runs every partner project for a customer account', () => {
+    expect(projectsSeed.channelPartner.every((p) => p.clientAccount)).toBe(true)
   })
 
-  it('shows Emma the partner project once it is shared with her', () => {
+  it('counts the project as shared once the client contact is a member', () => {
     const upgrade = project('riverside-intake-upgrade')
     expect(isSharedWithClient(upgrade)).toBe(false)
-    expect(isVisibleTo(upgrade, 'endUser', endUser)).toBe(false)
-    const shared = { ...upgrade, members: [...upgrade.members, customerMember(upgrade)] }
-    expect(isSharedWithClient(shared)).toBe(true)
-    expect(isVisibleTo(shared, 'endUser', endUser)).toBe(true)
+    const contact = { ...upgrade.members[0], id: 'emma', email: upgrade.client.email }
+    expect(isSharedWithClient({ ...upgrade, members: [...upgrade.members, contact] })).toBe(true)
   })
 })
 

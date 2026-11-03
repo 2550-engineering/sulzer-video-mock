@@ -26,17 +26,6 @@ export const hero = {
     'Find products, size solutions, order spare parts and follow your installed base – all in one place, around the clock.',
   searchLabel: 'Find a Sulzer product',
   searchButtonLabel: 'Search',
-  /**
-   * Scope options for the hero search. With `resultsTab`, a term opens that tab
-   * of the search results; without one it goes to `to?q=<term>`. An empty
-   * search goes to `to`.
-   */
-  searchScopes: [
-    { label: 'Products', to: '/products', resultsTab: 'products' },
-    { label: 'Applications', to: '/applications', resultsTab: 'applications' },
-    { label: 'Spare parts', to: '/spare-parts' },
-    { label: 'Documentation', to: '/support/documentation', resultsTab: 'documents' },
-  ] satisfies (NavItem & { resultsTab?: 'products' | 'applications' | 'documents' })[],
   popularLabel: 'Popular',
   // Each one finds something; check before changing (a chip that ends on "No results" looks broken).
   popularSearches: [products.ahlstar, 'Submersible pumps', 'Raw water', 'Wastewater'],

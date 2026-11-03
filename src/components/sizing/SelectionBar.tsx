@@ -1,4 +1,4 @@
-import { FolderPlus, Save, X } from 'lucide-react'
+import { FolderPlus, Save, Scale, X } from 'lucide-react'
 import { createPortal } from 'react-dom'
 import { sizingResultsPage } from '../../data/sizingPages'
 
@@ -6,6 +6,9 @@ const copy = sizingResultsPage.selectionBar
 
 type SelectionBarProps = {
   count: number
+  /** Opens the compare page; `canCompare` when 2–3 rows are ticked. */
+  onCompare: () => void
+  canCompare: boolean
   onAddToProject: () => void
   /** "Save as project", or "Update project" when re-sizing a saved sizing. */
   saveLabel: string
@@ -13,9 +16,11 @@ type SelectionBarProps = {
   onClear: () => void
 }
 
-/** Sticky bar at the bottom while result rows are ticked: "<n> selected · Add to project · Save as project". */
+/** Sticky bar at the bottom while result rows are ticked: "<n> selected · Compare (n) · Add to project · Save as project". */
 export function SelectionBar({
   count,
+  onCompare,
+  canCompare,
   onAddToProject,
   saveLabel,
   onSave,
@@ -43,6 +48,20 @@ export function SelectionBar({
           <X className="size-4" />
         </button>
         <div className="ml-auto flex items-center gap-3">
+          <button
+            type="button"
+            onClick={onCompare}
+            aria-disabled={!canCompare || undefined}
+            title={canCompare ? undefined : copy.compareHint}
+            className={`inline-flex h-10 items-center gap-2 rounded-pill border px-5 text-sm font-semibold transition-colors ${
+              canCompare
+                ? 'border-primary text-primary hover:bg-primary-tint'
+                : 'cursor-not-allowed border-border-strong text-text-subtle'
+            }`}
+          >
+            <Scale className="size-4" />
+            {copy.compare(count)}
+          </button>
           <button
             type="button"
             onClick={onAddToProject}

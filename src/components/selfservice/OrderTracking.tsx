@@ -4,7 +4,7 @@ import { orderPage as copy } from '../../data/selfServicePages'
 import { formatDate, formatDateTime } from '../../lib/format'
 import { orderStepTimes, orderSteps } from '../../lib/selfService'
 import { useToast } from '../../toast/useToast'
-import type { Order } from '../../types'
+import type { SalesOrder } from '../../types'
 import { ProgressSteps } from './ProgressSteps'
 
 const weekday = (iso: string) =>
@@ -14,7 +14,7 @@ const weekday = (iso: string) =>
  * Track & trace: expected (or actual) delivery, carrier and tracking number, the
  * Confirmed → Packed → Shipped → Delivered steps, and every shipment event, newest first.
  */
-export function OrderTracking({ order }: { order: Order }) {
+export function OrderTracking({ order }: { order: SalesOrder }) {
   const showToast = useToast()
   const times = orderStepTimes(order)
   const delivered = order.status === 'Delivered'

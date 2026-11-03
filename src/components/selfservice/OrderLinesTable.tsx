@@ -2,7 +2,7 @@ import { Link } from 'react-router'
 import { assetById } from '../../data/assets'
 import { orderPage } from '../../data/selfServicePages'
 import { formatMoney, netPrice, orderTotals } from '../../lib/selfService'
-import type { Order } from '../../types'
+import type { SalesOrder } from '../../types'
 
 const copy = orderPage.lines
 
@@ -10,7 +10,7 @@ const head = 'border-b border-border bg-surface-sunken px-4 py-3 text-left font-
 const cell = 'border-b border-border px-4 py-3.5 align-top'
 
 /** The order's lines with unit and line prices (net of the order discount), then the totals. */
-export function OrderLinesTable({ order }: { order: Order }) {
+export function OrderLinesTable({ order }: { order: SalesOrder }) {
   const totals = orderTotals(order)
   const discounted = order.discount > 0
   return (

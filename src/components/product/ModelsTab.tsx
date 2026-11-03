@@ -3,9 +3,13 @@ import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useAuth } from '../../auth/useAuth'
 import { productPage } from '../../data/catalogPages'
+import { tenderDialog } from '../../data/tenderTexts'
+import { tenderFileName, useTenderDialog } from '../../hooks/useTenderDialog'
 import { useUrlParams } from '../../hooks/useUrlParams'
+import { articleById, articleDutyPoint, articlesOfModel } from '../../lib/articles'
 import { maxCompare } from '../../lib/personal'
 import { discountFor } from '../../lib/pricing'
+import { modelSubject } from '../../lib/tenderSubjects'
 import {
   filterModels,
   modelFilterOptions,
@@ -15,8 +19,9 @@ import {
   type ModelSortKey,
 } from '../../lib/modelSpecs'
 import { usePersonal } from '../../personal/usePersonal'
-import { useToast } from '../../toast/useToast'
+import type { ProductEntry } from '../../projects/ProjectsContext'
 import type { ProductModel } from '../../types'
+import { AddToProjectDialog } from '../projects/AddToProjectDialog'
 import { TabHeading } from '../TabHeading'
 import { CompareBar } from './CompareBar'
 import { ComparePanel } from './ComparePanel'
@@ -35,11 +40,26 @@ const copy = productPage.models
 export function ModelsTab({ models }: { models: ProductModel[] }) {
   const { user, signIn } = useAuth()
   const discount = user ? discountFor(user) : 0
-  const showToast = useToast()
+  const { openTender, tenderDialog: tenderDialogElement } = useTenderDialog()
+  function tenderText(model: ProductModel) {
+    const subject = modelSubject(model)
+    if (!subject) return
+    openTender({
+      label: model.name,
+      documentTitle: tenderDialog.documentTitle(model.name),
+      subjects: [subject],
+      fileName: tenderFileName(model.name),
+    })
+  }
   const [params, update] = useUrlParams()
   const [sort, setSort] = useState<ModelSort | null>(null)
   const { compareIds, toggleCompare, clearCompare, compareOpen, setCompareOpen, preferences } =
     usePersonal()
+  const [projectDialog, setProjectDialog] = useState<{
+    entries: ProductEntry[]
+    open: boolean
+    session: number
+  }>({ entries: [], open: false, session: 0 })
 
   const frequencies = modelFilterOptions(models, 50).frequencies
   const requestedHz = Number(params.get('hz'))
@@ -89,12 +109,15 @@ export function ModelsTab({ models }: { models: ProductModel[] }) {
     )
   }
 
+  /** The model itself (AHLSTAR), or its first variant where the product is sold as variants. */
   function addToProject(model: ProductModel) {
-    showToast({
-      message: copy.detail.addedToProject,
-      detail: `${model.name} · ${model.frequency} Hz`,
-      action: { label: copy.detail.viewProjects, to: '/my-projects' },
-    })
+    const article = articleById(model.id) ?? articlesOfModel(model.id)[0]
+    if (!article) return
+    setProjectDialog((d) => ({
+      entries: [{ variantId: article.id, dutyPoint: articleDutyPoint(article) }],
+      open: true,
+      session: d.session + 1,
+    }))
   }
 
   return (
@@ -134,6 +157,7 @@ export function ModelsTab({ models }: { models: ProductModel[] }) {
                 canCompare={compared.length < maxCompare}
                 onAddToProject={() => addToProject(model)}
                 onToggleCompare={() => toggleCompare(model.id)}
+                onTenderText={() => tenderText(model)}
               />
             )}
           />
@@ -176,6 +200,13 @@ export function ModelsTab({ models }: { models: ProductModel[] }) {
         </>,
         document.body,
       )}
+      {tenderDialogElement}
+      <AddToProjectDialog
+        key={`project-${projectDialog.session}`}
+        open={projectDialog.open}
+        entries={projectDialog.entries}
+        onClose={() => setProjectDialog((d) => ({ ...d, open: false }))}
+      />
     </>
   )
 }

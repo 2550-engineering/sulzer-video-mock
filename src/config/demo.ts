@@ -5,11 +5,13 @@
  * (persona, customer company, market and product names).
  */
 
-import type { ModelAvailability, User } from '../types'
+import type { PersonaId, User } from '../types'
+
+export type { PersonaId }
 
 /**
  * Who can sign in. "Sign in" logs in `defaultPersona`; the Shift+D panel offers each
- * one. To add a persona (service provider, consultant …), add an entry here.
+ * one. To add a persona, add its id to `PersonaId` in types.ts and an entry here.
  */
 export const personas = {
   endUser: {
@@ -38,9 +40,22 @@ export const personas = {
     email: 'lars.ek@aquapumpteknik.example',
     partner: { type: 'Authorised Sulzer distributor', region: 'Region Mälardalen' },
   },
-} as const satisfies Record<string, User>
-
-export type PersonaId = keyof typeof personas
+  /**
+   * The consultant persona (deck slide "Consultant"): sizes pumps early in
+   * projects, writes tenders and works with the project team.
+   * PLACEHOLDER — fictional person and company; confirm with Sulzer.
+   */
+  consultant: {
+    kind: 'consultant',
+    label: 'Consultant',
+    firstName: 'Anna',
+    name: 'Anna Berg',
+    initials: 'AB',
+    company: 'Nordic Water Consulting AB',
+    role: 'Senior Consulting Engineer',
+    email: 'anna.berg@nordicwater.example',
+  },
+} as const satisfies Record<PersonaId, User>
 
 export const defaultPersona: PersonaId = 'endUser'
 
@@ -48,27 +63,17 @@ export const defaultPersona: PersonaId = 'endUser'
 export const demoUser = personas.endUser
 
 /**
- * Spare part lead times, for every persona (the Models tab keeps its own model lead
- * times). `dispatchDays` are working days until the part ships, for the expected
- * delivery date at checkout. PLACEHOLDERS — confirm with Sulzer.
- */
-export const sparePartLeadTimes = {
-  'In stock': { label: 'In stock', detail: 'ships in 2 days', dispatchDays: 2 },
-  'Fast delivery': { label: 'Fast delivery', detail: '1 week', dispatchDays: 5 },
-  'Made to order': { label: 'Made to order', detail: '3 weeks', dispatchDays: 15 },
-} as const satisfies Record<
-  ModelAvailability,
-  { label: string; detail: string; dispatchDays: number }
->
-
-/**
- * Partner net prices, on spare parts and partner prices only. Spare part lead times
- * are the same for everyone (`sparePartLeadTimes`). PLACEHOLDERS — confirm with Sulzer.
+ * Partner net prices: the channel partner pays list price less this discount on
+ * models, sizing results, project items, spare parts, kits and the cart (lib/pricing.ts).
+ * Lead times are the same for everyone. PLACEHOLDERS — confirm with Sulzer.
  */
 export const partnerPricing = {
   /** % off list price. */
   discount: 32,
 } as const
+
+/** The consultant (Fredrik's persona, slide 10). */
+export const consultantUser = personas.consultant
 
 export const market = {
   // Placeholder market — confirm with Sulzer.
@@ -136,7 +141,7 @@ export const sizingDemo = {
 } as const
 
 /**
- * Replacement finder (/products/replacement): how the existing pump's energy use is
+ * Replacement of an installed pump (/products/replacement/existing-pump): how the existing pump's energy use is
  * estimated. Running hours and energy price come from `sizingDemo`.
  * PLACEHOLDERS — confirm with Sulzer; typical values, not Sulzer figures.
  */
@@ -171,6 +176,74 @@ export const conditionLimits = {
   motorTemperature: { warning: 105, alarm: 115 },
 } as const
 
+/**
+ * Service Provider Workshop persona.
+ * PLACEHOLDERS — confirm with Sulzer: the demo pump and the customer's account terms.
+ */
+export const serviceProviderDemo = {
+  /** The configured XFP the presenter finds, opens and orders parts for. */
+  variantId: '24150231',
+  /** The AHLSTAR model the Spare parts tab opens on, and whose part numbers search finds first. */
+  ahlstarModelId: 'ahlstar-100-80-250',
+} as const
+
+/** Reference shown after "Request quotation" is sent. Fixed, so every recording shows the same one. */
+export const quotationReference = 'Q-10242'
+
+/**
+ * "Where to buy" on configured products. FICTIONAL — not a real Sulzer site.
+ * The phone number is in the range Sweden reserves for fiction (070-174 06 xx).
+ */
+export const serviceCentre = {
+  name: 'Sulzer Service Centre Mälardalen',
+  address: ['Verkstadsgatan 8', '721 30 Västerås', 'Sweden'],
+  phone: '+46 70 174 06 42',
+  email: 'service.malardalen@sulzer.example',
+  hours: 'Mon–Fri 07:00–16:00',
+  distance: '14 km',
+  services: ['Spare parts from stock', 'Workshop repairs and overhauls', 'Field service'],
+} as const
+
+/**
+ * eShop settings for the Service Provider Workshop.
+ * PLACEHOLDERS — confirm with Sulzer: freight, VAT, delivery addresses and numbering.
+ */
+export const eshop = {
+  /** "Today" for delivery dates, fixed so every recording shows the same dates. */
+  today: '2026-11-03',
+  /** Working days from dispatch to the customer's door. */
+  transitDays: 2,
+  /** % on top of the excl. VAT total (Sweden). */
+  vatRate: 25,
+  freight: { standard: 45, freeFrom: 2500 },
+  paymentTerms: 'Invoice on account, 30 days net',
+  /** The first order is SO-104390, the next SO-104391 … */
+  firstOrderNumber: 104390,
+  /** The first saved quotation is Q-10243 (Q-10242 is the variant page's quotation request). */
+  firstQuotationNumber: 10243,
+  /** Fictional addresses of the demo company. */
+  deliveryAddresses: [
+    {
+      id: 'workshop',
+      name: 'Central workshop',
+      lines: ['Nordvatten Utilities AB', 'Verkstadsvägen 12', '652 21 Karlstad', 'Sweden'],
+    },
+    {
+      id: 'riverside',
+      name: 'Riverside intake pumping station',
+      lines: ['Nordvatten Utilities AB', 'Älvkanten 3', '653 40 Karlstad', 'Sweden'],
+    },
+  ],
+} as const
+
+export const customerAccount = {
+  // Placeholder account terms for the demo company.
+  customerNumber: '104572',
+  discountGroup: 'SP',
+  /** % off list price on spare parts and service kits. */
+  partsDiscount: 18,
+} as const
+
 /** Reference shown after "Request service" is sent. Fixed, so every recording shows the same one. */
 export const serviceRequestReference = 'SR-2026-0142'
 
@@ -179,3 +252,6 @@ export const serviceRequestReference = 'SR-2026-0142'
  * Set to false before recording.
  */
 export const showPlaceholderLabels = true
+
+/** Base of the project share link in the Share dialog. Placeholder — confirm the mySulzer URL with Sulzer. */
+export const shareLinkBase = 'https://my.sulzer.com/projects/'

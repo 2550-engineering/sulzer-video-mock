@@ -2,7 +2,7 @@ import { demoClock } from '../config/demo'
 import { assets, customers } from '../data/assets'
 import { partnerAccounts, projectQuotation } from '../data/partner'
 import { partnerContact, partnerTerms, projectItemLines } from '../data/quotations'
-import type { Customer, Project, Quotation, ServiceRequest } from '../types'
+import type { Customer, Project, SalesQuotation, ServiceRequest } from '../types'
 import { summarizeAssets } from './assetSummary'
 import { isOpenRequest } from './selfService'
 
@@ -40,7 +40,7 @@ function addDays(iso: string, days: number) {
 }
 
 /** The next free partner quotation number, e.g. "AQ-26-0419". */
-export function nextPartnerQuotationId(all: Quotation[]) {
+export function nextPartnerQuotationId(all: SalesQuotation[]) {
   const numbers = all
     .filter((q) => q.issuer === 'partner')
     .map((q) => Number(q.id.split('-').at(-1)))
@@ -52,7 +52,10 @@ export function nextPartnerQuotationId(all: Quotation[]) {
  * The partner's quotation for a project's products, to its client account, as a Draft.
  * Creating it again replaces the project's draft, so the number stays the same.
  */
-export function quotationFromProject(project: Project, all: Quotation[]): Quotation | null {
+export function quotationFromProject(
+  project: Project,
+  all: SalesQuotation[],
+): SalesQuotation | null {
   const account = project.clientAccount ? partnerAccounts[project.clientAccount] : undefined
   const lines = projectItemLines(project.items)
   if (!account || lines.length === 0) return null
@@ -81,7 +84,7 @@ export function quotationFromProject(project: Project, all: Quotation[]): Quotat
 }
 
 /** A draft, sent to the customer's contact. */
-export function sentQuotation(quotation: Quotation): Quotation {
+export function sentQuotation(quotation: SalesQuotation): SalesQuotation {
   const contact = customers.find((c) => c.id === quotation.customerId)?.contact.name ?? ''
   return {
     ...quotation,

@@ -1,20 +1,29 @@
 import { createContext } from 'react'
-import type { CartLine } from '../types'
+import type { CartItem, Order, Quotation } from '../types'
+
+/** What "Add to cart" passes: the line without its id and quantity. */
+export type CartArticle = Omit<CartItem, 'id' | 'quantity'>
 
 export type CartState = {
-  /** Oldest first. The same part for two assets is two lines. */
-  lines: CartLine[]
-  /** Total quantity, for the header badge. */
+  items: CartItem[]
+  /** Pieces in the cart, for the header badge. */
   count: number
-  /** Adds to the line for this part and asset, or adds a line. */
-  add: (partId: string, quantity: number, assetId?: string) => void
-  /** 0 removes the line. */
-  setQuantity: (line: CartLine, quantity: number) => void
-  remove: (line: CartLine) => void
-  clear: () => void
-  /** The cart drawer, opened from the header. */
-  drawerOpen: boolean
-  setDrawerOpen: (open: boolean) => void
+  /** "Your reference / PO number". */
+  reference: string
+  setReference: (reference: string) => void
+  /** Signed in: adds and confirms with a toast. Signed out: asks to sign in first. */
+  add: (article: CartArticle, quantity: number) => void
+  /** Adds several lines at once, confirmed with one toast (signed in only). */
+  addAll: (lines: { article: CartArticle; quantity: number }[], detail?: string) => void
+  setQuantity: (id: string, quantity: number) => void
+  remove: (id: string) => void
+  orders: Order[]
+  /** Turns the cart into an order, empties it and returns the order id. */
+  placeOrder: (
+    details: Pick<Order, 'deliveryAddressId' | 'delivery' | 'deliveryAddress' | 'customer'>,
+  ) => string
+  /** Saves the cart as a quotation request (the cart stays) and returns it. */
+  saveQuotation: () => Quotation
 }
 
 export const CartContext = createContext<CartState | null>(null)

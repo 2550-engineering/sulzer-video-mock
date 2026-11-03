@@ -1,112 +1,205 @@
-import { Lock } from 'lucide-react'
-import { bom as copy } from '../../data/eshop'
-import type { Price } from '../../lib/pricing'
-import { atPosition } from '../../lib/spareParts'
-import type { SparePart } from '../../types'
-import { BomRow } from './BomRow'
+import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
+import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
+import { useAuth } from '../../auth/useAuth'
+import { priceCopy } from '../../data/pricing'
+import { sparePartsTab } from '../../data/sparePartsPage'
+import { kitsOf, sortBom, type BomSort, type BomSortKey } from '../../lib/bom'
+import { formatPartPrice } from '../../lib/modelSpecs'
+import { priceFor } from '../../lib/pricing'
+import type { ServiceKit, SparePart } from '../../types'
+import { StockIndicator } from '../variant/StockIndicator'
+import { PartPrice } from './PartPrice'
+
+const copy = sparePartsTab.bom
 
 type BomTableProps = {
   parts: SparePart[]
-  priceOf: (part: SparePart) => Price | null
-  signedIn: boolean
-  onSignIn: () => void
-  active: number | null
-  hovered: number | null
-  onHover: (position: number | null) => void
-  onSelect: (position: number) => void
-  onAdd: (part: SparePart, quantity: number) => void
-  /** Group headings between the rows, when the list shows every group. */
-  grouped: boolean
+  kits: ServiceKit[]
+  selectedPartId: string | null
+  selectedKitId: string | null
+  /** Filters the rows by name, position or part number. */
+  query: string
+  onSelectPart: (partId: string) => void
+  /** Bumped when the selection came from elsewhere (the drawing): scroll to its row. */
+  reveal: number
 }
 
-const head = 'border-b border-border bg-surface-sunken px-4 py-3.5 font-semibold'
+const head =
+  'sticky top-0 z-10 border-b border-border bg-surface-sunken px-3 py-2.5 text-left font-semibold whitespace-nowrap'
+const cell = 'border-b border-border px-3 py-2 align-top'
 
 /**
- * The parts list: position, part, lead time and (signed in) price, quantity and Add to
- * cart. Rows at the selected or hovered drawing position light up.
+ * Bill of material: every position with part number, quantity, material,
+ * service sets and (signed in) price and lead time. Sortable by column; a
+ * row selects the part, like the tree.
  */
 export function BomTable({
   parts,
-  priceOf,
-  signedIn,
-  onSignIn,
-  active,
-  hovered,
-  onHover,
-  onSelect,
-  onAdd,
-  grouped,
+  kits,
+  selectedPartId,
+  selectedKitId,
+  query,
+  onSelectPart,
+  reveal,
 }: BomTableProps) {
-  const columns = signedIn ? 5 : 4
-  // Partners see their net price, with list price and discount under it.
-  const discounted = parts.some((part) => (priceOf(part)?.discount ?? 0) > 0)
+  const { user } = useAuth()
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [sort, setSort] = useState<BomSort>({ key: 'position', direction: 'asc' })
 
+  const q = query.trim().toLowerCase()
+  const shown = sortBom(
+    parts.filter(
+      (part) =>
+        !q ||
+        part.name.toLowerCase().includes(q) ||
+        part.position.includes(q) ||
+        part.partNumber.includes(q),
+    ),
+    sort,
+  )
+  const kit = kits.find((k) => k.id === selectedKitId)
+
+  useEffect(() => {
+    if (reveal === 0) return
+    const container = scrollRef.current
+    const row = container?.querySelector<HTMLElement>('[data-anchor]')
+    if (!container || !row) return
+    const box = container.getBoundingClientRect()
+    const r = row.getBoundingClientRect()
+    // Under the sticky header row counts as hidden.
+    if (r.top >= box.top + 44 && r.bottom <= box.bottom - 8) return
+    container.scrollTo({
+      top: container.scrollTop + r.top - box.top - box.height / 3,
+      behavior: 'smooth',
+    })
+  }, [reveal])
+
+  function sortButton(key: BomSortKey, label: string, align: 'left' | 'right' = 'left') {
+    const active = sort.key === key
+    const Icon = !active ? ArrowUpDown : sort.direction === 'asc' ? ArrowUp : ArrowDown
+    return (
+      <th
+        scope="col"
+        aria-sort={active ? (sort.direction === 'asc' ? 'ascending' : 'descending') : 'none'}
+        className={`${head} ${align === 'right' ? 'text-right' : ''}`}
+      >
+        <button
+          type="button"
+          onClick={() =>
+            setSort({
+              key,
+              direction: active && sort.direction === 'asc' ? 'desc' : 'asc',
+            })
+          }
+          aria-label={copy.sortBy(label)}
+          className={`inline-flex items-center gap-1 transition-colors hover:text-primary ${active ? 'text-primary' : ''}`}
+        >
+          {label}
+          <Icon className={`size-3.5 ${active ? '' : 'text-text-subtle'}`} />
+        </button>
+      </th>
+    )
+  }
+
+  function handleKey(event: KeyboardEvent<HTMLTableRowElement>, partId: string) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      onSelectPart(partId)
+    }
+  }
+
+  const c = copy.columns
   return (
-    <div className="overflow-hidden rounded-lg border border-border bg-white">
-      <table className="w-full border-collapse text-left text-[15px]">
-        <thead className="text-sm text-navy-900">
+    <div ref={scrollRef} className="min-h-0 flex-1 overflow-auto overscroll-contain">
+      <p className="px-5 pt-3 pb-2 text-xs text-text-muted" aria-live="polite">
+        {copy.count(shown.length, parts.length)}
+      </p>
+      <table className="w-full min-w-[40rem] border-separate border-spacing-0 text-[13px]">
+        <thead className="text-navy-900">
           <tr>
+            {sortButton('position', c.position)}
+            {sortButton('name', c.name)}
+            {sortButton('partNumber', c.partNumber)}
+            {sortButton('quantity', c.quantity, 'right')}
+            {sortButton('material', c.material)}
             <th scope="col" className={head}>
-              {copy.columns.position}
+              {c.kits}
             </th>
-            <th scope="col" className={head}>
-              {copy.columns.part}
-            </th>
-            <th scope="col" className={head}>
-              {copy.columns.leadTime}
-            </th>
-            {signedIn ? (
-              <>
-                <th scope="col" className={`${head} text-right`}>
-                  {discounted ? copy.columns.netPrice : copy.columns.price}
-                </th>
-                <th scope="col" className={`${head} text-right`}>
-                  <span className="sr-only">{copy.columns.order}</span>
-                </th>
-              </>
-            ) : (
-              <th scope="col" className={`${head} text-right`}>
-                <button
-                  type="button"
-                  onClick={onSignIn}
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold whitespace-nowrap text-primary underline-offset-4 hover:underline"
-                >
-                  <Lock className="size-3.5" />
-                  {copy.signInForPrices}
-                </button>
-              </th>
-            )}
+            {user &&
+              sortButton(
+                'price',
+                priceFor(1, user)!.discount > 0 ? priceCopy.netPrice : c.price,
+                'right',
+              )}
+            {user && sortButton('leadTime', c.leadTime)}
           </tr>
         </thead>
-        {parts.map((part, i) => {
-          const heading = grouped && part.group !== parts[i - 1]?.group
-          return [
-            heading && (
-              <tbody key={`group-${part.group}`}>
-                <tr>
-                  <th
-                    scope="colgroup"
-                    colSpan={columns}
-                    className="border-t border-border bg-surface-muted px-4 pt-4 pb-2 text-left text-xs font-bold tracking-[0.1em] text-text-muted uppercase"
+        <tbody>
+          {shown.map((part) => {
+            const selected = part.id === selectedPartId
+            const inKit = kit?.items.some((item) => item.partId === part.id)
+            return (
+              <tr
+                key={part.id}
+                data-anchor={selected || undefined}
+                tabIndex={0}
+                aria-selected={selected}
+                onClick={() => onSelectPart(part.id)}
+                onKeyDown={(event) => handleKey(event, part.id)}
+                className={`cursor-pointer transition-colors duration-150 outline-none focus-visible:bg-primary-tint ${
+                  selected
+                    ? 'bg-primary-tint shadow-[inset_3px_0_0_var(--sz-color-primary)]'
+                    : inKit
+                      ? 'bg-primary-tint/50'
+                      : 'hover:bg-surface-subtle'
+                }`}
+              >
+                <td
+                  className={`${cell} font-semibold tabular-nums ${selected ? 'text-primary' : 'text-text-muted'}`}
+                >
+                  {part.position}
+                </td>
+                <td className={`${cell} font-medium text-navy-900`}>{part.name}</td>
+                <td className={`${cell} whitespace-nowrap tabular-nums`}>{part.partNumber}</td>
+                <td className={`${cell} text-right tabular-nums`}>{part.quantity}</td>
+                <td className={`${cell} text-text-muted`}>{part.material}</td>
+                <td className={cell}>
+                  <span className="flex flex-wrap gap-1">
+                    {kitsOf(part, kits).map((label) => (
+                      <span
+                        key={label}
+                        className="rounded-pill bg-primary-tint px-2 py-0.5 text-[11px] font-semibold whitespace-nowrap text-primary"
+                      >
+                        {label}
+                      </span>
+                    ))}
+                  </span>
+                </td>
+                {user && (
+                  <td
+                    className={`${cell} text-right font-semibold whitespace-nowrap text-navy-900 tabular-nums`}
                   >
-                    {part.group}
-                  </th>
-                </tr>
-              </tbody>
-            ),
-            <BomRow
-              key={part.id}
-              part={part}
-              price={priceOf(part)}
-              columns={columns}
-              active={active !== null && atPosition(part, active)}
-              highlighted={hovered !== null && part.position === hovered}
-              onHover={onHover}
-              onSelect={onSelect}
-              onAdd={(quantity) => onAdd(part, quantity)}
-            />,
-          ]
-        })}
+                    {priceFor(part.listPrice, user)!.discount > 0 ? (
+                      <PartPrice
+                        price={priceFor(part.listPrice, user)!}
+                        format={formatPartPrice}
+                        compact
+                      />
+                    ) : (
+                      formatPartPrice(part.listPrice)
+                    )}
+                  </td>
+                )}
+                {user && (
+                  <td className={`${cell} whitespace-nowrap`}>
+                    <StockIndicator status={part.availability.status} />
+                    <span className="block text-text-muted">{part.availability.leadTime}</span>
+                  </td>
+                )}
+              </tr>
+            )
+          })}
+        </tbody>
       </table>
     </div>
   )

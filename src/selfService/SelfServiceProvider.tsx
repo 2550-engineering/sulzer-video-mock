@@ -3,13 +3,13 @@ import { orderSeeds } from '../data/orders'
 import { quotations as quotationSeeds } from '../data/quotations'
 import { serviceRequestSeeds } from '../data/serviceRequests'
 import { mergeById, upsert } from '../lib/selfService'
-import type { Order, Quotation, ServiceRequest } from '../types'
+import type { SalesOrder, SalesQuotation, ServiceRequest } from '../types'
 import { SelfServiceContext, type SelfServiceState } from './SelfServiceContext'
 
 // Versioned. Shared by every persona: a request Emma sends shows up for her partner too.
 const storageKey = 'sz-demo-self-service-v1'
 
-type Added = { requests: ServiceRequest[]; orders: Order[]; quotations: Quotation[] }
+type Added = { requests: ServiceRequest[]; orders: SalesOrder[]; quotations: SalesQuotation[] }
 
 const empty: Added = { requests: [], orders: [], quotations: [] }
 
@@ -21,8 +21,8 @@ function readAdded(): Added {
     const stored = JSON.parse(localStorage.getItem(storageKey) ?? 'null')
     return {
       requests: hasIds(stored?.requests) ? (stored.requests as ServiceRequest[]) : [],
-      orders: hasIds(stored?.orders) ? (stored.orders as Order[]) : [],
-      quotations: hasIds(stored?.quotations) ? (stored.quotations as Quotation[]) : [],
+      orders: hasIds(stored?.orders) ? (stored.orders as SalesOrder[]) : [],
+      quotations: hasIds(stored?.quotations) ? (stored.quotations as SalesQuotation[]) : [],
     }
   } catch {
     return empty

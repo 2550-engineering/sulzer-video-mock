@@ -88,14 +88,15 @@ results page.
    - Popular searches are now AHLSTAR, Submersible pumps, Vertical turbine, Condition
      monitoring and Raw water (header and "No results"), and AHLSTAR, Submersible pumps, Raw water
      and Wastewater (home hero). Each finds something.
-   - The home hero scopes Products, Applications and Documentation open the matching tab of the
-     search results. "Spare parts" still goes to its "Coming soon" page.
+   - The home hero and header search have the scopes Products, Part numbers and Documents.
+     Applications are no longer a scope; they appear on the "Pages" results tab. Result tabs
+     are All, Products, Documentation, Support & learn and Pages.
 6. **Links that end on placeholder pages.** Not on the recording path, but clickable:
    - "Size product", "Size range" and "Size this model" go to `/sizing` ("Coming soon", naming
      the product or model).
    - The toast after "Add to project" links to My projects, where the model does not appear.
    - Service "Learn more" links go to `/support`, `/support/service-portal` or `/connect`.
-   - The Spare parts tab shows "Coming soon".
+   - The Spare parts tab shows the interactive parts list for AHLSTAR and XFP; other products show "Coming soon".
 
 ## Before recording Video A: My assets (steps 1–4)
 
@@ -295,7 +296,7 @@ or per range.
 - **Service request:** the band promises that "a Sulzer service coordinator confirms the visit
   within one working day". Placeholder, confirm with Sulzer. The reference number after sending
   is always `SR-2026-0142` (`serviceRequestReference` in `src/config/demo.ts`); nothing is sent.
-- **Spare parts tab** shows "Coming soon" until the spare parts module.
+- **Spare parts tab** shows the AHLSTAR parts list and exploded drawing (see "AHLSTAR spare parts").
 
 ## Sizing (module 3)
 
@@ -413,12 +414,152 @@ shows numbers from sizing.
 
 Head in bar or kPa is converted with the liquid's density.
 
+## Consultant persona
+
+Invented for the demo. **Placeholder, confirm with Sulzer.** All people, companies and
+addresses are fictional; emails use `.example` domains.
+
+- **Persona** (`consultantUser` in `src/config/demo.ts`): Anna Berg, Senior Consulting
+  Engineer, Nordic Water Consulting AB, `anna.berg@nordicwater.example`, market Sweden.
+  - The end user (Emma Lindqvist, Nordvatten Utilities AB) is unchanged and stays the default.
+  - **Presenter panel (Shift+D):** "Sign in as end user", "Sign in as consultant", "Reset
+    demo". The header's "Sign in" signs in the end user.
+- **Project statuses (all projects):** Concept design, Detailed design, Tender, Ordered,
+  Archived. Ordered and Archived projects count as no longer active.
+  - The end user's Draft projects became Concept design; the Quoted one became Tender.
+- **Projects per persona:** each persona has its own projects, saved separately in the browser
+  (`sz-demo-projects-v4-<persona>`).
+- **Consultant's projects** (`src/data/projects.ts`):
+  - **Riverside raw water intake upgrade:** P-2026-0412, project ID 397140, Concept design,
+    deadline 20 Jan 2027, budget EUR 420,000 (INVENTED).
+    - Client: Älvstad Vatten AB (fictional municipal water utility), contact Maria Lund,
+      `maria.lund@alvstadvatten.example`, Hamngatan 4, 652 24 Älvstad (fictional address).
+    - Consultant firm: Nordic Water Consulting AB.
+    - Description and key requirements (INVENTED):
+      - 2 × 220 m³/h at 38 m, duty/assist, river water 2–20 °C.
+      - Backwash at 150 m³/h at 55 m.
+      - NPSH margin of at least 1.0 m.
+      - IE3 motors suitable for VSD.
+      - EN 1092-1 PN 16 flanges.
+      - ISO 9906 grade 2B acceptance test.
+    - Members:
+      - Anna Berg (owner).
+      - Erik Sandberg (Electrical Engineer, Nordic Water Consulting, `erik.sandberg@nordicwater.example`).
+      - Mikael Ahonen (Application engineer, Sulzer, `mikael.ahonen@sulzer.example`).
+      - Maria Lund (client, Viewer).
+    - Products:
+      - RW-P1/P2: alternatives A and B, the best and second-best sizing results for 2 pumps at 220 m³/h @ 38 m. A is chosen, "For review".
+      - FW-P1 (150 m³/h @ 55 m), now position 30.
+    - Comments:
+      - Mikael: "both duty points checked against the lowest river level, 1.5 m extra suction
+        lift".
+      - Erik: "@Anna, variable speed drives for both intake pumps?".
+      - Anna's reply: "Yes, let's go for drives. I'll add them to the tender text".
+    - Activity from 2 Oct 2026 to "Today, 08:42".
+    - Uploads: "P&ID rev B.pdf" (2.4 MB) and "Site layout.dwg" (5.8 MB).
+  - **Mill Creek pump station renewal:** P-2026-0377, project ID 396902, Tender, Älvstad
+    Vatten AB, Anna and Erik, 2 pumps at 500 m³/h @ 25 m, "Hydraulic report rev A.pdf"
+    (1.7 MB).
+  - **Kustby booster station study:** P-2026-0109, project ID 392215, Archived. Client: Kustby
+    Vatten AB, contact Johanna Ek (`johanna.ek@kustbyvatten.example`). 3 pumps at 150 m³/h @
+    55 m.
+- **Uploads** are names and sizes only; there are no files behind them.
+
+### Project collaboration (My projects)
+
+- **Product statuses (INVENTED):** Proposed, For review, Approved, Quoted, Ordered. Older items
+  show "Proposed".
+- **Alternatives:**
+  - Products saved together from the compare page form one group.
+  - "Choose this alternative" marks one as selected. The others stay in the list, greyed, and
+    are left out of the total, the project tender texts and the project package. The project
+    report shows all of them.
+- **Roles:**
+  - Owner, Editor, Viewer. Only the owner can change roles; the owner's role is fixed.
+  - Invites take the name from the email ("johan.berg@…" → Johan Berg) and show "Invited".
+  - Role descriptions in the invite dialog are INVENTED.
+- **Share:**
+  - The link is `https://my.sulzer.com/projects/<project ID>` (`shareLinkBase` in
+    `src/config/demo.ts`). PLACEHOLDER: confirm the mySulzer URL.
+  - Nothing is sent; settings are saved with the project.
+- **Activity sentences:**
+  - Written in `myProjectsPage.activity` with the actor's first name, e.g. "Anna added AHLSTAR
+    … and 2 more to …".
+  - New entries read "Just now", and "Today" after a reload.
+- **Project report:** "Prepared by <consultant firm>". The footer note "Performance data are
+  calculated for the duty point shown and are subject to confirmation by Sulzer" is INVENTED.
+  "Print or save as PDF" adds "Project report – <name>.pdf" (2.1 MB) to the documents.
+- **New project:** starts in Concept design, owned by the signed-in user. For the consultant, the
+  consultant firm is preset.
+- **My Pages:**
+  - The "My projects" badge counts the persona's active projects.
+  - Recent activity links the persona's own project; the consultant gets "Riverside raw water
+    intake upgrade, updated by Erik Sandberg, Today 08:42".
+- **Catalogue products in projects:** "Add to project" on a configured product or a Models-tab
+  model adds it at its rated point (water, 20 °C).
+
+### Tender texts (`src/data/tenderTexts.ts`, `src/lib/tenderText.ts`)
+
+All wording is our own specification style, not Sulzer text. **Confirm or replace with a Sulzer
+template.**
+
+- **Sections (Full):** General description, Application and duty point, Hydraulic data,
+  Design, Materials, Shaft seal, Motor, Connections, Accessories, Testing and standards,
+  Documentation, Manufacturer.
+  - **Short:** general, duty, hydraulic, materials, motor, manufacturer.
+  - **Manufacturer line:** "Manufacturer: Sulzer, type <model> (product no. …), or equal."
+- **Invented clauses (marked INVENTED in the data file):**
+  - Operating point between 70 % and 120 % of best-efficiency flow.
+  - **Design, end-suction:** integral feet, back pull-out, dimensions to ISO 2858 / EN 22858,
+    bearings ≥ 25 000 h L10.
+  - **Design, submersible:** S1 duty submerged, guide rails and auto-coupling, cooling jacket.
+  - **Seal wording per seal type:** SiC/carbon, EPDM, EN 12756; double seal with barrier fluid;
+    for XFP, two seals in an oil chamber with moisture sensor.
+  - **Motor:** insulation class F with class B rise, PTC thermistors, ATEX "II 2G Ex db IIB T4
+    Gb" for Ex variants.
+  - **Defaults:** IE3 class and IP55 for AHLSTAR models; IP55 with the cooling method for sized
+    pumps.
+  - **Flanges:** EN 1092-2, PN 16.
+  - **Accessories:** base plate, spacer coupling, guard to EN ISO 14120, foundation bolts; for
+    XFP: auto-coupling, lifting chain, cable.
+  - **Testing:** ISO 9906 grade 2B with certificate, hydrostatic test at 1.5 × the maximum
+    working pressure, EN 10204 3.1 certificates on request, CE and the Machinery Directive.
+  - **Documentation list.**
+  - **Shaft:** 1.4021. **Wear parts:** bronze CuSn10 / duplex; XFP: 1.4460.
+- **Languages:** only English is written. Swedish and German are shown as "coming soon".
+- **Files:**
+  - **.docx:** a real Word file built in the browser (Arial, A4).
+  - **"Download PDF":** opens the browser's print dialog with only the tender text.
+  - **Copy:** puts plain text on the clipboard.
+- **In a project:** "Tender texts" makes one document with every product, numbered by
+  position ("Pos. 10 – <tag> – <model>", sections 1.1, 1.2 …), with the quantity in the
+  general description.
+
+### Consultant: sizing entry and compare
+
+- **Mega menu (Products & services):** Categories, Applications, Products A–Z, Sizing,
+  Industries, Product replacement, Liquids, Spare parts, Digital solutions.
+  - "Industries" (Municipal water, Wastewater, Industrial water, Energy, Fertilizers, Mining
+    and metals, Pulp and paper) opens the matching application areas. Its own page and
+    "Liquids" are "Coming soon" pages.
+  - Card text: "Find the right pump solution for your installation requirements. Size,
+    select and compare pumps and pump systems." Confirm the wording.
+- **Compare (`/sizing/compare`):** pump unit weight is an estimate, 1.15 × (0.0045 ×
+  impeller^1.9 + 8 × motor kW^0.85), rounded to 5 kg. Illustrative, not Sulzer data.
+  - List price is the pump unit's purchase price used in sizing. Lead time is the
+    variant's.
+  - The best value is the lowest, except efficiency (highest). Speed, impeller and materials
+    have no best.
+- **"Save comparison to project":** saves every compared pump in a project as "Alternative
+  A/B/C"; the selected one is also marked "Selected".
+
 ## My Projects (module 3)
 
 Invented for the demo. **Placeholder, confirm with Sulzer.**
 
-- **Projects** (`src/data/projects.ts`): Riverside intake (P-2026-0318, Draft), North pump
-  station upgrade (P-2026-0291, Quoted) and Harbour district booster station (P-2026-0274, Draft).
+- **Projects** (`src/data/projects.ts`, end user): Riverside intake (P-2026-0318, Concept
+  design), North pump station upgrade (P-2026-0291, Tender) and Harbour district booster station
+  (P-2026-0274, Concept design).
   Their ref numbers, project IDs, dates, deadlines and members (Johan Berg, Sara Nyström, Lars
   Holm, and Mikael Ahonen as the Sulzer application engineer) are fictional. Each product in them
   is the best sizing result for an invented duty point.
@@ -437,6 +578,324 @@ Invented for the demo. **Placeholder, confirm with Sulzer.**
   position 10 came from.
 - **Models tab:** "Add to project" there still shows a toast only. Project items are sized
   variants, and catalogue models aren't one.
+
+## Service Provider Workshop (persona)
+
+Everything below is invented. Placeholder, confirm with Sulzer, or replace with real XFP data.
+
+### Demo settings (`src/config/demo.ts`)
+
+- Demo pump (`serviceProviderDemo.variantId`): 24150231, XFP 150E CB1.6 PE220/4-D01 *10-ST.
+- Customer account (`customerAccount`): customer number 104572, discount group SP, 18 % off list
+  price on spare parts and service kits. Net prices in the parts list are list price × 0.82,
+  rounded to the cent.
+
+### XFP variants (`src/data/xfp.ts`)
+
+- **Category badge:** "Submersible wastewater pump".
+- **Model code pattern:** `XFP <size> CB<hydraulic version> PE<P2 × 10>/<poles>-<supply>
+*<cable length m>-<ST|EX>`. CB = closed two-channel impeller. Supply D01 = 400 V 50 Hz, D02 =
+  690 V 50 Hz, D11 = 460 V 60 Hz. ST = standard, EX = explosion proof. Confirm against Sulzer's
+  real XFP type key.
+- **Shared by every variant:** 3-phase, IP68, pump housing grey cast iron EN-GJL-250, max.
+  ambient temperature 40 °C. Suitable for Wastewater collection and transport, Stormwater and
+  flood control, and Wastewater treatment.
+- **Lead time wording:** "In stock – ships in <n> days", "<from>–<to> weeks". Up to 3 weeks
+  counts as a normal lead time, longer as made to order (`src/lib/availability.ts`).
+
+| Product no. | Code                               | Hz  | P2 kW | rpm  | Voltage | Impeller             | Inlet/outlet DN | Ex  | Cable m | kg  | List price EUR | Availability                            |
+| ----------- | ---------------------------------- | --- | ----- | ---- | ------- | -------------------- | --------------- | --- | ------- | --- | -------------- | --------------------------------------- |
+| 24140111    | XFP 100C CB1.5 PE75/4-D01 \*10-ST  | 50  | 7.5   | 1455 | 400 V   | Ø245, grey cast iron | 100/100         | No  | 10      | 210 | 7 900          | 2–3 weeks                               |
+| 24140112    | XFP 100C CB1.5 PE75/4-D01 \*10-EX  | 50  | 7.5   | 1455 | 400 V   | Ø245, grey cast iron | 100/100         | Yes | 10      | 218 | 9 150          | 4–6 weeks                               |
+| 24140121    | XFP 100C CB1.5 PE90/4-D01 \*20-ST  | 50  | 9     | 1460 | 400 V   | Ø260, grey cast iron | 100/100         | No  | 20      | 228 | 8 650          | 2–3 weeks                               |
+| 24150211    | XFP 150E CB1.6 PE185/4-D01 \*10-ST | 50  | 18.5  | 1470 | 400 V   | Ø315, grey cast iron | 150/150         | No  | 10      | 455 | 14 900         | 6–8 weeks                               |
+| 24150231    | XFP 150E CB1.6 PE220/4-D01 \*10-ST | 50  | 22    | 1470 | 400 V   | Ø330, grey cast iron | 150/150         | No  | 10      | 480 | 16 400         | In stock – ships in 3 days              |
+| 24150232    | XFP 150E CB1.6 PE220/4-D01 \*10-EX | 50  | 22    | 1470 | 400 V   | Ø330, grey cast iron | 150/150         | Yes | 10      | 492 | 18 900         | 6–8 weeks                               |
+| 24150241    | XFP 150E CB1.6 PE300/4-D02 \*20-ST | 50  | 30    | 1475 | 690 V   | Ø345, duplex 1.4470  | 150/150         | No  | 20      | 545 | 19 800         | 8–10 weeks                              |
+| 24150261    | XFP 150E CB1.6 PE250/4-D11 \*10-ST | 60  | 25    | 1770 | 460 V   | Ø300, grey cast iron | 150/150         | No  | 10      | 490 | 17 300         | 8–10 weeks                              |
+| 24130931    | XFP 150E CB1.6 PE200/4-D01 \*10-ST | 50  | 20    | 1465 | 400 V   | Ø325, grey cast iron | 150/150         | No  | 10      | 470 | 15 200 (last)  | Discontinued 2018, replaced by 24150231 |
+
+All impellers are "Closed two-channel". These article numbers sit beside the model numbers in
+`src/data/models/xfp.ts` (24140101, 24150205); confirm both schemes.
+
+### Search (steps 1–2)
+
+- Typing a model code without spaces ("XFP100") or the start of a product number ("2415")
+  suggests configured products, and the Products tab then lists them as variant cards with
+  the filter list (Product range, Discontinued products, Frequency, Phase, IP class, Pump
+  housing material, Pump inlet size, Impeller type, Ex approval). "XFP" on its own still lists
+  the XFP range.
+- A search for exactly one part number in the Part numbers scope goes straight to the part.
+- Part links open `/products/xfp/<variantId>?part=<part id>#spare-parts`.
+
+### Spare parts of the demo pump (`src/data/spareParts/xfp.ts`)
+
+- **Parts list:** 34 positions in 9 groups. Position number ranges: 100s cable entry, 200s
+  motor, 300s bearings, 400s shaft seal, 500s hydraulics, 600s cooling jacket, 700s lifting and
+  fixing, 800s sensors, 900s O-rings and gaskets.
+- **Part numbers:** 8 digits, 615 + group digit + 4 digits.
+- **Drawing:** drawing id `td-xfp150e-01`. Every part has a drawing hotspot id, e.g.
+  `impeller` or `seal-primary`.
+- **Bearing designations** (6310-2Z/C3, 3312-2Z/C3) are generic standard sizes, not checked
+  against a real XFP.
+
+| Pos. | Part                                                       | Part no. | Qty | Material                           | List EUR | Lead time | Service |
+| ---- | ---------------------------------------------------------- | -------- | --- | ---------------------------------- | -------- | --------- | ------- |
+| 101  | Power cable, 10 m, 4G6 + 2×1.5                             | 61510110 | 1   | Copper, chloroprene rubber sheath  | 412.00   | In stock  |         |
+| 110  | Cable gland, M40×1.5                                       | 61511024 | 1   | Brass, nickel-plated               | 86.50    | In stock  |         |
+| 111  | Cable entry grommet                                        | 61511131 | 1   | NBR                                | 24.80    | In stock  | 2 years |
+| 120  | Terminal board, 6-pole, spring terminals                   | 61512046 | 1   | PA66, glass-fibre reinforced       | 148.00   | 2–3 weeks |         |
+| 201  | Stator housing with stator, PE220/4, 400 V                 | 61520117 | 1   | EN-GJL-250, copper winding class H | 4 860.00 | 6–8 weeks |         |
+| 210  | Rotor, PE220/4                                             | 61521009 | 1   | Electrical steel, aluminium cage   | 1 940.00 | 4–6 weeks |         |
+| 220  | Shaft                                                      | 61522013 | 1   | Stainless steel 1.4021             | 690.00   | 2–3 weeks |         |
+| 301  | Upper bearing, 6310-2Z/C3                                  | 61530110 | 1   | Bearing steel                      | 78.40    | In stock  | 5 years |
+| 302  | Lower bearing, 3312-2Z/C3                                  | 61530212 | 1   | Bearing steel                      | 196.00   | In stock  | 5 years |
+| 310  | Bearing housing, lower                                     | 61531005 | 1   | EN-GJL-250                         | 640.00   | 2–3 weeks |         |
+| 311  | Retaining ring, DIN 471, 60×2                              | 61531160 | 1   | Spring steel                       | 6.20     | In stock  | 5 years |
+| 401  | Mechanical seal, primary (liquid side)                     | 61540143 | 1   | SiC/SiC, FKM                       | 685.00   | In stock  | 5 years |
+| 402  | Mechanical seal, secondary (motor side)                    | 61540238 | 1   | Carbon/chrome steel, NBR           | 298.00   | In stock  | 5 years |
+| 410  | Seal housing                                               | 61541007 | 1   | EN-GJL-250                         | 720.00   | 2–3 weeks |         |
+| 420  | Oil chamber plug, G 1/2                                    | 61542012 | 1   | Stainless steel 1.4401             | 14.60    | In stock  |         |
+| 501  | Impeller, closed two-channel, Ø330                         | 61550133 | 1   | EN-GJL-250                         | 1 620.00 | 2–3 weeks |         |
+| 502  | Impeller key, 10×8×40                                      | 61550210 | 1   | Stainless steel 1.4401             | 9.80     | In stock  | 5 years |
+| 510  | Wear ring, suction side                                    | 61551015 | 1   | Stainless steel 1.4460             | 214.00   | In stock  | 2 years |
+| 520  | Volute, DN 150                                             | 61552015 | 1   | EN-GJL-250                         | 2 950.00 | 6–8 weeks |         |
+| 530  | Suction cover, DN 150                                      | 61553015 | 1   | EN-GJL-250                         | 1 160.00 | 4–6 weeks |         |
+| 601  | Cooling jacket                                             | 61560122 | 1   | Stainless steel 1.4301             | 1 380.00 | 4–6 weeks |         |
+| 605  | Vent screw with seal, G 1/4                                | 61560514 | 1   | Stainless steel 1.4401, NBR        | 18.90    | In stock  |         |
+| 701  | Lifting hoop                                               | 61570122 | 1   | Stainless steel 1.4401             | 168.00   | In stock  |         |
+| 710  | Hexagon screw, M16×50, volute                              | 61571050 | 8   | A4-70                              | 4.90     | In stock  |         |
+| 711  | Hexagon screw, M12×40, suction cover                       | 61571140 | 6   | A4-70                              | 2.80     | In stock  |         |
+| 712  | Washer, M16                                                | 61571216 | 8   | A4                                 | 0.90     | In stock  |         |
+| 714  | Impeller screw, M16×45, with wedge-locking washers         | 61571445 | 1   | A4-80                              | 21.50    | In stock  | 2 years |
+| 801  | Moisture sensor, seal chamber                              | 61580136 | 1   | Stainless steel 1.4401, PEEK       | 236.00   | In stock  | 5 years |
+| 802  | Temperature sensors, stator winding, PTC 140 °C (set of 3) | 61580214 | 1   | PTC thermistor, PTFE leads         | 164.00   | 2–3 weeks |         |
+| 901  | O-ring, 290×5, stator housing / seal housing               | 61590129 | 1   | NBR                                | 32.40    | In stock  | 2 years |
+| 902  | O-ring, 240×5, seal housing / volute                       | 61590224 | 1   | NBR                                | 28.60    | In stock  | 2 years |
+| 903  | O-ring, 310×4, cooling jacket                              | 61590331 | 2   | NBR                                | 30.20    | In stock  | 2 years |
+| 904  | Gasket, cable entry cover                                  | 61590412 | 1   | NBR                                | 12.40    | In stock  | 2 years |
+| 905  | Sealing washer, G 1/2, oil chamber plug                    | 61590505 | 1   | Copper                             | 1.80     | In stock  | 2 years |
+
+"In stock" is "In stock – ships in 2 days". "2 years" or "5 years" is when the part is first
+recommended for replacement.
+
+### Service kits
+
+- **"Recommended service parts – 2 years of operation"** (61599002): the 8 parts marked
+  "2 years", in their fitted quantities. List price EUR 395.90.
+- **"Recommended service parts – 5 years of operation"** (61599005): the 2-year parts plus the 7
+  parts marked "5 years", 15 lines. List price EUR 1 905.30.
+- Kit prices are the sum of their parts with no kit discount, and a kit's lead time is that of
+  its slowest part. Confirm whether Sulzer sells these as kits under their own numbers.
+
+### Production versions
+
+- **"Produced after 2018 (production year and week number)":** production code (YYWW) 1801 or
+  later. This is the parts list above.
+- **"Produced before 2018":** production code up to 1752. Five parts differ:
+
+| Pos. | Before 2018                                         | Part no. | Material                     | List EUR | Lead time |
+| ---- | --------------------------------------------------- | -------- | ---------------------------- | -------- | --------- |
+| 110  | Cable gland, M40×1.5, with strain relief clamp      | 61511017 | Brass, nickel-plated         | 92.00    | 2–3 weeks |
+| 120  | Terminal board, 6-pole, screw terminals             | 61512031 | PA6, glass-fibre reinforced  | 132.00   | 4–6 weeks |
+| 401  | Mechanical seal, primary (liquid side)              | 61540128 | SiC/SiC, NBR                 | 640.00   | In stock  |
+| 601  | Cooling jacket                                      | 61560108 | Steel S235, epoxy-coated     | 1 240.00 | 6–8 weeks |
+| 801  | Moisture sensor, seal chamber, conductive electrode | 61580111 | Stainless steel 1.4401, PTFE | 198.00   | 2–3 weeks |
+
+The discontinued variant 24130931 (built until 2017) is a "before 2018" pump.
+
+### Spare parts tab and exploded drawing
+
+- **The exploded drawing is an original illustration made for this mock-up**
+  (`src/data/drawings/xfp150e.ts`, drawing number TD-XFP150E-01). It is not a Sulzer service
+  drawing and is not to scale. `_reference/service_provider` holds no Sulzer drawing, only
+  Grundfos screenshots, so nothing was traced. Confirm it may be shown, or supply a real XFP
+  exploded view; it can then be placed under the same hotspots.
+- **Wording:** "Year and week of production are on the rating plate" is assumed; confirm
+  where XFP pumps show their production code.
+- **Set prices:** the price of a recommended set is the sum of its parts in the chosen
+  production version.
+
+### Product page layout (`/products/xfp/<variant>`, `/products/ahlstar/<model>`)
+
+- **Shared page:** XFP variants and AHLSTAR models use the same page. AHLSTAR models now
+  have their own page; model links, Spare parts links and part search open it.
+- **Opens on Curves.** The icons under the image are Compare and Share (toasts only).
+  Bookmark and Add to project were removed from the page.
+- **Price status wording:** "In stock" (green), "Lead time <n>" (blue) and "To be confirmed in
+  sales order" (orange, for made to order). Then "Discount group: SP"
+  (`customerAccount.discountGroup`).
+- **Recommended spare parts (named kits, invented):**
+  - XFP 150E: Impeller 61550133, and kits for impeller (61599501), lower bearing
+    (61599302), O-ring for motor (61599901), overhaul (61599400) and plug (61599420).
+  - AHLSTAR, per model: impeller, and kits for impeller, bearings, shaft seal, gaskets and
+    O-rings, overhaul and plugs. Numbers are 6299 + size code + 23 / 32 / 43 / 40 / 99 / 90.
+  - Kit prices are the sum of their parts. The kits are listed under "Service kits" in the
+    parts tree.
+- **Curves** (`src/lib/performance.ts`), illustrative:
+  - Motor efficiency is about IE3: 0.84 + 0.05 × log10(kW), at most 0.96.
+  - Total efficiency is pump × motor, and P1 = P2 / motor efficiency.
+  - Liquid density and the liquid's efficiency factor apply. "2 pumps in parallel" doubles
+    the flow at the same head.
+  - Advanced options: speed 50–100 % and impeller trimmed down to 80 %.
+  - "Show duty point" uses the rated point.
+- **Drawings tab** (`src/data/drawingDocuments.ts`): DD-<size>-01 dimensional drawing, the
+  exploded view (TD-XFP150E-01 or GA-AHLSTAR-01) and WD-<supply> wiring diagram. All
+  invented.
+
+### Search results: variants and models (`src/lib/articles.ts`, `searchArticles` in `src/lib/search.ts`)
+
+- **What lists variants:**
+  - Searching a product with many sizes by name ("XFP", "AHLSTAR") lists every variant or
+    model, 10 per page.
+  - So does a model code or product number ("XFP100", "100-80-250", "2415").
+  - Broader searches ("pump", "Submersible pumps") keep the product rows.
+- **This changes the Product finder recording:** searching "AHLSTAR" now shows "14
+  variants of AHLSTAR" instead of the single AHLSTAR row.
+- **Values invented for AHLSTAR cards** (the models have no such data): IP55, impeller type
+  "Closed", Ex approval "No", 3-phase.
+- **Max. flow and max. head:** the end of the drawn curve (1.4 × rated flow) and the shut-off
+  head (1.25 × rated head, scaled by speed and impeller for XFP). Illustrative.
+- **P2 filter buckets:** up to 10 kW, 10–30 kW, 30–100 kW, above 100 kW.
+
+### Service provider entry points
+
+- **Mega menu:** "Spare parts" goes to `/spare-parts` and "Product replacement" to
+  `/products/replacement`. Quick links "eShop" and the "Looking for our eShop?" help card go to
+  `/eshop/cart`. My Pages "Spare parts" and "Replace pump", and the mySulzer tool cards, link
+  to the same pages.
+- **`/spare-parts` ("Find spare parts for your pump"):**
+  - Finds pumps by product number or model code: all 9 XFP variants and the 14 AHLSTAR
+    models. Spaces are ignored, so "XFP150E" works. Each pump opens its Spare parts tab.
+  - Finds parts by number or name; each opens the tab with the part selected (`?part=<id>`).
+  - Enter on an exact number goes straight there.
+  - XFP variants other than 24150231 show "Parts list not online yet".
+- **Wording to confirm:** "The product number is on the rating plate", assumed for both
+  pump ranges.
+
+### AHLSTAR spare parts (`src/data/spareParts/ahlstar.ts`, `src/data/drawings/ahlstar.ts`)
+
+- **Drawing:** the exploded view GA-AHLSTAR-01 (back pull-out, exploded along the shaft) is an
+  original illustration made for this mock-up, not a Sulzer drawing and not to scale.
+- **One parts list per model,** on `/products/ahlstar?model=<model>#spare-parts`. The tab
+  opens on AHLSTAR 100-80-250 (`serviceProviderDemo.ahlstarModelId`).
+- **Position numbers** follow the common pump nomenclature (102 volute casing, 230 impeller,
+  321 bearing …), with .1/.2 for pairs. Confirm Sulzer uses these.
+- **Size-dependent parts:** volute casing, impeller, wear rings, casing cover, casing gasket,
+  coupling and base plate.
+  - Part number: 62 + position digits + size code (01–10 in Models tab order), padded to 8
+    digits.
+  - Price: the 100-80-250 price × (impeller / 250)^1.6 × ((discharge DN + 20) / 100)^0.4.
+- **Motor:** "Motor, <kW> kW, <2|4>-pole, <Hz> Hz, IE3", part number 6280 + kW × 10, price
+  EUR 900 + 128 per kW.
+- **Seal follows the model:**
+  - Single seal: pos. 433, EUR 545.
+  - Double cartridge: pos. 433, EUR 1 480.
+  - Gland packing models: pos. 461 "Gland packing set", EUR 96.
+- **Shared parts:** the bearing unit, shaft and small parts are the same for all models. That
+  is not true across real AHLSTAR bearing frame sizes; confirm or supply real BOMs.
+- **Service sets:**
+  - 2 years: wear rings, impeller nut, oil seals, casing gasket, O-rings.
+  - 5 years: those plus the shaft sleeve, seal, throttle bushing and both bearings.
+  - Part numbers 6299 + size code + 02 / 05.
+- **Search:** finds each part number once. Shared numbers link to the demo model.
+
+| Pos.  | Part (AHLSTAR 100-80-250)                                      | Part no. | Qty | List EUR | Lead time |
+| ----- | -------------------------------------------------------------- | -------- | --- | -------- | --------- |
+| 102   | Volute casing, DN 100 / DN 80                                  | 62102060 | 1   | 2 680    | 6–8 weeks |
+| 230   | Impeller, closed, Ø250                                         | 62230060 | 1   | 1 240    | 2–3 weeks |
+| 922   | Impeller nut, M24, self-locking                                | 62092224 | 1   | 38       | In stock  |
+| 502.1 | Wear ring, front (suction side)                                | 62502106 | 1   | 168      | In stock  |
+| 502.2 | Wear ring, back (casing cover)                                 | 62502206 | 1   | 154      | In stock  |
+| 161   | Casing cover                                                   | 62161060 | 1   | 1 120    | 4–6 weeks |
+| 210   | Shaft                                                          | 62021045 | 1   | 760      | 2–3 weeks |
+| 524   | Shaft sleeve                                                   | 62052445 | 1   | 236      | In stock  |
+| 433   | Mechanical seal, single, balanced                              | 62043341 | 1   | 545      | In stock  |
+| 471   | Seal cover                                                     | 62047145 | 1   | 312      | 2–3 weeks |
+| 456   | Throttle bushing                                               | 62045645 | 1   | 88       | In stock  |
+| 330   | Bearing housing                                                | 62033045 | 1   | 1 460    | 4–6 weeks |
+| 321.1 | Inboard bearing, deep groove ball bearing 6309-C3              | 62032109 | 1   | 64       | In stock  |
+| 321.2 | Outboard bearing, angular contact ball bearing pair 7309-BECBM | 62032209 | 1   | 248      | In stock  |
+| 360.1 | Bearing cover, inboard                                         | 62036145 | 1   | 142      | 2–3 weeks |
+| 360.2 | Bearing cover, outboard                                        | 62036245 | 1   | 138      | 2–3 weeks |
+| 421.1 | Oil seal, inboard, 45×62×8                                     | 62042145 | 1   | 18.50    | In stock  |
+| 421.2 | Oil seal, outboard, 40×55×7                                    | 62042240 | 1   | 16.90    | In stock  |
+| 638   | Oil level indicator, constant level oiler                      | 62063801 | 1   | 74       | In stock  |
+| 840   | Coupling, flexible with spacer                                 | 62840060 | 1   | 420      | 2–3 weeks |
+| 681   | Coupling guard                                                 | 62068145 | 1   | 186      | 2–3 weeks |
+| 800   | Motor, 11 kW, 4-pole, 50 Hz, IE3                               | 62800110 | 1   | 2 308    | 2–3 weeks |
+| 890   | Base plate                                                     | 62890060 | 1   | 980      | 4–6 weeks |
+| 183   | Support foot                                                   | 62018345 | 1   | 164      | 2–3 weeks |
+| 901   | Hexagon screw, M16×60, casing cover                            | 62090116 | 12  | 2.40     | In stock  |
+| 920   | Hexagon nut, M16                                               | 62092016 | 12  | 0.80     | In stock  |
+| 400   | Casing gasket                                                  | 62400060 | 1   | 42       | In stock  |
+| 412.1 | O-ring, 45×3, shaft sleeve                                     | 62041245 | 1   | 6.40     | In stock  |
+| 412.2 | O-ring, 135×4, seal cover                                      | 62041235 | 1   | 9.80     | In stock  |
+| 903.1 | Drain plug, G 1/2, with sealing ring                           | 62090312 | 1   | 12.60    | In stock  |
+| 903.2 | Vent plug, G 3/8, with sealing ring                            | 62090338 | 1   | 10.40    | In stock  |
+
+### Bill of material and product replacement
+
+- **BOM export:** a CSV made in the browser, named e.g.
+  `BOM_XFP_150E_CB1.6_PE220_4_D01_10_ST_after-2018.csv`. It has prices only when signed in.
+  The print view is at `/products/xfp/<id>/bom`.
+- **Replacement** (`xfpReplacements` in `src/data/xfp.ts`): XFP 150E … PE200/4 (24130931,
+  discontinued 2018) is replaced by 24150231.
+  - Adapter kit 61599150, "Adapter kit, auto-coupling claw DN 150 (built before 2018 to
+    current)", EUR 286, in stock. It is invented.
+  - Fit notes from the data, all invented: different bolt pattern of the pre-2018 claw, the new
+    moisture sensor, and the same guide rails and base elbow. The other notes (connections,
+    supply, motor power, cable, weight) are worked out from the specs.
+  - Search on the page finds product numbers and model codes of the XFP variants only.
+
+### eShop: cart, checkout and order confirmation (`eshop` in `src/config/demo.ts`)
+
+- **Prices:** cart prices are list prices. The customer's 18 % parts discount (`netPrice`) is
+  not applied yet; confirm whether the cart should show net prices.
+- **Freight:** EUR 45 per order, free from EUR 2 500. **VAT:** 25 % (Sweden), added to
+  subtotal plus freight.
+- **Delivery dates:** counted in working days from a fixed "today", 3 Nov 2026, so recordings
+  always show the same dates. Lead time plus 2 days transport. The earliest date uses the
+  shortest lead time in the cart and the latest uses the longest. Checkout offers "all
+  together" (the default) or "as soon as possible".
+- **Delivery addresses:** fictional addresses of Nordvatten Utilities AB in Karlstad: Central
+  workshop, Verkstadsvägen 12, and Riverside intake pumping station, Älvkanten 3.
+- **Payment:** "Invoice on account, 30 days net" is the only method, charged to customer
+  account 104572.
+- **Numbers:**
+  - Orders: SO-104390 first, then SO-104391 and so on.
+  - Saved quotations: Q-10243 first, then Q-10244 and so on.
+  - "Reset demo" starts both again.
+- **Toast wording:** "Save as quotation" promises a reply "within one working day".
+- **Links that end on "Coming soon" pages:** "Track order" (`/self-service/orders`) and "View
+  quotations" (`/self-service/quotations`).
+
+### Configured product page (`/products/xfp/<variantId>`)
+
+- **Where to buy** (`serviceCentre` in `src/config/demo.ts`): "Sulzer Service Centre
+  Mälardalen", Verkstadsgatan 8, 721 30 Västerås, 14 km from the demo company. It is fictional.
+  The phone number +46 70 174 06 42 is in the range Sweden reserves for fiction, and the email
+  uses `sulzer.example`. Replace it with a real Sulzer site, or keep it clearly fictional.
+- **Quotation:** fixed reference Q-10242 (`quotationReference`). "A Sulzer sales engineer
+  replies within one working day" is a service promise to confirm.
+- **Price box:** signed in, it shows the variant's list price, stock status and lead time. A
+  discontinued variant shows no price.
+- **Specifications** (`xfpDetails` in `src/data/xfp.ts`):
+  - Liquids: wastewater, stormwater and raw water, 0–40 °C, max. density 1 100 kg/m³, pH 6–11.
+  - Free passage: 76 mm (100C) and 100 mm (150E).
+  - Shaft 1.4021. Shaft seals SiC/SiC and carbon/chrome steel. NBR O-rings, A4 fasteners.
+  - Installation: wet well on auto-coupling, max. immersion depth 20 m.
+  - Electrical: insulation class H, S1 duty. Starting: D01 and D11 direct on line, D02
+    star-delta. Motor protection: PTC thermistors and a moisture sensor.
+- **Curves** (`src/lib/variantCurves.ts`): illustrative. Each model's rated point is taken as
+  its best-efficiency point, with shut-off head at 1.25 × rated head. Variants are scaled by
+  speed and impeller diameter. Water at 20 °C. P2 is calculated as ρ·g·Q·H / η. Replace with
+  Sulzer curves before publishing.
+- **Drawings** (`xfpDrawings`): DD-XFP150E-01 (dimensional, rev. B), TD-XFP150E-01 (exploded
+  view, rev. B) and WD-PE-D01 (wiring diagram, rev. C). Sizes and dates are invented. There
+  are no files; preview shows the designed cover.
+- **Toasts:** "Documentation package … (ZIP, 14.2 MB, 9 files)". Export file names are the
+  model code with underscores, e.g. `XFP_150E_CB1.6_PE220_4_D01_10_ST.xlsx`.
 
 ## AHLSTAR product page (`src/data/products.ts` → `ahlstar.tabs.explore`)
 
@@ -506,6 +965,20 @@ All four are invented publications. Placeholder, confirm with Sulzer, or swap in
 
 Placeholder, confirm with Sulzer.
 
+### Project files and package (`src/data/projectFiles.ts`, `src/lib/projectPackage.ts`)
+
+- **Files drawer per project product (INVENTED):**
+  - CAD/BIM file names and sizes. Sizes use the BIM tab formula with an estimated unit weight for sized pumps: 150 kg plus 12 kg per motor kW.
+  - Drawing and document numbers: `DD-`, `SD-`, `WD-`, `DS-`, `IOM-…-EN`, `DoC-`, `PC-`.
+  - Sizes: data sheet 1.1 MB, manual 2.4 MB, declaration of conformity 0.3 MB, curve 0.8 MB; dimensional, sectional and wiring drawings 0.6, 0.9 and 0.3 MB.
+  - Dates and revisions.
+  - New document type "Sectional drawing".
+- **Project package:**
+  - The size adds up the files above. Defaults are CAD STEP and BIM Revit, everything ticked.
+  - For "Riverside raw water intake upgrade" the defaults give 21 files, 48 MB.
+  - The package's "Project files" are the team's uploads only.
+- **Documents section:** generated files are shown as by "mySulzer", dated "Today". Uploads keep only the file name and size; the file is not read or stored.
+
 ## Personas (Phase 3, `src/config/demo.ts` → `personas`)
 
 | Item                      | Value in the mock-up                                                   | Note                                                                                                                                      |
@@ -546,17 +1019,17 @@ Placeholder, confirm with Sulzer.
 
 ## My assets (P1, `src/data/assetPages.ts`, `src/data/assets.ts`, `src/lib/serviceHistory.ts`)
 
-| Item                        | Value in the mock-up                                                                                                                      | Note                                                                                                |
-| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| RW-02 recommended action    | "Bearing wear pattern detected – inspect within 14 days", recommends the bearing kit (pos. 321, 62016308)                                 | Invented, `conditionFindings`. Also what the Connect app (P2) shows.                                |
-| P-211 recommended action    | "Motor running hot under continuous load – check the inflow and motor cooling today"                                                      | Invented.                                                                                           |
-| Service center              | Sulzer Service Center Västerås                                                                                                            | Placeholder, confirm the nearest real Sulzer service center for the region.                         |
-| Technicians                 | Mikael Sjöberg, Anna Forsell, Jonas Wikström, Elin Bergqvist                                                                              | Fictional names.                                                                                    |
-| Service history             | Commissioning, a repair or inspection, the Sulzer Connect sensor retrofit (8 Oct 2024) and the last two annual services, with work orders | Generated from each asset's dates. Work descriptions are plausible, not Sulzer's service checklist. |
-| "Connect this asset" claims | "Retrofit in under an hour", "No changes to the pump", "Alerts by e-mail and app"                                                         | Placeholder, confirm with Sulzer.                                                                   |
-| Service request message     | Prefilled with the tag, serial number and the active alert, e.g. "vibration above warning limit since today 03:12"                        | Same fixed reference SR-2026-0142 as on the product page.                                           |
-| Documents per unit          | The product's documents, labelled "For serial no. …" (brochures are not labelled)                                                         | In a real portal these would be the unit's own as-built documents.                                  |
-| Spare parts per unit        | The product's spare parts list                                                                                                            | P5 replaces this with the sectional drawing and the unit's BOM.                                     |
+| Item                        | Value in the mock-up                                                                                                                      | Note                                                                                                                                        |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| RW-02 recommended action    | "Bearing wear pattern detected – inspect within 14 days", recommends the bearing kit (pos. 321, 62016308)                                 | Invented, `conditionFindings`. Also what the Connect app (P2) shows.                                                                        |
+| P-211 recommended action    | "Motor running hot under continuous load – check the inflow and motor cooling today"                                                      | Invented.                                                                                                                                   |
+| Service center              | Sulzer Service Center Västerås                                                                                                            | Placeholder, confirm the nearest real Sulzer service center for the region.                                                                 |
+| Technicians                 | Mikael Sjöberg, Anna Forsell, Jonas Wikström, Elin Bergqvist                                                                              | Fictional names.                                                                                                                            |
+| Service history             | Commissioning, a repair or inspection, the Sulzer Connect sensor retrofit (8 Oct 2024) and the last two annual services, with work orders | Generated from each asset's dates. Work descriptions are plausible, not Sulzer's service checklist.                                         |
+| "Connect this asset" claims | "Retrofit in under an hour", "No changes to the pump", "Alerts by e-mail and app"                                                         | Placeholder, confirm with Sulzer.                                                                                                           |
+| Service request message     | Prefilled with the tag, serial number and the active alert, e.g. "vibration above warning limit since today 03:12"                        | Same fixed reference SR-2026-0142 as on the product page.                                                                                   |
+| Documents per unit          | The product's documents, labelled "For serial no. …" (brochures are not labelled)                                                         | In a real portal these would be the unit's own as-built documents.                                                                          |
+| Spare parts per unit        | The unit's parts list in the shared spare parts browser (exploded drawing, tree, BOM). An active alert names its kit on top               | AHLSTAR models have their own list; XFP units use the XFP 150E demo variant's list; XFP 100C, AFP and J pumps show "Parts list on request". |
 
 ## Sulzer Connect app (P2, `src/data/connect.ts`, `src/lib/connect.ts`)
 
@@ -620,53 +1093,51 @@ benefits, "See it live", customer story, CTA band). The personal toolbar sits on
 
 ## Requests, orders and quotations (P4, `src/data/serviceRequests.ts`, `src/data/orders.ts`, `src/data/quotations.ts`)
 
-| Item                   | Value in the mock-up                                                                                                                             | Note                                                                                                                           |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
-| SR-2026-0142           | Added to `/self-service/requests` when "Request service" is sent (asset page, Connect or product page), received "Today, 09:26", status Received | Fixed time so every recording matches. Shared by both personas; "Reset demo" removes it.                                       |
-| Earlier requests       | SR-2026-0129 (BW-01 annual service, visit 12 Nov, Anna Forsell) open; SR-2026-0108, -0097, -0071 done                                            | Visits, technicians and work orders match each asset's service history.                                                        |
-| Service center details | Sulzer Service Center Västerås, Kopparlundsvägen 7, +46 21 400 18 00                                                                             | Invented address and phone. Confirm the real service center.                                                                   |
-| Request steps          | Received → Visit planned → Technician assigned → Done, "We confirm the date within one working day"                                              | Confirm Sulzer's real request statuses and response time.                                                                      |
-| Orders                 | Emma: SO-104396, -104390, -104382 (from Q-10198, shipped, expected 30 Oct), -104301, -104255. Lars: SO-104399, -104393, -104368                  | Invented. My Pages "2 in transit" and "1 open" are now counted from this data.                                                 |
-| Carrier and tracking   | "Sulzer Logistics road freight" from "Sulzer distribution center, Norrköping", tracking numbers "SZL 3740 …"                                     | Placeholder carrier and warehouse, confirm how Sulzer ships spare parts in Sweden.                                             |
-| Delivery addresses     | Nordvatten goods reception, Verksvägen 21, Västerås; partner orders to each customer's site                                                      | Invented.                                                                                                                      |
-| Spare part list prices | Impeller €4,860, mechanical seal set €1,420, bearing kit €890, Contrablock wear plate €640, XFP seal kit €1,180 (`src/data/spareParts.ts`)       | Invented. P5's prices should use these.                                                                                        |
-| Agreement discount     | Nordvatten 12% on Sulzer quotations and on SO-104382                                                                                             | Invented.                                                                                                                      |
-| Sulzer issuer          | "Sulzer Pumps Sweden AB", Kopparlundsvägen 7, Västerås, reg. no. 556000-1234                                                                     | Placeholder legal entity, address and numbers. Confirm the real Swedish Sulzer entity before publishing.                       |
-| Sulzer contact         | Mikael Ahonen, Application engineer, +46 21 400 18 26                                                                                            | Fictional (also a member of the Riverside intake project).                                                                     |
-| Q-10234                | North pump station upgrade: 2 pumps from the project, 2 Sulzer Connect sensor kits (86040120, €1,450), commissioning (€2,900), delivery week 49  | The "new delivery date" in My Pages activity is "brought forward from week 51 to week 49". Kit number and prices are invented. |
-| Terms                  | FCA Sulzer distribution center, Norrköping (Incoterms 2020), 30 days net. ISO 9906 grade 2B test note                                            | Placeholder terms.                                                                                                             |
-| Partner letterhead     | Aqua Pumpteknik wordmark (SVG we made), Industrigatan 9, Eskilstuna, "Authorised Sulzer distributor" with the Sulzer logo in the footer          | Fictional partner. Confirm Sulzer allows its logo on partner documents.                                                        |
-| Partner quotations     | AQ-26-0418 to Nordvatten (RW-02 bearing replacement, 12 h at €95), AQ-26-0409, -0402, -0385 to the other three customers                         | Invented. Customer discounts 5–8%.                                                                                             |
-| Partner margin card    | Sulzer net price at the 32% partner discount, margin on Sulzer items, "Only you see this. It isn’t on the PDF."                                  | Uses `partnerPricing.discount`.                                                                                                |
-| Downloads              | "Download PDF", "Order confirmation" and service reports only show a toast                                                                       | No files.                                                                                                                      |
+| Item                   | Value in the mock-up                                                                                                                                                                                                           | Note                                                                                                                           |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| SR-2026-0142           | Added to `/self-service/requests` when "Request service" is sent (asset page, Connect or product page), received "Today, 09:26", status Received                                                                               | Fixed time so every recording matches. Shared by both personas; "Reset demo" removes it.                                       |
+| Earlier requests       | SR-2026-0129 (BW-01 annual service, visit 12 Nov, Anna Forsell) open; SR-2026-0108, -0097, -0071 done                                                                                                                          | Visits, technicians and work orders match each asset's service history.                                                        |
+| Service center details | Sulzer Service Center Västerås, Kopparlundsvägen 7, +46 21 400 18 00                                                                                                                                                           | Invented address and phone. Confirm the real service center.                                                                   |
+| Request steps          | Received → Visit planned → Technician assigned → Done, "We confirm the date within one working day"                                                                                                                            | Confirm Sulzer's real request statuses and response time.                                                                      |
+| Orders                 | Emma: SO-104388, -104386, -104382 (from Q-10198, shipped, expected 30 Oct), -104301, -104255. Lars: SO-104399, -104393, -104368                                                                                                | Invented. My Pages "2 in transit" and "1 open" are now counted from this data.                                                 |
+| Carrier and tracking   | "Sulzer Logistics road freight" from "Sulzer distribution center, Norrköping", tracking numbers "SZL 3740 …"                                                                                                                   | Placeholder carrier and warehouse, confirm how Sulzer ships spare parts in Sweden.                                             |
+| Delivery addresses     | Nordvatten goods reception, Verksvägen 21, Västerås; partner orders to each customer's site                                                                                                                                    | Invented.                                                                                                                      |
+| Spare part list prices | AHLSTAR parts and kits from `src/data/spareParts/ahlstar.ts` (bearing kit, seal kit, pos. 433 seal, pos. 230 impeller); XFP 150E from `src/data/spareParts/xfp.ts`; the XFP 100C bottom plate (€410) is written into the order | Invented. Same numbers as the BOM, so the orders match the parts lists.                                                        |
+| Agreement discount     | Nordvatten 12% on Sulzer quotations and on SO-104382                                                                                                                                                                           | Invented.                                                                                                                      |
+| Sulzer issuer          | "Sulzer Pumps Sweden AB", Kopparlundsvägen 7, Västerås, reg. no. 556000-1234                                                                                                                                                   | Placeholder legal entity, address and numbers. Confirm the real Swedish Sulzer entity before publishing.                       |
+| Sulzer contact         | Mikael Ahonen, Application engineer, +46 21 400 18 26                                                                                                                                                                          | Fictional (also a member of the Riverside intake project).                                                                     |
+| Q-10234                | North pump station upgrade: 2 pumps from the project, 2 Sulzer Connect sensor kits (86040120, €1,450), commissioning (€2,900), delivery week 49                                                                                | The "new delivery date" in My Pages activity is "brought forward from week 51 to week 49". Kit number and prices are invented. |
+| Terms                  | FCA Sulzer distribution center, Norrköping (Incoterms 2020), 30 days net. ISO 9906 grade 2B test note                                                                                                                          | Placeholder terms.                                                                                                             |
+| Partner letterhead     | Aqua Pumpteknik wordmark (SVG we made), Industrigatan 9, Eskilstuna, "Authorised Sulzer distributor" with the Sulzer logo in the footer                                                                                        | Fictional partner. Confirm Sulzer allows its logo on partner documents.                                                        |
+| Partner quotations     | AQ-26-0418 to Nordvatten (RW-02 bearing replacement, 12 h at €95), AQ-26-0409, -0402, -0385 to the other three customers                                                                                                       | Invented. Customer discounts 5–8%.                                                                                             |
+| Partner margin card    | Sulzer net price at the 32% partner discount, margin on Sulzer items, "Only you see this. It isn’t on the PDF."                                                                                                                | Uses `partnerPricing.discount`.                                                                                                |
+| Downloads              | "Download PDF", "Order confirmation" and service reports only show a toast                                                                                                                                                     | No files.                                                                                                                      |
 
-## Replacement finder and tender texts (P6, `src/data/replacement.ts`, `src/data/tenderTexts.ts`, `src/lib/replacement.ts`, `src/lib/tenderText.ts`)
+## Replacing an installed pump (P6, `src/data/replacement.ts`, `src/lib/pumpReplacement.ts`)
 
-| Item                        | Value in the mock-up                                                                                                                                        | Note                                                                                                                                       |
-| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| Recording path (Video B 4)  | RW-02 → "Find replacement" → `/products/replacement?serial=AH-1918-04512` → Size this pump / Add to project                                                 | Also reached from mega menu "Product replacement", My Pages "Replace pump" and the mySulzer cards.                                         |
-| RW-01 to RW-03 duty point   | 150 m³/h at 30 m, water at 8 °C, "measured by Sulzer Connect, 12-month median"                                                                              | Invented. Same as the sizing demo duty point, so "Size this pump" lands on the familiar result. Other units use their model's rated point. |
-| Story                       | RW-02 (AHLSTAR 150-125-315, rated 320 m³/h) runs at 47 % of its best-efficiency flow, throttled from 38.2 m to 30 m                                         | Invented. The pump curve is the illustrative Models tab curve.                                                                             |
-| Wear                        | 1 efficiency point per 10 000 run hours, at most 5 (`replacementDemo`)                                                                                      | Typical value, not a Sulzer figure.                                                                                                        |
-| Existing motor              | 93 % efficiency (IE2 class) for every installed pump                                                                                                        | Assumption.                                                                                                                                |
-| Another brand               | 60 % pump efficiency at the duty point, no throttling                                                                                                       | Assumption, shown as "estimated".                                                                                                          |
-| Running hours, energy price | 6 000 h a year, €0.12 per kWh (`sizingDemo`)                                                                                                                | Same as sizing life cycle cost.                                                                                                            |
-| RW-02 suggestions           | AHLSTAR A23-150-400/355 C1-SD-4P-F (drop-in), −42 %, €9 324 a year, payback 1.6 years; AHLSTAR A24-200-315/325 C1-SD-4P-F (lowest life cycle cost), −44 %   | Computed by the sizing engine. Payback = list price / saving; installation not included.                                                   |
-| "Fits the same foundation"  | Shown when suction and discharge DN match the existing pump                                                                                                 | Simplification: foundation bolt pattern and shaft height aren't checked. Confirm the wording with Sulzer.                                  |
-| Submersible and other pumps | XFP, AFP and J pumps get "Our experts find your replacement" and Request quotation                                                                          | Only AHLSTAR has sizing data.                                                                                                              |
-| Request quotation           | Shows a toast "Quotation requested … within two working days" with a link to `/self-service/quotations`                                                     | No quotation is added to the list.                                                                                                         |
-| Hero photo                  | `public/images/replacement/replacement-hero.jpg` (missing)                                                                                                  | See `docs/images-needed.md`.                                                                                                               |
-| Tender text wording         | Product descriptions, material grades (EN-GJL-250, EN-GJS-400-15, EN 1.4470 …), seal descriptions, motor defaults (IE3, IP55, class F), "or approved equal" | Invented from typical pump specifications. Confirm every line with Sulzer before a tender text is shown in a video.                        |
-| Standards                   | AHLSTAR: ISO 2858 / ISO 5199, EN 1092-2 PN 16, ISO 9906 grade 2B, Machinery Directive, Ecodesign 547/2012 MEI ≥ 0.4. XFP: PN 10, IEC 60034-30-1, ATEX       | Confirm.                                                                                                                                   |
-| Download                    | The button says "Download .docx" but saves an `.rtf` file (Word opens it). "Download all tender texts" saves one `.rtf` with a page per project item        | Mock, as agreed. Copy puts the plain text on the clipboard.                                                                                |
-| Languages                   | English works; Deutsch, Français, Svenska and Español are listed as "coming soon"                                                                           | Confirm which languages Sulzer offers tender texts in.                                                                                     |
+Tender texts use the consultant's tender text dialog: see "Tender texts" above.
+
+| Item                        | Value in the mock-up                                                                                                                                      | Note                                                                                                                                                                                     |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Recording path (Video B 4)  | RW-02 → "Find replacement" → `/products/replacement/existing-pump?serial=AH-1918-04512` → Size this pump / Add to project                                 | Also from the partner's My Pages links. Mega menu "Product replacement", My Pages "Replace pump" and the mySulzer cards open the discontinued-product finder at `/products/replacement`. |
+| RW-01 to RW-03 duty point   | 150 m³/h at 30 m, water at 8 °C, "measured by Sulzer Connect, 12-month median"                                                                            | Invented. Same as the sizing demo duty point, so "Size this pump" lands on the familiar result. Other units use their model's rated point.                                               |
+| Story                       | RW-02 (AHLSTAR 150-125-315, rated 320 m³/h) runs at 47 % of its best-efficiency flow, throttled from 38.2 m to 30 m                                       | Invented. The pump curve is the illustrative Models tab curve.                                                                                                                           |
+| Wear                        | 1 efficiency point per 10 000 run hours, at most 5 (`replacementDemo`)                                                                                    | Typical value, not a Sulzer figure.                                                                                                                                                      |
+| Existing motor              | 93 % efficiency (IE2 class) for every installed pump                                                                                                      | Assumption.                                                                                                                                                                              |
+| Another brand               | 60 % pump efficiency at the duty point, no throttling                                                                                                     | Assumption, shown as "estimated".                                                                                                                                                        |
+| Running hours, energy price | 6 000 h a year, €0.12 per kWh (`sizingDemo`)                                                                                                              | Same as sizing life cycle cost.                                                                                                                                                          |
+| RW-02 suggestions           | AHLSTAR A23-150-400/355 C1-SD-4P-F (drop-in), −42 %, €9 324 a year, payback 1.6 years; AHLSTAR A24-200-315/325 C1-SD-4P-F (lowest life cycle cost), −44 % | Computed by the sizing engine. Payback = list price / saving; installation not included.                                                                                                 |
+| "Fits the same foundation"  | Shown when suction and discharge DN match the existing pump                                                                                               | Simplification: foundation bolt pattern and shaft height aren't checked. Confirm the wording with Sulzer.                                                                                |
+| Submersible and other pumps | XFP, AFP and J pumps get "Our experts find your replacement" and Request quotation                                                                        | Only AHLSTAR has sizing data.                                                                                                                                                            |
+| Request quotation           | Shows a toast "Quotation requested … within two working days" with a link to `/self-service/quotations`                                                   | No quotation is added to the list.                                                                                                                                                       |
+| Hero photo                  | `public/images/replacement/replacement-hero.jpg` (missing)                                                                                                | See `docs/images-needed.md`.                                                                                                                                                             |
 
 ## Channel partner (P7, `src/data/partner.ts`, `src/data/assets.ts`, `src/data/projects.ts`, `src/lib/partner.ts`)
 
 | Item                     | Value in the mock-up                                                                                                                                        | Note                                                                                                 |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | Partner My Pages         | Cards My customers, Quotations, Orders, Partner prices & availability, Projects, Partner Academy & sales material. "Partner" badge in the header            | Card titles and links are our proposal. Sales material and branding links open "Coming soon" pages.  |
-| Partner activity         | AQ-26-0418 sent to Emma, "Nordvatten Utilities – RW-02 vibration above warning limit", SO-104393 at Västerås terminal, course "AHLSTAR sizing for partners" | Invented, matches the seed data.                                                                     |
+| Partner activity         | AQ-26-0418 sent to Emma, "Nordvatten Utilities – RW-02 vibration above warning limit", SO-104387 at Västerås terminal, course "AHLSTAR sizing for partners" | Invented, matches the seed data.                                                                     |
 | Other customers' assets  | Mälarbruk Paper 5 assets (Köping paper mill), Sörby Livsmedel 3 (Eskilstuna dairy, not on Sulzer Connect), Västmalm Energi 6 (Sala CHP, Heby DH)            | Invented tags, serial numbers and dates. All running normally, so only Nordvatten needs attention.   |
 | Account managers         | Lars Ek (Nordvatten, Sörby), Karin Sjöberg (Mälarbruk), Henrik Dahl (Västmalm). Customer since 2012–2021                                                    | Fictional people at the fictional partner.                                                           |
 | Customer contacts        | Emma Lindqvist, Johan Berg, Sara Nyström (Nordvatten); Anders Holm, Erik Lindgren; Sara Nyberg; Petra Lund, Mats Öberg. Phone numbers                       | Fictional. E-mail addresses on `.example` domains.                                                   |
@@ -678,3 +1149,14 @@ benefits, "See it live", customer story, CTA band). The personal toolbar sits on
 | Partner prices           | List price, "Your discount 32%" and net price on the Models tab, compare panel, sizing results, replacement finder, project items, spare parts, cart        | Uses `partnerPricing.discount`; lead times as before.                                                |
 | Sulzer Connect users     | Mälarbruk 4, Västmalm 3, Sörby none ("Invite to Sulzer Connect")                                                                                            | Invented.                                                                                            |
 | Site photos              | `public/images/sites/koping-mill.jpg`, `sorby-dairy.jpg`, `sala-chp.jpg`, `heby-dh.jpg` (missing)                                                           | See `docs/images-needed.md`.                                                                         |
+
+## After merging the service provider and consultant work (persona PR)
+
+| Item                       | Value in the mock-up                                                                                                                                                    | Note                                                                             |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Two "today"s               | eShop delivery dates count from 3 Nov 2026 (`eshop.today`); assets, Connect and self-service count from 28 Oct 2026 (`demoClock.today`)                                 | Pick one date before recording both videos.                                      |
+| Nordvatten addresses       | eShop checkout for Emma: Central workshop and Riverside intake pumping station in Karlstad (`eshop.deliveryAddresses`); assets, projects and partner checkout: Västerås | Pick one town.                                                                   |
+| Two customer discounts     | Emma's account has an 18% parts discount (`customerAccount.partsDiscount`, only in `netPrice` in the parts data, not shown); Nordvatten has 12% on Sulzer quotations    | Confirm which applies where.                                                     |
+| Order numbers              | eShop orders count up from SO-104390; the seeded orders are SO-104255 to SO-104389                                                                                      | The four seeds that were SO-104390 to SO-104399 moved to SO-104386 to SO-104389. |
+| Orders placed in the eShop | Also appear in `/self-service/orders` as "Confirmed", placed at 09:48, with "Track order" opening them                                                                  | The consultant has no customer account, so their order only shows in the eShop.  |
+| Partner net prices         | 32% off list on spare parts, kits, the BOM and cart lines (list price struck through)                                                                                   | Other personas still see list prices.                                            |

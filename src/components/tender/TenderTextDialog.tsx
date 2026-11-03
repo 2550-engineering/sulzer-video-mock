@@ -1,117 +1,183 @@
-import { Check, Copy, Download } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { tenderText as copy } from '../../data/tenderTexts'
-import { copyText, downloadFile } from '../../lib/download'
-import { tenderPlainText, tenderRtf, type TenderDocument } from '../../lib/tenderText'
+import { Copy, FileDown, Printer } from 'lucide-react'
+import { useId, useState } from 'react'
+import { tenderDialog as copy } from '../../data/tenderTexts'
+import { tenderDocx } from '../../lib/docx'
+import { downloadBlob } from '../../lib/download'
+import { tenderPlainText, tenderText } from '../../lib/tenderText'
+import { useToast } from '../../toast/useToast'
+import type { TenderLanguage, TenderOptions, TenderSubject } from '../../types'
 import { Modal } from '../Modal'
-import { SelectField } from '../SelectField'
+import { SegmentedToggle } from '../SegmentedToggle'
+import { TenderDocumentView } from './TenderDocumentView'
+import { TenderPrintView } from './TenderPrintView'
+
+export type TenderRequest = {
+  /** Shown in the dialog title, e.g. the model or the project name. */
+  label: string
+  /** Document title inside the text. */
+  documentTitle: string
+  subtitle?: string
+  subjects: TenderSubject[]
+  /** File name without extension. */
+  fileName: string
+}
 
 type TenderTextDialogProps = {
   open: boolean
-  document: TenderDocument
+  request: TenderRequest | null
   onClose: () => void
 }
 
-const outlined =
-  'inline-flex h-10 items-center gap-2 rounded-pill border border-primary px-4 text-sm font-semibold text-primary transition-colors duration-150 hover:bg-primary-tint'
+const languages: TenderLanguage[] = ['en', 'sv', 'de']
 
 /**
- * "Tender text": the specification as a formatted page, with a language selector
- * (English only for now), Copy (plain text) and Download (RTF, opens in Word).
+ * Tender text dialog: options on the left (language, detail level, duty
+ * point, "or equal" clause), the formatted text on the right, and Copy,
+ * Download .docx (a real Word file) and Download PDF (print view).
+ * Remount (via `key`) per request to start from the default options.
  */
-export function TenderTextDialog({ open, document: doc, onClose }: TenderTextDialogProps) {
-  const [language, setLanguage] = useState('en')
-  const [copied, setCopied] = useState(false)
+export function TenderTextDialog({ open, request, onClose }: TenderTextDialogProps) {
+  const ids = useId()
+  const showToast = useToast()
+  const hasDuty = request?.subjects.some((s) => s.duty || s.application) ?? false
+  const [options, setOptions] = useState<TenderOptions>({
+    language: 'en',
+    detail: 'full',
+    includeDuty: true,
+    orEqual: true,
+  })
+  if (!request) return null
 
-  useEffect(() => {
-    if (!copied) return
-    const timer = window.setTimeout(() => setCopied(false), 2000)
-    return () => window.clearTimeout(timer)
-  }, [copied])
+  const document = tenderText(request.subjects, options, request.documentTitle, request.subtitle)
+  const set = <K extends keyof TenderOptions>(key: K, value: TenderOptions[K]) =>
+    setOptions((current) => ({ ...current, [key]: value }))
 
-  async function copyToClipboard() {
-    if (await copyText(tenderPlainText(doc))) setCopied(true)
+  function copyText() {
+    navigator.clipboard?.writeText(tenderPlainText(document)).catch(() => {})
+    showToast({ message: copy.copied, detail: copy.copiedDetail })
   }
+
+  function downloadDocx() {
+    const fileName = `${request!.fileName}.docx`
+    downloadBlob(fileName, tenderDocx(document))
+    showToast({ message: copy.downloaded, detail: fileName })
+  }
+
+  const button =
+    'inline-flex h-10 items-center gap-2 rounded-pill px-4 text-sm font-semibold transition-colors'
 
   return (
     <Modal
       open={open}
-      title={copy.dialogTitle(doc.title)}
+      title={copy.title(request.label)}
       closeLabel={copy.close}
       onClose={onClose}
-      width="max-w-3xl"
+      width="max-w-6xl"
     >
-      <div className="sticky top-0 z-10 flex flex-wrap items-end justify-between gap-4 border-b border-border bg-white px-7 py-4">
-        <div className="w-56">
-          <SelectField
-            label={copy.language}
-            value={language}
-            options={copy.languages}
-            onChange={setLanguage}
-            layout="stacked"
-          />
-        </div>
-        <div className="flex gap-2">
-          <button type="button" onClick={copyToClipboard} className={outlined}>
-            {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-            {copied ? copy.copied : copy.copy}
-          </button>
-          <button
-            type="button"
-            onClick={() =>
-              downloadFile(copy.fileName(doc.title), tenderRtf([doc]), 'application/rtf')
-            }
-            className="inline-flex h-10 items-center gap-2 rounded-pill bg-primary px-5 text-sm font-semibold text-white shadow-raised transition-colors hover:bg-primary-hover"
-          >
-            <Download className="size-4" />
-            {copy.download}
-          </button>
-        </div>
-      </div>
-
-      <div className="bg-surface-muted px-7 py-6">
-        <article className="rounded-md border border-border bg-white px-9 py-8 shadow-card">
-          <p className="text-xs font-semibold tracking-[0.08em] text-text-muted uppercase">
-            {copy.heading}
+      <div className="grid md:grid-cols-[15rem_minmax(0,1fr)]">
+        <aside className="space-y-6 border-b border-border bg-surface-subtle px-6 py-6 md:border-r md:border-b-0">
+          <p className="text-xs font-semibold tracking-[0.12em] text-text-muted uppercase">
+            {copy.options}
           </p>
-          <h3 className="mt-1 text-xl font-bold tracking-tight text-brand">{doc.title}</h3>
-          {doc.position && <p className="mt-1 text-sm text-navy-900">{doc.position}</p>}
-          <p className="mt-0.5 text-sm text-text-muted tabular-nums">{doc.reference}</p>
 
-          <ol className="mt-6 space-y-6">
-            {doc.sections.map((section, i) => (
-              <li key={section.heading}>
-                <h4 className="font-semibold text-navy-900">
-                  <span className="mr-2 text-primary tabular-nums">{i + 1}.</span>
-                  {section.heading}
-                </h4>
-                {section.paragraphs && (
-                  <ul
-                    className={`mt-2 space-y-1.5 text-[15px] leading-relaxed text-text ${
-                      section.paragraphs.length > 1 ? 'list-disc pl-5 marker:text-text-subtle' : ''
-                    }`}
+          <fieldset>
+            <legend className="mb-2 text-sm font-semibold text-navy-900">{copy.language}</legend>
+            <div className="space-y-1.5 text-[15px]">
+              {languages.map((language) => {
+                const available = language === 'en'
+                return (
+                  <label
+                    key={language}
+                    className={`flex items-center gap-2.5 ${available ? 'cursor-pointer' : 'cursor-not-allowed text-text-subtle'}`}
                   >
-                    {section.paragraphs.map((paragraph) => (
-                      <li key={paragraph}>{paragraph}</li>
-                    ))}
-                  </ul>
-                )}
-                {section.rows && (
-                  <dl className="mt-2 divide-y divide-border border-y border-border text-[15px]">
-                    {section.rows.map(([label, value]) => (
-                      <div key={label} className="grid grid-cols-[15rem_minmax(0,1fr)] gap-4 py-2">
-                        <dt className="text-text-muted">{label}</dt>
-                        <dd className="font-medium text-navy-900 tabular-nums">{value}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                )}
-              </li>
-            ))}
-          </ol>
-        </article>
-        <p className="mt-3 text-xs text-text-muted">{copy.note}</p>
+                    <input
+                      type="radio"
+                      name={`${ids}-language`}
+                      checked={options.language === language}
+                      disabled={!available}
+                      onChange={() => set('language', language)}
+                      className="size-4 accent-primary"
+                    />
+                    {copy.languages[language]}
+                    {!available && (
+                      <span className="rounded-pill bg-surface-sunken px-2 py-0.5 text-[11px] font-semibold text-text-muted">
+                        {copy.comingSoon}
+                      </span>
+                    )}
+                  </label>
+                )
+              })}
+            </div>
+          </fieldset>
+
+          <SegmentedToggle<TenderOptions['detail']>
+            label={copy.detail}
+            value={options.detail}
+            options={[
+              { value: 'short', label: copy.short },
+              { value: 'full', label: copy.full },
+            ]}
+            onChange={(value) => set('detail', value)}
+          />
+
+          <div className="space-y-2 text-[15px]">
+            <label
+              className={`flex items-start gap-2.5 ${hasDuty ? 'cursor-pointer' : 'text-text-subtle'}`}
+            >
+              <input
+                type="checkbox"
+                checked={options.includeDuty}
+                onChange={() => set('includeDuty', !options.includeDuty)}
+                className="mt-1 size-[18px] shrink-0 accent-primary"
+              />
+              {copy.includeDuty}
+            </label>
+            <label className="flex cursor-pointer items-start gap-2.5">
+              <input
+                type="checkbox"
+                checked={options.orEqual}
+                onChange={() => set('orEqual', !options.orEqual)}
+                className="mt-1 size-[18px] shrink-0 accent-primary"
+              />
+              {copy.orEqual}
+            </label>
+          </div>
+        </aside>
+
+        <div className="flex min-w-0 flex-col">
+          <div className="flex flex-wrap items-center gap-2 border-b border-border px-6 py-3">
+            <button
+              type="button"
+              onClick={copyText}
+              className={`${button} bg-primary text-white hover:bg-primary-hover`}
+            >
+              <Copy className="size-4" />
+              {copy.copy}
+            </button>
+            <button
+              type="button"
+              onClick={downloadDocx}
+              className={`${button} border border-primary text-primary hover:bg-primary-tint`}
+            >
+              <FileDown className="size-4" />
+              {copy.docx}
+            </button>
+            <button
+              type="button"
+              onClick={() => window.print()}
+              title={copy.pdfHint}
+              className={`${button} border border-primary text-primary hover:bg-primary-tint`}
+            >
+              <Printer className="size-4" />
+              {copy.pdf}
+            </button>
+          </div>
+          <div className="max-h-[62vh] overflow-y-auto px-8 py-6">
+            <TenderDocumentView document={document} />
+          </div>
+        </div>
       </div>
+      {open && <TenderPrintView document={document} />}
     </Modal>
   )
 }

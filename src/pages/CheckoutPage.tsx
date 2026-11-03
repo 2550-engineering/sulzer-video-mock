@@ -1,258 +1,286 @@
-import { Lock } from 'lucide-react'
-import { useState, type FormEvent } from 'react'
-import { Link, Navigate } from 'react-router'
+import { Check, CreditCard, LoaderCircle, MapPin } from 'lucide-react'
+import { useEffect, useId, useRef, useState } from 'react'
+import { Link, useNavigate } from 'react-router'
 import { useAuth } from '../auth/useAuth'
-import { useCartItems } from '../cart/useCartItems'
-import { CartSummary } from '../components/eshop/CartSummary'
+import { useCart } from '../cart/useCart'
 import { CustomerLogo } from '../components/CustomerLogo'
-import { CheckoutSection } from '../components/eshop/CheckoutSection'
+import { CartLines } from '../components/eshop/CartLines'
 import { ChoiceCard } from '../components/eshop/ChoiceCard'
-import { SelfServicePageHeader } from '../components/selfservice/SelfServicePageHeader'
-import { demoClock } from '../config/demo'
-import { assetById, customers } from '../data/assets'
-import { cartPath, checkoutCopy as copy, confirmationPath, deliveryOptions } from '../data/eshop'
-import { signedOutRedirect } from '../data/myPages'
-import { buildOrder, deliveryAddressesFor, expectedDelivery } from '../lib/eshop'
-import { formatDate } from '../lib/format'
-import { formatMoney } from '../lib/selfService'
-import { useSelfService } from '../selfService/useSelfService'
+import { EshopHeader } from '../components/eshop/EshopHeader'
+import { OrderSummary } from '../components/eshop/OrderSummary'
+import { SignInRequired } from '../components/eshop/SignInRequired'
+import { NumberedStep } from '../components/product/NumberedStep'
+import { customerAccount, eshop } from '../config/demo'
+import { customers } from '../data/assets'
+import { eshopPages } from '../data/eshopPages'
+import { partnerAccounts, partnerCheckout } from '../data/partner'
+import { issuers } from '../data/quotations'
+import { deliveryWindow } from '../lib/cart'
+import { formatDate } from '../lib/dates'
+import type { DeliveryOption } from '../types'
+
+const copy = eshopPages.checkout
+/** "Placing order…" before the confirmation, long enough to read. */
+const placingMs = 600
 
 /**
- * /eshop/checkout. Signed-in only. Delivery address from the account, delivery option,
- * PO number and the order summary. A partner first picks the customer they order on
- * behalf of (the one the parts are for, if the cart says), and gets that customer's
- * addresses. "Place order" adds the order to Orders (with track & trace), empties the
- * cart and opens the confirmation.
+ * /eshop/checkout: Delivery, Payment and Review on one page, everything
+ * prefilled for the demo company; "Place order" goes to the confirmation.
+ * A partner first picks the customer they order on behalf of, and delivers
+ * to that customer's addresses or their own warehouse.
  */
 export function CheckoutPage() {
+  const ids = useId()
+  const navigate = useNavigate()
   const { user } = useAuth()
-  const { items, totals, clear } = useCartItems()
-  const { orders, addOrder } = useSelfService()
-  const [chosenCustomerId, setCustomerId] = useState<string>()
-  const [addressId, setAddressId] = useState<string>()
-  const [optionId, setOptionId] = useState(deliveryOptions[0].id)
-  const [poNumber, setPoNumber] = useState('')
-  const [placedId, setPlacedId] = useState<string>()
-
-  if (!user) return <Navigate to={signedOutRedirect} replace />
-  // Checked before the empty cart: placing the order empties it.
-  if (placedId) return <Navigate to={confirmationPath(placedId)} replace />
-  if (items.length === 0) return <Navigate to={cartPath} replace />
-
-  const partner = user.kind === 'partner'
-  // Parts added for an asset (e.g. RW-02's bearing kit) say whose order it is.
-  const cartCustomerId = items
-    .map((item) => item.line.assetId && assetById(item.line.assetId)?.customerId)
-    .find(Boolean)
-  const customerId = chosenCustomerId ?? cartCustomerId ?? customers[0].id
+  const cart = useCart()
+  const [addressId, setAddressId] = useState<string>(eshop.deliveryAddresses[0].id)
+  const partner = user?.kind === 'partner'
+  const [customerId, setCustomerId] = useState(customers[0].id)
   const customer = customers.find((c) => c.id === customerId) ?? customers[0]
-  const addresses = deliveryAddressesFor(user, partner ? customer.id : undefined)
-  const step = (n: number) => (partner ? n + 1 : n)
-  const address = addresses.find((a) => a.id === addressId) ?? addresses[0]
-  const option = deliveryOptions.find((o) => o.id === optionId) ?? deliveryOptions[0]
-  const parts = items.map((item) => item.part)
+  const [delivery, setDelivery] = useState<DeliveryOption>('complete')
+  const [placing, setPlacing] = useState(false)
+  const timer = useRef<number>(undefined)
+  useEffect(() => () => window.clearTimeout(timer.current), [])
 
-  function placeOrder(event: FormEvent) {
-    event.preventDefault()
-    if (!user) return
-    const order = buildOrder({
-      user,
-      lines: items,
-      option,
-      address,
-      poNumber: poNumber.trim() || `${copy.reference.fallback} ${formatDate(demoClock.today)}`,
-      orders,
-      ...(partner ? { customerId: customer.id } : {}),
-    })
-    addOrder(order)
-    clear()
-    setPlacedId(order.id)
+  const dates = deliveryWindow(cart.items)
+  const addresses: readonly { id: string; name: string; lines: readonly string[] }[] =
+    partner && user
+      ? [
+          ...partnerAccounts[customer.id].deliveryAddresses.map((a) => ({
+            id: a.id,
+            name: a.label,
+            lines: a.lines,
+          })),
+          {
+            id: 'warehouse',
+            name: partnerCheckout.warehouse(user.company),
+            lines: [user.company, ...issuers.partner.address],
+          },
+        ]
+      : eshop.deliveryAddresses
+  const address = addresses.find((a) => a.id === addressId) ?? addresses[0]
+  // Partners get the customer step first.
+  const step = (n: number) => (partner ? n + 1 : n)
+
+  function placeOrder() {
+    setPlacing(true)
+    timer.current = window.setTimeout(() => {
+      const orderId = cart.placeOrder({
+        deliveryAddressId: address.id,
+        delivery,
+        ...(partner
+          ? {
+              deliveryAddress: { name: address.name, lines: [...address.lines] },
+              customer: { id: customer.id, name: customer.name },
+            }
+          : {}),
+      })
+      navigate(`/eshop/order/${orderId}`)
+    }, placingMs)
   }
 
+  const card = 'rounded-lg border border-border bg-white px-6 py-6'
+
   return (
-    <div className="bg-surface-muted">
-      <title>{`${copy.title} | eShop | Sulzer`}</title>
-      <SelfServicePageHeader
-        breadcrumb={[...copy.breadcrumb, { label: copy.title }]}
-        eyebrow={
-          partner
-            ? copy.orderedFor(user.name, user.company, customer.name)
-            : copy.orderedBy(user.name, user.company)
-        }
+    <>
+      <title>{`${copy.title} | Sulzer`}</title>
+      <EshopHeader
+        breadcrumb={[
+          ...eshopPages.breadcrumb,
+          { label: eshopPages.cart.title, to: '/eshop/cart' },
+          { label: copy.title },
+        ]}
         title={copy.title}
-        description={copy.intro}
       />
 
-      <form
-        onSubmit={placeOrder}
-        className="site-container grid items-start gap-8 pt-10 pb-24 lg:grid-cols-[minmax(0,1fr)_420px]"
-      >
-        <div className="grid gap-6">
-          {partner && (
-            <CheckoutSection
-              step={1}
-              title={copy.customer.title}
-              aside={<p className="text-sm text-text-muted">{copy.customer.hint}</p>}
-            >
-              <div className="grid gap-3 sm:grid-cols-2">
-                {customers.map((c) => (
-                  <ChoiceCard
-                    key={c.id}
-                    name="customer"
-                    value={c.id}
-                    checked={c.id === customer.id}
-                    onChange={() => {
-                      setCustomerId(c.id)
-                      setAddressId(undefined)
-                    }}
-                  >
-                    <span className="flex items-center gap-3">
-                      <span className="flex size-11 shrink-0 items-center justify-center rounded-md border border-border bg-white">
-                        <CustomerLogo customerId={c.id} variant="mark" className="h-7" />
-                      </span>
-                      <span className="min-w-0">
-                        <span className="block font-semibold text-navy-900">{c.name}</span>
-                        <span className="mt-0.5 block text-sm text-text-muted tabular-nums">
-                          {copy.customer.number(c.customerNumber, c.city)}
-                        </span>
-                      </span>
-                    </span>
-                  </ChoiceCard>
-                ))}
-              </div>
-            </CheckoutSection>
-          )}
-
-          <CheckoutSection
-            step={step(1)}
-            title={copy.address.title}
-            aside={
-              <p className="text-sm text-text-muted">
-                {partner ? copy.address.fromCustomer(customer.name) : copy.address.fromAccount}
-              </p>
-            }
-          >
-            <div className="grid gap-3 sm:grid-cols-2">
-              {addresses.map((a) => (
-                <ChoiceCard
-                  key={a.id}
-                  name="address"
-                  value={a.id}
-                  checked={a.id === address.id}
-                  onChange={() => setAddressId(a.id)}
-                >
-                  <span className="block font-semibold text-navy-900">{a.label}</span>
-                  <span className="mt-1 block text-sm leading-relaxed text-text-muted">
-                    {a.lines.map((text) => (
-                      <span key={text} className="block">
-                        {text}
-                      </span>
-                    ))}
-                  </span>
-                </ChoiceCard>
-              ))}
+      <section className="min-h-[480px] bg-surface-muted">
+        <div className="site-container py-10">
+          {!user ? (
+            <SignInRequired />
+          ) : cart.items.length === 0 ? (
+            // Also shown for a moment after placing the order, until the confirmation opens.
+            <div className="flex justify-center py-16">
+              {placing ? (
+                <LoaderCircle className="size-8 animate-spin text-primary" />
+              ) : (
+                <Link to="/eshop/cart" className="font-semibold text-primary hover:underline">
+                  {eshopPages.cart.empty.title}
+                </Link>
+              )}
             </div>
-          </CheckoutSection>
-
-          <CheckoutSection step={step(2)} title={copy.delivery.title}>
-            <div className="grid gap-3">
-              {deliveryOptions.map((o) => (
-                <ChoiceCard
-                  key={o.id}
-                  name="delivery"
-                  value={o.id}
-                  checked={o.id === option.id}
-                  onChange={() => setOptionId(o.id)}
-                  aside={
-                    <span className="font-semibold text-navy-900 tabular-nums">
-                      {o.price === 0 ? copy.delivery.free : formatMoney(o.price)}
-                    </span>
-                  }
-                >
-                  <span className="block font-semibold text-navy-900">{o.label}</span>
-                  <span className="mt-0.5 block text-sm text-text-muted">{o.detail}</span>
-                  <span className="mt-1.5 block text-sm font-medium text-success-strong">
-                    {copy.delivery.expected(formatDate(expectedDelivery(parts, o)))}
-                  </span>
-                </ChoiceCard>
-              ))}
-            </div>
-          </CheckoutSection>
-
-          <CheckoutSection step={step(3)} title={copy.reference.title}>
-            <label className="flex max-w-md flex-col gap-1.5 text-sm">
-              <span className="font-semibold text-navy-900">{copy.reference.po}</span>
-              <input
-                type="text"
-                name="po"
-                value={poNumber}
-                onChange={(e) => setPoNumber(e.target.value)}
-                placeholder={copy.reference.poPlaceholder}
-                className="h-11 rounded-md border border-border-strong bg-white px-3.5 text-[15px] text-text transition-[border-color,box-shadow] placeholder:text-text-subtle focus:border-primary focus:shadow-[0_0_0_4px_var(--sz-color-primary-tint-strong)] focus-visible:outline-none"
-              />
-              <span className="text-text-muted">{copy.reference.poHint}</span>
-            </label>
-          </CheckoutSection>
-        </div>
-
-        <div className="lg:sticky lg:top-[calc(var(--sz-header-height)+24px)]">
-          <CartSummary
-            totals={totals}
-            shipping={option.price}
-            before={
-              <>
-                <ul className="mt-5 divide-y divide-border border-y border-border text-sm">
-                  {items.map(({ line, part, price }) => (
-                    <li
-                      key={`${line.partId}-${line.assetId ?? ''}`}
-                      className="flex items-baseline gap-4 py-3"
-                    >
-                      <span className="w-8 shrink-0 font-semibold text-navy-900 tabular-nums">
-                        {line.quantity}×
-                      </span>
-                      <span className="min-w-0 flex-1 text-navy-900">{part.name}</span>
-                      <span className="text-navy-900 tabular-nums">
-                        {formatMoney(price.net * line.quantity)}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+          ) : (
+            <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
+              <div className="min-w-0 space-y-6">
                 {partner && (
-                  <p className="mt-4 flex items-baseline justify-between gap-6 text-[15px]">
-                    <span className="text-text-muted">{copy.summary.customer}</span>
-                    <span className="text-right font-semibold text-navy-900">{customer.name}</span>
-                  </p>
+                  <div className={card}>
+                    <NumberedStep number={1} title={partnerCheckout.title}>
+                      <p className="mb-3 text-sm text-text-muted">{partnerCheckout.hint}</p>
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        {customers.map((c) => (
+                          <ChoiceCard
+                            key={c.id}
+                            name={`${ids}-customer`}
+                            checked={c.id === customer.id}
+                            onChange={() => {
+                              setCustomerId(c.id)
+                              setAddressId('')
+                            }}
+                          >
+                            <span className="flex items-center gap-3">
+                              <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-border bg-white">
+                                <CustomerLogo customerId={c.id} variant="mark" className="h-5" />
+                              </span>
+                              <span className="min-w-0">
+                                <span className="block font-semibold text-navy-900">{c.name}</span>
+                                <span className="block text-sm text-text-muted">
+                                  {partnerCheckout.number(c.customerNumber, c.city)}
+                                </span>
+                              </span>
+                            </span>
+                          </ChoiceCard>
+                        ))}
+                      </div>
+                    </NumberedStep>
+                  </div>
                 )}
-                <p
-                  className={`flex items-baseline justify-between gap-6 text-[15px] ${partner ? 'mt-2' : 'mt-4'}`}
+                <div className={card}>
+                  <NumberedStep number={step(1)} title={copy.steps.delivery}>
+                    <p className="mb-2 text-sm font-semibold text-navy-900">{copy.address}</p>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {addresses.map((a) => (
+                        <ChoiceCard
+                          key={a.id}
+                          name={`${ids}-address`}
+                          checked={address.id === a.id}
+                          onChange={() => setAddressId(a.id)}
+                        >
+                          <span className="flex items-center gap-1.5 font-semibold text-navy-900">
+                            <MapPin className="size-4 text-primary" />
+                            {a.name}
+                          </span>
+                          {a.lines.map((line) => (
+                            <span key={line} className="block text-text-muted">
+                              {line}
+                            </span>
+                          ))}
+                        </ChoiceCard>
+                      ))}
+                    </div>
+
+                    <p className="mt-6 mb-2 text-sm font-semibold text-navy-900">
+                      {copy.deliveryDate}
+                    </p>
+                    <div className="grid gap-3">
+                      <ChoiceCard
+                        name={`${ids}-delivery`}
+                        checked={delivery === 'complete'}
+                        onChange={() => setDelivery('complete')}
+                      >
+                        <span className="block font-semibold text-navy-900">
+                          {copy.complete(formatDate(dates.latest))}
+                        </span>
+                        <span className="block text-sm text-text-muted">{copy.completeHint}</span>
+                      </ChoiceCard>
+                      {dates.earliest !== dates.latest && (
+                        <ChoiceCard
+                          name={`${ids}-delivery`}
+                          checked={delivery === 'partial'}
+                          onChange={() => setDelivery('partial')}
+                        >
+                          <span className="block font-semibold text-navy-900">
+                            {copy.partial(formatDate(dates.earliest))}
+                          </span>
+                          <span className="block text-sm text-text-muted">{copy.partialHint}</span>
+                        </ChoiceCard>
+                      )}
+                    </div>
+                  </NumberedStep>
+                </div>
+
+                <div className={card}>
+                  <NumberedStep number={step(2)} title={copy.steps.payment}>
+                    <ChoiceCard name={`${ids}-payment`} checked>
+                      <span className="flex items-center gap-1.5 font-semibold text-navy-900">
+                        <CreditCard className="size-4 text-primary" />
+                        {copy.payment}
+                      </span>
+                      <span className="block text-sm text-text-muted">
+                        {copy.paymentHint(customerAccount.customerNumber)}
+                      </span>
+                    </ChoiceCard>
+                  </NumberedStep>
+                </div>
+
+                <div className={card}>
+                  <NumberedStep number={step(3)} title={copy.steps.review}>
+                    <dl className="grid gap-x-8 gap-y-4 text-[15px] sm:grid-cols-3">
+                      <div>
+                        <dt className="text-sm text-text-muted">{copy.orderedBy}</dt>
+                        <dd className="font-semibold text-navy-900">{user?.name}</dd>
+                        <dd className="text-text-muted">{user?.company}</dd>
+                        {partner && (
+                          <dd className="text-text-muted">
+                            {partnerCheckout.orderedFor}{' '}
+                            <span className="font-semibold text-navy-900">{customer.name}</span>
+                          </dd>
+                        )}
+                      </div>
+                      <div>
+                        <dt className="text-sm text-text-muted">{copy.deliverTo}</dt>
+                        <dd className="font-semibold text-navy-900">{address.name}</dd>
+                        <dd className="text-text-muted">
+                          {delivery === 'complete'
+                            ? formatDate(dates.latest)
+                            : `${formatDate(dates.earliest)} – ${formatDate(dates.latest)}`}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt className="text-sm text-text-muted">{copy.reference}</dt>
+                        <dd className="font-semibold text-navy-900">{cart.reference || '–'}</dd>
+                        <dd>
+                          <Link
+                            to="/eshop/cart"
+                            className="text-sm font-semibold text-primary hover:underline"
+                          >
+                            {copy.edit}
+                          </Link>
+                        </dd>
+                      </div>
+                    </dl>
+                    <div className="mt-6">
+                      <CartLines items={cart.items} readOnly />
+                    </div>
+                  </NumberedStep>
+                </div>
+              </div>
+
+              <OrderSummary items={cart.items}>
+                <button
+                  type="button"
+                  onClick={placeOrder}
+                  disabled={placing}
+                  className="flex h-12 w-full items-center justify-center gap-2 rounded-pill bg-primary font-semibold text-white shadow-raised transition-colors hover:bg-primary-hover disabled:cursor-wait"
                 >
-                  <span className="text-text-muted">{copy.summary.expected}</span>
-                  <span className="font-semibold text-success-strong">
-                    {formatDate(expectedDelivery(parts, option))}
-                  </span>
+                  {placing ? (
+                    <LoaderCircle className="size-[18px] animate-spin" />
+                  ) : (
+                    <Check className="size-[18px]" />
+                  )}
+                  {placing ? copy.placing : copy.place}
+                </button>
+                <p className="mt-3 text-center text-xs text-text-muted">
+                  {copy.terms}{' '}
+                  <Link to="/terms-of-sale" className="font-semibold text-primary hover:underline">
+                    {copy.termsLink}
+                  </Link>
+                  .
                 </p>
-              </>
-            }
-          >
-            <button
-              type="submit"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-pill bg-primary px-6 text-[15px] font-semibold text-white transition-colors hover:bg-primary-hover"
-            >
-              <Lock className="size-4" strokeWidth={2} />
-              {copy.summary.place}
-            </button>
-            <p className="text-center text-xs text-text-muted">
-              {copy.summary.terms}{' '}
-              <Link
-                to={copy.summary.termsLink.to}
-                className="font-semibold text-primary underline-offset-4 hover:underline"
-              >
-                {copy.summary.termsLink.label}
-              </Link>
-            </p>
-          </CartSummary>
+              </OrderSummary>
+            </div>
+          )}
         </div>
-      </form>
-    </div>
+      </section>
+    </>
   )
 }

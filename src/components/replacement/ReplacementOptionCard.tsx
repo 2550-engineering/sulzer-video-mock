@@ -4,7 +4,7 @@ import { replacementPage } from '../../data/replacement'
 import { groupThousands } from '../../lib/format'
 import { formatPrice } from '../../lib/modelSpecs'
 import { priceFor } from '../../lib/pricing'
-import type { ReplacementOption } from '../../lib/replacement'
+import type { ReplacementOption } from '../../lib/pumpReplacement'
 import { AvailabilityBadge } from '../product/AvailabilityBadge'
 
 const copy = replacementPage.options

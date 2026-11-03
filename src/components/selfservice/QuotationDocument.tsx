@@ -3,7 +3,7 @@ import { issuers } from '../../data/quotations'
 import { quotationPage } from '../../data/selfServicePages'
 import { formatDate } from '../../lib/format'
 import { formatMoney, netPrice, quotationTotals } from '../../lib/selfService'
-import type { Quotation } from '../../types'
+import type { SalesQuotation } from '../../types'
 import { PartnerLogo } from '../PartnerLogo'
 import { SulzerLogo } from '../SulzerLogo'
 
@@ -16,7 +16,7 @@ const label = 'text-[11px] font-semibold tracking-[0.12em] text-text-muted upper
  * partner's own logo with "Authorised Sulzer distributor"), the customer as
  * recipient, lines with discount and net amounts, totals, terms and a signature.
  */
-export function QuotationDocument({ quotation }: { quotation: Quotation }) {
+export function QuotationDocument({ quotation }: { quotation: SalesQuotation }) {
   const issuer = issuers[quotation.issuer]
   const customer = customers.find((c) => c.id === quotation.customerId)
   const totals = quotationTotals(quotation)

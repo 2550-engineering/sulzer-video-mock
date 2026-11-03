@@ -66,7 +66,9 @@ Deck slides 11 (end user / asset owner), 12 (end user IoT) and 13 (channel partn
 
 P5 and P6 are also needed by the service provider (slide 9) and consultant (slide 10) videos. Build them persona-agnostic and reusable: no end-user or partner wording baked into the components, persona-specific bits (prices, "on behalf of" a customer) passed in as props or read from the signed-in persona.
 
-Personas: `endUser` (Emma Lindqvist, Nordvatten Utilities) and `channelPartner` (Lars Ek, Aqua Pumpteknik). To add one (service provider, consultant), add an entry to `personas`; auth and the Shift+D panel pick it up.
+Personas: `endUser` (Emma Lindqvist, Nordvatten Utilities; also the service provider workshop demo, slide 9), `consultant` (Anna Berg, Nordic Water Consulting, slide 10) and `channelPartner` (Lars Ek, Aqua Pumpteknik). To add one, add its id to `PersonaId` in `src/types.ts` and an entry to `personas`; auth, the Shift+D panel and the per-persona project store pick it up.
+
+Spare parts, exploded drawings, the cart and checkout, the discontinued-product replacement finder and tender texts are shared components from the slide 9 and 10 work. Persona-specific bits are layered on top: partner net prices (`lib/pricing.ts`), "order on behalf of customer" at checkout, and the installed-pump replacement finder at `/products/replacement/existing-pump`.
 
 ## Images
 

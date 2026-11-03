@@ -2,11 +2,11 @@ import { BadgeCheck, Gauge, Zap } from 'lucide-react'
 import type { DutyPoint, ImageSource, NavItem } from '../types'
 
 /*
- * Replacement finder (/products/replacement). Copy, and the duty points the
+ * Replacement of an installed pump (/products/replacement/existing-pump). Copy, and the duty points the
  * installed pumps really run at. Figures are invented: see docs/content-to-confirm.md.
  */
 
-export const replacementPath = '/products/replacement'
+export const replacementPath = '/products/replacement/existing-pump'
 
 /** How the finder starts: a serial number, a Sulzer type or another brand. Also the URL params. */
 export type ReplacementMode = 'serial' | 'type' | 'other'

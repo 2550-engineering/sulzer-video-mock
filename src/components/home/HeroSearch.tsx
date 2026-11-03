@@ -1,25 +1,23 @@
 import { Search } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router'
+import { searchScopes } from '../../data/catalogPages'
 import { hero } from '../../data/home'
 import { useSearchSuggest } from '../../hooks/useSearchSuggest'
-import { normalizeQuery, searchPath } from '../../lib/search'
+import { scopePath } from '../../lib/search'
+import { ScopeSelect } from '../search/ScopeSelect'
 import { SearchSuggestions } from '../search/SearchSuggestions'
-import { ScopeSelect } from './ScopeSelect'
 
-/** Scoped search box in the home hero, with suggestions. Products, Applications and Documentation open the search results. */
+/** Scoped search box in the home hero ("Find a Sulzer product"), with suggestions for the scope. */
 export function HeroSearch() {
   const navigate = useNavigate()
-  const [scope, setScope] = useState(hero.searchScopes[0])
+  const [scope, setScope] = useState<(typeof searchScopes)[number]>(searchScopes[0])
   const [term, setTerm] = useState('')
-  const { inputProps, panelProps } = useSearchSuggest(term)
+  const { inputProps, panelProps } = useSearchSuggest(term, scope.id)
+  const placeholder = ('placeholder' in scope && scope.placeholder) || hero.searchLabel
 
-  /** Searchable scopes open their tab of the results page; the rest get `?q=` on their own page. */
   function search(value: string) {
-    const q = normalizeQuery(value)
-    if (!q) return navigate(scope.to)
-    if ('resultsTab' in scope) return navigate(searchPath(q, scope.resultsTab))
-    navigate(`${scope.to}?q=${encodeURIComponent(q)}`)
+    navigate(scopePath(value, scope.id))
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -36,14 +34,14 @@ export function HeroSearch() {
           onSubmit={handleSubmit}
           className="flex h-16 items-center rounded-lg bg-white p-2 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.55)] transition-shadow focus-within:shadow-[0_0_0_4px_rgba(110,168,240,0.45),0_24px_60px_-20px_rgba(0,0,0,0.55)]"
         >
-          <ScopeSelect options={hero.searchScopes} value={scope} onChange={setScope} />
+          <ScopeSelect options={searchScopes} value={scope} onChange={setScope} />
           <input
             {...inputProps}
             type="text"
             value={term}
             onChange={(event) => setTerm(event.target.value)}
-            aria-label={hero.searchLabel}
-            placeholder={hero.searchLabel}
+            aria-label={placeholder}
+            placeholder={placeholder}
             className="h-full min-w-0 flex-1 bg-transparent px-5 text-lg text-text placeholder:text-text-subtle focus-visible:outline-none"
           />
           <button

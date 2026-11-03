@@ -13,7 +13,7 @@ import {
   Users,
   Wrench,
 } from 'lucide-react'
-import { demoUser, products } from '../config/demo'
+import { products } from '../config/demo'
 import type { IconItem, ImageSource, LinkCard, NavItem } from '../types'
 import { supportSection } from './home'
 
@@ -33,7 +33,7 @@ export const intro = {
   ],
   signInLabel: 'Sign in to mySulzer',
   signedInLabel: 'Go to My Pages',
-  signedInNote: `Signed in as ${demoUser.name} · ${demoUser.company}`,
+  signedInNote: (name: string, company: string) => `Signed in as ${name} · ${company}`,
   createAccountLabel: 'Create an account',
   /** Where "Sign in" and "Go to My Pages" lead. */
   myPagesPath: '/my-pages',

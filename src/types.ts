@@ -1,7 +1,7 @@
 import type { LucideIcon } from 'lucide-react'
 
-/** A customer (asset owner) or a Sulzer channel partner. */
-export type PersonaKind = 'customer' | 'partner'
+/** A customer (asset owner), a Sulzer channel partner or a consultant. */
+export type PersonaKind = 'customer' | 'partner' | 'consultant'
 
 /** A demo persona. The ids are the keys of `personas` in config/demo.ts. */
 export type User = {
@@ -19,6 +19,9 @@ export type User = {
   /** Partners only. */
   partner?: { type: string; region: string }
 }
+
+/** Who the presenter signs in as: the end user (maintenance), the consultant or the channel partner. */
+export type PersonaId = 'endUser' | 'consultant' | 'channelPartner'
 
 export type NavItem = {
   label: string
@@ -150,6 +153,8 @@ export type ActivityItem = {
   icon: LucideIcon
   /** Amber icon, for alerts. */
   tone?: 'warning'
+  /** Shown only to this persona, e.g. a link to one of their projects. */
+  persona?: PersonaId
 }
 
 /* ── Catalogue (Phase 2 templates) ─────────────────────────────────────────── */
@@ -376,6 +381,8 @@ export type Product = {
   /** Pumps only. Sensors, controllers and software have none. */
   keySpecs?: KeySpecs
   tabSet: ProductTabSet
+  /** Where "View" in product lists goes, when not the product page. No product sets it now. */
+  viewTo?: string
   /** The header button, in place of "Size product", e.g. "Open Sulzer Connect". */
   action?: NavItem
   /** First image is the main product shot. */
@@ -427,77 +434,362 @@ export type ProductModel = {
   leadTime: string
 }
 
-/** Spare part groups, in parts-list order. The BOM filters by them. */
-export type SparePartGroup =
-  | 'Casing & hydraulics'
-  | 'Shaft & seal'
-  | 'Bearings'
-  | 'Gaskets & O-rings'
-  | 'Drive'
-  | 'Motor & cable'
-  | 'Service kits'
+/** Stock situation of an orderable article: a pump variant, a spare part or a service kit. */
+export type StockStatus = 'in-stock' | 'lead-time' | 'made-to-order' | 'discontinued'
 
-/** One line of a kit: a part from the same parts list, and how many the kit holds. */
-export type KitItem = { partId: string; quantity: number }
+export type Availability = {
+  status: StockStatus
+  /** As shown, e.g. "In stock – ships in 2 days" or "2–3 weeks". */
+  leadTime: string
+  /** Working days to dispatch, for delivery dates. */
+  leadTimeDays: number
+}
+
+/** One configured, orderable article of a product: motor, voltage, cable and approvals fixed. */
+export type ProductVariant = {
+  /** The product number. Also the URL slug: /products/<productId>/<id>. */
+  id: string
+  productId: string
+  /** ProductModel id, e.g. "xfp-150-e". */
+  modelId: string
+  /** Long model code, e.g. "XFP 150E CB1.6 PE220/4-D01 *10-ST". */
+  code: string
+  productNumber: string
+  /** Category badge above the code. */
+  category: string
+  frequency: 50 | 60
+  phase: 1 | 3
+  /** Rated motor power P2, kW. */
+  power: number
+  /** Rated speed, rpm. */
+  speed: number
+  voltage: string
+  ipClass: string
+  housingMaterial: string
+  impeller: { type: string; material: string; diameter: number }
+  /** Nominal connection sizes, DN. */
+  connection: { inlet: number; outlet: number }
+  /** Max. ambient (liquid) temperature, °C. */
+  maxAmbientTemp: number
+  exApproved: boolean
+  /** m. */
+  cableLength: number
+  /** kg. */
+  weight: number
+  /** In `market.currency`, excl. VAT. Signed-in users only. */
+  listPrice: number
+  availability: Availability
+  /** Ids of the applications it suits (links to the application pages). */
+  applicationIds: string[]
+  /** No longer sold; `successorId` is the variant that replaces it. */
+  discontinued?: { year: number; successorId: string }
+}
+
+export type FitNoteKind = 'ok' | 'warning' | 'info'
+
+/** What it takes to replace a discontinued variant with its successor, beyond the spec comparison. */
+export type ReplacementInfo = {
+  /** Needed to fit the successor in the old installation, offered with it. */
+  adapterKit?: {
+    partNumber: string
+    name: string
+    listPrice: number
+    availability: Availability
+  }
+  notes: { kind: FitNoteKind; text: string }[]
+}
 
 /**
- * A genuine spare part. Parts lists (BOMs) are per model: see data/spareParts.ts.
- * Show prices and lead times through lib/pricing.ts, never `listPrice` directly.
+ * One orderable size or configuration in the product search results: a
+ * configured variant (XFP) or a model (AHLSTAR), in the same shape so they
+ * list, filter, sort and chart alike.
  */
+export type ResultArticle = {
+  /** Variant or model id. */
+  id: string
+  kind: 'variant' | 'model'
+  productId: string
+  /** Full model code, e.g. "XFP 150E CB1.6 PE220/4-D01 *10-ST" or "AHLSTAR 100-80-250". */
+  code: string
+  productNumber: string
+  /** Category badge. */
+  category: string
+  /** The ProductModel it is (or is built on), for CAD and drawings. */
+  modelId: string
+  /** e.g. "3×400 V, 50 Hz", in the curve legend. */
+  supply: string
+  applicationIds: string[]
+  frequency: 50 | 60
+  phase: 1 | 3
+  /** P2, kW. */
+  power: number
+  /** rpm. */
+  speed: number
+  housing: string
+  /** DN. */
+  inlet: number
+  outlet: number
+  /** End of the curve, m³/h. */
+  maxFlow: number
+  /** Shut-off head, m. */
+  maxHead: number
+  exApproved: boolean
+  impellerType: string
+  impellerDiameter: number
+  ipClass: string
+  listPrice: number
+  availability: Availability
+  discontinued?: { year: number; successorId: string }
+  /** Where the code links: the configured product page, or the model on the Models tab. */
+  to: string
+  /** Performance curve for "Show curve", running at its rated point. */
+  curve: CurveSeries
+  /** Speed / curve reference speed, for NPSH. */
+  speedRatio: number
+  rated: OperatingPoint
+}
+
+/** What a tender text says about a pump: built from a sized pump, a variant or a model. */
+export type TenderSubject = {
+  productId: string
+  kind: 'end-suction' | 'submersible'
+  /** Full model name or code. */
+  model: string
+  productNumber: string | null
+  quantity: number
+  /** In a project: position number and the customer's tag. */
+  position?: { number: number; tag: string }
+  /** Application name, e.g. "Surface water intake". */
+  application?: string
+  /** The duty point it was sized for, if any. */
+  duty?: { flow: number; head: number; liquid: string; temperature: number }
+  /** Where it runs: the operating point (sized) or the rated point. */
+  hydraulic: {
+    flow: number
+    head: number
+    efficiency: number
+    npshr?: number
+    speed: number
+    impeller: number
+  }
+  materials: { casing: string; impeller: string; shaft: string; wearParts: string }
+  /** "SD" / "DD" (sized), the model's shaft seal, or "submersible". */
+  seal:
+    'SD' | 'DD' | 'Packing' | 'Single mechanical seal' | 'Double mechanical seal' | 'submersible'
+  motor: {
+    power: number
+    voltage: string
+    frequency: 50 | 60
+    poles: number
+    efficiencyClass: string
+    enclosure: string
+  }
+  connections: { suction?: number; discharge: number }
+  exApproved?: boolean
+  /** m, submersibles. */
+  cableLength?: number
+}
+
+export type TenderLanguage = 'en' | 'sv' | 'de'
+
+export type TenderOptions = {
+  language: TenderLanguage
+  detail: 'short' | 'full'
+  includeDuty: boolean
+  orEqual: boolean
+}
+
+export type TenderSection = {
+  title: string
+  paragraphs: string[]
+  /** Label–value lines, e.g. ["Flow rate", "220 m³/h"]. */
+  rows?: [string, string][]
+  /** Bulleted items. */
+  items?: string[]
+}
+
+/** One product's text; in a project document, headed by its position. */
+export type TenderPart = { heading?: string; sections: TenderSection[] }
+
+export type TenderDocument = { title: string; subtitle?: string; parts: TenderPart[] }
+
+/** A recommended service interval, in years of operation. */
+export type ServiceInterval = 2 | 5
+
+/** One line of a variant's bill of material. */
 export type SparePart = {
   /** Same as the part number. */
   id: string
-  /** 8 digits, e.g. "62016308". */
-  partNumber: string
+  /** Position number on the exploded drawing, e.g. "501". */
+  position: string
   name: string
-  productId: string
-  /** The models it fits. Parts shared by a bearing unit fit several sizes. */
-  modelIds: string[]
-  group: SparePartGroup
-  /** Item number on the sectional drawing. Service kits that span the pump have none. */
-  position?: number
-  /** How many one pump has. */
+  partNumber: string
+  /** Quantity in the pump. */
   quantity: number
-  /** Per unit in `market.currency`, excl. VAT. Signed-in users only. */
+  /** PartGroup id. */
+  groupId: string
+  material: string
+  /** Each, in `market.currency`, excl. VAT. */
   listPrice: number
-  availability: ModelAvailability
-  image: ImageSource
-  /** Kits only: what is in the kit. */
-  contains?: KitItem[]
-  /** Kits only: when to fit it, e.g. "Every 2 years or 16 000 h". */
-  interval?: string
+  /** Each, after the customer's discount. */
+  netPrice: number
+  availability: Availability
+  /** First recommended replacement, if it is a service part. */
+  recommendedAfter?: ServiceInterval
+  /** Id of the part on the exploded drawing. */
+  hotspot: string
 }
 
-/** A hotspot on a sectional drawing: the part position and where it sits, in % of the drawing. */
-export type DrawingHotspot = { position: number; x: number; y: number }
+/** An assembly in the spare parts tree, e.g. "Shaft seal". */
+export type PartGroup = { id: string; name: string }
 
-/**
- * A product's sectional drawing. Either a cut-away image or one of the SVG drawings in
- * components/spareparts (by key). Every model of the product shares it.
- */
-export type SectionalDrawing = {
-  /** Width / height, e.g. "845 / 929". Hotspot % are of this box. */
-  aspect: string
-  hotspots: DrawingHotspot[]
-} & ({ kind: 'image'; image: ImageSource } | { kind: 'svg'; svg: 'xfp'; title: string })
-
-/** One cart line. The same part for two assets is two lines. */
-export type CartLine = {
-  partId: string
-  quantity: number
-  /** The installed unit it is for (asset id), when added from an asset or serial number. */
-  assetId?: string
+/** Parts sold together: recommended service parts for an interval, or a named kit ("Kit, impeller"). */
+export type ServiceKit = {
+  id: string
+  name: string
+  /** Set for the recommended service parts of an interval; named kits have none. */
+  years?: ServiceInterval
+  partNumber: string
+  items: { partId: string; quantity: number }[]
+  listPrice: number
+  netPrice: number
+  availability: Availability
 }
 
-/** How a checkout order ships. */
-export type DeliveryOption = {
+/** A production version of the pump. Parts listed in `changes` differ from the current BOM. */
+export type ProductVersion = {
   id: string
   label: string
-  detail: string
-  /** In `market.currency`, excl. VAT. */
-  price: number
-  /** Working days from dispatch to delivery. */
-  days: number
+  /** Production code (year and week, YYWW) range, as on the rating plate. */
+  productionCode: { from?: string; until?: string }
+  changes: Record<
+    string,
+    Pick<SparePart, 'name' | 'partNumber' | 'material' | 'listPrice' | 'netPrice' | 'availability'>
+  >
+}
+
+/**
+ * A primitive of the exploded drawing, in drawing units. Paths use absolute
+ * M, L, C and Z commands only, so their points give their bounds.
+ */
+export type DrawingShape =
+  /** A vertical cylinder seen slightly from above: top ellipse, sides, bottom arc. */
+  | { kind: 'cylinder'; cx: number; y: number; w: number; h: number; ry: number }
+  /** A horizontal cylinder seen slightly from the left: left end ellipse, sides, right arc. */
+  | { kind: 'hcylinder'; x: number; cy: number; l: number; d: number; rx: number }
+  /** An O-ring, gasket or washer seen from the side. */
+  | { kind: 'ring'; cx: number; cy: number; rx: number; ry: number; t: number }
+  | { kind: 'ellipse'; cx: number; cy: number; rx: number; ry: number }
+  | { kind: 'rect'; x: number; y: number; w: number; h: number }
+  /** A screw standing upright: hexagon head, shank and thread lines. */
+  | { kind: 'bolt'; cx: number; y: number; length: number; d: number }
+  /** A cable or wire: a path drawn as a tube `w` wide. */
+  | { kind: 'tube'; d: string; w: number }
+  /** A front edge line around a cylinder at height `y`, e.g. a flange or band. */
+  | { kind: 'band'; cx: number; y: number; w: number; ry: number }
+  /** The same around a horizontal cylinder at `x`. */
+  | { kind: 'hband'; x: number; cy: number; d: number; rx: number }
+  /** Any outline; `open` paths are detail lines without fill. */
+  | { kind: 'path'; d: string; open?: boolean }
+
+/** One clickable part on the drawing, with its position-number callout. */
+export type DrawingHotspot = {
+  /** Matches `SparePart.hotspot`. */
+  id: string
+  shapes: DrawingShape[]
+  /** Leader line from a point on the part to the position-number circle. */
+  callout: { from: [number, number]; to: [number, number] }
+}
+
+export type ExplodedDrawing = {
+  id: string
+  /** Drawing number, e.g. "TD-XFP150E-01". */
+  number: string
+  title: string
+  width: number
+  height: number
+  /** Radius of the position-number circles, in drawing units (default 14). */
+  calloutRadius?: number
+  /** Centre lines (dash-dot), one per column (or row) of the explosion. */
+  axes: { x1: number; y1: number; x2: number; y2: number }[]
+  /** In drawing order: later parts are drawn over earlier ones. */
+  hotspots: DrawingHotspot[]
+}
+
+export type CartItemKind = 'part' | 'kit' | 'product'
+
+/** A line in the cart. Price and lead time are copied when added, like a real basket. */
+export type CartItem = {
+  /** `${kind}:${refId}`; adding the same article again raises the quantity. */
+  id: string
+  kind: CartItemKind
+  /** Part id, kit id or variant id. */
+  refId: string
+  partNumber: string
+  name: string
+  /** Position on the exploded drawing (parts only). */
+  position?: string
+  /** The variant or model it belongs to (the variant itself for kind "product"). */
+  variantId: string
+  /** Exploded drawing and hotspot, for the part thumbnail. */
+  drawing?: { id: string; hotspot: string }
+  quantity: number
+  /** Each, in `market.currency`, excl. VAT. */
+  unitPrice: number
+  /** Partners: the list price before their discount (`unitPrice` is their net price). */
+  listPrice?: number
+  availability: Availability
+}
+
+export type DeliveryOption = 'partial' | 'complete'
+
+export type Order = {
+  /** "SO-104390". */
+  id: string
+  placedBy: string
+  company: string
+  lines: CartItem[]
+  reference: string
+  deliveryAddressId: string
+  /** When the address is not one of `eshop.deliveryAddresses`, e.g. a partner's customer's. */
+  deliveryAddress?: { name: string; lines: string[] }
+  /** Partners: the customer the order is on behalf of. */
+  customer?: { id: string; name: string }
+  delivery: DeliveryOption
+  subtotal: number
+  freight: number
+  vat: number
+  total: number
+  /** ISO dates. */
+  earliestDelivery: string
+  latestDelivery: string
+}
+
+/** A cart saved as a quotation request. */
+export type Quotation = { id: string; reference: string; lines: CartItem[]; total: number }
+
+/**
+ * Who a parts list belongs to: a configured variant (XFP, on its own page) or
+ * a model (AHLSTAR, on the product page's Spare parts tab).
+ */
+export type PartOwner = { id: string; productId: string; name: string; kind: 'variant' | 'model' }
+
+/** Spare parts of variants or models: groups, BOM, service kits and production versions. */
+export type SparePartCatalogue = {
+  id: string
+  productId: string
+  /** Variant ids (XFP) or model ids (AHLSTAR) this parts list is for. */
+  forIds: string[]
+  /** Exploded drawing the hotspots belong to. */
+  drawingId: string
+  groups: PartGroup[]
+  /** Current production version. */
+  parts: SparePart[]
+  kits: ServiceKit[]
+  /** The "Recommended spare parts" cards on the product page, in order. */
+  featured: { kind: 'part' | 'kit'; id: string }[]
+  /** Newest first; the first is the one `parts` describes. */
+  versions: ProductVersion[]
 }
 
 export type DocumentType =
@@ -511,6 +803,10 @@ export type DocumentType =
   | 'Certificate'
   | 'Data privacy sheet'
   | 'Service video'
+  | 'Dimensional drawing'
+  | 'Sectional drawing'
+  | 'Exploded view'
+  | 'Wiring diagram'
 
 export type Document = {
   id: string
@@ -556,18 +852,32 @@ export type CadFile = {
   date: string
 }
 
-export type SearchKind = 'product' | 'model' | 'document' | 'service' | 'application'
+export type SearchKind =
+  'product' | 'variant' | 'model' | 'part' | 'document' | 'service' | 'knowledge' | 'application'
+
+/** What a search field searches in (its scope dropdown). */
+export type SearchScope = 'products' | 'parts' | 'documents'
+
+/** A spare part with the variant or model whose parts list it is on. */
+export type PartHit = { part: SparePart; owner: PartOwner }
 
 /** One search hit. Carries the matched object, so each kind renders with its usual component. */
 export type SearchResult = { score: number } & (
   | { kind: 'product'; product: Product }
+  | { kind: 'variant'; variant: ProductVariant; product: Product }
   | { kind: 'model'; model: ProductModel; product: Product }
+  | ({ kind: 'part' } & PartHit)
   | { kind: 'document'; document: Document }
   | { kind: 'service'; service: Service }
+  | { kind: 'knowledge'; item: KnowledgeItem }
   | { kind: 'application'; application: Application }
 )
 
-export type ProjectStatus = 'Draft' | 'In progress' | 'Quoted'
+/** Project lifecycle, in order. Ordered and Archived projects are no longer active. */
+export type ProjectStatus = 'Concept design' | 'Detailed design' | 'Tender' | 'Ordered' | 'Archived'
+
+/** Where a product in a project stands. */
+export type ProjectItemStatus = 'Proposed' | 'For review' | 'Approved' | 'Quoted' | 'Ordered'
 
 /** A sized pump in a project. Rebuilt from its variant id and duty point, so curves and prices stay in step. */
 export type ProjectItem = {
@@ -581,6 +891,14 @@ export type ProjectItem = {
   quantity: number
   /** The sizing record this product came from, if any. */
   sizingId?: string
+  /** Saved from a comparison: "A", "B" or "C". */
+  alternative?: string
+  /** The alternative chosen in the comparison. */
+  preferred?: boolean
+  /** Alternatives saved from one comparison share this id. */
+  alternativeGroup?: string
+  /** Missing on older items: shown as "Proposed". */
+  status?: ProjectItemStatus
 }
 
 /** A whole sizing saved in a project: its input, filters and chosen products. */
@@ -604,15 +922,102 @@ export type SizingRecord = {
   note?: string
 }
 
+export type ProjectAccess = 'owner' | 'editor' | 'viewer'
+
 export type ProjectMember = {
+  id: string
   name: string
+  initials: string
+  email: string
+  company: string
   role: string
+  access: ProjectAccess
+  status: 'active' | 'invited'
+}
+
+/** A comment in the project discussion. Mentions are written as @[member id]. */
+export type ProjectComment = {
+  id: string
+  /** ProjectMember id. */
+  authorId: string
+  /** Display label, e.g. "Yesterday, 14:20" or "Just now". */
+  at: string
+  text: string
+  /** The product item the comment is about, if any. */
+  itemId?: string
+  /** One reply level. */
+  parentId?: string
+  resolved?: boolean
+}
+
+export type ProjectActivityKind =
+  | 'created'
+  | 'sizing'
+  | 'items'
+  | 'status'
+  | 'member'
+  | 'comment'
+  | 'tender'
+  | 'cad'
+  | 'upload'
+  | 'report'
+  | 'details'
+  | 'renamed'
+  | 'alternative'
+  | 'itemStatus'
+  | 'access'
+  | 'share'
+
+/** One entry in the project's activity log, newest first. */
+export type ProjectActivity = {
+  id: string
+  kind: ProjectActivityKind
+  /** ProjectMember id. */
+  actorId: string
+  at: string
+  /** Values for the entry's sentence, e.g. { status: 'Tender' } or { file: 'P&ID rev B.pdf' }. */
+  detail: Record<string, string>
+}
+
+export type ProjectDocumentKind =
+  'datasheet' | 'curves' | 'tender' | 'cad' | 'bim' | 'report' | 'package' | 'upload'
+
+/** A file in the project. Uploads are metadata only: nothing is read or stored. */
+export type ProjectDocument = {
+  id: string
+  kind: ProjectDocumentKind
+  /** File name, e.g. "P&ID rev B.pdf". */
+  title: string
+  /** PDF, DWG, DOCX, ZIP … */
+  format: string
+  size: string
+  /** ProjectMember id. */
+  addedBy: string
+  at: string
+  itemId?: string
+}
+
+/** Who a project is shared with. */
+export type ProjectShare = {
+  access: 'project' | 'specific'
+  /** With "specific": the member ids. */
+  memberIds: string[]
+  /** A read-only link for the client contact. */
+  clientReadOnly: boolean
+}
+
+export type ProjectClient = {
+  company: string
+  contact: string
+  /** Postal address, one line. */
+  address?: string
+  /** Site or location of the installation. */
+  site: string
+  email: string
 }
 
 export type Project = {
   id: string
-  /** The persona who owns it (a key of `personas` in config/demo.ts). Members also see it. */
-  owner: string
   /** Shown as "Ref no.", e.g. "P-2026-0318". */
   refNo: string
   /** Shown as "Project ID", e.g. "396088". */
@@ -634,9 +1039,20 @@ export type Project = {
    * it for a customer. "Share with customer" adds the client contact as a member.
    */
   clientAccount?: string
-  client: { company: string; contact: string; site: string; email: string }
+  client: ProjectClient
+  description?: string
+  /** The engineering firm the project is run by, e.g. the consultant's. */
+  consultantFirm?: string
+  /** EUR. */
+  budget?: number
+  /** Key requirements: duty points, standards, site conditions. */
+  requirements?: string[]
+  share?: ProjectShare
   items: ProjectItem[]
   sizings: SizingRecord[]
+  comments: ProjectComment[]
+  activity: ProjectActivity[]
+  documents: ProjectDocument[]
 }
 
 export type AssetStatus = 'ok' | 'warning' | 'alarm'
@@ -826,7 +1242,7 @@ export type TrackingEvent = {
  * A Sulzer order with track & trace. The seeds are in data/orders.ts; checkout adds
  * new ones through the self-service context (`addOrder`).
  */
-export type Order = {
+export type SalesOrder = {
   /** e.g. "SO-104382". */
   id: string
   customerId: string
@@ -875,7 +1291,7 @@ export type QuotationLine = {
   delivery: string
 }
 
-export type Quotation = {
+export type SalesQuotation = {
   /** e.g. "Q-10234". */
   id: string
   issuer: QuotationIssuer
@@ -1043,6 +1459,17 @@ export type PumpVariant = PumpConfiguration & {
 
 /** Where a pump curve meets the system curve through the duty point. */
 export type OperatingPoint = { flow: number; head: number }
+
+/** One pump curve to draw: the curve, its scaling and where it runs. */
+export type CurveSeries = {
+  id: string
+  name: string
+  curve: HydraulicCurve
+  scale: number
+  /** Impeller / max impeller, for the efficiency curve. */
+  trimRatio: number
+  operatingPoint: OperatingPoint
+}
 
 /** A variant evaluated at a duty point. All money in EUR. */
 export type SizingResult = {

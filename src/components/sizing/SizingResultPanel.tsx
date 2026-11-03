@@ -1,11 +1,13 @@
-import { FileText, FolderPlus } from 'lucide-react'
+import { FileText, FolderPlus, ScrollText } from 'lucide-react'
 import { useAuth } from '../../auth/useAuth'
-import { bom } from '../../data/eshop'
+import { priceCopy } from '../../data/pricing'
+import { tenderDialog } from '../../data/tenderTexts'
 import { sizingResultsPage as copy } from '../../data/sizingPages'
 import { seriesColors } from '../../lib/chartColors'
 import { keyFigureRows } from '../../lib/keyFigures'
 import { formatPrice } from '../../lib/modelSpecs'
 import { priceFor } from '../../lib/pricing'
+import { resultSeries } from '../../lib/sizing'
 import type { DutyPoint, SizingResult } from '../../types'
 import { Drawer } from '../Drawer'
 import { AvailabilityBadge } from '../product/AvailabilityBadge'
@@ -24,6 +26,7 @@ type SizingResultPanelProps = {
   onClose: () => void
   onAddToProject: (results: SizingResult[]) => void
   onDataSheet: (result: SizingResult) => void
+  onTenderText: (result: SizingResult) => void
 }
 
 /**
@@ -39,6 +42,7 @@ export function SizingResultPanel({
   onClose,
   onAddToProject,
   onDataSheet,
+  onTenderText,
 }: SizingResultPanelProps) {
   const { user } = useAuth()
   const shown = mode === 'compare' ? results.slice(0, 3) : results.slice(0, seriesColors.length)
@@ -65,7 +69,11 @@ export function SizingResultPanel({
     >
       {first && (
         <>
-          <SizingCurveChart results={shown} colors={seriesColors} duty={duty} />
+          <SizingCurveChart
+            curves={shown.map((result) => resultSeries(result, duty.frequency))}
+            colors={seriesColors}
+            duty={duty}
+          />
 
           {(mode === 'detail' || shown.length === 1) && (
             <div className="mt-8 grid gap-x-10 gap-y-6 md:grid-cols-[minmax(0,1fr)_14rem]">
@@ -85,11 +93,11 @@ export function SizingResultPanel({
                     {price && price.discount > 0 && (
                       <p className="text-xs text-text-muted tabular-nums">
                         <span className="line-through">
-                          {bom.listPrice(formatPrice(price.list))}
+                          {priceCopy.listPrice(formatPrice(price.list))}
                         </span>
                         <span className="font-semibold text-success-strong">
                           {' '}
-                          · {bom.discount(price.discount)}
+                          · {priceCopy.discount(price.discount)}
                         </span>
                       </p>
                     )}
@@ -113,6 +121,14 @@ export function SizingResultPanel({
                 >
                   <FileText className="size-4" />
                   {copy.panel.dataSheet}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onTenderText(first)}
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-pill border border-primary px-5 text-sm font-semibold text-primary transition-colors hover:bg-primary-tint"
+                >
+                  <ScrollText className="size-4" />
+                  {tenderDialog.open}
                 </button>
               </div>
             </div>

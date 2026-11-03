@@ -21,7 +21,7 @@ const zipMs = 1000
 type DocumentationTabProps = {
   product: Product
   documents: Document[]
-  /** Defaults to "Documentation". */
+  /** Defaults to "Documentation"; e.g. "Drawings" when it lists drawings. */
   title?: string
   /** Line under the heading. */
   intro?: string

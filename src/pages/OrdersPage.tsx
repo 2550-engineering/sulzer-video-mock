@@ -11,21 +11,21 @@ import { useUrlParams } from '../hooks/useUrlParams'
 import { daysBetween } from '../lib/format'
 import { isInTransit, isOpenOrder, ordersFor } from '../lib/selfService'
 import { useSelfService } from '../selfService/useSelfService'
-import type { Order } from '../types'
+import type { SalesOrder } from '../types'
 
 const filters = {
   open: isOpenOrder,
   transit: isInTransit,
-  delivered: (order: Order) =>
+  delivered: (order: SalesOrder) =>
     order.status === 'Delivered' && daysBetween(order.expectedDelivery, demoClock.today) <= 90,
-} satisfies Record<string, (order: Order) => boolean>
+} satisfies Record<string, (order: SalesOrder) => boolean>
 
 type Filter = keyof typeof filters
 
 const isFilter = (value: string | null): value is Filter =>
   value !== null && Object.hasOwn(filters, value)
 
-function matches(order: Order, query: string) {
+function matches(order: SalesOrder, query: string) {
   const q = query.trim().toLowerCase()
   if (!q) return true
   return [order.id, order.poNumber, ...order.lines.flatMap((l) => [l.partNumber, l.description])]

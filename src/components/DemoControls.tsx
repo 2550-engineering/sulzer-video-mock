@@ -28,7 +28,7 @@ function clearStorage() {
  * Renders nothing while closed, so it can never show up in a take.
  */
 export function DemoControls() {
-  const { user, persona: signedInAs, signIn, signOut } = useAuth()
+  const { user, persona, signIn, signOut } = useAuth()
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -83,19 +83,19 @@ export function DemoControls() {
           <RotateCcw className="size-[18px] text-primary-on-dark" />
           Reset demo
         </button>
-        {(Object.keys(personas) as PersonaId[]).map((persona) => (
+        {(Object.keys(personas) as PersonaId[]).map((id) => (
           <button
-            key={persona}
+            key={id}
             type="button"
             onClick={() => {
-              signIn(persona)
+              signIn(id)
               close()
             }}
-            disabled={persona === signedInAs}
+            disabled={user !== null && persona === id}
             className={`${actionButton} text-white enabled:hover:bg-white/10`}
           >
             <LogIn className="size-[18px] text-primary-on-dark" />
-            Sign in as {personas[persona].label.toLowerCase()}
+            Sign in as {personas[id].label.toLowerCase()}
           </button>
         ))}
       </div>

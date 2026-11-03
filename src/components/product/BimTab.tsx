@@ -1,4 +1,3 @@
-import { Download, FileCheck2, Sparkles } from 'lucide-react'
 import { cadFormats } from '../../data/cad'
 import { productPage } from '../../data/catalogPages'
 import { useFileGeneration } from '../../hooks/useFileGeneration'
@@ -10,6 +9,7 @@ import { SelectField } from '../SelectField'
 import { TabHeading } from '../TabHeading'
 import { BimPreview } from './BimPreview'
 import { CadFormatCard } from './CadFormatCard'
+import { FileGenerator } from './FileGenerator'
 import { NumberedStep } from './NumberedStep'
 
 const copy = productPage.bim
@@ -92,64 +92,20 @@ export function BimTab({ product, models }: BimTabProps) {
           </NumberedStep>
 
           <NumberedStep number={3} title={copy.generateStep}>
-            <div aria-live="polite">
-              {generation.status === 'idle' && (
-                <button
-                  type="button"
-                  onClick={generation.start}
-                  className="inline-flex h-12 items-center gap-2 rounded-pill bg-primary px-7 font-semibold text-white shadow-raised transition-colors hover:bg-primary-hover"
-                >
-                  <Sparkles className="size-[18px]" />
-                  {copy.generate}
-                </button>
-              )}
-
-              {generation.status === 'generating' && (
-                <div className="max-w-md animate-fade-in">
-                  <p className="text-sm font-semibold text-navy-900 tabular-nums">
-                    {copy.generating(generation.progress)}
-                  </p>
-                  <div
-                    role="progressbar"
-                    aria-valuenow={generation.progress}
-                    aria-valuemin={0}
-                    aria-valuemax={100}
-                    className="mt-2 h-2 overflow-hidden rounded-pill bg-surface-sunken"
-                  >
-                    <div
-                      className="h-full rounded-pill bg-linear-to-r from-primary to-accent-cyan transition-[width] duration-100 ease-linear"
-                      style={{ width: `${generation.progress}%` }}
-                    />
-                  </div>
-                </div>
-              )}
-
-              {generation.status === 'ready' && file && (
-                <div className="flex max-w-lg animate-fade-in items-center gap-4 rounded-lg border border-success/40 bg-success-tint px-5 py-4">
-                  <FileCheck2 className="size-8 shrink-0 text-success" strokeWidth={1.5} />
-                  <div className="min-w-0 flex-1">
-                    <p className="text-xs font-semibold text-success-strong">{copy.ready}</p>
-                    <p className="truncate font-semibold text-navy-900">{file.fileName}</p>
-                    <p className="text-sm text-text-muted">
-                      {spec.label} · {file.size}
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      showToast({
-                        message: copy.downloadStarted(file.fileName),
-                        detail: `${spec.label} · ${file.size}`,
-                      })
-                    }
-                    className="inline-flex h-10 shrink-0 items-center gap-2 rounded-pill bg-primary px-5 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
-                  >
-                    <Download className="size-4" />
-                    {copy.download}
-                  </button>
-                </div>
-              )}
-            </div>
+            {file && (
+              <FileGenerator
+                generation={generation}
+                copy={copy}
+                fileName={file.fileName}
+                detail={`${spec.label} · ${file.size}`}
+                onDownload={() =>
+                  showToast({
+                    message: copy.downloadStarted(file.fileName),
+                    detail: `${spec.label} · ${file.size}`,
+                  })
+                }
+              />
+            )}
           </NumberedStep>
         </div>
 

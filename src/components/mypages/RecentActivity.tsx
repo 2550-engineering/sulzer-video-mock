@@ -1,10 +1,15 @@
 import { ChevronRight, History } from 'lucide-react'
 import { Link } from 'react-router'
+import { useAuth } from '../../auth/useAuth'
 import { recentActivity } from '../../data/myPages'
 import type { ActivityItem } from '../../types'
 
 /** Slim list of the latest changes to the user's quotations, projects, orders and courses. */
-export function RecentActivity({ items = recentActivity.items }: { items?: ActivityItem[] }) {
+export function RecentActivity({ items: given }: { items?: ActivityItem[] }) {
+  const { persona } = useAuth()
+  const items = (given ?? recentActivity.items).filter(
+    (item) => !item.persona || item.persona === persona,
+  )
   return (
     <section className="overflow-hidden rounded-lg border border-border bg-surface shadow-card">
       <h2 className="flex items-center gap-2.5 border-b border-border px-7 py-4 text-base font-bold tracking-tight text-brand">
