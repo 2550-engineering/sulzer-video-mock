@@ -29,7 +29,7 @@ and checks links, tab hashes, the sticky tab bar and layout shift.
      (`/products`), the search results page without a query.
    - "Download brochure" goes to `/support/documentation`, and no file is downloaded.
    - Knowledge cards and customer stories go to `/learn` (Sulzer Academy, "Coming soon").
-   - Help cards go to `/contact/quote`, `/eshop` and `/self-service/requests`, all "Coming soon".
+   - Help cards go to `/contact/quote` and `/eshop` ("Coming soon") and to `/self-service/requests`.
    - Service rows go to `/support` or `/support/service-portal`, both "Coming soon".
 
 ## Before recording the Sizing video
@@ -94,10 +94,55 @@ results page.
 6. **Links that end on placeholder pages.** Not on the recording path, but clickable:
    - "Size product", "Size range" and "Size this model" go to `/sizing` ("Coming soon", naming
      the product or model).
-   - "View my requests" after a service request goes to `/self-service/requests` ("Coming soon").
    - The toast after "Add to project" links to My projects, where the model does not appear.
    - Service "Learn more" links go to `/support`, `/support/service-portal` or `/connect`.
    - The Spare parts tab shows the interactive parts list for AHLSTAR and XFP; other products show "Coming soon".
+
+## Before recording Video A: My assets (steps 1–4)
+
+Recording path: `/my-pages` (cursor on **My assets: 2 need attention**) → click it →
+`/assets?status=alarm&status=warning` (2 rows: P-211 alarm, RW-02 warning) → RW-02 →
+`/assets/rw-02` → Overview, Condition, Documents, Spare parts, Service history → "AHLSTAR
+150-125-315" → `/products/ahlstar` (optional).
+
+1. **Sign in as the end user** (Shift+D). `/assets` and `/assets/:id` are signed-in only.
+2. **Images:** the 6 site photos are still missing (marked "my assets" in
+   [images-needed.md](images-needed.md)). They show in the list's site column, the "By site" cards
+   and the asset page header, which crops them to a wide band.
+3. **Placeholder labels:** set `showPlaceholderLabels = false` in `src/config/demo.ts`.
+4. **Links that end on placeholder pages** (not on the recording path):
+   - "Open in Sulzer Connect" and "Open full monitoring in Sulzer Connect" open the asset's
+     condition page `/connect/assets/:id`; "Open Sulzer Connect" opens `/connect/dashboard`.
+   - "Find replacement" goes to `/products/replacement?serial=…` ("Coming soon" until P6).
+   - "Order spare parts" opens the Spare parts tab; the tab's own "Order spare parts" goes to
+     `/spare-parts` ("Coming soon" until P5), "Request a quotation" to `/contact/quote`.
+   - "Get it connected" and "How it works" on the "Connect this asset" card go to
+     `/products/sulzer-connect`.
+   - "View my requests" in the dialog and "View request" in the toast go to `/self-service/requests`,
+     where SR-2026-0142 is now at the top (P4).
+   - "Service report" only shows a toast; no file is downloaded.
+
+## Before recording Video A: Sulzer Connect (steps 5–10)
+
+Recording path: header → Quick links → Sulzer Connect → `/connect` (welcome, "Go to dashboard")
+→ `/connect/assets` (Asset Monitor, assets by site) → RW-02 → `/connect/assets/rw-02` (health
+score 62, vibration crossing 7.1 mm/s at 03:12, recommended action) → "Request service" →
+SR-2026-0142.
+
+1. **Sign in as the end user** (Shift+D). Every Connect page except the welcome screen asks you to
+   sign in first.
+2. **Time range:** the condition page opens on 7 days (the rising trend). `?range=24h` shows the
+   03:12 crossing mid-chart; `?range=30d` the whole month.
+3. **Acknowledging alerts** is local state: it resets when you leave Connect or reload. The header
+   bell counts the alerts nobody has acknowledged.
+4. **No images needed:** every chart and gauge is drawn in code.
+5. **Links that end on other pages:** "Connect device" and "Learn more" go to
+   `/products/sulzer-connect` (the P3 page); "Order bearing kit" opens the asset's Spare parts tab
+   on the website; "View asset in mySulzer" opens `/assets/:id`. "Settings", "Manage users",
+   "Invite user", "Invite to Sulzer Connect" and "Download PDF" only show a toast.
+6. **Partner persona:** `/connect/assets` shows the accounts table (Name, Contact person, Invite and
+   manage users, Customer number, Actions). Only Nordvatten has assets; the three other customers
+   show "Not on Sulzer Connect yet" with "Invite to Sulzer Connect".
 
 ## Product names (`src/config/demo.ts` → `products`, `productSeries`)
 
@@ -115,7 +160,7 @@ results page.
 | Digital product        | BLUE BOX                               | Placeholder, confirm with Sulzer: name, spelling and how Sulzer describes it.                                                                                                                        |
 | IoT product            | Sulzer Connect                         | Placeholder, confirm with Sulzer. Also the name of the `/connect` app in the mock-up.                                                                                                                |
 | Motor protection relay | "Motor protection relay" (generic)     | Placeholder, confirm with Sulzer. Does Sulzer offer one, and under what name?                                                                                                                        |
-| IoT offering in copy   | Sulzer Smart Monitoring                | Placeholder from Phase 1, confirm with Sulzer.                                                                                                                                                       |
+| IoT offering in copy   | Sulzer Connect                         | Placeholder, confirm with Sulzer. Was "Sulzer Smart Monitoring" in Phase 1; now the same name as the IoT product, so there is one name everywhere.                                                   |
 | Model prefixes         | `AHLSTAR 100-80-250`, `XFP 100C` style | Placeholder, confirm with Sulzer. Models, sizes and figures in `src/data/productModels.ts` are invented.                                                                                             |
 
 ## Product data (`src/data/products.ts`)
@@ -933,3 +978,185 @@ Placeholder, confirm with Sulzer.
   - For "Riverside raw water intake upgrade" the defaults give 21 files, 48 MB.
   - The package's "Project files" are the team's uploads only.
 - **Documents section:** generated files are shown as by "mySulzer", dated "Today". Uploads keep only the file name and size; the file is not read or stored.
+
+## Personas (Phase 3, `src/config/demo.ts` → `personas`)
+
+| Item                      | Value in the mock-up                                                   | Note                                                                                                                                      |
+| ------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| End user                  | Emma Lindqvist, Maintenance Manager, Nordvatten Utilities AB, Västerås | Placeholder, fictional. Unchanged from Phase 1.                                                                                           |
+| Channel partner           | Lars Ek, Sales Engineer, Aqua Pumpteknik AB                            | Placeholder, fictional company and person.                                                                                                |
+| Partner status and region | Authorised Sulzer distributor, Region Mälardalen                       | Placeholder, confirm how Sulzer names its partner tiers and regions. Mälardalen so that Nordvatten (Västerås) is in the partner's region. |
+| E-mail addresses          | `…@nordvatten.example`, `…@aquapumpteknik.example`                     | Reserved example domains on purpose.                                                                                                      |
+
+## Partner pricing (`src/config/demo.ts` → `partnerPricing`)
+
+| Item             | Value in the mock-up                                                              | Note                                                                                                                      |
+| ---------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Partner discount | 32% off list price                                                                | Placeholder, confirm with Sulzer. Used for spare parts and partner net prices only.                                       |
+| Lead-time labels | "In stock – ships in 2 days", "Fast delivery – 1 week", "Made to order – 3 weeks" | Placeholder. Spare parts and partner prices only; the Models tab keeps its own lead times (`src/data/models/ahlstar.ts`). |
+
+## Installed base (`src/data/assets.ts`)
+
+| Item                | Value in the mock-up                                                                                                                               | Note                                                                                                  |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Assets              | 24 units on 6 sites, 18 connected to Sulzer Connect                                                                                                | Invented. Tags, serial numbers, install dates, warranties, run hours and service dates are fictional. |
+| Sites               | Riverside intake, Norra water treatment plant, Ekbacken reservoir, Södra and Hamnen pump stations, Östra wastewater treatment plant (all Västerås) | Fictional site names.                                                                                 |
+| Partner's customers | Nordvatten Utilities AB, Mälarbruk Paper AB (Köping), Sörby Livsmedel AB (Eskilstuna), Västmalm Energi AB (Sala)                                   | Fictional companies, contacts and customer numbers.                                                   |
+| Products on site    | AHLSTAR, XFP, AFP (return sludge), J dewatering pump (drainage)                                                                                    | Confirm these products fit those duties.                                                              |
+| Warranty            | 2 years; 3 years for units installed since 2024                                                                                                    | Placeholder, confirm Sulzer's standard warranty terms.                                                |
+
+## Condition monitoring (`src/config/demo.ts` → `conditionLimits`, `src/lib/conditionData.ts`)
+
+| Item                       | Value in the mock-up                                                                        | Note                                                                  |
+| -------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| Demo date                  | Today is Wed 28 Oct 2026, last sync 08:42                                                   | `demoClock`. Matches the dates already in Recent activity and orders. |
+| Vibration limits           | ISO 10816-3-style zones (A/B 2.8, B/C 4.5, C/D 7.1 mm/s RMS), warning 7.1, alarm 11 mm/s    | Placeholder, confirm with Sulzer.                                     |
+| Bearing temperature limits | Warning 85 °C, alarm 95 °C                                                                  | Placeholder.                                                          |
+| Motor temperature limits   | Warning 105 °C, alarm 115 °C                                                                | Placeholder.                                                          |
+| RW-02 story                | Bearing wear: vibration rises over 9 days and crosses 7.1 mm/s today at 03:12, now 7.4 mm/s | Invented.                                                             |
+| P-211 story                | Motor temperature climbs overnight to 118 °C (alarm)                                        | Invented.                                                             |
+| Data                       | Hourly vibration, bearing and motor temperature and run status for 30 days                  | Generated from a seeded function, the same on every run.              |
+
+## My assets (P1, `src/data/assetPages.ts`, `src/data/assets.ts`, `src/lib/serviceHistory.ts`)
+
+| Item                        | Value in the mock-up                                                                                                                      | Note                                                                                                                                        |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| RW-02 recommended action    | "Bearing wear pattern detected – inspect within 14 days", recommends the bearing kit (pos. 321, 62016308)                                 | Invented, `conditionFindings`. Also what the Connect app (P2) shows.                                                                        |
+| P-211 recommended action    | "Motor running hot under continuous load – check the inflow and motor cooling today"                                                      | Invented.                                                                                                                                   |
+| Service center              | Sulzer Service Center Västerås                                                                                                            | Placeholder, confirm the nearest real Sulzer service center for the region.                                                                 |
+| Technicians                 | Mikael Sjöberg, Anna Forsell, Jonas Wikström, Elin Bergqvist                                                                              | Fictional names.                                                                                                                            |
+| Service history             | Commissioning, a repair or inspection, the Sulzer Connect sensor retrofit (8 Oct 2024) and the last two annual services, with work orders | Generated from each asset's dates. Work descriptions are plausible, not Sulzer's service checklist.                                         |
+| "Connect this asset" claims | "Retrofit in under an hour", "No changes to the pump", "Alerts by e-mail and app"                                                         | Placeholder, confirm with Sulzer.                                                                                                           |
+| Service request message     | Prefilled with the tag, serial number and the active alert, e.g. "vibration above warning limit since today 03:12"                        | Same fixed reference SR-2026-0142 as on the product page.                                                                                   |
+| Documents per unit          | The product's documents, labelled "For serial no. …" (brochures are not labelled)                                                         | In a real portal these would be the unit's own as-built documents.                                                                          |
+| Spare parts per unit        | The unit's parts list in the shared spare parts browser (exploded drawing, tree, BOM). An active alert names its kit on top               | AHLSTAR models have their own list; XFP units use the XFP 150E demo variant's list; XFP 100C, AFP and J pumps show "Parts list on request". |
+
+## Sulzer Connect app (P2, `src/data/connect.ts`, `src/lib/connect.ts`)
+
+| Item            | Value in the mock-up                                                                                                                                                                                 | Note                                                                                                     |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Health score    | 100 minus penalties for vibration (steeper in each ISO zone) and for bearing and motor temperature near their limits. Good 80+, Fair 60–79, Poor below 60. RW-02 = 62, P-211 = 55                    | Invented formula, not Sulzer's. Confirm whether Sulzer Connect shows a health score and how it is named. |
+| Vibration zones | ISO 10816-3-style A/B/C/D bands on the vibration chart                                                                                                                                               | Uses `conditionLimits` (already listed above).                                                           |
+| Alerts          | Active: RW-02 warning (today 03:12), P-211 alarm (today 07:41). History: zone C entry, escalations and five resolved alerts (high level, low battery, unexpected stop, gateway offline, service due) | Invented. Resolved alerts are in `alertHistory`.                                                         |
+| P-211 finding   | "High inflow has kept the pump running non-stop since last night … P-210 and P-212 can share the load"                                                                                               | Invented.                                                                                                |
+| Users           | Johan Berg, Sofia Ahlgren, Erik Nordin, Karin Holmqvist (pending) at Nordvatten; Mikael Sjöberg (Sulzer) and Lars Ek (partner) as service partners                                                   | Fictional people and `.example` addresses. Roles: Admin, Operator, Viewer, Service partner.              |
+| Teams           | Raw and drinking water, Wastewater network, Sulzer Service Västerås, with their alert channels                                                                                                       | Invented.                                                                                                |
+| Monthly report  | "Monthly condition report", October 2026, sent on the 1st of every month; figures computed from the condition data                                                                                   | Confirm whether Sulzer Connect sends a report like this.                                                 |
+| App sections    | Dashboard, Assets, Alerts, Reports, Users, Teams, Settings, Exit                                                                                                                                     | Teams added from the deck's slide 11 rail.                                                               |
+
+## Before recording Video A: Sulzer Connect product page (step 7)
+
+Recording path: `/connect` → "Learn more" → `/products/sulzer-connect#explore` (hero, How it works,
+benefits, "See it live", customer story, CTA band). The personal toolbar sits on the right edge.
+
+1. **Sign in as the end user** (Shift+D). The personal toolbar and the bookmark on the product
+   header are signed-in only. **Reset demo** first, so Saved items and Recently viewed return to
+   their seeds.
+2. **Images:** `remote-pump-station.jpg` (Explore hero), `story-connect-pump-stations.jpg`
+   (customer story) and `digital-solutions-hero.jpg` (`/digital-solutions`) are still missing; see
+   [images-needed.md](images-needed.md), marked "connect product page". The devices image
+   `sulzer-connect-devices.png` is generated: rebuild it with `npm run connect:devices` after any
+   change to the Connect app.
+3. **Toolbar at 1440 px:** product, application and search content moves 48 px left so the toolbar
+   never covers it; at 1920 px the page margin is wide enough and nothing moves.
+4. **Links that end on placeholder pages:** "Talk to an expert" goes to `/contact`; "Request a
+   quote" (Variants tab, other digital products) and "Request a demo" (BLUE BOX) go to
+   `/contact/quote`; Learn cards and "Read the story" go to `/learn`. All "Coming soon".
+
+## Sulzer Connect product page and digital solutions (P3, `src/data/products.ts`, `src/data/digitalSolutions.ts`)
+
+| Item                          | Value in the mock-up                                                                                                                                                                           | Note                                                                                                        |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Benefit figures               | "50 % less unplanned downtime", "30 % fewer site visits", "25 % lower maintenance cost", "< 1 h to connect a pump"                                                                             | **Placeholders.** Invented; confirm real figures (and their source) with Sulzer or remove them.             |
+| How it works                  | Sensors on the pump → gateway on site (mobile network) → analysis in the cloud (ISO limits and baseline) → alerts on your phone                                                                | Confirm the architecture: sensor types, gateway, connectivity and how alerts are sent.                      |
+| Hero readouts                 | "Pump station 7 · Pump 2 – Running normally", "Bearing vibration 2.4 mm/s"                                                                                                                     | Decorative, fictional.                                                                                      |
+| Customer story                | "A municipal utility watches 42 remote pump stations from one screen", quote by Henrik Dahl, Operations Manager; "42", "−60 % night-time call-outs"                                            | **Fictional** person, utility and figures. Replace with a real Sulzer Connect reference or keep it unnamed. |
+| Packages (Variants tab)       | Starter (sensors and app), Professional (gateway, alerts, reports; "Most popular"), Enterprise (expert remote support), 12 features                                                            | Invented packaging. Confirm whether Sulzer sells Connect in tiers, their names and contents.                |
+| Pricing note                  | "Priced per connected asset. Your Sulzer sales contact sends a quote within two working days."                                                                                                 | Placeholder.                                                                                                |
+| Documents                     | Data sheet E40112, installation guide E40113, quick guide E40114, data privacy sheet E40120 (also on BLUE BOX), EU declaration E40125                                                          | Invented numbers and dates. "Data privacy sheet" is a new document type.                                    |
+| Other digital products        | Data sheets and instructions for the pump controller and motor protection relay, a BLUE BOX brochure; their Variants tabs say "on its way"                                                     | Invented. Header buttons: "Request a quote" (BLUE BOX: "Request a demo").                                   |
+| Learn tab items               | "Engineering manual: condition monitoring for pump stations", "Ask the expert: reading a vibration trend", "Getting started with Sulzer Connect"                                               | Invented titles, `src/data/knowledge.ts`.                                                                   |
+| `/digital-solutions`          | Hero, the home Sulzer Connect promo, 4 product cards, 4 mySulzer tool cards, "Not sure where to start?" band                                                                                   | Confirm the digital portfolio to show.                                                                      |
+| Links now on the product page | Home promo "Discover Sulzer Connect", mega menu "Digital solutions › Sulzer Connect", the "Sulzer Connect asset monitoring" service, search and Product Finder open `/products/sulzer-connect` | Quick links "Sulzer Connect" and My Pages "Portals" still open the app (`/connect`).                        |
+
+## Personal toolbar, saved items and recently viewed (P3, `src/data/personal.ts`)
+
+| Item                 | Value in the mock-up                                                                                                | Note                                                                                    |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Where it shows       | Signed in, on `/products`, `/products/:id` and `/applications/*`; hidden below 1024 px                              | Slide 12 layout.                                                                        |
+| Buttons              | Compare (red count), Saved items, Sizing, My projects, Recently viewed, Units & market ("Sweden / 50 Hz")           |                                                                                         |
+| Emma's saved items   | AHLSTAR, its IOM manual and 50 Hz data sheet, XFP, the XFP IOM manual, SJT (6; the My Pages badge counts them)      | Seed. Was a fixed "12" on My Pages.                                                     |
+| Lars's saved items   | AHLSTAR, AFP, J dewatering pump, the water and wastewater brochure                                                  |                                                                                         |
+| Recently viewed seed | Emma: AHLSTAR, XFP, SNS, SMD. Lars: AHLSTAR, AFP, XFP. Every product page visit while signed in moves it to the top | Kept per persona in localStorage; "Reset demo" clears it.                               |
+| Compare              | Shared with the Models tab: up to 3 models of one product; a model of another product starts a new comparison       | In memory only.                                                                         |
+| Units & market       | Market (Sweden, English, EUR) is read-only; Units (Metric / US customary) and mains frequency (50 / 60 Hz)          | Only the frequency changes anything: the Models tab opens on it. Units are stored only. |
+
+## Requests, orders and quotations (P4, `src/data/serviceRequests.ts`, `src/data/orders.ts`, `src/data/quotations.ts`)
+
+| Item                   | Value in the mock-up                                                                                                                                                                                                           | Note                                                                                                                           |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| SR-2026-0142           | Added to `/self-service/requests` when "Request service" is sent (asset page, Connect or product page), received "Today, 09:26", status Received                                                                               | Fixed time so every recording matches. Shared by both personas; "Reset demo" removes it.                                       |
+| Earlier requests       | SR-2026-0129 (BW-01 annual service, visit 12 Nov, Anna Forsell) open; SR-2026-0108, -0097, -0071 done                                                                                                                          | Visits, technicians and work orders match each asset's service history.                                                        |
+| Service center details | Sulzer Service Center Västerås, Kopparlundsvägen 7, +46 21 400 18 00                                                                                                                                                           | Invented address and phone. Confirm the real service center.                                                                   |
+| Request steps          | Received → Visit planned → Technician assigned → Done, "We confirm the date within one working day"                                                                                                                            | Confirm Sulzer's real request statuses and response time.                                                                      |
+| Orders                 | Emma: SO-104388, -104386, -104382 (from Q-10198, shipped, expected 30 Oct), -104301, -104255. Lars: SO-104399, -104393, -104368                                                                                                | Invented. My Pages "2 in transit" and "1 open" are now counted from this data.                                                 |
+| Carrier and tracking   | "Sulzer Logistics road freight" from "Sulzer distribution center, Norrköping", tracking numbers "SZL 3740 …"                                                                                                                   | Placeholder carrier and warehouse, confirm how Sulzer ships spare parts in Sweden.                                             |
+| Delivery addresses     | Nordvatten goods reception, Verksvägen 21, Västerås; partner orders to each customer's site                                                                                                                                    | Invented.                                                                                                                      |
+| Spare part list prices | AHLSTAR parts and kits from `src/data/spareParts/ahlstar.ts` (bearing kit, seal kit, pos. 433 seal, pos. 230 impeller); XFP 150E from `src/data/spareParts/xfp.ts`; the XFP 100C bottom plate (€410) is written into the order | Invented. Same numbers as the BOM, so the orders match the parts lists.                                                        |
+| Agreement discount     | Nordvatten 12% on Sulzer quotations and on SO-104382                                                                                                                                                                           | Invented.                                                                                                                      |
+| Sulzer issuer          | "Sulzer Pumps Sweden AB", Kopparlundsvägen 7, Västerås, reg. no. 556000-1234                                                                                                                                                   | Placeholder legal entity, address and numbers. Confirm the real Swedish Sulzer entity before publishing.                       |
+| Sulzer contact         | Mikael Ahonen, Application engineer, +46 21 400 18 26                                                                                                                                                                          | Fictional (also a member of the Riverside intake project).                                                                     |
+| Q-10234                | North pump station upgrade: 2 pumps from the project, 2 Sulzer Connect sensor kits (86040120, €1,450), commissioning (€2,900), delivery week 49                                                                                | The "new delivery date" in My Pages activity is "brought forward from week 51 to week 49". Kit number and prices are invented. |
+| Terms                  | FCA Sulzer distribution center, Norrköping (Incoterms 2020), 30 days net. ISO 9906 grade 2B test note                                                                                                                          | Placeholder terms.                                                                                                             |
+| Partner letterhead     | Aqua Pumpteknik wordmark (SVG we made), Industrigatan 9, Eskilstuna, "Authorised Sulzer distributor" with the Sulzer logo in the footer                                                                                        | Fictional partner. Confirm Sulzer allows its logo on partner documents.                                                        |
+| Partner quotations     | AQ-26-0418 to Nordvatten (RW-02 bearing replacement, 12 h at €95), AQ-26-0409, -0402, -0385 to the other three customers                                                                                                       | Invented. Customer discounts 5–8%.                                                                                             |
+| Partner margin card    | Sulzer net price at the 32% partner discount, margin on Sulzer items, "Only you see this. It isn’t on the PDF."                                                                                                                | Uses `partnerPricing.discount`.                                                                                                |
+| Downloads              | "Download PDF", "Order confirmation" and service reports only show a toast                                                                                                                                                     | No files.                                                                                                                      |
+
+## Replacing an installed pump (P6, `src/data/replacement.ts`, `src/lib/pumpReplacement.ts`)
+
+Tender texts use the consultant's tender text dialog: see "Tender texts" above.
+
+| Item                        | Value in the mock-up                                                                                                                                      | Note                                                                                                                                                                                     |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Recording path (Video B 4)  | RW-02 → "Find replacement" → `/products/replacement/existing-pump?serial=AH-1918-04512` → Size this pump / Add to project                                 | Also from the partner's My Pages links. Mega menu "Product replacement", My Pages "Replace pump" and the mySulzer cards open the discontinued-product finder at `/products/replacement`. |
+| RW-01 to RW-03 duty point   | 150 m³/h at 30 m, water at 8 °C, "measured by Sulzer Connect, 12-month median"                                                                            | Invented. Same as the sizing demo duty point, so "Size this pump" lands on the familiar result. Other units use their model's rated point.                                               |
+| Story                       | RW-02 (AHLSTAR 150-125-315, rated 320 m³/h) runs at 47 % of its best-efficiency flow, throttled from 38.2 m to 30 m                                       | Invented. The pump curve is the illustrative Models tab curve.                                                                                                                           |
+| Wear                        | 1 efficiency point per 10 000 run hours, at most 5 (`replacementDemo`)                                                                                    | Typical value, not a Sulzer figure.                                                                                                                                                      |
+| Existing motor              | 93 % efficiency (IE2 class) for every installed pump                                                                                                      | Assumption.                                                                                                                                                                              |
+| Another brand               | 60 % pump efficiency at the duty point, no throttling                                                                                                     | Assumption, shown as "estimated".                                                                                                                                                        |
+| Running hours, energy price | 6 000 h a year, €0.12 per kWh (`sizingDemo`)                                                                                                              | Same as sizing life cycle cost.                                                                                                                                                          |
+| RW-02 suggestions           | AHLSTAR A23-150-400/355 C1-SD-4P-F (drop-in), −42 %, €9 324 a year, payback 1.6 years; AHLSTAR A24-200-315/325 C1-SD-4P-F (lowest life cycle cost), −44 % | Computed by the sizing engine. Payback = list price / saving; installation not included.                                                                                                 |
+| "Fits the same foundation"  | Shown when suction and discharge DN match the existing pump                                                                                               | Simplification: foundation bolt pattern and shaft height aren't checked. Confirm the wording with Sulzer.                                                                                |
+| Submersible and other pumps | XFP, AFP and J pumps get "Our experts find your replacement" and Request quotation                                                                        | Only AHLSTAR has sizing data.                                                                                                                                                            |
+| Request quotation           | Shows a toast "Quotation requested … within two working days" with a link to `/self-service/quotations`                                                   | No quotation is added to the list.                                                                                                                                                       |
+| Hero photo                  | `public/images/replacement/replacement-hero.jpg` (missing)                                                                                                | See `docs/images-needed.md`.                                                                                                                                                             |
+
+## Channel partner (P7, `src/data/partner.ts`, `src/data/assets.ts`, `src/data/projects.ts`, `src/lib/partner.ts`)
+
+| Item                     | Value in the mock-up                                                                                                                                        | Note                                                                                                 |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Partner My Pages         | Cards My customers, Quotations, Orders, Partner prices & availability, Projects, Partner Academy & sales material. "Partner" badge in the header            | Card titles and links are our proposal. Sales material and branding links open "Coming soon" pages.  |
+| Partner activity         | AQ-26-0418 sent to Emma, "Nordvatten Utilities – RW-02 vibration above warning limit", SO-104387 at Västerås terminal, course "AHLSTAR sizing for partners" | Invented, matches the seed data.                                                                     |
+| Other customers' assets  | Mälarbruk Paper 5 assets (Köping paper mill), Sörby Livsmedel 3 (Eskilstuna dairy, not on Sulzer Connect), Västmalm Energi 6 (Sala CHP, Heby DH)            | Invented tags, serial numbers and dates. All running normally, so only Nordvatten needs attention.   |
+| Account managers         | Lars Ek (Nordvatten, Sörby), Karin Sjöberg (Mälarbruk), Henrik Dahl (Västmalm). Customer since 2012–2021                                                    | Fictional people at the fictional partner.                                                           |
+| Customer contacts        | Emma Lindqvist, Johan Berg, Sara Nyström (Nordvatten); Anders Holm, Erik Lindgren; Sara Nyberg; Petra Lund, Mats Öberg. Phone numbers                       | Fictional. E-mail addresses on `.example` domains.                                                   |
+| Quotation discounts      | Nordvatten 8%, Mälarbruk 6%, Sörby and Västmalm 5% on the partner's quotations                                                                              | Invented.                                                                                            |
+| Customer logos           | Simple SVG wordmarks we made (`src/components/CustomerLogo.tsx`): wave, paper sheets, leaf, flame                                                           | Fictional companies, not real logos.                                                                 |
+| Delivery addresses       | Each customer's site addresses for "Order on behalf of customer", plus the partner's warehouse                                                              | Invented streets and postcodes.                                                                      |
+| Partner projects         | Riverside intake upgrade (Nordvatten, 2 × replacement for RW-01/03), PM3 stock pump renewal (Mälarbruk, shared), District heating pumps 2027 (Västmalm)     | Invented. "Share with customer" adds the client contact as a member; Emma then sees the project too. |
+| Quotation from a project | "Create quotation" makes AQ-26-0419 as a Draft at 10:24, valid 30 days, lines at pump + motor list price; "Send to Emma Lindqvist" sends it at 10:31        | Fixed times so every take is the same. Delivery is each pump's own lead time.                        |
+| Partner prices           | List price, "Your discount 32%" and net price on the Models tab, compare panel, sizing results, replacement finder, project items, spare parts, cart        | Uses `partnerPricing.discount`; lead times as before.                                                |
+| Sulzer Connect users     | Mälarbruk 4, Västmalm 3, Sörby none ("Invite to Sulzer Connect")                                                                                            | Invented.                                                                                            |
+| Site photos              | `public/images/sites/koping-mill.jpg`, `sorby-dairy.jpg`, `sala-chp.jpg`, `heby-dh.jpg` (missing)                                                           | See `docs/images-needed.md`.                                                                         |
+
+## After merging the service provider and consultant work (persona PR)
+
+| Item                       | Value in the mock-up                                                                                                                                                    | Note                                                                             |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Two "today"s               | eShop delivery dates count from 3 Nov 2026 (`eshop.today`); assets, Connect and self-service count from 28 Oct 2026 (`demoClock.today`)                                 | Pick one date before recording both videos.                                      |
+| Nordvatten addresses       | eShop checkout for Emma: Central workshop and Riverside intake pumping station in Karlstad (`eshop.deliveryAddresses`); assets, projects and partner checkout: Västerås | Pick one town.                                                                   |
+| Two customer discounts     | Emma's account has an 18% parts discount (`customerAccount.partsDiscount`, only in `netPrice` in the parts data, not shown); Nordvatten has 12% on Sulzer quotations    | Confirm which applies where.                                                     |
+| Order numbers              | eShop orders count up from SO-104390; the seeded orders are SO-104255 to SO-104389                                                                                      | The four seeds that were SO-104390 to SO-104399 moved to SO-104386 to SO-104389. |
+| Orders placed in the eShop | Also appear in `/self-service/orders` as "Confirmed", placed at 09:48, with "Track order" opening them                                                                  | The consultant has no customer account, so their order only shows in the eShop.  |
+| Partner net prices         | 32% off list on spare parts, kits, the BOM and cart lines (list price struck through)                                                                                   | Other personas still see list prices.                                            |

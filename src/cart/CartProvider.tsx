@@ -3,6 +3,7 @@ import { useAuth } from '../auth/useAuth'
 import { eshop, personas } from '../config/demo'
 import { eshopPages } from '../data/eshopPages'
 import { cartTotals, deliveryWindow } from '../lib/cart'
+import { priceFor } from '../lib/pricing'
 import { useToast } from '../toast/useToast'
 import type { CartItem, Order, Quotation } from '../types'
 import { SignInToOrderDialog } from '../components/eshop/SignInToOrderDialog'
@@ -70,16 +71,27 @@ export function CartProvider({ children }: { children: ReactNode }) {
     })
   }, [])
 
+  /** Partners pay their net price; the line keeps the list price to show the discount. */
+  const priced = useCallback(
+    (article: CartArticle): CartArticle => {
+      const price = priceFor(article.unitPrice, user)
+      return price && price.discount > 0
+        ? { ...article, unitPrice: price.net, listPrice: price.list }
+        : article
+    },
+    [user],
+  )
+
   const put = useCallback(
     (article: CartArticle, quantity: number) => {
-      merge([{ article, quantity }])
+      merge([{ article: priced(article), quantity }])
       showToast({
         message: eshopPages.toasts.added,
         detail: eshopPages.toasts.addedDetail(quantity, article.name),
         action: eshopPages.toasts.viewCart,
       })
     },
-    [showToast, merge],
+    [showToast, merge, priced],
   )
 
   const value = useMemo<CartState>(() => {
@@ -92,7 +104,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         user ? put(article, quantity) : setPending({ article, quantity }),
       addAll: (lines, detail) => {
         if (lines.length === 0) return
-        merge(lines)
+        merge(lines.map((line) => ({ ...line, article: priced(line.article) })))
         const pieces = lines.reduce((sum, line) => sum + line.quantity, 0)
         showToast({
           message: eshopPages.toasts.addedMany(pieces),
@@ -113,7 +125,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
           items: current.items.filter((item) => item.id !== id),
         })),
       orders,
-      placeOrder: ({ deliveryAddressId, delivery }) => {
+      placeOrder: ({ deliveryAddressId, delivery, deliveryAddress, customer }) => {
         const id = `SO-${eshop.firstOrderNumber + orders.length}`
         const dates = deliveryWindow(basket.items)
         const order: Order = {
@@ -123,6 +135,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
           lines: basket.items,
           reference: basket.reference,
           deliveryAddressId,
+          ...(deliveryAddress ? { deliveryAddress } : {}),
+          ...(customer ? { customer } : {}),
           delivery,
           ...cartTotals(basket.items),
           earliestDelivery: delivery === 'partial' ? dates.earliest : dates.latest,
@@ -143,7 +157,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         return quotation
       },
     }
-  }, [basket, orders, quotations, user, put, merge, showToast])
+  }, [basket, orders, quotations, user, put, merge, priced, showToast])
 
   return (
     <CartContext.Provider value={value}>

@@ -7,6 +7,8 @@ import { tenderDialog } from '../../data/tenderTexts'
 import { tenderFileName, useTenderDialog } from '../../hooks/useTenderDialog'
 import { useUrlParams } from '../../hooks/useUrlParams'
 import { articleById, articleDutyPoint, articlesOfModel } from '../../lib/articles'
+import { maxCompare } from '../../lib/personal'
+import { discountFor } from '../../lib/pricing'
 import { modelSubject } from '../../lib/tenderSubjects'
 import {
   filterModels,
@@ -16,6 +18,7 @@ import {
   type ModelSort,
   type ModelSortKey,
 } from '../../lib/modelSpecs'
+import { usePersonal } from '../../personal/usePersonal'
 import type { ProductEntry } from '../../projects/ProjectsContext'
 import type { ProductModel } from '../../types'
 import { AddToProjectDialog } from '../projects/AddToProjectDialog'
@@ -27,14 +30,16 @@ import { ModelFilterBar } from './ModelFilterBar'
 import { ModelsTable } from './ModelsTable'
 
 const copy = productPage.models
-const maxCompare = 3
 
 /**
  * Models tab. Filters and the open row are in the URL (?hz, ?power, ?dn,
- * ?model), so reload and links keep them; sort and comparison are local.
+ * ?model), so reload and links keep them; sort is local. The comparison is
+ * shared with the personal toolbar, and the frequency defaults to the one set
+ * under Units & market.
  */
 export function ModelsTab({ models }: { models: ProductModel[] }) {
   const { user, signIn } = useAuth()
+  const discount = user ? discountFor(user) : 0
   const { openTender, tenderDialog: tenderDialogElement } = useTenderDialog()
   function tenderText(model: ProductModel) {
     const subject = modelSubject(model)
@@ -48,8 +53,8 @@ export function ModelsTab({ models }: { models: ProductModel[] }) {
   }
   const [params, update] = useUrlParams()
   const [sort, setSort] = useState<ModelSort | null>(null)
-  const [compareIds, setCompareIds] = useState<string[]>([])
-  const [comparing, setComparing] = useState(false)
+  const { compareIds, toggleCompare, clearCompare, compareOpen, setCompareOpen, preferences } =
+    usePersonal()
   const [projectDialog, setProjectDialog] = useState<{
     entries: ProductEntry[]
     open: boolean
@@ -58,7 +63,10 @@ export function ModelsTab({ models }: { models: ProductModel[] }) {
 
   const frequencies = modelFilterOptions(models, 50).frequencies
   const requestedHz = Number(params.get('hz'))
-  const frequency = frequencies.find((hz) => hz === requestedHz) ?? frequencies[0] ?? 50
+  const preferred = frequencies.includes(preferences.frequency)
+    ? preferences.frequency
+    : frequencies[0]
+  const frequency = frequencies.find((hz) => hz === requestedHz) ?? preferred ?? 50
   const options = modelFilterOptions(models, frequency)
   // Values that don't exist at this frequency (e.g. from an edited URL) count as "all".
   const power = options.power.some((o) => o.value === params.get('power'))
@@ -101,12 +109,6 @@ export function ModelsTab({ models }: { models: ProductModel[] }) {
     )
   }
 
-  function toggleCompare(id: string) {
-    setCompareIds((ids) =>
-      ids.includes(id) ? ids.filter((x) => x !== id) : ids.length < maxCompare ? [...ids, id] : ids,
-    )
-  }
-
   /** The model itself (AHLSTAR), or its first variant where the product is sold as variants. */
   function addToProject(model: ProductModel) {
     const article = articleById(model.id) ?? articlesOfModel(model.id)[0]
@@ -140,18 +142,19 @@ export function ModelsTab({ models }: { models: ProductModel[] }) {
           <ModelsTable
             models={shown}
             signedIn={user !== null}
-            onSignIn={signIn}
+            discount={discount}
+            onSignIn={() => signIn()}
             sort={sort}
             onSort={toggleSort}
             expandedId={expandedId}
             onToggleExpand={(id) => setParam('model', id === expandedId ? '' : id)}
-            compareIds={compareIds}
+            compareIds={compared.map((model) => model.id)}
             onToggleCompare={toggleCompare}
             detail={(model) => (
               <ModelDetail
                 model={model}
-                comparing={compareIds.includes(model.id)}
-                canCompare={compareIds.length < maxCompare}
+                comparing={compared.includes(model)}
+                canCompare={compared.length < maxCompare}
                 onAddToProject={() => addToProject(model)}
                 onToggleCompare={() => toggleCompare(model.id)}
                 onTenderText={() => tenderText(model)}
@@ -171,7 +174,11 @@ export function ModelsTab({ models }: { models: ProductModel[] }) {
             </button>
           </div>
         )}
-        {user && <p className="mt-3 text-right text-xs text-text-muted">{copy.priceNote}</p>}
+        {user && (
+          <p className="mt-3 text-right text-xs text-text-muted">
+            {discount > 0 ? copy.partnerPriceNote(discount) : copy.priceNote}
+          </p>
+        )}
       </div>
 
       {/* In <body>: the tab panel's fade-in uses a transform, which would anchor fixed elements to it. */}
@@ -180,14 +187,15 @@ export function ModelsTab({ models }: { models: ProductModel[] }) {
           <CompareBar
             models={compared}
             onRemove={toggleCompare}
-            onClear={() => setCompareIds([])}
-            onOpen={() => setComparing(true)}
+            onClear={clearCompare}
+            onOpen={() => setCompareOpen(true)}
           />
           <ComparePanel
-            open={comparing && compared.length > 1}
+            open={compareOpen && compared.length > 1}
             models={compared}
             signedIn={user !== null}
-            onClose={() => setComparing(false)}
+            discount={discount}
+            onClose={() => setCompareOpen(false)}
           />
         </>,
         document.body,

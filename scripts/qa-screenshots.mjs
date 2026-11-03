@@ -28,8 +28,11 @@ const base = 'http://localhost:5199'
 const { placeholderRoutes } = await server.ssrLoadModule('/src/config/placeholderRoutes.ts')
 const { applications, rootApplicationId } = await server.ssrLoadModule('/src/data/applications.ts')
 const { products } = await server.ssrLoadModule('/src/data/products.ts')
-const { applicationPath } = await server.ssrLoadModule('/src/lib/catalog.ts')
-const { productPage } = await server.ssrLoadModule('/src/data/catalogPages.ts')
+const { applicationPath, productTabs } = await server.ssrLoadModule('/src/lib/catalog.ts')
+const { assets } = await server.ssrLoadModule('/src/data/assets.ts')
+const { assetPage } = await server.ssrLoadModule('/src/data/assetPages.ts')
+const { orderSeeds } = await server.ssrLoadModule('/src/data/orders.ts')
+const { quotations } = await server.ssrLoadModule('/src/data/quotations.ts')
 
 const routes = [
   '/',
@@ -59,8 +62,14 @@ const routes = [
   '/products?q=zzzz',
   ...products.flatMap((product) => [
     `/products/${product.id}`,
-    ...productPage.tabs.slice(1).map((tab) => `/products/${product.id}#${tab.id}`),
+    ...productTabs(product)
+      .slice(1)
+      .map((tab) => `/products/${product.id}#${tab.id}`),
   ]),
+  '/digital-solutions',
+  '/my-pages/saved',
+  '/my-pages/saved?kind=document',
+  '/my-pages/recently-viewed',
   '/sizing',
   `/sizing?product=${products[0].id}`,
   '/sizing/results',
@@ -70,12 +79,73 @@ const routes = [
   '/my-projects/riverside-intake',
   '/my-projects/riverside-intake/report',
   '/assets',
+  '/assets?status=alarm&status=warning',
+  '/assets?service=due',
+  '/assets?view=sites',
+  '/assets?q=zzzz',
+  ...assets.map((asset) => `/assets/${asset.id}`),
+  // RW-02 is the Video A unit: every tab. CD-01 is not connected, RS-02 has no documents yet.
+  ...assetPage.tabs.slice(1).map((tab) => `/assets/rw-02#${tab.id}`),
+  '/assets/p-211#condition',
+  '/assets/cd-01#condition',
+  '/assets/rs-02#documents',
+  // Requests, orders and quotations, as the end user (QA signs in as endUser).
+  '/self-service/requests',
+  '/self-service/orders',
+  '/self-service/orders?status=transit',
+  '/self-service/orders?q=zzzz',
+  ...orderSeeds.filter((o) => o.channel === 'direct').map((o) => `/self-service/orders/${o.id}`),
+  '/self-service/quotations',
+  '/self-service/quotations?status=open',
+  ...quotations.filter((q) => q.issuer === 'sulzer').map((q) => `/self-service/quotations/${q.id}`),
+  // Spare parts and eShop (P5). The cart is empty in QA, so checkout redirects to the cart.
+  '/spare-parts',
+  '/spare-parts?product=xfp&model=xfp-150-e&pos=433',
+  '/spare-parts?by=part&q=bearing kit',
+  '/spare-parts?by=part&q=zzzz',
+  '/spare-parts?by=serial&serial=AH-1918-04512',
+  '/spare-parts?by=serial&serial=AF-1811-05240',
+  '/spare-parts?by=serial&serial=XX-0000',
+  '/products/ahlstar?bom=ahlstar-150-125-315#spare-parts',
+  '/eshop',
+  '/eshop/cart',
+  '/eshop/checkout',
+  // Sulzer Connect: its own app outside SiteLayout. Signed out, every page but the welcome asks to sign in.
   '/connect',
+  '/connect/dashboard',
+  '/connect/assets',
+  ...assets.filter((asset) => asset.connected).map((asset) => `/connect/assets/${asset.id}`),
+  '/connect/assets/rw-02?range=24h',
+  '/connect/assets/rw-02?range=30d',
+  '/connect/assets/cd-01',
+  '/connect/alerts',
+  '/connect/reports',
+  '/connect/users',
+  '/connect/teams',
   ...placeholderRoutes.map((route) => route.path),
   '/this-page-does-not-exist',
 ]
 
-/** Overlays and interactive states worth checking on the home page (viewport-only shots). */
+/** The personal toolbar's panels, opened on the Sulzer Connect product page (signed in). */
+const toolbarStates = [
+  'Compare',
+  'Saved items',
+  'Sizing',
+  'My projects',
+  'Recently viewed',
+  'Units & market',
+].map((label) => ({
+  name: `toolbar-${label.toLowerCase().replace(/\W+/g, '-')}`,
+  path: '/products/sulzer-connect',
+  signedInOnly: true,
+  run: (page) =>
+    page
+      .getByRole('navigation', { name: 'Personal toolbar' })
+      .getByRole('button', { name: label })
+      .click(),
+}))
+
+/** Overlays and interactive states worth checking (viewport-only shots), on the home page unless they name a `path`. */
 const states = [
   {
     name: 'mega-menu',
@@ -103,6 +173,24 @@ const states = [
     signedInOnly: true,
     run: (page) => page.getByRole('button', { name: /Lindqvist|Sign in/ }).click(),
   },
+  {
+    name: 'spare-parts-hotspot',
+    path: '/products/ahlstar#spare-parts',
+    run: async (page) => {
+      await page.getByRole('figure').scrollIntoViewIfNeeded()
+      await page.getByRole('button', { name: 'Position 321' }).click()
+    },
+  },
+  {
+    name: 'cart-drawer',
+    path: '/products/ahlstar#spare-parts',
+    signedInOnly: true,
+    run: async (page) => {
+      await page.getByRole('button', { name: /^Add Bearing kit/ }).click()
+      await page.getByRole('button', { name: /^Cart/ }).click()
+    },
+  },
+  ...toolbarStates,
 ]
 
 function fileName(route) {
@@ -173,7 +261,7 @@ for (const auth of ['logged-out', 'logged-in']) {
   const context = await browser.newContext({ viewport: { width, height } })
   await context.addInitScript((signedIn) => {
     if (signedIn && !sessionStorage.getItem('qa-init')) {
-      localStorage.setItem('sz-demo-signed-in', 'true')
+      localStorage.setItem('sz-demo-persona', 'endUser')
       sessionStorage.setItem('qa-init', '1')
     }
   }, auth === 'logged-in')
@@ -206,14 +294,14 @@ for (const auth of ['logged-out', 'logged-in']) {
   for (const state of states) {
     if (state.signedInOnly && auth !== 'logged-in') continue
     messages = []
-    await page.goto(base + '/')
+    await page.goto(base + (state.path ?? '/'))
     await settle(page)
     await state.run(page)
     await page.waitForTimeout(400)
     await page.screenshot({ path: `${outDir}/${auth}/states/${state.name}.png` })
     results.push({
       auth,
-      route: `/ [${state.name}]`,
+      route: `${state.path ?? '/'} [${state.name}]`,
       title: '',
       messages,
       overflowing: [],

@@ -6,6 +6,7 @@ import { articleById } from '../../lib/articles'
 import { articleCartArticle } from '../../lib/cartArticles'
 import { partOwner, sparePartsFor, sparePartsPath } from '../../lib/catalog'
 import { formatPrice, type ModelSort, type ModelSortKey } from '../../lib/modelSpecs'
+import { netPrice } from '../../lib/selfService'
 import type { ProductModel } from '../../types'
 import { AvailabilityBadge } from './AvailabilityBadge'
 import { ModelCartCell } from './ModelCartCell'
@@ -13,7 +14,8 @@ import { ModelCartCell } from './ModelCartCell'
 const copy = productPage.models
 
 type Column = {
-  key: ModelSortKey
+  /** The sort key, or a partner price column (sorted by list price, or not at all). */
+  key: ModelSortKey | 'discount' | 'netPrice'
   label: string
   unit?: string
   numeric: boolean
@@ -74,9 +76,40 @@ const columns: Column[] = [
   },
 ]
 
+/** Partners: their discount and net price after the list price. */
+const partnerColumns = (discount: number): Column[] => [
+  {
+    key: 'discount',
+    label: copy.columns.discount,
+    numeric: true,
+    priced: true,
+    render: () => (
+      <span className="rounded-sm bg-success-tint px-1.5 py-0.5 text-sm font-semibold text-success-strong">
+        −{discount}%
+      </span>
+    ),
+  },
+  {
+    key: 'netPrice',
+    label: copy.columns.netPrice,
+    numeric: true,
+    priced: true,
+    render: (m) => (
+      <span className="font-semibold text-navy-900">
+        {formatPrice(netPrice(m.listPrice, discount))}
+      </span>
+    ),
+  },
+]
+
+const sortKeyOf = (col: Column): ModelSortKey | null =>
+  col.key === 'netPrice' ? 'listPrice' : col.key === 'discount' ? null : col.key
+
 type ModelsTableProps = {
   models: ProductModel[]
   signedIn: boolean
+  /** % off list for the signed-in user (the partner discount), or 0. */
+  discount?: number
   onSignIn: () => void
   sort: ModelSort | null
   onSort: (key: ModelSortKey) => void
@@ -100,6 +133,7 @@ const cell = 'px-4 py-3.5'
 export function ModelsTable({
   models,
   signedIn,
+  discount = 0,
   onSignIn,
   sort,
   onSort,
@@ -109,7 +143,13 @@ export function ModelsTable({
   onToggleCompare,
   detail,
 }: ModelsTableProps) {
-  const visible = columns.filter((col) => signedIn || !col.priced)
+  const priced =
+    discount > 0
+      ? columns.flatMap((col) =>
+          col.key === 'listPrice' ? [col, ...partnerColumns(discount)] : col,
+        )
+      : columns
+  const visible = priced.filter((col) => signedIn || !col.priced)
   // Compare checkbox + columns + the order column (signed in) or the sign-in column.
   const columnCount = 1 + visible.length + 1
   const compareFull = compareIds.length >= 3
@@ -124,7 +164,8 @@ export function ModelsTable({
               <span className="sr-only">{copy.columns.compare}</span>
             </th>
             {visible.map((col) => {
-              const active = sort?.key === col.key
+              const sortKey = sortKeyOf(col)
+              const active = sortKey !== null && sort?.key === sortKey
               const SortIcon = !active
                 ? ArrowUpDown
                 : sort.direction === 'asc'
@@ -141,28 +182,32 @@ export function ModelsTable({
                     col.numeric ? 'text-right' : ''
                   }`}
                 >
-                  <button
-                    type="button"
-                    onClick={() => onSort(col.key)}
-                    className={`group inline-flex items-center gap-1.5 transition-colors hover:text-primary ${
-                      col.numeric ? 'flex-row-reverse' : ''
-                    } ${active ? 'text-primary' : ''}`}
-                  >
-                    <span className="text-left">
-                      {col.label}
-                      {col.unit && (
-                        <span className="block text-xs font-normal text-text-muted">
-                          [{col.unit}]
-                        </span>
-                      )}
-                    </span>
-                    <SortIcon
-                      aria-hidden
-                      className={`size-3.5 shrink-0 transition-opacity ${
-                        active ? 'opacity-100' : 'opacity-0 group-hover:opacity-60'
-                      }`}
-                    />
-                  </button>
+                  {sortKey === null ? (
+                    <span className="whitespace-nowrap">{col.label}</span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => onSort(sortKey)}
+                      className={`group inline-flex items-center gap-1.5 transition-colors hover:text-primary ${
+                        col.numeric ? 'flex-row-reverse' : ''
+                      } ${active ? 'text-primary' : ''}`}
+                    >
+                      <span className="text-left">
+                        {col.label}
+                        {col.unit && (
+                          <span className="block text-xs font-normal text-text-muted">
+                            [{col.unit}]
+                          </span>
+                        )}
+                      </span>
+                      <SortIcon
+                        aria-hidden
+                        className={`size-3.5 shrink-0 transition-opacity ${
+                          active ? 'opacity-100' : 'opacity-0 group-hover:opacity-60'
+                        }`}
+                      />
+                    </button>
+                  )}
                 </th>
               )
             })}

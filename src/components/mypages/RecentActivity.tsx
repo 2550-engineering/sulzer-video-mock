@@ -2,11 +2,14 @@ import { ChevronRight, History } from 'lucide-react'
 import { Link } from 'react-router'
 import { useAuth } from '../../auth/useAuth'
 import { recentActivity } from '../../data/myPages'
+import type { ActivityItem } from '../../types'
 
 /** Slim list of the latest changes to the user's quotations, projects, orders and courses. */
-export function RecentActivity() {
+export function RecentActivity({ items: given }: { items?: ActivityItem[] }) {
   const { persona } = useAuth()
-  const items = recentActivity.items.filter((item) => !item.persona || item.persona === persona)
+  const items = (given ?? recentActivity.items).filter(
+    (item) => !item.persona || item.persona === persona,
+  )
   return (
     <section className="overflow-hidden rounded-lg border border-border bg-surface shadow-card">
       <h2 className="flex items-center gap-2.5 border-b border-border px-7 py-4 text-base font-bold tracking-tight text-brand">
@@ -14,13 +17,19 @@ export function RecentActivity() {
         {recentActivity.title}
       </h2>
       <ul className="divide-y divide-border">
-        {items.map(({ subject, text, time, to, icon: Icon }) => (
+        {items.map(({ subject, text, time, to, icon: Icon, tone }) => (
           <li key={subject}>
             <Link
               to={to}
               className="group flex items-center gap-4 px-7 py-3.5 transition-colors hover:bg-surface-subtle"
             >
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary-tint text-primary">
+              <span
+                className={`flex size-9 shrink-0 items-center justify-center rounded-full ${
+                  tone === 'warning'
+                    ? 'bg-warning-tint text-warning'
+                    : 'bg-primary-tint text-primary'
+                }`}
+              >
                 <Icon className="size-4" strokeWidth={1.75} />
               </span>
               <p className="min-w-0 flex-1 truncate text-[15px] text-text-muted">

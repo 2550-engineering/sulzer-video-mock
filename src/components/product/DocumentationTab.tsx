@@ -23,6 +23,10 @@ type DocumentationTabProps = {
   documents: Document[]
   /** Defaults to "Documentation"; e.g. "Drawings" when it lists drawings. */
   title?: string
+  /** Line under the heading. */
+  intro?: string
+  /** Extra line after a document's number, e.g. "For serial no. AH-1918-04512". */
+  documentNote?: (document: Document) => string | undefined
 }
 
 /**
@@ -34,6 +38,8 @@ export function DocumentationTab({
   product,
   documents,
   title = productPage.documentationTitle,
+  intro,
+  documentNote,
 }: DocumentationTabProps) {
   const [params, update] = useUrlParams()
   const download = useDocumentDownload()
@@ -116,6 +122,7 @@ export function DocumentationTab({
   return (
     <>
       <TabHeading title={title} />
+      {intro && <p className="mt-3 max-w-3xl text-lg text-text-muted">{intro}</p>}
 
       <div className="mt-8 flex flex-wrap items-end justify-between gap-x-10 gap-y-5">
         <div>
@@ -194,6 +201,7 @@ export function DocumentationTab({
                     key={doc.id}
                     document={doc}
                     language={language === allLanguages ? doc.languages[0] : language}
+                    note={documentNote?.(doc)}
                     checked={selected.includes(doc.id)}
                     onCheck={() => toggle(doc.id)}
                     onPreview={() => setPreview({ document: doc, open: true })}

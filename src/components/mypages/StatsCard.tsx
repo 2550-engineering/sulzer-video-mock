@@ -1,7 +1,6 @@
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router'
-import { assetsCard } from '../../data/myPages'
-import type { StatusTone } from '../../types'
+import type { StatsCardData, StatusTone } from '../../types'
 import { DashboardPanel } from './DashboardPanel'
 
 const tones: Record<StatusTone, { icon: string; value: string }> = {
@@ -10,18 +9,21 @@ const tones: Record<StatusTone, { icon: string; value: string }> = {
   warning: { icon: 'bg-warning-tint text-warning', value: 'text-warning-strong' },
 }
 
-/** "My assets" card: three headline stats on the installed base and a link to the asset list. */
-export function AssetsCard() {
-  const { title, subtitle, icon, badge, stats, source, link } = assetsCard
+/**
+ * Wide My Pages card with three headline stats, each a link, and a button: "My assets"
+ * for the end user, "My customers" for the partner.
+ */
+export function StatsCard({ card }: { card: StatsCardData }) {
+  const { title, subtitle, icon, badge, stats, source, link } = card
 
   return (
     <DashboardPanel title={title} subtitle={subtitle} icon={icon} badge={badge}>
       <div className="flex flex-1 flex-col p-7">
         <ul className="grid gap-4 sm:grid-cols-3">
-          {stats.map(({ value, label, detail, tone, icon: Icon }) => (
+          {stats.map(({ value, label, detail, tone, icon: Icon, to }) => (
             <li key={label}>
               <Link
-                to={link.to}
+                to={to}
                 className="group block h-full rounded-md border border-border bg-surface-subtle p-5 transition-[border-color,background-color,box-shadow] duration-200 hover:border-primary-border hover:bg-surface hover:shadow-card"
               >
                 <span

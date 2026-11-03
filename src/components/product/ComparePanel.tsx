@@ -3,6 +3,7 @@ import { useEffect, useRef, type ReactNode } from 'react'
 import { productPage } from '../../data/catalogPages'
 import { useDismiss } from '../../hooks/useDismiss'
 import { compareColors, formatPrice } from '../../lib/modelSpecs'
+import { netPrice } from '../../lib/selfService'
 import type { ProductModel } from '../../types'
 import { AvailabilityBadge } from './AvailabilityBadge'
 import { PerformanceCurve } from './PerformanceCurve'
@@ -39,11 +40,28 @@ type ComparePanelProps = {
   open: boolean
   models: ProductModel[]
   signedIn: boolean
+  /** % off list for the signed-in user (the partner discount), or 0. */
+  discount?: number
   onClose: () => void
 }
 
 /** Side panel comparing up to 3 models: overlaid performance curves and a spec table. */
-export function ComparePanel({ open, models, signedIn, onClose }: ComparePanelProps) {
+export function ComparePanel({ open, models, signedIn, discount = 0, onClose }: ComparePanelProps) {
+  const shownRows =
+    discount > 0
+      ? rows.flatMap((row) =>
+          row.label === copy.rows.listPrice
+            ? [
+                row,
+                {
+                  label: copy.rows.netPrice(discount),
+                  value: (m: ProductModel) => formatPrice(netPrice(m.listPrice, discount)),
+                  priced: true,
+                },
+              ]
+            : row,
+        )
+      : rows
   const panelRef = useRef<HTMLDivElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
   useDismiss(panelRef, open, onClose)
@@ -134,7 +152,7 @@ export function ComparePanel({ open, models, signedIn, onClose }: ComparePanelPr
                 </span>
               ))}
             </div>
-            {rows
+            {shownRows
               .filter((row) => signedIn || !row.priced)
               .map((row) => (
                 <div

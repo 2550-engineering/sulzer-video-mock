@@ -14,7 +14,8 @@
     "images:doc": "node scripts/images-needed.mjs",
     "shot": "node scripts/screenshot.mjs",
     "flow": "playwright test",
-    "test": "vitest run"
+    "test": "vitest run",
+    "connect:devices": "node scripts/connect-devices.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.62.0",

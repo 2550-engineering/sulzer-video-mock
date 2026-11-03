@@ -30,3 +30,6 @@ dist-ssr
 _qa/screenshots*/
 _qa/videos/
 _qa/test-results/
+
+# Image candidates (pick from these, only the chosen file goes into public/images)
+_asset-source/images/_candidates/

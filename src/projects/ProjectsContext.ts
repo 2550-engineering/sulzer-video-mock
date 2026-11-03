@@ -72,7 +72,14 @@ export type ItemPatch = Partial<Pick<ProjectItem, 'customerPosition' | 'quantity
 export type ProjectInfoPatch = Partial<
   Pick<
     Project,
-    'name' | 'description' | 'client' | 'consultantFirm' | 'deadline' | 'budget' | 'requirements'
+    | 'name'
+    | 'description'
+    | 'client'
+    | 'clientAccount'
+    | 'consultantFirm'
+    | 'deadline'
+    | 'budget'
+    | 'requirements'
   >
 >
 

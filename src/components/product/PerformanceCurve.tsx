@@ -1,10 +1,20 @@
 import { productPage } from '../../data/catalogPages'
-import { curveFlowRange, efficiencyAt, headAt, niceAxis } from '../../lib/modelSpecs'
-import type { ProductModel } from '../../types'
+import {
+  curveFlowRange,
+  efficiencyAt,
+  headAt,
+  niceAxis,
+  type CurveModel,
+} from '../../lib/modelSpecs'
 
 const copy = productPage.models.detail
 
-export type CurveSeries = { model: ProductModel; color: string }
+export type CurveSeries = {
+  model: CurveModel
+  color: string
+  /** Dashed line, e.g. the pump installed today in a replacement comparison. */
+  dashed?: boolean
+}
 
 type PerformanceCurveProps = {
   series: CurveSeries[]
@@ -12,6 +22,8 @@ type PerformanceCurveProps = {
   showEfficiency?: boolean
   /** Marks the rated point with guide lines and a label. One model only. */
   showRatedPoint?: boolean
+  /** A point to mark on the chart, e.g. the duty point, with its label. */
+  marker?: { flow: number; head: number; label: string }
 }
 
 const width = 480
@@ -33,12 +45,15 @@ export function PerformanceCurve({
   series,
   showEfficiency = false,
   showRatedPoint = false,
+  marker,
 }: PerformanceCurveProps) {
   const margin = { top: 18, right: showEfficiency ? 48 : 18, bottom: 46, left: 54 }
   const plotWidth = width - margin.left - margin.right
   const plotHeight = height - margin.top - margin.bottom
 
-  const xAxis = niceAxis(Math.max(...series.map(({ model }) => model.flow * curveFlowRange)))
+  const xAxis = niceAxis(
+    Math.max(...series.map(({ model }) => model.flow * curveFlowRange), (marker?.flow ?? 0) * 1.2),
+  )
   const yAxis = niceAxis(Math.max(...series.map(({ model }) => headAt(model, 0))) * 1.05)
   const etaAxis = { max: 100, step: 20 }
 
@@ -46,11 +61,7 @@ export function PerformanceCurve({
   const y = (head: number) => margin.top + plotHeight - (head / yAxis.max) * plotHeight
   const yEta = (eta: number) => margin.top + plotHeight - (eta / etaAxis.max) * plotHeight
 
-  const path = (
-    model: ProductModel,
-    value: (flow: number) => number,
-    scale: (v: number) => number,
-  ) =>
+  const path = (model: CurveModel, value: (flow: number) => number, scale: (v: number) => number) =>
     Array.from({ length: samples + 1 }, (_, i) => {
       const flow = (i / samples) * model.flow * curveFlowRange
       return `${i === 0 ? 'M' : 'L'}${x(flow).toFixed(1)},${scale(value(flow)).toFixed(1)}`
@@ -157,16 +168,38 @@ export function PerformanceCurve({
       )}
 
       {/* Head curves */}
-      {series.map(({ model, color }) => (
+      {series.map(({ model, color, dashed }) => (
         <path
           key={model.id}
           d={path(model, (flow) => headAt(model, flow), y)}
           fill="none"
           stroke={color}
-          strokeWidth={2.75}
+          strokeWidth={dashed ? 2.25 : 2.75}
+          strokeDasharray={dashed ? '7 5' : undefined}
           strokeLinecap="round"
         />
       ))}
+
+      {marker && (
+        <g>
+          <path
+            d={`M${x(marker.flow)},${margin.top + plotHeight} V${y(marker.head)} H${margin.left}`}
+            fill="none"
+            stroke="var(--sz-color-text-subtle)"
+            strokeDasharray="3 3"
+          />
+          <circle cx={x(marker.flow)} cy={y(marker.head)} r={6} fill="var(--sz-color-accent-red)" />
+          <circle cx={x(marker.flow)} cy={y(marker.head)} r={2.5} fill="white" />
+          <text
+            x={x(marker.flow) + 10}
+            y={y(marker.head) + 20}
+            fill="var(--sz-color-navy-900)"
+            fontWeight={600}
+          >
+            {marker.label}
+          </text>
+        </g>
+      )}
 
       {showRatedPoint && rated && (
         <g>

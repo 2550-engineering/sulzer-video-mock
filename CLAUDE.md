@@ -43,13 +43,46 @@ Goal: viewers should go "Wow!" It must look like a real, polished, production Su
 - **Nothing that looks like a prototype:** no visible lorem ipsum on Phase 1 pages that are "done", no "TODO" text on screen.
 - **Stub pages** for future flows show a tasteful "Coming soon" state inside the real layout.
 - **Demo content** (user name, company, product names, market) lives in `src/config/demo.ts`.
-- **Demo controls:** Shift+D opens a hidden presenter panel (Reset demo / Sign in as demo user). It renders nothing while closed.
-- **Recording QA:** `npm run qa` screenshots every route logged out and logged in to `_qa/screenshots/` (gitignored) and writes `_qa/report.md` (console errors, failed requests, broken images, overflow, placeholder text). Add `-- --viewport=1440x900` for the secondary size. New routes are picked up from `placeholderRoutes` and `src/data`, but add new top-level pages to the list in `scripts/qa-screenshots.mjs`.
+- **Demo controls:** Shift+D opens a hidden presenter panel (Reset demo / Sign in as each persona). It renders nothing while closed.
+- **No QA runs by default:** after a change, run only `npm run build` and `npm run lint`. Don't run `npm run qa`, Playwright flows or screenshot reviews, and don't add routes to the QA script, unless I explicitly ask. (`npm run qa` exists and screenshots every route to `_qa/screenshots/` if I want it.)
 
 ## Phases
 
-- **Phase 1 (current):** site shell, branding, header/footer/nav, home, mySulzer landing, login, My Pages dashboard, Quick links, route stubs + mock data types.
-- **Phase 2 (later):** Application finder, Product finder + product page, Sizing & configuration, Spare parts/drawings/eCommerce, My projects, Assets & condition monitoring.
+- **Phase 1 (done):** site shell, branding, header/footer/nav, home, mySulzer landing, login, My Pages dashboard, Quick links, route stubs + mock data types.
+- **Phase 2 (done):** Application finder, Product finder + product page, Sizing & configuration, My projects. Spare parts/drawings/eCommerce and Assets & condition monitoring moved to Phase 3.
+
+## Phase 3 – Personas (current)
+
+Deck slides 11 (end user / asset owner), 12 (end user IoT) and 13 (channel partner). Plan, assumptions and demo flows (Video A and B): `~/Documents/Claude/Projects/Sulzer/plans/persona-plan.md`.
+
+- **P0 Foundations:** personas (`personas` in `src/config/demo.ts`), installed base (`src/data/assets.ts`), condition time series (`src/lib/conditionData.ts`).
+- **P1 My assets:** `/assets` and `/assets/:id`.
+- **P2 Sulzer Connect app:** `/connect/*` dashboard, Asset Monitor, condition monitoring, alerts, users, reports.
+- **P3 Connect product page + digital solutions + personal toolbar.**
+- **P4 Requests, orders and quotations.**
+- **P5 Spare parts, sectional drawing and eShop.**
+- **P6 Replacement finder and tender texts.**
+- **P7 Channel partner:** partner My Pages, customers, partner prices.
+
+P5 and P6 are also needed by the service provider (slide 9) and consultant (slide 10) videos. Build them persona-agnostic and reusable: no end-user or partner wording baked into the components, persona-specific bits (prices, "on behalf of" a customer) passed in as props or read from the signed-in persona.
+
+Personas: `endUser` (Emma Lindqvist, Nordvatten Utilities; also the service provider workshop demo, slide 9), `consultant` (Anna Berg, Nordic Water Consulting, slide 10) and `channelPartner` (Lars Ek, Aqua Pumpteknik). To add one, add its id to `PersonaId` in `src/types.ts` and an entry to `personas`; auth, the Shift+D panel and the per-persona project store pick it up.
+
+Spare parts, exploded drawings, the cart and checkout, the discontinued-product replacement finder and tender texts are shared components from the slide 9 and 10 work. Persona-specific bits are layered on top: partner net prices (`lib/pricing.ts`), "order on behalf of customer" at checkout, and the installed-pump replacement finder at `/products/replacement/existing-pump`.
+
+## Images
+
+- Images come from Sulzer's own media (sulzer.com, Sulzer PDFs in `_asset-source/pdfs`) or licensed stock. **Never Grundfos, KSB or Xylem.**
+- Every image in `public/images` that came from the web is logged in `~/Documents/Claude/Projects/Sulzer/docs/image-sources.md` with its source URL.
+- `npm run images:doc` lists every image path in `src/data` with its aspect, minimum size and what it should show (`docs/images-needed.md`). New image folders need a spec in `scripts/images-needed.mjs`.
+
+## Documents and plans
+
+- Plans (phase, module and persona plans) and other non-code documents (image source logs, notes) do **not** go in this repo.
+- They live in the Sulzer project folder `~/Documents/Claude/Projects/Sulzer`: plans in `plans/`, other documents in `docs/`. See its `CLAUDE.md`.
+- Start Claude Code with `claude --add-dir ~/Documents/Claude/Projects/Sulzer` so you can read and write there, and use absolute paths.
+- Only code and files the code or scripts need (this file, generated reports like `docs/images-needed.md`, `docs/content-to-confirm.md`, tests) stay in the repo.
+- **Build, don't re-plan:** prompts from the persona plan (`~/Documents/Claude/Projects/Sulzer/plans/persona-plan.md`) are already agreed. Build straight away without writing a separate plan or asking for confirmation. Only stop if something is truly blocked; otherwise make a sensible assumption and list it at the end.
 
 ## Conventions
 

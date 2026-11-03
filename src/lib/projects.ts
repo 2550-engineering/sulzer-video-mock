@@ -71,3 +71,8 @@ export function encodeMentions(text: string, members: ProjectMember[]) {
     .sort((a, b) => b.name.length - a.name.length)
     .reduce((out, member) => out.replaceAll(`@${member.name}`, `@[${member.id}]`), text)
 }
+
+/** Run for a customer account, and the customer's contact is a member (invited or active). */
+export const isSharedWithClient = (project: Project) =>
+  project.clientAccount !== undefined &&
+  project.members.some((member) => member.email === project.client.email)

@@ -1,5 +1,6 @@
 import { applications, rootApplicationId } from '../data/applications'
 import { cadFiles, cadPreviews } from '../data/cad'
+import { productPage } from '../data/catalogPages'
 import { documents, serviceVideos } from '../data/documents'
 import { knowledgeItems } from '../data/knowledge'
 import { productModels } from '../data/productModels'
@@ -14,10 +15,12 @@ import { xfpVariants } from '../data/xfp'
 import type {
   Application,
   ApplicationTeaser,
+  Document,
   PartHit,
   PartOwner,
   Product,
   ProductVariant,
+  SavedItem,
   Service,
   SparePart,
   SparePartCatalogue,
@@ -131,6 +134,11 @@ export function getProduct(id: string) {
 
 export function productPath(product: Product) {
   return `/products/${product.id}`
+}
+
+/** The product page tabs for this product's tab set (pump or digital). */
+export function productTabs(product: Product) {
+  return productPage.tabSets[product.tabSet]
 }
 
 export function getModel(id: string) {
@@ -247,6 +255,47 @@ export function partsInVersion(catalogue: SparePartCatalogue, versionId?: string
 
 export function documentsFor(productId: string) {
   return documents.filter((doc) => doc.productIds.includes(productId))
+}
+
+export function getDocument(id: string) {
+  return documents.find((doc) => doc.id === id)
+}
+
+/** A saved item as lists show it: title, the line under it, where it links, its product and (for documents) the document. */
+export type ResolvedSavedItem = {
+  item: SavedItem
+  title: string
+  meta: string
+  to: string
+  product?: Product
+  document?: Document
+}
+
+/** Looks up a saved product or document. Documents link to their product's Documentation tab. */
+export function resolveSavedItem(item: SavedItem): ResolvedSavedItem | undefined {
+  if (item.kind === 'product') {
+    const product = getProduct(item.id)
+    return (
+      product && {
+        item,
+        title: product.name,
+        meta: product.family,
+        to: productPath(product),
+        product,
+      }
+    )
+  }
+  const document = getDocument(item.id)
+  if (!document) return undefined
+  const product = getProduct(document.productIds[0])
+  return {
+    item,
+    title: document.title,
+    meta: [document.type, product?.name].filter(Boolean).join(' · '),
+    to: product ? `${productPath(product)}#documentation` : '/support/documentation',
+    product,
+    document,
+  }
 }
 
 export function videosFor(productId: string) {

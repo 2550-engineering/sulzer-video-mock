@@ -40,6 +40,11 @@
   --color-warning-strong: var(--sz-color-warning-strong);
   --color-warning-tint: var(--sz-color-warning-tint);
   --color-danger: var(--sz-color-danger);
+  --color-danger-strong: var(--sz-color-danger-strong);
+  --color-danger-tint: var(--sz-color-danger-tint);
+  --color-success-on-dark: var(--sz-color-success-on-dark);
+  --color-warning-on-dark: var(--sz-color-warning-on-dark);
+  --color-danger-on-dark: var(--sz-color-danger-on-dark);
 
   --font-sans: var(--sz-font-sans);
   --default-font-family: var(--sz-font-sans);
@@ -76,6 +81,46 @@
     }
   }
 
+  /* A badge whose number just changed, e.g. the cart count. */
+  --animate-pop: sz-pop 250ms var(--sz-ease);
+  @keyframes sz-pop {
+    50% {
+      scale: 1.3;
+    }
+  }
+
+  /* Chart lines draw from left to right; use with pathLength="1" and stroke-dasharray 1. */
+  --animate-draw: sz-draw 800ms var(--sz-ease) backwards;
+  @keyframes sz-draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+  }
+
+  /* Bars grow up from the axis; set transform-origin to the bottom. */
+  --animate-grow: sz-grow 600ms var(--sz-ease) backwards;
+  @keyframes sz-grow {
+    from {
+      transform: scaleY(0);
+    }
+  }
+
+  /* Bars fill from the left; set transform-origin to the left. */
+  --animate-bar: sz-bar 700ms var(--sz-ease) backwards;
+  @keyframes sz-bar {
+    from {
+      transform: scaleX(0);
+    }
+  }
+
+  /* Data moving along a dashed connector line. Infinite, so use it as motion-safe:animate-flow. */
+  --animate-flow: sz-flow 1.4s linear infinite;
+  @keyframes sz-flow {
+    to {
+      stroke-dashoffset: -16;
+    }
+  }
+
   @keyframes sz-page-in {
     from {
       opacity: 0;
@@ -94,6 +139,15 @@
   width: 100%;
   max-width: calc(var(--sz-content-max) + 2 * var(--sz-gutter));
   padding-inline: var(--sz-gutter);
+  /* Keeps content clear of the personal toolbar (--sz-toolbar-space, set on <main> while it shows)
+     where the page margin is narrower than the toolbar. */
+  padding-right: max(
+    var(--sz-gutter),
+    calc(
+      var(--sz-toolbar-space, 0px) -
+        max(0px, (100vw - var(--sz-content-max)) / 2 - var(--sz-gutter))
+    )
+  );
 
   @media (width < 40rem) {
     padding-inline: 1rem;

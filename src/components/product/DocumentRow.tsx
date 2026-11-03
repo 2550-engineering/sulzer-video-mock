@@ -9,6 +9,8 @@ type DocumentRowProps = {
   document: Document
   /** The language to show: the filtered one, or the document's first. */
   language: string
+  /** Extra line after the document number. */
+  note?: string
   checked: boolean
   onCheck: () => void
   onPreview: () => void
@@ -22,6 +24,7 @@ const action =
 export function DocumentRow({
   document,
   language,
+  note,
   checked,
   onCheck,
   onPreview,
@@ -53,6 +56,7 @@ export function DocumentRow({
         <p className="mt-0.5 text-xs text-text-muted tabular-nums">
           {document.number}
           {document.revision && ` · ${copy.previewDialog.revision(document.revision)}`}
+          {note && <span className="font-semibold text-primary"> · {note}</span>}
         </p>
       </div>
       <p className="hidden text-sm text-text md:block">

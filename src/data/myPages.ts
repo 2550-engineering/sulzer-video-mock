@@ -8,11 +8,15 @@ import {
   HandHelping,
   LayoutGrid,
   Server,
+  TriangleAlert,
   Truck,
   Wrench,
 } from 'lucide-react'
-import { products } from '../config/demo'
-import type { ActivityItem, AssetStat, DashboardCard, NavItem } from '../types'
+import { demoClock, demoUser, products } from '../config/demo'
+import { serviceDueWithinDays, summarizeAssets } from '../lib/assetSummary'
+import type { ActivityItem, DashboardCard, StatsCardData } from '../types'
+import { assets } from './assets'
+import { orderPath, ordersPath, quotationPath, requestsPath } from './selfServicePages'
 
 /* Copy and demo data for the signed-in dashboard ("/my-pages"). Deterministic — no live values. */
 
@@ -33,12 +37,9 @@ export const dashboardCards = {
       { label: 'List price & availability', to: '/self-service/list-price' },
       { label: 'Spare parts', to: '/spare-parts' },
       { label: 'Replace pump', to: '/products/replacement' },
-      {
-        label: 'Order status incl. track & trace',
-        to: '/self-service/orders',
-        badge: { label: '2 in transit', tone: 'info' },
-      },
-      { label: 'Requests', to: '/self-service/requests', badge: { label: '1 open' } },
+      // Badges: orders in transit and open requests, from the self-service state (MyPagesPage).
+      { label: 'Order status incl. track & trace', to: ordersPath },
+      { label: 'Requests', to: requestsPath },
       { label: 'Export information', to: '/self-service/export' },
     ],
   },
@@ -80,24 +81,49 @@ export const dashboardCards = {
   },
 } satisfies Record<string, DashboardCard>
 
-export const assetsCard = {
+/** Live counts on the Self-service card. */
+export const selfServiceBadges = {
+  inTransit: (n: number) => `${n} in transit`,
+  open: (n: number) => `${n} open`,
+}
+
+const summary = summarizeAssets(assets.filter((asset) => asset.customerId === demoUser.customerId))
+
+const count = (n: number, noun: string) => `${n} ${noun}${n === 1 ? '' : 's'}`
+
+export const assetsCard: StatsCardData = {
   title: 'My assets',
   badge: 'New',
   subtitle: 'Your installed base at a glance',
   icon: Gauge,
   stats: [
-    { value: '24', label: 'assets', detail: 'Across 6 sites', tone: 'neutral', icon: Server },
     {
-      value: '2',
+      value: String(summary.total),
+      label: 'assets',
+      detail: `Across ${summary.sites} sites`,
+      tone: 'neutral',
+      icon: Server,
+      to: '/assets',
+    },
+    {
+      value: String(summary.needsAttention),
       label: 'need attention',
-      detail: 'Vibration above limit',
+      detail: `${count(summary.alarms, 'alarm')} · ${count(summary.warnings, 'warning')}`,
       tone: 'warning',
       icon: CircleAlert,
+      to: '/assets?status=alarm&status=warning',
     },
-    { value: '1', label: 'service due', detail: 'Within 30 days', tone: 'info', icon: Wrench },
-  ] satisfies AssetStat[],
-  source: `Monitored with ${products.iotOffering} · Updated today, 08:42`,
-  link: { label: 'View all assets', to: '/assets' } satisfies NavItem,
+    {
+      value: String(summary.serviceDue),
+      label: 'service due',
+      detail: `Within ${serviceDueWithinDays} days`,
+      tone: 'info',
+      icon: Wrench,
+      to: '/assets?service=due',
+    },
+  ],
+  source: `Monitored with ${products.iotOffering} · Updated today, ${demoClock.lastSync}`,
+  link: { label: 'View all assets', to: '/assets' },
 }
 
 export const recentActivity = {
@@ -107,7 +133,7 @@ export const recentActivity = {
       subject: 'Quotation Q-10234',
       text: 'updated with a new delivery date',
       time: 'Today, 09:14',
-      to: '/self-service/quotations',
+      to: quotationPath('Q-10234'),
       icon: FileText,
     },
     {
@@ -127,10 +153,19 @@ export const recentActivity = {
       persona: 'consultant',
     },
     {
+      subject: 'RW-02',
+      text: 'vibration above warning limit · Riverside intake',
+      time: 'Today, 03:12',
+      to: '/assets/rw-02',
+      icon: TriangleAlert,
+      tone: 'warning',
+      persona: 'endUser',
+    },
+    {
       subject: 'Order SO-104382',
       text: 'shipped – expected 30 Oct',
       time: 'Yesterday, 16:20',
-      to: '/self-service/orders',
+      to: orderPath('SO-104382'),
       icon: Truck,
     },
     {

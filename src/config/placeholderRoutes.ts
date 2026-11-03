@@ -20,23 +20,6 @@ export const placeholderRoutes: PlaceholderRoute[] = [
     parent: '/products',
   },
   {
-    path: '/digital-solutions',
-    title: 'Digital solutions',
-    description: 'Connected services that keep your equipment running at its best.',
-  },
-  {
-    path: '/my-pages/saved',
-    title: 'My saved items',
-    description: 'Products, documents and drawings you have bookmarked.',
-    parent: '/my-pages',
-  },
-  {
-    path: '/my-pages/recently-viewed',
-    title: 'Recently viewed products',
-    description: 'Pick up where you left off.',
-    parent: '/my-pages',
-  },
-  {
     path: '/settings',
     title: 'Account settings',
     description: 'Your profile, company details, notifications and team members.',
@@ -56,24 +39,6 @@ export const placeholderRoutes: PlaceholderRoute[] = [
     path: '/self-service/export',
     title: 'Export information',
     description: 'Download product, price and order data for your own systems.',
-    parent: '/my-sulzer',
-  },
-  {
-    path: '/self-service/quotations',
-    title: 'Quotations',
-    description: 'Request, follow and download your Sulzer quotations.',
-    parent: '/my-sulzer',
-  },
-  {
-    path: '/self-service/requests',
-    title: 'Requests',
-    description: 'Follow your service, support and return requests.',
-    parent: '/my-sulzer',
-  },
-  {
-    path: '/self-service/orders',
-    title: 'Order status',
-    description: 'Follow every order from confirmation to delivery with track & trace.',
     parent: '/my-sulzer',
   },
   {
@@ -133,6 +98,18 @@ export const placeholderRoutes: PlaceholderRoute[] = [
     title: 'My bookmarks',
     description: 'Courses, webinars and articles you have saved for later.',
     parent: '/learn',
+  },
+  {
+    path: '/partner/sales-material',
+    title: 'Sales material',
+    description: 'Presentations, brochures and reference cases to use with your customers.',
+    parent: '/my-pages',
+  },
+  {
+    path: '/partner/brand',
+    title: 'Logos & partner branding',
+    description: 'The authorised Sulzer distributor logo and guidelines for your own material.',
+    parent: '/my-pages',
   },
   {
     path: '/about',

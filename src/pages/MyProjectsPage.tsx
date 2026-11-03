@@ -1,5 +1,7 @@
 import {
+  Check,
   Copy,
+  FilePlus2,
   FolderArchive,
   ShoppingCart,
   FolderOpen,
@@ -7,6 +9,7 @@ import {
   Printer,
   ScrollText,
   Settings2,
+  Share2,
   Trash2,
   Wallet,
 } from 'lucide-react'
@@ -14,6 +17,7 @@ import { useState } from 'react'
 import { Link, Navigate, useLocation, useNavigate, useParams, useSearchParams } from 'react-router'
 import { useAuth } from '../auth/useAuth'
 import { Breadcrumb } from '../components/Breadcrumb'
+import { CustomerLogo } from '../components/CustomerLogo'
 import { IconButton } from '../components/IconButton'
 import { InviteMemberDialog } from '../components/projects/InviteMemberDialog'
 import { ItemFilesDrawer } from '../components/projects/ItemFilesDrawer'
@@ -30,18 +34,22 @@ import { ProjectTabs } from '../components/projects/ProjectTabs'
 import { ShareProjectDialog } from '../components/projects/ShareProjectDialog'
 import { Switch } from '../components/Switch'
 import { personas } from '../config/demo'
+import { customers } from '../data/assets'
 import { signedOutRedirect } from '../data/myPages'
 import { memberFor } from '../data/projects'
 import { myProjectsPage as copy } from '../data/projectPages'
+import { quotationPath } from '../data/selfServicePages'
 import { tenderDialog } from '../data/tenderTexts'
 import { tenderFileName, useTenderDialog } from '../hooks/useTenderDialog'
 import { articleById } from '../lib/articles'
 import { getApplication } from '../lib/catalog'
 import { projectDocumentRows } from '../lib/projectDocuments'
-import { chosenItems, commentParts } from '../lib/projects'
+import { quotationFromProject } from '../lib/partner'
+import { chosenItems, commentParts, isSharedWithClient } from '../lib/projects'
 import { projectItemSubject } from '../lib/tenderSubjects'
 import { getVariant } from '../lib/variants'
 import { useProjects } from '../projects/useProjects'
+import { useSelfService } from '../selfService/useSelfService'
 import { useToast } from '../toast/useToast'
 import type { ProjectItem, TenderSubject } from '../types'
 import { NotFoundPage } from './NotFoundPage'
@@ -62,7 +70,8 @@ const reopen = (d: typeof closed) => ({ open: true, session: d.session + 1 })
  * collaboration space: header with status and sharing, tabs Products,
  * Discussion and Documents (in the URL hash), and the details panel with
  * Members and Activity. ?added=<item ids> highlights rows that were just added
- * from sizing.
+ * from sizing. A partner's project for a customer can be shared with the
+ * customer's contact and turned into a quotation.
  */
 export function MyProjectsPage() {
   const { user, persona } = useAuth()
@@ -73,6 +82,7 @@ export function MyProjectsPage() {
   const projectsState = useProjects()
   const { projects, updateItem, duplicateSizing, deleteSizing } = projectsState
   const showToast = useToast()
+  const { quotations, saveQuotation } = useSelfService()
   const [advanced, setAdvanced] = useState(false)
   const { openTender, tenderDialog: tenderDialogElement } = useTenderDialog()
   // Kept after closing, so the drawer doesn't empty while it slides out.
@@ -153,6 +163,30 @@ export function MyProjectsPage() {
     })
   }
 
+  // The partner's project for a customer account: share it and quote it.
+  const forCustomer = user.kind === 'partner'
+  const shared = isSharedWithClient(project)
+  const quotation = forCustomer ? quotationFromProject(project, quotations) : null
+
+  function shareWithClient() {
+    projectsState.inviteMember(project!.id, {
+      email: project!.client.email,
+      access: 'viewer',
+      message: '',
+    })
+    toast(
+      copy.toasts.shared(project!.client.contact),
+      copy.toasts.sharedDetail(project!.client.company),
+    )
+  }
+
+  function createQuotation() {
+    if (!quotation) return
+    saveQuotation(quotation)
+    toast(copy.toasts.quotation(quotation.id), copy.toasts.quotationDetail(project!.client.company))
+    navigate(quotationPath(quotation.id))
+  }
+
   function editDetails() {
     setPanelTab('details')
     setEditing(true)
@@ -222,6 +256,29 @@ export function MyProjectsPage() {
                 }}
                 onShare={() => setShareDialog(reopen)}
                 icons={icons}
+                badge={
+                  forCustomer &&
+                  project.clientAccount && (
+                    <p className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm">
+                      <span className="inline-flex items-center gap-2 font-semibold text-navy-900">
+                        <span className="flex size-7 items-center justify-center rounded-full border border-border bg-white">
+                          <CustomerLogo
+                            customerId={project.clientAccount}
+                            variant="mark"
+                            className="h-4"
+                          />
+                        </span>
+                        {copy.actions.forClient(project.client.company)}
+                      </span>
+                      {shared && (
+                        <span className="inline-flex animate-fade-in items-center gap-1.5 rounded-pill bg-success-tint px-2.5 py-0.5 text-xs font-semibold text-success-strong">
+                          <Check className="size-3.5" strokeWidth={2.5} />
+                          {copy.actions.shared(project.client.contact)}
+                        </span>
+                      )}
+                    </p>
+                  )
+                }
               >
                 <Link
                   to={copy.actions.addProductTo}
@@ -230,6 +287,22 @@ export function MyProjectsPage() {
                   <FolderOpen className="size-4" />
                   {copy.actions.addProduct}
                 </Link>
+                {forCustomer && quotation && (
+                  <button
+                    type="button"
+                    onClick={createQuotation}
+                    className="inline-flex h-10 items-center gap-2 rounded-pill bg-navy-900 px-5 text-sm font-semibold text-white transition-colors hover:bg-navy-800"
+                  >
+                    <FilePlus2 className="size-4" />
+                    {copy.actions.quotation}
+                  </button>
+                )}
+                {forCustomer && project.clientAccount && !shared && (
+                  <button type="button" onClick={shareWithClient} className={outlined}>
+                    <Share2 className="size-4" />
+                    {copy.actions.share}
+                  </button>
+                )}
                 <button
                   type="button"
                   onClick={() => setOrderDialog(reopen)}
@@ -434,6 +507,24 @@ export function MyProjectsPage() {
                 if (member)
                   toast(copy.members.accessChanged(member.name, copy.members.access[access]))
               }}
+              {...(forCustomer
+                ? {
+                    onClientAccount: (customerId: string) => {
+                      const customer = customers.find((c) => c.id === customerId)
+                      if (!customer) return
+                      projectsState.updateProject(project.id, {
+                        clientAccount: customerId,
+                        client: {
+                          ...project.client,
+                          company: customer.name,
+                          contact: customer.contact.name,
+                          email: customer.contact.email,
+                        },
+                      })
+                      toast(copy.toasts.client(customer.name))
+                    },
+                  }
+                : {})}
             />
           </div>
         </div>

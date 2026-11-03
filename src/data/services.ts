@@ -28,7 +28,7 @@ export const services: Service[] = [
       src: '/images/services/connect-asset-monitoring.jpg',
       alt: 'Operator checking live pump data on a tablet',
     },
-    to: '/connect',
+    to: '/products/sulzer-connect',
   },
   {
     id: 'remote-expert-support',

@@ -6,6 +6,7 @@
  *   npm run shot -- --out=_qa/screenshots/module1 /applications=overview
  *   npm run shot -- --viewport=1440x900 /applications=overview
  *   npm run shot -- "/products?q=pump=search-results"   # a route with "=" needs a name
+ *   npm run shot -- --persona=endUser /assets            # signed in as a persona from demo.ts
  */
 import { mkdir } from 'node:fs/promises'
 import { chromium } from 'playwright'
@@ -15,6 +16,7 @@ const option = (name, fallback) =>
   process.argv.find((arg) => arg.startsWith(`--${name}=`))?.split('=')[1] ?? fallback
 const outDir = option('out', '_qa/screenshots/shots')
 const [width, height] = option('viewport', '1920x1080').split('x').map(Number)
+const persona = option('persona', null)
 const shots = process.argv
   .slice(2)
   .filter((arg) => !arg.startsWith('--'))
@@ -33,6 +35,7 @@ const server = await createServer({ server: { port: 5197, strictPort: true }, lo
 await server.listen()
 const browser = await chromium.launch()
 const page = await browser.newPage({ viewport: { width, height } })
+if (persona) await page.addInitScript((id) => localStorage.setItem('sz-demo-persona', id), persona)
 const problems = []
 page.on('console', (msg) => msg.type() === 'error' && problems.push(`console: ${msg.text()}`))
 page.on('pageerror', (err) => problems.push(`page error: ${err.message}`))

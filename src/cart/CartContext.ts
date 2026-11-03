@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import type { CartItem, DeliveryOption, Order, Quotation } from '../types'
+import type { CartItem, Order, Quotation } from '../types'
 
 /** What "Add to cart" passes: the line without its id and quantity. */
 export type CartArticle = Omit<CartItem, 'id' | 'quantity'>
@@ -19,7 +19,9 @@ export type CartState = {
   remove: (id: string) => void
   orders: Order[]
   /** Turns the cart into an order, empties it and returns the order id. */
-  placeOrder: (details: { deliveryAddressId: string; delivery: DeliveryOption }) => string
+  placeOrder: (
+    details: Pick<Order, 'deliveryAddressId' | 'delivery' | 'deliveryAddress' | 'customer'>,
+  ) => string
   /** Saves the cart as a quotation request (the cart stays) and returns it. */
   saveQuotation: () => Quotation
 }

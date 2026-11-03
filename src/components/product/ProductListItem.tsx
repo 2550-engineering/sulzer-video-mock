@@ -15,7 +15,7 @@ export function ProductListItem({ product }: { product: Product }) {
       imageFit="contain"
       name={product.name}
       text={product.summary}
-      to={product.viewTo ?? productPath(product)}
+      to={productPath(product)}
       badge={keySpecs && product.family}
       details={keySpecs && <KeySpecTable specs={keySpecs} />}
       sizeTo={keySpecs && `/sizing?product=${product.id}`}

@@ -125,6 +125,11 @@ export function CartLines({ items, readOnly = false }: { items: CartItem[]; read
                   </td>
                   <td className={`${cell} text-right whitespace-nowrap tabular-nums`}>
                     {formatPartPrice(item.unitPrice)}
+                    {item.listPrice !== undefined && (
+                      <span className="block text-xs text-text-muted line-through">
+                        {formatPartPrice(item.listPrice)}
+                      </span>
+                    )}
                   </td>
                   <td className={`${cell} text-sm`}>
                     <span className="font-semibold text-navy-900">
