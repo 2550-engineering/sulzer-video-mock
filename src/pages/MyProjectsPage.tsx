@@ -1,6 +1,7 @@
 import {
   Copy,
   Download,
+  FileText,
   FolderOpen,
   Pencil,
   Printer,
@@ -21,6 +22,10 @@ import { ProjectStatusChip } from '../components/projects/ProjectStatusChip'
 import { Switch } from '../components/Switch'
 import { signedOutRedirect } from '../data/myPages'
 import { myProjectsPage as copy } from '../data/projectPages'
+import { tenderText } from '../data/tenderTexts'
+import { downloadFile } from '../lib/download'
+import { itemTenderText, tenderRtf } from '../lib/tenderText'
+import { getVariant } from '../lib/variants'
 import { useProjects } from '../projects/useProjects'
 import { useToast } from '../toast/useToast'
 import { NotFoundPage } from './NotFoundPage'
@@ -54,6 +59,16 @@ export function MyProjectsPage() {
   const added = (searchParams.get('added') ?? '').split(',').filter(Boolean)
   const productCount = project.items.reduce((n, item) => n + item.quantity, 0)
   const toast = (message: string) => showToast({ message })
+  const tenderTexts = project.items.flatMap((item) => {
+    const document = itemTenderText(item, getVariant(item.variantId))
+    return document ? [document] : []
+  })
+
+  const projectName = project.name
+  function downloadTenderTexts() {
+    downloadFile(tenderText.projectFileName(projectName), tenderRtf(tenderTexts), 'application/rtf')
+    toast(tenderText.downloadedAll(tenderTexts.length, projectName))
+  }
 
   return (
     <>
@@ -136,6 +151,12 @@ export function MyProjectsPage() {
                     <Settings2 className="size-4" />
                     {copy.actions.columns}
                   </button>
+                  {tenderTexts.length > 0 && (
+                    <button type="button" onClick={downloadTenderTexts} className={outlined}>
+                      <FileText className="size-4" />
+                      {tenderText.downloadAll}
+                    </button>
+                  )}
                 </div>
               </div>
 

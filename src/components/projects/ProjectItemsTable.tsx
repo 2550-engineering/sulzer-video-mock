@@ -1,14 +1,17 @@
-import { Link2, Minus, Plus } from 'lucide-react'
+import { FileText, Link2, Minus, Plus } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router'
 import { myProjectsPage } from '../../data/projectPages'
 import { sizingResultsPage } from '../../data/sizingPages'
+import { tenderText } from '../../data/tenderTexts'
 import { groupThousands } from '../../lib/format'
 import { formatPrice } from '../../lib/modelSpecs'
 import { evaluateVariant } from '../../lib/sizing'
+import { itemTenderText } from '../../lib/tenderText'
 import { getVariant } from '../../lib/variants'
 import type { ProjectItem, SizingRecord } from '../../types'
 import { CurveThumbnail } from '../sizing/CurveThumbnail'
+import { TenderTextDialog } from '../tender/TenderTextDialog'
 
 const copy = myProjectsPage.items
 
@@ -30,7 +33,7 @@ const head = 'border-b border-border bg-surface-sunken px-3 py-3 text-left font-
 
 /**
  * "Sulzer products" table: checkbox, position, editable "Your position",
- * curve thumbnail, product (name, number link, duty point), quantity stepper
+ * curve thumbnail, product (name, number link, duty point, tender text), quantity stepper
  * and, signed in, the price. Each item is re-evaluated from its variant id and
  * duty point, so curve and price always match the sizing data.
  */
@@ -42,6 +45,7 @@ export function ProjectItemsTable({
   onChange,
 }: ProjectItemsTableProps) {
   const [selected, setSelected] = useState<string[]>([])
+  const [tenderItemId, setTenderItemId] = useState<string | null>(null)
   const rows = items.map((item) => {
     const variant = getVariant(item.variantId)
     return { item, variant, result: variant && evaluateVariant(variant, item.dutyPoint) }
@@ -163,6 +167,16 @@ export function ProjectItemsTable({
                         groupThousands(item.dutyPoint.head),
                       )}
                     </span>
+                    {variant && (
+                      <button
+                        type="button"
+                        onClick={() => setTenderItemId(item.id)}
+                        className="inline-flex items-center gap-1 font-semibold text-primary underline-offset-4 hover:underline"
+                      >
+                        <FileText className="size-3.5" />
+                        {tenderText.open}
+                      </button>
+                    )}
                   </p>
                 </td>
                 <td className={cell}>
@@ -221,6 +235,19 @@ export function ProjectItemsTable({
           </tfoot>
         )}
       </table>
+      {rows.map(({ item, variant }) => {
+        const document = itemTenderText(item, variant)
+        return (
+          document && (
+            <TenderTextDialog
+              key={item.id}
+              open={tenderItemId === item.id}
+              document={document}
+              onClose={() => setTenderItemId(null)}
+            />
+          )
+        )
+      })}
     </div>
   )
 }

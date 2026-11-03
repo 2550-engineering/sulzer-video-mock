@@ -13,17 +13,20 @@ const copy = productPage.models
 
 /* ── Performance curve ─────────────────────────────────────────────────────── */
 
+/** What a curve is drawn from: a model, or any pump with a rated point (e.g. a sized variant). */
+export type CurveModel = Pick<ProductModel, 'id' | 'name' | 'flow' | 'head' | 'efficiency'>
+
 /** Shut-off head as a share of rated head; a typical value for this pump type. */
 const shutOffRatio = 1.25
 
 /** Head at `flow`: a parabola through shut-off head and the rated point. */
-export function headAt(model: ProductModel, flow: number) {
+export function headAt(model: Pick<CurveModel, 'flow' | 'head'>, flow: number) {
   const shutOff = model.head * shutOffRatio
   return shutOff - (shutOff - model.head) * (flow / model.flow) ** 2
 }
 
 /** Efficiency at `flow`, peaking at the rated point. */
-export function efficiencyAt(model: ProductModel, flow: number) {
+export function efficiencyAt(model: Pick<CurveModel, 'flow' | 'efficiency'>, flow: number) {
   const x = flow / model.flow
   return Math.max(0, model.efficiency * (2 * x - x * x))
 }

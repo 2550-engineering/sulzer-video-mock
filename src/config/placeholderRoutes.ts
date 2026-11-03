@@ -7,12 +7,6 @@ import type { NavItem, PlaceholderRoute } from '../types'
  */
 export const placeholderRoutes: PlaceholderRoute[] = [
   {
-    path: '/products/replacement',
-    title: 'Product replacement',
-    description: 'Find the right Sulzer replacement for your existing pump in a few steps.',
-    parent: '/products',
-  },
-  {
     path: '/settings',
     title: 'Account settings',
     description: 'Your profile, company details, notifications and team members.',

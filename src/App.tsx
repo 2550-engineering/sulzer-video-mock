@@ -34,6 +34,7 @@ import { ProductSearchPage } from './pages/ProductSearchPage'
 import { QuotationPage } from './pages/QuotationPage'
 import { QuotationsPage } from './pages/QuotationsPage'
 import { RecentlyViewedPage } from './pages/RecentlyViewedPage'
+import { ReplacementPage } from './pages/ReplacementPage'
 import { RequestsPage } from './pages/RequestsPage'
 import { SavedItemsPage } from './pages/SavedItemsPage'
 import { SizingPage } from './pages/SizingPage'
@@ -74,6 +75,7 @@ export default function App() {
                         path="/products/categories"
                         element={<Navigate to="/products" replace />}
                       />
+                      <Route path="/products/replacement" element={<ReplacementPage />} />
                       <Route path="/products/:id" element={<ProductPage />} />
                       <Route path="/digital-solutions" element={<DigitalSolutionsPage />} />
                       <Route path="/sizing" element={<SizingPage />} />

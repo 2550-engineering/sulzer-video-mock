@@ -114,6 +114,12 @@ const specs = [
     minSize: '2560 × 1100',
   },
   {
+    match: /^\/images\/replacement\/replacement-hero\.jpg$/,
+    kind: 'Replacement finder hero (text panel on the left; keep the subject right of centre)',
+    aspect: '21:9 (shown as a wide band)',
+    minSize: '2560 × 1100',
+  },
+  {
     match: /^\/images\/sites\//,
     kind: 'Site photo (also the asset page hero band; keep the subject centred)',
     aspect: '16:9',
@@ -136,6 +142,7 @@ const { digitalSolutionsPage } = await load('/src/data/digitalSolutions.ts')
 const { spareParts } = await load('/src/data/spareParts.ts')
 const { sectionalDrawings } = await load('/src/data/sectionalDrawings.ts')
 const { eshopPage } = await load('/src/data/eshop.ts')
+const { replacementPage } = await load('/src/data/replacement.ts')
 await server.close()
 
 const byId = (items) => new Map(items.map((item) => [item.id, item]))
@@ -201,6 +208,9 @@ const onSpareParts = new Set([
   ).image.src,
 ])
 
+// Replacement finder (P6, Video B step 4): the hero; the curves are SVG.
+const onReplacement = new Set([replacementPage.hero.src])
+
 const recordings = (src) =>
   [
     onApplicationFinder.has(src) && 'application finder',
@@ -208,6 +218,7 @@ const recordings = (src) =>
     onMyAssets.has(src) && 'my assets',
     onConnectProduct.has(src) && 'connect product page',
     onSpareParts.has(src) && 'spare parts',
+    onReplacement.has(src) && 'replacement',
   ].filter(Boolean)
 
 const images = [
@@ -229,6 +240,7 @@ const images = [
   ...Object.values(cadPreviews),
   ...sites.map((site) => site.image),
   eshopPage.hero,
+  replacementPage.hero,
   ...Object.values(sectionalDrawings).flatMap((d) => (d.kind === 'image' ? [d.image] : [])),
   // Part photos are shared by parts of one kind, so list each file once.
   ...[...new Map(spareParts.map((part) => [part.image.src, part.image])).values()],
@@ -265,10 +277,11 @@ with the file name (hide the labels with \`showPlaceholderLabels\` in \`src/conf
   Never Grundfos, KSB or Xylem images. Log web sources in the Sulzer project folder
   (\`docs/image-sources.md\`).
 - **Priority 1** images are visible in a recording; the column says which (application finder,
-  product finder, my assets, connect product page, spare parts).
+  product finder, my assets, connect product page, spare parts, replacement).
 - **Generated:** \`sulzer-connect-devices.png\` is screenshots of the Connect app in device
   frames. Rebuild it with \`npm run connect:devices\` after changing the Connect app.
-- **Sizing and My Projects** need no photos: their charts and curve thumbnails are drawn in SVG.
+- **Sizing, My Projects and the replacement curves** need no photos: their charts and curve
+  thumbnails are drawn in SVG.
 - **Spare parts:** the XFP sectional drawing is SVG (\`XfpSectionDrawing.tsx\`). Part photos are
   shared by every part of one kind (all AHLSTAR impellers use \`ahlstar-impeller.jpg\`).
 - **Formats:** JPG for photos (quality 80–85), PNG for product cut-outs.

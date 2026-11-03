@@ -136,6 +136,22 @@ export const sizingDemo = {
 } as const
 
 /**
+ * Replacement finder (/products/replacement): how the existing pump's energy use is
+ * estimated. Running hours and energy price come from `sizingDemo`.
+ * PLACEHOLDERS — confirm with Sulzer; typical values, not Sulzer figures.
+ */
+export const replacementDemo = {
+  /** Pump efficiency points lost to wear per 10 000 run hours (worn wear rings, impeller). */
+  wearPerTenThousandHours: 1,
+  /** Never more than this many points of wear. */
+  maxWear: 5,
+  /** Motor efficiency of an installed pump, % (an IE2-class motor). */
+  existingMotorEfficiency: 93,
+  /** Another brand: estimated pump efficiency at the duty point, %. */
+  otherBrandEfficiency: 60,
+} as const
+
+/**
  * The demo's "today". Condition data runs hourly up to the last full hour before
  * `lastSync`, and "service due" counts from `today`. Wall-clock time, no time zone.
  */

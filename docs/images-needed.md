@@ -10,15 +10,16 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
   Never Grundfos, KSB or Xylem images. Log web sources in the Sulzer project folder
   (`docs/image-sources.md`).
 - **Priority 1** images are visible in a recording; the column says which (application finder,
-  product finder, my assets, connect product page, spare parts).
+  product finder, my assets, connect product page, spare parts, replacement).
 - **Generated:** `sulzer-connect-devices.png` is screenshots of the Connect app in device
   frames. Rebuild it with `npm run connect:devices` after changing the Connect app.
-- **Sizing and My Projects** need no photos: their charts and curve thumbnails are drawn in SVG.
+- **Sizing, My Projects and the replacement curves** need no photos: their charts and curve
+  thumbnails are drawn in SVG.
 - **Spare parts:** the XFP sectional drawing is SVG (`XfpSectionDrawing.tsx`). Part photos are
   shared by every part of one kind (all AHLSTAR impellers use `ahlstar-impeller.jpg`).
 - **Formats:** JPG for photos (quality 80–85), PNG for product cut-outs.
 
-195 images, 45 missing.
+196 images, 46 missing.
 
 | Priority | File | Folder | Aspect | Min. size | Kind | What it should show | Status |
 |----------|------|--------|--------|-----------|------|---------------------|--------|
@@ -73,6 +74,7 @@ with the file name (hide the labels with `showPlaceholderLabels` in `src/config/
 | 1 · product finder | `ahlstar-bim-preview.png` | `public/images/products/` | 4:3 | 1600 × 1200 | Product cut-out (PNG, transparent or white background) | 3D render of an AHLSTAR end-suction pump, isometric view | present |
 | 1 · product finder | `service-agreements.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Two Sulzer service technicians beside their service van | present |
 | 1 · product finder | `repair-overhaul.jpg` | `public/images/services/` | 4:3 | 800 × 600 | Service thumbnail | Sulzer technician restoring a pump part with a laser cladding robot in a service center | present |
+| 1 · replacement | `replacement-hero.jpg` | `public/images/replacement/` | 21:9 (shown as a wide band) | 2560 × 1100 | Replacement finder hero (text panel on the left; keep the subject right of centre) | Engineer next to a row of installed end-suction pumps in a bright pump station | missing |
 | 1 · spare parts | `eshop-hero.jpg` | `public/images/eshop/` | 21:9 (shown as a wide band) | 2560 × 1100 | eShop hero (text panel on the left; keep the subject right of centre) | Rows of genuine Sulzer spare parts on shelves in a bright distribution warehouse | missing |
 | 1 · spare parts | `ahlstar-cutaway.png` | `public/images/spare-parts/drawings/` | 845:929 | 845 × 929 | Sectional drawing (PNG, transparent). Hotspots in src/data/sectionalDrawings.ts are placed on this exact file: move them if you swap it | Cut-away of an AHLSTAR end-suction pump: volute casing, impeller, seal chamber, shaft and bearing unit | present |
 | 1 · spare parts | `ahlstar-bearing-kit.jpg` | `public/images/spare-parts/parts/` | 4:3 (also shown square in the cart) | 800 × 600 | Spare part photo (part centred on white or light grey, no text) | Bearing kit laid out: bearings, isolators and O-rings | missing |

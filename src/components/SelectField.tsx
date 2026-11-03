@@ -4,7 +4,8 @@ import { useId } from 'react'
 type SelectFieldProps<T extends string> = {
   label: string
   value: T
-  options: { value: T; label: string }[]
+  /** `disabled` options show but can't be picked, e.g. a language that is coming soon. */
+  options: { value: T; label: string; disabled?: boolean }[]
   onChange: (value: T) => void
   /** `inline` puts the label beside the select, `stacked` above it. */
   layout?: 'inline' | 'stacked'
@@ -48,7 +49,7 @@ export function SelectField<T extends string>({
           className="h-10 w-full cursor-pointer appearance-none rounded-md border border-border-strong bg-white pr-10 pl-3.5 font-medium text-navy-900 transition-colors hover:border-primary focus-visible:border-primary"
         >
           {options.map((option) => (
-            <option key={option.value} value={option.value}>
+            <option key={option.value} value={option.value} disabled={option.disabled}>
               {option.label}
             </option>
           ))}
