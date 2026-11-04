@@ -10,7 +10,7 @@ import { AssetSparePartsTab } from '../components/assets/AssetSparePartsTab'
 import { ServiceHistoryTab } from '../components/assets/ServiceHistoryTab'
 import { DocumentationTab } from '../components/product/DocumentationTab'
 import { TabBar } from '../components/TabBar'
-import { TabComingSoon } from '../components/TabComingSoon'
+import { TabDemoNotice } from '../components/TabDemoNotice'
 import { TabPanel } from '../components/TabPanel'
 import { assetPage as copy } from '../data/assetPages'
 import { assetById, customers, siteById } from '../data/assets'
@@ -104,7 +104,7 @@ export function AssetPage() {
                 }
               />
             ) : (
-              <TabComingSoon copy={copy.documents.empty} />
+              <TabDemoNotice />
             ))}
           {active === 'spare-parts' && <AssetSparePartsTab asset={asset} />}
           {active === 'service-history' && <ServiceHistoryTab asset={asset} />}

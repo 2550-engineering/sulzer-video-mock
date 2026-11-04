@@ -2,7 +2,7 @@ import type { NavItem, PlaceholderRoute } from '../types'
 
 /*
  * Every route that nav, footer, quick links or chat can reach but that has no
- * real page yet. Each renders the "Coming soon" page inside the site layout.
+ * real page yet. Each renders the live demo notice inside the site layout.
  * Remove an entry once its real page exists.
  */
 export const placeholderRoutes: PlaceholderRoute[] = [

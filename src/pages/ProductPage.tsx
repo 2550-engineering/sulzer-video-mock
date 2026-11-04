@@ -14,7 +14,7 @@ import { VariantSparePartsPointer } from '../components/product/VariantSparePart
 import { VariantsTab } from '../components/product/VariantsTab'
 import { ModelSparePartsTab } from '../components/spareparts/ModelSparePartsTab'
 import { TabBar } from '../components/TabBar'
-import { TabComingSoon } from '../components/TabComingSoon'
+import { TabDemoNotice } from '../components/TabDemoNotice'
 import { TabPanel } from '../components/TabPanel'
 import { serviceProviderDemo } from '../config/demo'
 import { productPage as copy } from '../data/catalogPages'
@@ -101,31 +101,27 @@ export function ProductPage() {
         {activeTab === 'explore' && <ProductExploreTab explore={product.tabs.explore} />}
 
         {activeTab === 'models' &&
-          (models.length > 0 ? (
-            <ModelsTab key={product.id} models={models} />
-          ) : (
-            <TabComingSoon copy={copy.tabEmpty} />
-          ))}
+          (models.length > 0 ? <ModelsTab key={product.id} models={models} /> : <TabDemoNotice />)}
 
         {activeTab === 'variants' &&
           (product.tabs.variants ? (
             <VariantsTab variants={product.tabs.variants} />
           ) : (
-            <TabComingSoon copy={copy.tabEmpty} />
+            <TabDemoNotice />
           ))}
 
         {activeTab === 'documentation' &&
           (documentation.length > 0 ? (
             <DocumentationTab key={product.id} product={product} documents={documentation} />
           ) : (
-            <TabComingSoon copy={copy.tabEmpty} />
+            <TabDemoNotice />
           ))}
 
         {activeTab === 'bim' &&
           (models.length > 0 ? (
             <BimTab key={product.id} product={product} models={models} />
           ) : (
-            <TabComingSoon copy={copy.tabEmpty} />
+            <TabDemoNotice />
           ))}
 
         {/* Parts lists belong to configured products (point to one) or to models (pick one). */}
@@ -135,7 +131,7 @@ export function ProductPage() {
           ) : models.some((model) => sparePartsFor(model.id)) ? (
             <ModelSparePartsTab product={product} />
           ) : (
-            <TabComingSoon copy={copy.spareParts} />
+            <TabDemoNotice />
           ))}
 
         {activeTab === 'services' && (
@@ -150,7 +146,7 @@ export function ProductPage() {
               items={learning}
             />
           ) : (
-            <TabComingSoon copy={copy.tabEmpty} />
+            <TabDemoNotice />
           ))}
       </TabPanel>
     </>

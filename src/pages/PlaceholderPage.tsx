@@ -1,12 +1,13 @@
 import { Search } from 'lucide-react'
 import { useSearchParams } from 'react-router'
-import { ComingSoonPanel } from '../components/ComingSoonPanel'
+import { NoticePanel } from '../components/NoticePanel'
 import { ContextChip } from '../components/ContextChip'
 import { PageHeaderBand } from '../components/PageHeaderBand'
+import { demoNotice } from '../config/demo'
 import { getParentTrail } from '../config/placeholderRoutes'
 import type { PlaceholderRoute } from '../types'
 
-/** "Coming soon" page for routes whose real page isn't built yet. */
+/** Live demo notice for routes that are not part of the demo. */
 export function PlaceholderPage({ route }: { route: PlaceholderRoute }) {
   const [searchParams] = useSearchParams()
   const query = searchParams.get('q')?.trim()
@@ -28,14 +29,9 @@ export function PlaceholderPage({ route }: { route: PlaceholderRoute }) {
       </PageHeaderBand>
 
       <section className="site-container py-16">
-        <ComingSoonPanel
-          eyebrow="Coming soon"
-          title="We're building something new here"
-          image={route.image}
-        >
-          This part of the Sulzer website is getting a faster, simpler experience. In the meantime,
-          our specialists are happy to help you with anything you need.
-        </ComingSoonPanel>
+        <NoticePanel title={demoNotice.title} image={route.image}>
+          {demoNotice.text}
+        </NoticePanel>
       </section>
     </>
   )

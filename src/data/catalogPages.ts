@@ -1,5 +1,5 @@
 import { market } from '../config/demo'
-import type { NavItem, ProductTabSet, SearchScope, TabComingSoonCopy, TabDef } from '../types'
+import type { NavItem, ProductTabSet, SearchScope, TabDef } from '../types'
 
 /* Copy for the application, product and product search templates. */
 
@@ -24,14 +24,6 @@ export const applicationPage = {
       `${count} Sulzer ${count === 1 ? 'product matches' : 'products match'} this application.`,
     actionLabel: 'See products & solutions',
   },
-  productsEmpty: {
-    title: 'Solutions for this application are on their way',
-    text: 'Our application specialists can recommend the right Sulzer products for your process today.',
-  } satisfies TabComingSoonCopy,
-  exploreEmpty: {
-    title: 'Application guide coming soon',
-    text: 'We are writing an in-depth guide for this application. In the meantime, see the products and solutions that fit.',
-  } satisfies TabComingSoonCopy,
   knowledge: {
     title: 'Want to know more about this application?',
     text: 'Engineering manuals, expert videos and customer stories that help you plan, size and run your system with confidence.',
@@ -42,13 +34,6 @@ export const applicationPage = {
   },
   learn: {
     eyebrow: 'Sulzer Academy',
-    title: 'Learning for this application is on its way',
-    text: 'Soon you will find courses, webinars and in-depth guides for this application here, created by Sulzer application engineers.',
-    features: [
-      'Self-paced courses with certificates',
-      'Live and on-demand webinars',
-      'Design guides and best practices',
-    ],
     back: { label: 'Visit Sulzer Academy', to: '/learn' } satisfies NavItem,
   },
 }
@@ -305,10 +290,6 @@ export const productPage = {
       `Each configured pump has its own parts list and exploded drawing. ${code} has them online now.`,
     action: 'Show its spare parts',
   },
-  spareParts: {
-    title: 'Spare parts for this product are coming to mySulzer',
-    text: 'Soon you can find genuine parts on the sectional drawing, check prices and stock, and order online. Until then, your local Sulzer team is happy to help.',
-  } satisfies TabComingSoonCopy,
   services: {
     title: 'Services',
     intro: (product: string) =>
@@ -343,10 +324,6 @@ export const productPage = {
       noDate: 'As soon as possible',
     },
   },
-  tabEmpty: {
-    title: 'Content for this tab is on its way',
-    text: 'Contact your local Sulzer team for anything you need about this product.',
-  } satisfies TabComingSoonCopy,
 }
 
 /** /products: search results, or every product (Products A–Z) without a query. */

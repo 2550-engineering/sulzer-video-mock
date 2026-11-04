@@ -54,6 +54,5 @@ function publicImages(): Plugin {
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss(), publicImages()],
-  // Unit tests only; the Playwright flows in _qa/flows run with `npm run flow`.
   test: { include: ['src/**/*.test.ts'] },
 })

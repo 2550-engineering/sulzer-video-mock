@@ -10,10 +10,7 @@
     "preview": "vite preview",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "qa": "node scripts/qa-screenshots.mjs",
     "images:doc": "node scripts/images-needed.mjs",
-    "shot": "node scripts/screenshot.mjs",
-    "flow": "playwright test",
     "test": "vitest run",
     "connect:devices": "node scripts/connect-devices.mjs"
   },
@@ -25,7 +22,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@playwright/test": "^1.64.1",
     "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
