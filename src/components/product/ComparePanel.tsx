@@ -11,7 +11,15 @@ import { PerformanceCurve } from './PerformanceCurve'
 const copy = productPage.models.compare
 const units = productPage.models.units
 
-type Row = { label: string; value: (model: ProductModel) => ReactNode; priced?: boolean }
+type Row = {
+  label: string
+  value: (model: ProductModel) => ReactNode
+  priced?: boolean
+  /** Product-specific rows show only when a compared model has the figure. */
+  has?: (model: ProductModel) => boolean
+}
+
+const missing = '–'
 
 const rows: Row[] = [
   { label: copy.rows.productNumber, value: (m) => m.productNumber },
@@ -29,7 +37,22 @@ const rows: Row[] = [
         : `DN ${m.connection.discharge}`,
   },
   { label: copy.rows.casingMaterial, value: (m) => m.casingMaterial },
+  {
+    label: copy.rows.impellerMaterial,
+    value: (m) => m.impellerMaterial ?? missing,
+    has: (m) => m.impellerMaterial !== undefined,
+  },
   { label: copy.rows.shaftSeal, value: (m) => m.shaftSeal },
+  {
+    label: copy.rows.solidsSize,
+    value: (m) => (m.solidsSize === undefined ? missing : `${m.solidsSize} mm`),
+    has: (m) => m.solidsSize !== undefined,
+  },
+  {
+    label: copy.rows.maxSubmergence,
+    value: (m) => (m.maxSubmergence === undefined ? missing : `${m.maxSubmergence} m`),
+    has: (m) => m.maxSubmergence !== undefined,
+  },
   { label: copy.rows.maxPressure, value: (m) => `${m.maxPressure} bar` },
   { label: copy.rows.weight, value: (m) => `${m.weight} kg` },
   { label: copy.rows.listPrice, value: (m) => formatPrice(m.listPrice), priced: true },
@@ -154,6 +177,7 @@ export function ComparePanel({ open, models, signedIn, discount = 0, onClose }: 
             </div>
             {shownRows
               .filter((row) => signedIn || !row.priced)
+              .filter((row) => !row.has || models.some(row.has))
               .map((row) => (
                 <div
                   key={row.label}

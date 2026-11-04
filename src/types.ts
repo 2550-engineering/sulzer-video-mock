@@ -392,7 +392,8 @@ export type Product = {
   serviceIds: string[]
 }
 
-export type CasingMaterial = 'Grey cast iron' | 'Ductile iron' | 'Duplex stainless steel'
+export type CasingMaterial =
+  'Grey cast iron' | 'Ductile iron' | 'Duplex stainless steel' | 'Aluminium alloy'
 export type ShaftSeal = 'Packing' | 'Single mechanical seal' | 'Double mechanical seal'
 
 /** How fast a model ships. Shown with the price, to signed-in users only. */
@@ -427,6 +428,12 @@ export type ProductModel = {
   efficiency: number
   /** Pump with motor (and base frame, where there is one), kg. */
   weight: number
+  /** Where it isn't the casing material, e.g. "High-chrome iron" on dewatering pumps. */
+  impellerMaterial?: string
+  /** Largest solid that passes the strainer, mm. Dewatering pumps. */
+  solidsSize?: number
+  /** Max. submergence depth, m. Submersible pumps. */
+  maxSubmergence?: number
   /** List price in `market.currency`, excl. VAT. Signed-in users only. */
   listPrice: number
   availability: ModelAvailability

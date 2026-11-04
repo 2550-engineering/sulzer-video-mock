@@ -211,7 +211,7 @@ Claims in summaries and Explore highlights. **Placeholder, confirm with Sulzer.*
 
 - **SJM:** very large flows at low to medium head, compact vertical station, flat efficiency curve at part load.
 - **AFP:** solids-handling impeller, premium-efficiency motor sealed against water, "cooling-jacket-free design", guide rail installation.
-- **J dewatering pump:** portable, hard-metal wear parts for abrasive water, motor protection against overheating.
+- **J dewatering pump:** portable, high-chrome iron wear parts for abrasive water, thermal motor protection, high-head versions up to 110 m, submergence up to 50 m, double mechanical seals in an oil chamber. See "J dewatering pump models" below for the invented figures.
 - **Pump controller:** level control, alternation and pipe cleaning, alarms by text message and SCADA, runs pumps at their most efficient points.
 - **BLUE BOX:** analytics on the plant's own data, predicts load and adjusts aeration in real time to cut energy use.
 
@@ -257,6 +257,39 @@ follows the casing: 16 bar for grey cast iron, 25 bar for ductile iron and duple
   XFP 150E (24150205, EUR 16 400, Made to order, 8–10 weeks), 6 bar, grey cast iron, double
   mechanical seal.
 
+### J dewatering pump models (`src/data/models/j.ts`)
+
+Model names use the prefix `J` (`productSeries.j` in `src/config/demo.ts`); "HH" marks the
+high-head versions. Confirm the real sizes, names and article numbers. All are double mechanical
+seal with a high-chrome iron impeller. Max. pressure is the shut-off head (1.25 × rated head) in
+bar, rounded up. Lead times: In stock "3 working days", Fast delivery "2 weeks", Made to order
+"6–8 weeks".
+
+| Model    | Hz  | Product no. | Flow m³/h | Head m | P2 kW | rpm  | Eff. % | DN  | Impeller mm | Casing          | Solids mm | Submergence m | kg  | List price (EUR) | Availability  |
+| -------- | --- | ----------- | --------- | ------ | ----- | ---- | ------ | --- | ----------- | --------------- | --------- | ------------- | --- | ---------------- | ------------- |
+| J 5      | 50  | 28410005    | 14        | 8      | 0.9   | 2850 | 42     | 50  | 85          | Aluminium alloy | 6         | 20            | 21  | 1 450            | In stock      |
+| J 12     | 50  | 28410012    | 30        | 14     | 3     | 2870 | 50     | 80  | 110         | Aluminium alloy | 8         | 20            | 37  | 2 380            | In stock      |
+| J 22     | 50  | 28410022    | 60        | 18     | 5.5   | 2880 | 56     | 80  | 125         | Aluminium alloy | 8         | 25            | 58  | 3 950            | In stock      |
+| J 33 HH  | 50  | 28410033    | 30        | 40     | 7.5   | 2900 | 52     | 50  | 185         | Aluminium alloy | 6         | 30            | 72  | 5 150            | Fast delivery |
+| J 55     | 50  | 28410055    | 110       | 22     | 11    | 2920 | 60     | 100 | 140         | Ductile iron    | 10        | 30            | 128 | 7 400            | Fast delivery |
+| J 85     | 50  | 28410085    | 160       | 30     | 22    | 2940 | 63     | 100 | 160         | Ductile iron    | 10        | 40            | 210 | 11 900           | Fast delivery |
+| J 105 HH | 50  | 28410105    | 90        | 60     | 30    | 2950 | 60     | 80  | 220         | Ductile iron    | 8         | 50            | 245 | 14 300           | Made to order |
+| J 205    | 50  | 28410205    | 280       | 38     | 45    | 1470 | 67     | 150 | 355         | Ductile iron    | 12        | 50            | 420 | 22 600           | Made to order |
+| J 405    | 50  | 28410405    | 430       | 32     | 55    | 1475 | 70     | 150 | 330         | Ductile iron    | 12        | 50            | 560 | 29 800           | Made to order |
+| J 604 HH | 50  | 28410604    | 160       | 88     | 60    | 2960 | 68     | 100 | 270         | Ductile iron    | 8         | 50            | 610 | 36 500           | Made to order |
+| J 12     | 60  | 28416012    | 34        | 18     | 3.7   | 3460 | 51     | 80  | 110         | Aluminium alloy | 8         | 20            | 38  | 2 590            | Fast delivery |
+| J 22     | 60  | 28416022    | 70        | 22     | 7.5   | 3480 | 57     | 80  | 125         | Aluminium alloy | 8         | 25            | 60  | 4 280            | Fast delivery |
+| J 85     | 60  | 28416085    | 190       | 40     | 37    | 3530 | 64     | 100 | 160         | Ductile iron    | 10        | 40            | 215 | 13 400           | Made to order |
+| J 205    | 60  | 28416205    | 330       | 50     | 75    | 1770 | 68     | 150 | 355         | Ductile iron    | 12        | 50            | 440 | 25 900           | Made to order |
+
+- **Compare panel:** J models add three rows (impeller material, max. solids size, max.
+  submergence). They only show when a compared model has the figure, so AHLSTAR comparisons are
+  unchanged.
+- **Explore tab claims:** "from 21 kg", "10 min from truck to pumping", "< 1 h to change wear
+  parts", "110 m max. head", "50 m max. submergence", thermal sensors in the windings, optional
+  moisture sensor, wear diffuser adjustable from outside. Invented, confirm with Sulzer.
+- On search results and configured model pages J models are IP68 with a semi-open impeller.
+
 ### Documents (`src/data/documents.ts`)
 
 Titles, document numbers (E10318–E10342, E00318, E00412, E20541), revisions, sizes, dates and
@@ -268,6 +301,9 @@ PDF is added to `public/docs` (set `sampleFile` in `documents.ts`).
   **ATEX certificate** (confirm that AHLSTAR is available in an ATEX version); product brochure
   "AHLSTAR end-suction process pumps".
 - Shared with XFP: brochure "Pumping solutions for water and wastewater".
+- J dewatering pump (E30210–E30232, E00507): installation, operating and maintenance
+  instructions; quick guide; data sheet (50 and 60 Hz); performance curves; spare parts list and
+  wear part kits; brochure; EU declaration of conformity; wiring diagrams.
 - **Service videos** (V10351–V10354, durations invented): replacing the mechanical seal,
   back pull-out, shaft alignment, impeller clearance. Confirm whether Sulzer has service videos
   for AHLSTAR, or swap in real ones.

@@ -112,6 +112,7 @@ export const productSeries = {
   // Placeholder model-name prefixes, e.g. "AHLSTAR 150-125-315" — confirm with Sulzer.
   ahlstar: 'AHLSTAR',
   xfp: 'XFP',
+  j: 'J',
 } as const
 
 /**
