@@ -81,6 +81,8 @@ function fromVariant(variant: ProductVariant): ResultArticle {
 function fromModel(model: ProductModel): ResultArticle {
   const curve = modelCurve(model)
   const rated = { flow: model.flow, head: model.head }
+  // Submersibles have no suction flange.
+  const submersible = !model.connection.suction
   return {
     id: model.id,
     kind: 'model',
@@ -101,9 +103,9 @@ function fromModel(model: ProductModel): ResultArticle {
     maxFlow: Math.round(model.flow * maxFlowRatio),
     maxHead: Math.round(curve.shutOffHead * 10) / 10,
     exApproved: false,
-    impellerType: 'Closed',
+    impellerType: submersible ? 'Semi-open' : 'Closed',
     impellerDiameter: model.impeller,
-    ipClass: 'IP55',
+    ipClass: submersible ? 'IP68' : 'IP55',
     listPrice: model.listPrice,
     availability: toAvailability(model.availability, model.leadTime),
     to: `/products/${model.productId}/${model.id}`,

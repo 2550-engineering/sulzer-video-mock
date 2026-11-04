@@ -1,6 +1,8 @@
 import {
   Activity,
+  Anchor,
   ArrowDownToLine,
+  ArrowUpFromLine,
   BellRing,
   BrainCircuit,
   Cable,
@@ -9,16 +11,19 @@ import {
   Cog,
   Cpu,
   Droplets,
+  Filter,
   Gauge,
   Layers,
   Leaf,
   Mountain,
+  Plug,
   Recycle,
   Router,
   Ruler,
   ShieldCheck,
   Smartphone,
   Truck,
+  Waves,
   Wrench,
   Zap,
 } from 'lucide-react'
@@ -662,25 +667,103 @@ export const products: Product[] = [
         intro: {
           title: 'Dry ground, fast',
           text: 'Drop it in, plug it in and start pumping. Hard-wearing parts keep it running in water full of sand and grit.',
-          more: [],
+          more: [
+            'The range runs from a 21 kg drainage pump one person can carry to 60 kW high-head pumps for deep mines. Standard sizes cover flows up to 600 m³/h, and the HH versions lift water up to 110 m from a single stage.',
+            'Every size uses the same design: a top discharge that cools the motor with the pumped water, a high-chrome iron impeller, double mechanical seals in an oil chamber and built-in motor protection. Crews that know one size know them all.',
+          ],
+        },
+        howItWorks: {
+          title: 'How it works',
+          text: 'Built to be set up in minutes and left running for weeks, wherever the water is.',
+          steps: [
+            {
+              label: 'Lower it in',
+              text: 'Lift by the handle and lower it on its own cable into the sump, shaft or excavation.',
+              icon: Anchor,
+            },
+            {
+              label: 'Plug it in',
+              text: 'Connect the hose and plug into site power. The control box checks phase sequence before it starts.',
+              icon: Plug,
+            },
+            {
+              label: 'Water passes the motor',
+              text: 'Water flows up around the motor to the top discharge and cools it, even when the pump is only half covered.',
+              icon: ArrowUpFromLine,
+            },
+            {
+              label: 'Grit stays out',
+              text: 'The strainer keeps out stones larger than the impeller can pass. Sand and silt go straight through.',
+              icon: Filter,
+            },
+          ],
+        },
+        feature: {
+          title: 'Built for abrasive water',
+          text: 'Impeller and wear diffuser in high-chrome iron, adjustable from outside, keep the pump at full performance in water carrying sand, slurry and rock dust. When parts do wear, change them on site in under an hour.',
+          image: {
+            src: '/images/products/j-dewatering-main.png',
+            alt: `${productNames.jDewatering}, portable submersible drainage pump`,
+          },
         },
         highlights: [
           {
             label: 'Portable',
-            text: 'Light enough to move around site.',
+            text: 'From 21 kg, with a lifting handle and a compact footprint for narrow shafts.',
             icon: Truck,
           },
           {
             label: 'Wear-resistant',
-            text: 'Hard-metal wear parts for abrasive water.',
+            text: 'High-chrome iron impeller and diffuser for abrasive water.',
             icon: Mountain,
           },
           {
             label: 'Runs dry safely',
-            text: 'Motor protection against overheating.',
+            text: 'Thermal sensors in the windings stop the motor before it overheats.',
             icon: ShieldCheck,
           },
+          {
+            label: 'High head',
+            text: 'HH versions lift up to 110 m for deep mines and tall shafts.',
+            icon: Gauge,
+          },
+          {
+            label: 'Sealed against water',
+            text: 'Double mechanical seals in an oil chamber, with an optional moisture sensor.',
+            icon: Droplets,
+          },
+          {
+            label: 'Down to 50 m',
+            text: 'Cable entry and seals rated for submergence of up to 50 m.',
+            icon: Waves,
+          },
         ],
+        benefits: {
+          title: 'Why sites choose it',
+          text: 'Typical figures from construction and mining customers running the range.',
+          stats: [
+            {
+              value: '10 min',
+              label: 'from truck to pumping',
+              text: 'No foundation, no priming, no pipework to build.',
+            },
+            {
+              value: '< 1 h',
+              label: 'to change wear parts',
+              text: 'Impeller and diffuser come out on site with standard tools.',
+            },
+            {
+              value: '110 m',
+              label: 'max. head',
+              text: 'From a single stage, with the HH versions.',
+            },
+            {
+              value: '50 m',
+              label: 'max. submergence',
+              text: 'Use it at the bottom of deep shafts and pits.',
+            },
+          ],
+        },
       },
     },
     serviceIds: ['repair-overhaul', 'service-agreements'],
