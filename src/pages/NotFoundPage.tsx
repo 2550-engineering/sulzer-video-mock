@@ -1,5 +1,5 @@
 import { Breadcrumb } from '../components/Breadcrumb'
-import { ComingSoonPanel } from '../components/ComingSoonPanel'
+import { NoticePanel } from '../components/NoticePanel'
 
 export function NotFoundPage() {
   return (
@@ -11,10 +11,10 @@ export function NotFoundPage() {
       </div>
 
       <section className="site-container pt-6 pb-16">
-        <ComingSoonPanel eyebrow="Error 404" title="We couldn't find that page">
+        <NoticePanel eyebrow="Error 404" title="We couldn't find that page">
           The page may have moved or no longer exists. Use the menu or search above to find what
           you're looking for.
-        </ComingSoonPanel>
+        </NoticePanel>
       </section>
     </>
   )

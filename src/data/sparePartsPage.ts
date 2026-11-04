@@ -98,11 +98,6 @@ export const sparePartsTab = {
     kitParts: (count: number) => `${count} parts in this set`,
     close: 'Clear selection',
   },
-
-  noCatalogue: {
-    title: 'The parts list for this variant is not online yet',
-    text: 'Your Sulzer service centre can tell you which parts fit, with prices and lead times.',
-  },
 }
 
 /** /spare-parts: find parts by number or name, or start from a product. */
@@ -118,7 +113,7 @@ export const sparePartsLanding = {
   pumps: 'Pumps',
   pumpNumber: (number: string) => `Product no. ${number}`,
   partsOnline: 'Parts list and exploded drawing online',
-  partsNotOnline: 'Parts list not online yet',
+  partsNotOnline: 'Parts list not offered in this demo',
   parts: 'Spare parts',
   results: (count: number) => `${count} ${count === 1 ? 'part' : 'parts'}`,
   more: (count: number) =>

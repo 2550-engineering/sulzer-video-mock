@@ -7,7 +7,7 @@ import { getModel, partOwner, partsInVersion, sparePartsFor } from '../../lib/ca
 import { partsOwnerId } from '../../lib/catalogParts'
 import type { Asset } from '../../types'
 import { SparePartsBrowser } from '../spareparts/SparePartsBrowser'
-import { TabComingSoon } from '../TabComingSoon'
+import { TabDemoNotice } from '../TabDemoNotice'
 import { TabHeading } from '../TabHeading'
 
 const copy = assetPage.spareParts
@@ -30,7 +30,7 @@ export function AssetSparePartsTab({ asset }: { asset: Asset }) {
       <>
         <TabHeading title={copy.title} />
         <div className="mt-8">
-          <TabComingSoon copy={copy.empty} />
+          <TabDemoNotice />
         </div>
       </>
     )

@@ -1,15 +1,16 @@
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router'
+import { demoNotice } from '../../config/demo'
 import { applicationPage as copy } from '../../data/catalogPages'
 import { useHashTab } from '../../hooks/useHashTab'
 import { productGroupsFor, productsForApplication } from '../../lib/catalog'
 import type { Application } from '../../types'
 import type { BreadcrumbItem } from '../Breadcrumb'
-import { ComingSoonPanel } from '../ComingSoonPanel'
+import { NoticePanel } from '../NoticePanel'
 import { ProductGroups } from '../product/ProductGroups'
 import { TabBar } from '../TabBar'
 import { TabCallout } from '../TabCallout'
-import { TabComingSoon } from '../TabComingSoon'
+import { TabDemoNotice } from '../TabDemoNotice'
 import { TabPanel } from '../TabPanel'
 import { ApplicationExploreTab } from './ApplicationExploreTab'
 import { ApplicationPanelHero } from './ApplicationPanelHero'
@@ -63,7 +64,7 @@ export function ApplicationDetail({ application, breadcrumb }: ApplicationDetail
             <ApplicationExploreTab application={application} intro={intro} />
           ) : (
             <div className="space-y-20">
-              <TabComingSoon copy={copy.exploreEmpty} />
+              <TabDemoNotice />
               {products.length > 0 && (
                 <TabCallout
                   title={copy.productsCallout.title(application.name)}
@@ -76,21 +77,12 @@ export function ApplicationDetail({ application, breadcrumb }: ApplicationDetail
           ))}
 
         {activeTab === 'products' &&
-          (groups.length > 0 ? (
-            <ProductGroups groups={groups} />
-          ) : (
-            <TabComingSoon copy={copy.productsEmpty} />
-          ))}
+          (groups.length > 0 ? <ProductGroups groups={groups} /> : <TabDemoNotice />)}
 
         {activeTab === 'learn' && (
-          <ComingSoonPanel
-            eyebrow={copy.learn.eyebrow}
-            title={copy.learn.title}
-            features={copy.learn.features}
-            back={copy.learn.back}
-          >
-            {copy.learn.text}
-          </ComingSoonPanel>
+          <NoticePanel eyebrow={copy.learn.eyebrow} title={demoNotice.title} back={copy.learn.back}>
+            {demoNotice.text}
+          </NoticePanel>
         )}
       </TabPanel>
     </>

@@ -4,7 +4,7 @@ import { useId } from 'react'
 type SelectFieldProps<T extends string> = {
   label: string
   value: T
-  /** `disabled` options show but can't be picked, e.g. a language that is coming soon. */
+  /** `disabled` options show but can't be picked, e.g. a language not offered in the demo. */
   options: { value: T; label: string; disabled?: boolean }[]
   onChange: (value: T) => void
   /** `inline` puts the label beside the select, `stacked` above it. */

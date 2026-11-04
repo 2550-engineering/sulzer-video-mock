@@ -179,7 +179,6 @@ export const tenderDialog = {
     sv: 'Swedish',
     de: 'German',
   } satisfies Record<TenderLanguage, string>,
-  comingSoon: 'coming soon',
   detail: 'Detail level',
   short: 'Short',
   full: 'Full',

@@ -198,10 +198,6 @@ export const assetPage = {
     genericTypes: ['Brochure'] as DocumentType[],
     intro: (model: string, serial: string) =>
       `Manuals, data sheets and certificates for ${model}, serial no. ${serial}.`,
-    empty: {
-      title: 'Documents on request',
-      text: 'We are adding the documentation for this unit. Ask us and we will send it within one working day.',
-    },
   },
   spareParts: {
     title: 'Spare parts',
@@ -211,10 +207,6 @@ export const assetPage = {
     showRecommended: 'Show it',
     quote: 'Request a quotation',
     quoteTo: '/contact/quote',
-    empty: {
-      title: 'Parts list on request',
-      text: 'Tell us the serial number and we will send the parts list for this unit.',
-    },
   },
   history: {
     title: 'Service history',

@@ -4,7 +4,7 @@ import { DocumentationTab } from '../components/product/DocumentationTab'
 import { ServicesTab } from '../components/product/ServicesTab'
 import { SparePartsTab } from '../components/spareparts/SparePartsTab'
 import { TabBar } from '../components/TabBar'
-import { TabComingSoon } from '../components/TabComingSoon'
+import { TabDemoNotice } from '../components/TabDemoNotice'
 import { TabPanel } from '../components/TabPanel'
 import { CurvesTab } from '../components/variant/CurvesTab'
 import { QuotationTab } from '../components/variant/QuotationTab'
@@ -12,7 +12,6 @@ import { RecommendedParts } from '../components/variant/RecommendedParts'
 import { SpecificationsTab } from '../components/variant/SpecificationsTab'
 import { VariantHeader } from '../components/variant/VariantHeader'
 import { VariantsTab } from '../components/variant/VariantsTab'
-import { productPage } from '../data/catalogPages'
 import { drawingDocuments } from '../data/drawingDocuments'
 import { variantPage as copy } from '../data/variantPages'
 import { useHashTab } from '../hooks/useHashTab'
@@ -82,11 +81,7 @@ export function VariantPage() {
         {activeTab === 'curves' && <CurvesTab article={article} />}
         {activeTab === 'spare-parts' && <SparePartsTab ownerId={article.id} />}
         {activeTab === 'cad' &&
-          (model ? (
-            <BimTab product={product} models={[model]} />
-          ) : (
-            <TabComingSoon copy={productPage.tabEmpty} />
-          ))}
+          (model ? <BimTab product={product} models={[model]} /> : <TabDemoNotice />)}
         {activeTab === 'drawings' && (
           <DocumentationTab
             product={product}

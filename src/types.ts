@@ -87,14 +87,14 @@ export type AssetReadout = {
   trend?: number[]
 }
 
-/** A route rendered with the "Coming soon" placeholder until its real page is built. */
+/** A route that is not part of the demo: renders the live demo notice inside the site layout. */
 export type PlaceholderRoute = {
   path: string
   title: string
   description: string
   /** Path of the parent page, used to build the breadcrumb trail. */
   parent?: string
-  /** Photo on the "Coming soon" card. Defaults to the Sulzer brand image. */
+  /** Photo on the notice card. Defaults to the Sulzer brand image. */
   image?: ImageSource
 }
 
@@ -1326,12 +1326,6 @@ export type SalesQuotation = {
 export type TabDef = {
   id: string
   label: string
-}
-
-/** Shown inside a tab whose content isn't built yet. */
-export type TabComingSoonCopy = {
-  title: string
-  text: string
 }
 
 /* ── Sizing (Phase 2, module 3) ────────────────────────────────────────────── */

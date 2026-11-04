@@ -255,3 +255,11 @@ export const showPlaceholderLabels = true
 
 /** Base of the project share link in the Share dialog. Placeholder — confirm the mySulzer URL with Sulzer. */
 export const shareLinkBase = 'https://my.sulzer.com/projects/'
+
+/** Shown wherever a page, tab or option is not part of the demo. No contact button. */
+export const demoNotice = {
+  title: 'This is a live demo',
+  text: 'We currently do not offer this service.',
+  /** Badge on an option that can't be picked, e.g. a tender text language. */
+  badge: 'not offered in this demo',
+}
