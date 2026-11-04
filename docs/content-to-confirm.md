@@ -6,10 +6,6 @@ Every product name, spec value and claim below was written for the mock-up. Each
 
 ## Before recording the Application finder video
 
-Rehearse with `npm run flow`. It walks the recording path, saves a screenshot per step to
-`_qa/screenshots/flows/application-finder/` and a video to `_qa/videos/application-finder.webm`,
-and checks links, tab hashes, the sticky tab bar and layout shift.
-
 1. **Images:** all 122 images are still missing. The 38 that appear on the recording path are
    marked "1 · application finder" in [images-needed.md](images-needed.md):
    - 3 heroes (overview, Municipal water supply, Surface water intake)
@@ -64,9 +60,7 @@ something → Start sizing → "Update project".
 ## Before recording the Product finder video
 
 Recording path: header search → type "AHLSTAR" → suggestions → Enter → `/products?q=ahlstar` →
-AHLSTAR → `/products/ahlstar` → Models, Documentation, BIM and Services tabs. There is no
-rehearsal script for this path yet; `npm run flow` covers the search suggestions and the
-results page.
+AHLSTAR → `/products/ahlstar` → Models, Documentation, BIM and Services tabs.
 
 1. **Sign in first** (Shift+D → "Sign in as demo user"). Signed out, the Models tab shows
    "Sign in to see prices" instead of prices and availability, and the service request form is

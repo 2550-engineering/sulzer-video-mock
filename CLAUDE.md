@@ -44,7 +44,7 @@ Goal: viewers should go "Wow!" It must look like a real, polished, production Su
 - **Stub pages** for future flows show a tasteful "Coming soon" state inside the real layout.
 - **Demo content** (user name, company, product names, market) lives in `src/config/demo.ts`.
 - **Demo controls:** Shift+D opens a hidden presenter panel (Reset demo / Sign in as each persona). It renders nothing while closed.
-- **No QA runs by default:** after a change, run only `npm run build` and `npm run lint`. Don't run `npm run qa`, Playwright flows or screenshot reviews, and don't add routes to the QA script, unless I explicitly ask. (`npm run qa` exists and screenshots every route to `_qa/screenshots/` if I want it.)
+- **No QA:** after a change, run only `npm run build` and `npm run lint`. No screenshot reviews or browser test flows.
 
 ## Phases
 
