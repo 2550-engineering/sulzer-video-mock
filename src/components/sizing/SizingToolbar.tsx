@@ -37,7 +37,7 @@ export function SizingToolbar({
     />
   )
   return (
-    <div className="flex items-center gap-2 rounded-t-lg border border-b-0 border-border bg-white px-3 py-2">
+    <div className="flex items-center gap-2 rounded-t-lg border border-b-0 border-border bg-white px-3 py-2 max-md:mb-3 max-md:flex-wrap max-md:gap-1 max-md:rounded-lg max-md:border-b">
       <label className="flex cursor-pointer items-center gap-2.5 rounded-md px-2 py-2 text-sm font-semibold text-navy-900">
         <input
           type="checkbox"

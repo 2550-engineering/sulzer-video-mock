@@ -70,7 +70,7 @@ export function BuyAction({ id, name, quantity = 1, look = 'compact' }: BuyActio
       <span
         id={`buy-hint-${id}`}
         role="tooltip"
-        className={`pointer-events-none absolute z-30 w-60 rounded-sm ${
+        className={`pointer-events-none absolute z-30 w-60 rounded-sm max-md:hidden ${
           look === 'compact'
             ? // Table rows sit in scroll boxes: show it to the left, inside the box.
               'top-1/2 right-full mr-2 -translate-y-1/2'

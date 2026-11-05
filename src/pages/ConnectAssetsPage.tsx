@@ -35,7 +35,7 @@ export function ConnectAssetsPage() {
   const notConnected = assets.length - connected.length
 
   return (
-    <div className="mx-auto max-w-[1680px] px-10 pt-8 pb-16">
+    <div className="mx-auto max-w-[1680px] px-10 pt-8 pb-16 max-xl:px-6 max-md:px-4 max-md:pt-6">
       <title>{`${copy.title} – ${connectApp.name}`}</title>
 
       <ConnectPageHeader
@@ -44,8 +44,8 @@ export function ConnectAssetsPage() {
         subtitle={`${user!.company} · ${connectApp.synced}`}
       />
 
-      <ConnectPanel flush className="mt-8 overflow-hidden">
-        <div className="flex items-center gap-4 px-6 py-4">
+      <ConnectPanel flush className="mt-8 overflow-hidden max-md:mt-6">
+        <div className="flex items-center gap-4 px-6 py-4 max-md:gap-3 max-md:px-4">
           <div className="relative w-full max-w-sm">
             <Search
               aria-hidden
@@ -60,10 +60,13 @@ export function ConnectAssetsPage() {
               className="h-10 w-full rounded-md border border-white/15 bg-navy-800 pr-3 pl-10 text-sm text-white transition-colors placeholder:text-text-on-dark-muted focus:border-primary-on-dark focus-visible:outline-none"
             />
           </div>
-          <span className="text-sm text-text-on-dark-muted tabular-nums">
+          <span className="text-sm text-text-on-dark-muted tabular-nums max-md:shrink-0">
             {shown.length}/{connected.length}
           </span>
-          <Settings2 aria-hidden className="ml-auto size-5 text-text-on-dark-muted" />
+          <Settings2
+            aria-hidden
+            className="ml-auto size-5 text-text-on-dark-muted max-md:shrink-0"
+          />
         </div>
 
         {partner ? (
@@ -82,7 +85,7 @@ export function ConnectAssetsPage() {
         )}
 
         {!partner && notConnected > 0 && (
-          <p className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-white/10 px-6 py-4 text-sm text-text-on-dark-muted">
+          <p className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-white/10 px-6 py-4 text-sm text-text-on-dark-muted max-md:px-4">
             {copy.notConnected(notConnected)}
             <Link
               to={connectApp.welcome.action.to}

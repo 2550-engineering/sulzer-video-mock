@@ -63,8 +63,8 @@ export function ProjectDocuments({ project }: { project: Project }) {
       </div>
 
       {rows.length > 0 ? (
-        <div className="overflow-x-auto rounded-lg border border-border bg-white">
-          <table className="w-full min-w-[40rem] border-separate border-spacing-0 text-[15px]">
+        <div className="overflow-x-auto rounded-lg border border-border bg-white max-xl:relative max-md:overflow-visible max-md:rounded-none max-md:border-0 max-md:bg-transparent">
+          <table className="table-cards w-full min-w-[40rem] border-separate border-spacing-0 text-[15px] max-md:[&>tbody>tr]:bg-white max-md:[&>tfoot>tr]:bg-white">
             <thead className="text-sm text-navy-900">
               <tr>
                 <th scope="col" className={head}>

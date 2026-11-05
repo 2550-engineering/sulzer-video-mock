@@ -185,7 +185,7 @@ export function AssetsPage() {
           <AssetSummaryStrip label={copy.summary.label} tiles={tiles} />
         </div>
 
-        <div className="mt-8 grid items-start gap-6 lg:grid-cols-[17rem_minmax(0,1fr)]">
+        <div className="mt-8 grid items-start gap-6 max-lg:grid-cols-1 lg:grid-cols-[17rem_minmax(0,1fr)]">
           <FilterColumn
             facets={groups}
             onToggle={toggle}

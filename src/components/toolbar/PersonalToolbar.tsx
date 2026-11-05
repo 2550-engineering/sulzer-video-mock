@@ -94,7 +94,7 @@ export function PersonalToolbar() {
     <>
       <nav
         aria-label={copy.label}
-        className="fixed top-[calc(var(--sz-header-height)+5.5rem)] right-0 z-[45] flex animate-fade-in flex-col divide-y divide-border overflow-visible rounded-l-lg bg-white shadow-card ring-1 ring-navy-900/10 max-lg:hidden"
+        className="fixed top-[calc(var(--sz-header-height)+5.5rem)] right-0 z-[45] flex animate-fade-in flex-col divide-y divide-border overflow-visible rounded-l-lg bg-white shadow-card ring-1 ring-navy-900/10 max-xl:hidden max-lg:hidden"
       >
         {tools.map((tool) => (
           <ToolbarButton

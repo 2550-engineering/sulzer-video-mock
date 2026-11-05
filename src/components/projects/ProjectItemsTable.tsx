@@ -129,8 +129,8 @@ export function ProjectItemsTable({
   })
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-border bg-white">
-      <table className="w-full min-w-[44rem] border-separate border-spacing-0 text-[15px]">
+    <div className="overflow-x-auto rounded-lg border border-border bg-white max-xl:relative max-md:overflow-visible max-md:rounded-none max-md:border-0 max-md:bg-transparent">
+      <table className="table-cards w-full min-w-[44rem] border-separate border-spacing-0 text-[15px]">
         <thead className="text-sm text-navy-900">
           <tr>
             <th scope="col" className={`${head} w-10`}>
@@ -143,7 +143,7 @@ export function ProjectItemsTable({
               />
             </th>
             <th scope="col" className={head}>
-              {copy.position}
+              {copy.position}{' '}
               <span className="block text-xs font-normal text-text-muted">{copy.yourPosition}</span>
             </th>
             <th scope="col" className={head}>
@@ -153,7 +153,7 @@ export function ProjectItemsTable({
               {copy.product}
             </th>
             <th scope="col" className={`${head} text-center`}>
-              {copy.quantity}
+              {copy.quantity}{' '}
               <span className="block text-xs font-normal text-text-muted">{copy.status}</span>
             </th>
             {signedIn && (
@@ -219,7 +219,7 @@ export function ProjectItemsTable({
                       value={item.customerPosition}
                       onChange={(e) => onChange(item.id, { customerPosition: e.target.value })}
                       aria-label={copy.yourPositionLabel(item.position)}
-                      className="h-9 w-20 rounded-md border border-border-strong bg-white px-2.5 text-sm text-navy-900 transition-[border-color,box-shadow] focus:border-primary focus:shadow-[0_0_0_3px_var(--sz-color-primary-tint-strong)] focus-visible:outline-none"
+                      className="h-9 w-20 rounded-md border border-border-strong bg-white px-2.5 text-sm text-navy-900 transition-[border-color,box-shadow] focus:border-primary focus:shadow-[0_0_0_3px_var(--sz-color-primary-tint-strong)] focus-visible:outline-none max-md:h-10 max-md:w-28"
                     />
                   </td>
                   <td className={`${cell} px-1.5 py-2 ${muted ? 'opacity-50' : ''}`}>
@@ -409,7 +409,7 @@ export function ProjectItemsTable({
         </tbody>
         {signedIn && (
           <tfoot>
-            <tr>
+            <tr className="max-md:flex! max-md:items-baseline max-md:justify-between">
               <td
                 colSpan={columns - 1}
                 className="px-3 py-3 text-right text-sm font-semibold text-text-muted"

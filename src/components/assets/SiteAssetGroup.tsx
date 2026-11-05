@@ -14,7 +14,7 @@ type SiteAssetGroupProps = {
 export function SiteAssetGroup({ site, assets }: SiteAssetGroupProps) {
   const attention = assets.filter(needsAttention).length
   return (
-    <section className="grid overflow-hidden rounded-lg border border-border bg-white lg:grid-cols-[15rem_minmax(0,1fr)] 2xl:grid-cols-[19rem_minmax(0,1fr)]">
+    <section className="grid overflow-hidden rounded-lg border border-border bg-white max-lg:grid-cols-1 lg:grid-cols-[15rem_minmax(0,1fr)] 2xl:grid-cols-[19rem_minmax(0,1fr)]">
       <div className="relative isolate flex min-h-52 flex-col justify-end p-5 text-white">
         <div className="absolute inset-0 -z-10">
           <SmartImage src={site.image.src} alt={site.image.alt} />

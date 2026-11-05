@@ -52,14 +52,14 @@ export function VariantPrintPage({ configured = false }: { configured?: boolean 
         <button
           type="button"
           onClick={() => window.print()}
-          className="inline-flex h-11 items-center gap-2 rounded-pill bg-primary px-6 text-sm font-semibold text-white shadow-raised transition-colors hover:bg-primary-hover"
+          className="inline-flex h-11 items-center gap-2 rounded-pill bg-primary px-6 text-sm font-semibold text-white shadow-raised transition-colors hover:bg-primary-hover max-md:shrink-0 max-md:px-4"
         >
           <Printer className="size-4" />
           {copy.print.print}
         </button>
       </div>
 
-      <article className="mx-auto max-w-[210mm] bg-white px-[14mm] py-[12mm] shadow-card print:shadow-none">
+      <article className="mx-auto max-w-[210mm] bg-white px-[14mm] py-[12mm] shadow-card max-md:px-4 max-md:py-6 print:shadow-none">
         <header className="flex items-end justify-between border-b-2 border-navy-900 pb-4">
           <SulzerLogo className="h-7" />
           <p className="text-xs font-semibold tracking-[0.12em] text-text-muted uppercase">
@@ -67,7 +67,7 @@ export function VariantPrintPage({ configured = false }: { configured?: boolean 
           </p>
         </header>
 
-        <div className="mt-8 grid grid-cols-[minmax(0,1fr)_42mm] gap-8">
+        <div className="mt-8 grid grid-cols-[minmax(0,1fr)_42mm] gap-8 max-md:grid-cols-1 max-md:gap-6">
           <div>
             <span className="rounded-sm bg-surface-sunken px-2 py-0.5 text-xs font-semibold text-navy-700">
               {article.category}
@@ -91,7 +91,7 @@ export function VariantPrintPage({ configured = false }: { configured?: boolean 
           </div>
         </div>
 
-        <div className="mt-8 columns-2 gap-10 [&>section]:mb-7">
+        <div className="mt-8 columns-2 gap-10 max-md:columns-1 [&>section]:mb-7">
           {specGroups.map((group) => (
             <SpecGroupTable key={group.title} title={group.title} rows={group.rows} />
           ))}

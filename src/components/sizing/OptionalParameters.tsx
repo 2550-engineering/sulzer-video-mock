@@ -50,7 +50,7 @@ export function OptionalParameters({
     <section className="mt-6">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-border-strong pb-2">
         <h2 className="text-lg font-bold tracking-tight text-navy-900">{copy.title}</h2>
-        <div className="flex gap-4">
+        <div className="flex gap-4 max-md:flex-wrap max-md:gap-x-4 max-md:gap-y-1">
           <button
             type="button"
             onClick={() => setOpen(optionalSections.map((s) => s.id))}

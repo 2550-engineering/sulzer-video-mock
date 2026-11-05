@@ -13,15 +13,17 @@ export function HomeHero() {
         className="absolute inset-0 bg-linear-to-b from-navy-900/45 via-navy-900/60 to-navy-900/85"
       />
 
-      <div className="relative site-container flex min-h-[580px] flex-col items-center justify-center py-24 text-center">
-        <p className="text-sm font-semibold tracking-[0.16em] text-primary-on-dark uppercase">
+      <div className="relative site-container flex min-h-[580px] flex-col items-center justify-center py-24 text-center max-xl:min-h-[520px] max-xl:py-20 max-md:min-h-0 max-md:py-14">
+        <p className="text-sm font-semibold tracking-[0.16em] text-primary-on-dark uppercase max-md:text-xs">
           {hero.eyebrow}
         </p>
-        <h1 className="mt-5 max-w-4xl text-[4rem] leading-[1.05] font-bold tracking-tight text-white">
+        <h1 className="mt-5 max-w-4xl text-[4rem] leading-[1.05] font-bold tracking-tight text-balance text-white max-xl:text-[2.75rem] max-xl:leading-[1.1] max-md:mt-4 max-md:text-[2rem] max-md:leading-[1.15]">
           {hero.title}
         </h1>
-        <p className="mt-6 max-w-2xl text-xl leading-relaxed text-text-on-dark">{hero.subtitle}</p>
-        <div className="mt-11 flex w-full justify-center">
+        <p className="mt-6 max-w-2xl text-xl leading-relaxed text-text-on-dark max-xl:text-lg max-md:mt-4 max-md:text-base">
+          {hero.subtitle}
+        </p>
+        <div className="mt-11 flex w-full justify-center max-md:mt-8">
           <HeroSearch />
         </div>
       </div>

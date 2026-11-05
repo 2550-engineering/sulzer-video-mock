@@ -108,7 +108,7 @@ export function SizingParameterForm({
                       value={units[def.unitParam]}
                       onChange={(e) => onUnit(def.unitParam!, e.target.value)}
                       aria-label={`${def.label}, unit`}
-                      className={`${compactControl} -mt-[7px] w-[5.5rem] cursor-pointer`}
+                      className={`${compactControl} -mt-[7px] w-[5.5rem] cursor-pointer max-xl:-mt-[11px]`}
                     >
                       {def.units.map((unit) => (
                         <option key={unit.value} value={unit.value}>
@@ -141,7 +141,7 @@ export function SizingParameterForm({
               <ParamRow key={def.id} label={def.label}>
                 <div
                   aria-live="polite"
-                  className="flex h-8 items-center text-[15px] font-bold text-primary tabular-nums"
+                  className="flex h-8 items-center text-[15px] font-bold text-primary tabular-nums max-xl:h-10"
                 >
                   {formCopy.hits(hits)}
                 </div>

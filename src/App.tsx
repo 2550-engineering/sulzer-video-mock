@@ -3,6 +3,7 @@ import { AuthProvider } from './auth/AuthProvider'
 import { CartProvider } from './cart/CartProvider'
 import { DemoControls } from './components/DemoControls'
 import { ScrollToTop } from './components/ScrollToTop'
+import { TableCardLabels } from './components/TableCardLabels'
 import { SiteLayout } from './components/SiteLayout'
 import { placeholderRoutes } from './config/placeholderRoutes'
 import { ApplicationPage } from './pages/ApplicationPage'
@@ -149,6 +150,7 @@ export default function App() {
                 </CartProvider>
               </ToastProvider>
               <DemoControls />
+              <TableCardLabels />
             </BrowserRouter>
           </SelfServiceProvider>
         </PersonalProvider>

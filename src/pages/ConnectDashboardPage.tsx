@@ -32,14 +32,14 @@ export function ConnectDashboardPage() {
   const weekTotal = week.reduce((sum, d) => sum + d.hours, 0)
 
   return (
-    <div className="mx-auto max-w-[1680px] px-10 pt-8 pb-16">
+    <div className="mx-auto max-w-[1680px] px-10 pt-8 pb-16 max-xl:px-6 max-md:px-4 max-md:pt-6">
       <title>{`${copy.title} – ${connectApp.name}`}</title>
 
       <ConnectPageHeader
         title={copy.greeting(user!.firstName)}
         subtitle={`${copy.title} · ${user!.company} · ${connectApp.synced}`}
         actions={
-          <dl className="flex gap-8 text-right">
+          <dl className="flex gap-8 text-right max-md:gap-6 max-md:text-left">
             <div>
               <dt className="text-xs text-text-on-dark-muted">{copy.status.connected}</dt>
               <dd className="text-2xl font-bold text-white tabular-nums">
@@ -57,7 +57,7 @@ export function ConnectDashboardPage() {
         }
       />
 
-      <div className="mt-8 grid gap-6 xl:grid-cols-3">
+      <div className="mt-8 grid gap-6 max-md:mt-6 max-md:grid-cols-1 max-md:gap-4 md:max-xl:grid-flow-row-dense md:max-xl:grid-cols-2 xl:grid-cols-3">
         <ConnectPanel title={copy.status.title}>
           <FleetStatusDonut
             counts={counts}
@@ -75,7 +75,7 @@ export function ConnectDashboardPage() {
             </Link>
           }
           flush
-          className="xl:col-span-2"
+          className="md:max-xl:col-span-2 xl:col-span-2"
         >
           {active.length > 0 ? (
             <ul className="mt-3 divide-y divide-white/[0.07] border-t border-white/[0.07]">
@@ -107,7 +107,7 @@ export function ConnectDashboardPage() {
               {copy.runHours.total(groupThousands(weekTotal))}
             </p>
           }
-          className="xl:col-span-2"
+          className="md:max-xl:col-span-2 xl:col-span-2"
         >
           <RunHoursChart days={week} />
         </ConnectPanel>

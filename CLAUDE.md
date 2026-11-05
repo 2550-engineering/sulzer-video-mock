@@ -70,6 +70,16 @@ Personas: `endUser` (Emma Lindqvist, Nordvatten Utilities; also the service prov
 
 Spare parts, exploded drawings, the cart and checkout, the discontinued-product replacement finder and tender texts are shared components from the slide 9 and 10 work. Persona-specific bits are layered on top: partner net prices (`lib/pricing.ts`), "order on behalf of customer" at checkout, and the installed-pump replacement finder at `/products/replacement/existing-pump`.
 
+## Responsive
+
+The mock-up is being made responsive for tablets and phones. The desktop layout (1280px and wider) must not change at all.
+
+- **Breakpoints:** phone below 768px, tablet 768–1279px, desktop 1280px and up (untouched).
+- **Target viewports:** 360×640, 375×667, 390×844, 412×915, 430×932, 744×1133, 768×1024, 820×1180, 834×1194, 1024×768, 1024×1366, 1180×820.
+- **Rule:** only add styles for widths below 1280px: Tailwind `max-*` variants (`max-xl:`, `max-lg:`, `max-md:`) or CSS inside `@media (max-width: 1279px)`. Never edit, remove or reorder classes that apply at 1280px and up. If a change seems to need a desktop class edited, stop and ask.
+- **Desktop check:** `npm run qa:desktop` takes the desktop baseline (1440×900 and 1920×1080, every route, signed out and per persona) into `_qa/desktop-baseline/`. After responsive changes, `npm run qa:desktop-compare` must report no differences; diff images go to `_qa/desktop-diff/`. This replaces the "build and lint only" rule for responsive work.
+- **Audit:** `npm run qa:responsive-audit` measures every route at 390×844 and 820×1180 (`QA_VIEWPORTS` for others) into `_qa/responsive-audit/`. The plan and fix order are in `docs/responsive-plan.md`.
+
 ## Images
 
 - Images come from Sulzer's own media (sulzer.com, Sulzer PDFs in `_asset-source/pdfs`) or licensed stock. **Never Grundfos, KSB or Xylem.**

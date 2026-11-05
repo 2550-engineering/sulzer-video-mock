@@ -12,14 +12,14 @@ export function ConnectPage() {
   const ActionIcon = welcome.action.icon
 
   return (
-    <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-4xl flex-col justify-center px-8 py-16">
+    <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-4xl flex-col justify-center px-8 py-16 max-xl:px-6 max-md:min-h-[calc(100dvh-10rem)] max-md:px-4 max-md:py-6">
       <title>{connectApp.name}</title>
 
-      <section className="animate-fade-in rounded-lg border border-white/10 bg-navy-900 px-10 py-14 text-center shadow-[0_30px_80px_-40px_rgba(0,0,0,0.8)]">
-        <h1 className="text-[2.5rem] leading-tight font-bold tracking-tight text-white">
+      <section className="animate-fade-in rounded-lg border border-white/10 bg-navy-900 px-10 py-14 text-center shadow-[0_30px_80px_-40px_rgba(0,0,0,0.8)] max-md:px-5 max-md:py-10">
+        <h1 className="text-[2.5rem] leading-tight font-bold tracking-tight text-white max-md:text-[1.75rem]">
           {welcome.title}
         </h1>
-        <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-text-on-dark">
+        <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-text-on-dark max-md:text-base">
           {connected > 0 ? welcome.textConnected(connected) : welcome.text}
         </p>
         <div className="mt-9 flex flex-wrap justify-center gap-3">
@@ -45,7 +45,7 @@ export function ConnectPage() {
           </Link>
         </div>
 
-        <ul className="mt-14 grid gap-4 text-left sm:grid-cols-2">
+        <ul className="mt-14 grid gap-4 text-left max-md:mt-10 max-md:grid-cols-1! sm:grid-cols-2">
           {cards.map(({ text, link }) => (
             <li key={link.label}>
               <Link

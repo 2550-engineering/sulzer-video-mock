@@ -1,4 +1,4 @@
-import { ChevronDown, LayoutGrid, Search, X } from 'lucide-react'
+import { ChevronDown, LayoutGrid, Menu, Search, X } from 'lucide-react'
 import { useCallback, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router'
 import { useAuth } from '../auth/useAuth'
@@ -8,14 +8,19 @@ import { useDismiss } from '../hooks/useDismiss'
 import { AccountMenu } from './AccountMenu'
 import { CartMenu } from './eshop/CartMenu'
 import { MegaMenu } from './MegaMenu'
+import { MobileNavDrawer } from './MobileNavDrawer'
 import { QuickLinksPanel } from './QuickLinksPanel'
 import { SearchPanel } from './SearchPanel'
 import { SulzerLogo } from './SulzerLogo'
 
-type Panel = 'products' | 'quick-links' | 'search' | 'account' | 'cart'
+type Panel = 'products' | 'quick-links' | 'search' | 'account' | 'cart' | 'menu'
 
 const utilityButton =
-  'flex h-10 items-center gap-2 rounded-sm px-3 text-navy-900 transition-colors hover:bg-surface-muted hover:text-primary'
+  'flex h-10 items-center gap-2 rounded-sm px-3 text-navy-900 transition-colors hover:bg-surface-muted hover:text-primary max-xl:h-11 max-xl:min-w-11 max-xl:justify-center max-xl:px-2.5'
+
+/** Icon buttons of the compact header below 1280px (search, menu). */
+const compactButton =
+  'flex size-11 items-center justify-center rounded-sm text-navy-900 transition-colors hover:bg-surface-muted hover:text-primary xl:hidden'
 
 const marketButton =
   'flex items-center gap-1 rounded-sm text-white/85 transition-colors hover:text-white'
@@ -55,7 +60,7 @@ export function SiteHeader() {
   return (
     <header ref={headerRef} className="sticky top-0 z-50">
       <div className="relative z-20">
-        <div className="bg-navy-900 on-dark">
+        <div className="bg-navy-900 on-dark max-xl:hidden">
           <div className="site-container flex h-8 items-center gap-2.5 text-[13px]">
             <button type="button" className={marketButton}>
               {market.country}
@@ -72,13 +77,13 @@ export function SiteHeader() {
         </div>
 
         <div className="border-b border-border bg-white">
-          <div className="site-container flex h-20 items-center justify-between">
+          <div className="site-container flex h-20 items-center justify-between max-xl:h-16">
             <Link to="/" aria-label="Sulzer home" className="-m-1 rounded-sm p-1">
-              <SulzerLogo variant="blue" className="h-7" />
+              <SulzerLogo variant="blue" className="h-7 max-md:h-6" />
             </Link>
 
-            <div className="-mr-3 flex items-center gap-1 text-sm font-medium">
-              <div className="relative">
+            <div className="-mr-3 flex items-center gap-1 text-sm font-medium max-xl:-mr-2.5 max-xl:gap-0.5">
+              <div className="relative max-xl:hidden">
                 <button
                   type="button"
                   onClick={() => toggle('quick-links')}
@@ -91,6 +96,21 @@ export function SiteHeader() {
                 </button>
                 <QuickLinksPanel open={open === 'quick-links'} onNavigate={close} />
               </div>
+
+              <button
+                type="button"
+                onClick={() => toggle('search')}
+                aria-label={open === 'search' ? 'Close search' : 'Search'}
+                aria-expanded={open === 'search'}
+                aria-controls="site-search"
+                className={compactButton}
+              >
+                {open === 'search' ? (
+                  <X className="size-[22px]" strokeWidth={1.75} />
+                ) : (
+                  <Search className="size-[22px]" strokeWidth={1.75} />
+                )}
+              </button>
 
               {user && (
                 <CartMenu
@@ -107,11 +127,22 @@ export function SiteHeader() {
                 onClose={close}
                 buttonClassName={utilityButton}
               />
+
+              <button
+                type="button"
+                onClick={() => toggle('menu')}
+                aria-label="Menu"
+                aria-expanded={open === 'menu'}
+                aria-controls="mobile-nav"
+                className={compactButton}
+              >
+                <Menu className="size-6" strokeWidth={1.75} />
+              </button>
             </div>
           </div>
         </div>
 
-        <nav aria-label="Main" className="bg-navy-900 text-white on-dark">
+        <nav aria-label="Main" className="bg-navy-900 text-white on-dark max-xl:hidden">
           <div className="site-container flex h-14 items-stretch">
             <ul className="-ml-4 flex items-stretch">
               <li className="flex">
@@ -160,6 +191,7 @@ export function SiteHeader() {
 
       <MegaMenu open={open === 'products'} session={megaMenuSession} onNavigate={close} />
       <SearchPanel open={open === 'search'} onClose={close} />
+      <MobileNavDrawer open={open === 'menu'} onClose={close} />
 
       <div
         aria-hidden

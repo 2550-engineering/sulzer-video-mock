@@ -33,7 +33,7 @@ export function DocumentRow({
   const otherLanguages = document.languages.length - 1
   return (
     <li
-      className={`grid grid-cols-[auto_auto_minmax(0,1fr)_auto] items-center gap-x-5 px-5 py-4 transition-colors duration-150 md:grid-cols-[auto_auto_minmax(0,1fr)_9rem_5rem_6.5rem_auto] ${
+      className={`grid grid-cols-[auto_auto_minmax(0,1fr)_auto] items-center gap-x-5 px-5 py-4 transition-colors duration-150 max-xl:grid-cols-[auto_auto_minmax(0,1fr)_9rem_auto]! max-md:grid-cols-[auto_auto_minmax(0,1fr)]! max-md:gap-x-3 max-md:px-4 md:grid-cols-[auto_auto_minmax(0,1fr)_9rem_5rem_6.5rem_auto] ${
         checked ? 'bg-primary-tint' : 'hover:bg-surface-subtle'
       }`}
     >
@@ -65,9 +65,13 @@ export function DocumentRow({
           <span className="ml-1 text-text-subtle">{copy.moreLanguages(otherLanguages)}</span>
         )}
       </p>
-      <p className="hidden text-sm text-text-muted tabular-nums md:block">{document.size}</p>
-      <p className="hidden text-sm text-text-muted tabular-nums md:block">{document.date}</p>
-      <div className="flex gap-2">
+      <p className="hidden text-sm text-text-muted tabular-nums max-xl:hidden! md:block">
+        {document.size}
+      </p>
+      <p className="hidden text-sm text-text-muted tabular-nums max-xl:hidden! md:block">
+        {document.date}
+      </p>
+      <div className="flex gap-2 max-md:col-start-3 max-md:mt-3 max-md:flex-wrap">
         <button
           type="button"
           onClick={onPreview}

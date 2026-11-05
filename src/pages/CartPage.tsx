@@ -60,7 +60,7 @@ export function CartPage() {
               </Link>
             </div>
           ) : (
-            <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
+            <div className="grid items-start gap-8 max-lg:grid-cols-1 max-md:gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
               <div className="min-w-0">
                 <CartLines items={cart.items} />
                 {lastOwner && (

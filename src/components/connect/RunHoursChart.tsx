@@ -100,7 +100,11 @@ export function RunHoursChart({ days }: { days: { day: number; hours: number }[]
                   textAnchor="middle"
                   fill={today ? 'white' : 'var(--sz-color-text-on-dark-muted)'}
                 >
-                  {today ? copy.today : formatDay(d.day).replace(/ \w+$/, '')}
+                  {today
+                    ? slot < 64
+                      ? copy.todayShort
+                      : copy.today
+                    : formatDay(d.day).replace(/ \w+$/, '')}
                 </text>
               </g>
             )

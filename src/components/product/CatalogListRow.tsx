@@ -35,7 +35,7 @@ export function CatalogListRow({
   sizeTo,
 }: CatalogListRowProps) {
   return (
-    <div className="flex flex-wrap items-center gap-x-8 gap-y-5 rounded-md border border-border bg-surface px-6 py-5 transition-colors duration-200 hover:border-primary lg:flex-nowrap">
+    <div className="flex flex-wrap items-center gap-x-8 gap-y-5 rounded-md border border-border bg-surface px-6 py-5 transition-colors duration-200 hover:border-primary max-xl:flex-wrap! max-md:px-4 lg:flex-nowrap">
       <div className="flex min-w-0 flex-1 basis-[28rem] items-center gap-6">
         <div className="relative size-16 shrink-0 overflow-hidden rounded-sm bg-surface-muted">
           <SmartImage src={image.src} alt={image.alt} fit={imageFit} />

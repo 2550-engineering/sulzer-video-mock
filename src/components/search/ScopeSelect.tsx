@@ -33,7 +33,7 @@ export function ScopeSelect<T extends ScopeOption>({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={`Search in: ${value.label}`}
-        className={`flex items-center gap-2 rounded-md px-4 text-[15px] font-medium whitespace-nowrap text-navy-900 transition-colors ${buttonClassName}`}
+        className={`flex items-center gap-2 rounded-md px-4 text-[15px] font-medium whitespace-nowrap text-navy-900 transition-colors max-md:gap-1.5 max-md:px-2.5 ${buttonClassName}`}
       >
         {value.label}
         <ChevronDown

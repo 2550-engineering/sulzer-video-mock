@@ -155,10 +155,10 @@ export function PartnerCustomersPage() {
           </div>
         ) : (
           <div className="animate-fade-in overflow-x-auto rounded-lg border border-border bg-white">
-            <div className="min-w-[68rem]">
+            <div className="min-w-[68rem] max-md:min-w-0">
               <div
                 aria-hidden
-                className={`grid gap-x-6 border-b border-border bg-surface-sunken px-6 py-3 text-sm font-semibold text-navy-900 ${columns}`}
+                className={`grid gap-x-6 border-b border-border bg-surface-sunken px-6 py-3 text-sm font-semibold text-navy-900 max-md:hidden ${columns}`}
               >
                 <span>{copy.columns.customer}</span>
                 <span>{copy.columns.sites}</span>

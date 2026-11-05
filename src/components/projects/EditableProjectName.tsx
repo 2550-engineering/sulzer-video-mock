@@ -41,12 +41,12 @@ export function EditableProjectName({ name, onRename }: EditableProjectNameProps
     )
 
   return (
-    <h1 className="group min-w-0">
+    <h1 className="group min-w-0 max-xl:max-w-full max-xl:shrink-0">
       <button
         type="button"
         onClick={() => setDraft(name)}
         title={copy.rename}
-        className="-mx-2 inline-flex max-w-full items-center gap-2 rounded-md px-2 text-left text-[1.75rem] leading-tight font-bold tracking-tight text-brand transition-colors hover:bg-surface-subtle"
+        className="-mx-2 inline-flex max-w-full items-center gap-2 rounded-md px-2 text-left text-[1.75rem] leading-tight font-bold tracking-tight text-brand transition-colors hover:bg-surface-subtle max-xl:max-w-[calc(100%+1rem)]"
       >
         <span className="min-w-0">{name}</span>
         <Pencil

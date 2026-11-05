@@ -88,14 +88,14 @@ export function MyPagesPage() {
       <div className="site-container pt-6 pb-24">
         <header className="flex flex-wrap items-end justify-between gap-6">
           <div>
-            <h1 className="text-[2.75rem] leading-tight font-bold tracking-tight text-brand">
+            <h1 className="text-[2.75rem] leading-tight font-bold tracking-tight text-brand max-md:text-[2rem]">
               {welcome.title(user.firstName)}
             </h1>
-            <p className="mt-2 text-lg text-text-muted">
+            <p className="mt-2 text-lg text-text-muted max-md:text-base">
               {partner ? partnerCopy.subtitle : welcome.subtitle}
             </p>
           </div>
-          <div className="flex items-center gap-3 rounded-pill bg-surface py-2 pr-6 pl-2 shadow-card ring-1 ring-navy-900/5">
+          <div className="flex items-center gap-3 rounded-pill bg-surface py-2 pr-6 pl-2 shadow-card ring-1 ring-navy-900/5 max-md:max-w-full">
             <Avatar initials={user.initials} size="md" />
             <div>
               <p className="flex items-center gap-2 text-sm font-semibold text-navy-900">
@@ -110,7 +110,7 @@ export function MyPagesPage() {
         </header>
 
         {partner ? (
-          <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-12 grid gap-6 max-md:mt-8 max-md:grid-cols-1 max-md:gap-4 md:grid-cols-2 lg:grid-cols-3">
             <li className={`md:col-span-2 ${enter}`} style={delay(0)}>
               <StatsCard card={customersCard(requests)} />
             </li>
@@ -131,7 +131,7 @@ export function MyPagesPage() {
           </ul>
         ) : (
           <>
-            <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-12 grid gap-6 max-md:mt-8 max-md:grid-cols-1 max-md:gap-4 md:grid-cols-2 lg:grid-cols-3">
               {[
                 dashboardCards.selfService,
                 dashboardCards.learning,

@@ -20,11 +20,11 @@ export function AssetList({ assets, showSite = true, showHeader = true }: AssetL
   const columns = showSite ? withSite : withoutSite
   return (
     <div className="overflow-x-auto">
-      <div className={showSite ? 'min-w-[56rem]' : 'min-w-[46rem]'}>
+      <div className={`${showSite ? 'min-w-[56rem]' : 'min-w-[46rem]'} max-md:min-w-0`}>
         {showHeader && (
           <div
             aria-hidden
-            className={`grid gap-x-6 border-b border-border bg-surface-sunken px-6 py-3 text-sm font-semibold text-navy-900 ${columns}`}
+            className={`grid gap-x-6 border-b border-border bg-surface-sunken px-6 py-3 text-sm font-semibold text-navy-900 max-md:hidden ${columns}`}
           >
             <span />
             <span>{copy.asset}</span>

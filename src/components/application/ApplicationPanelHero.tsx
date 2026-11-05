@@ -48,9 +48,9 @@ export function ApplicationPanelHero({
         >
           <div
             key={title}
-            className="animate-fade-in rounded-md bg-linear-to-br from-navy-900/90 to-navy-800/75 px-10 py-8 shadow-raised backdrop-blur-sm"
+            className="animate-fade-in rounded-md bg-linear-to-br from-navy-900/90 to-navy-800/75 px-10 py-8 shadow-raised backdrop-blur-sm max-md:px-6 max-md:py-6"
           >
-            <h1 className="text-[2.5rem] leading-tight font-bold tracking-tight text-white">
+            <h1 className="text-[2.5rem] leading-tight font-bold tracking-tight text-white max-md:text-[2rem]">
               {title}
             </h1>
             <p className="mt-3 text-[17px] leading-relaxed text-text-on-dark">{text}</p>

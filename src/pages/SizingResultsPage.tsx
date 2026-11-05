@@ -262,7 +262,7 @@ export function SizingResultsPage() {
             {done && !issue && (
               <>
                 <div className="animate-fade-in">
-                  <h1 className="text-[2.5rem] leading-tight font-bold tracking-tight text-brand">
+                  <h1 className="text-[2.5rem] leading-tight font-bold tracking-tight text-brand max-md:text-[2rem]">
                     <AnimatedNumber value={filtered.length} /> {copy.titleWords(filtered.length)}
                   </h1>
                   <p className="mt-1.5 text-text-muted">

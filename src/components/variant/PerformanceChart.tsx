@@ -1,9 +1,13 @@
-import { useState, type PointerEvent, type Ref } from 'react'
+import { useCallback, useState, type PointerEvent, type Ref } from 'react'
 import { variantPage } from '../../data/variantPages'
 import { groupThousands } from '../../lib/format'
 import { niceAxis } from '../../lib/modelSpecs'
 import { performance, type CurvePoint, type CurveSettings } from '../../lib/performance'
 import type { OperatingPoint, ResultArticle } from '../../types'
+import { useChartTouch } from '../../hooks/useChartTouch'
+import { useClampedTooltip } from '../../hooks/useClampedTooltip'
+import { useElementWidth } from '../../hooks/useElementWidth'
+import { ChartReadout } from '../charts/ChartReadout'
 
 const copy = variantPage.curves.chart
 
@@ -64,6 +68,7 @@ export function PerformanceChart({
   svgRef,
 }: PerformanceChartProps) {
   const [reading, setReading] = useState<{ flow: number; left: number } | null>(null)
+  const [containerRef, containerWidth] = useElementWidth<HTMLDivElement>()
   const model = performance(article, settings)
   const toUnit = (flow: number) => (unit === 'ls' ? flow / 3.6 : flow)
   const unitLabel = unit === 'ls' ? 'l/s' : 'm³/h'
@@ -238,11 +243,16 @@ export function PerformanceChart({
   function readAt(event: PointerEvent<SVGSVGElement>) {
     const rect = event.currentTarget.getBoundingClientRect()
     const vx = ((event.clientX - rect.left) / rect.width) * width
-    const display = ((vx - left) / plotWidth) * xAxis.max
+    const raw = ((vx - left) / plotWidth) * xAxis.max
+    const maxDisplay = unit === 'ls' ? model.maxFlow / 3.6 : model.maxFlow
+    // A finger in the chart margin reads the nearest end instead of nothing.
+    const display = event.pointerType === 'mouse' ? raw : Math.min(Math.max(raw, 0), maxDisplay)
     const flow = unit === 'ls' ? display * 3.6 : display
     if (display < 0 || flow > model.maxFlow) return setReading(null)
     setReading({ flow, left: (x(flow) / width) * 100 })
   }
+  const clearReading = useCallback(() => setReading(null), [])
+  const touch = useChartTouch<SVGSVGElement>(containerRef, readAt, clearReading)
 
   const r = reading && model.at(reading.flow)
   const readingRows = r
@@ -257,6 +267,13 @@ export function PerformanceChart({
       ].filter((row): row is string[] => Array.isArray(row))
     : []
 
+  // The chart scales with its box: view units to CSS pixels for the tooltip position.
+  const scale = containerWidth / width
+  const [tooltipRef, tooltipStyle] = useClampedTooltip(
+    containerRef,
+    r ? { x: x(r.flow) * scale, y: (show.qh ? yH(r.head) : top1.y) * scale } : null,
+  )
+
   const opPoint = op?.point
   const opLeft = opPoint ? x(opPoint.flow) > left + plotWidth * 0.62 : false
   const legend = [
@@ -265,16 +282,15 @@ export function PerformanceChart({
   ]
 
   return (
-    <div className="relative">
+    <div ref={containerRef} className="relative">
       <svg
         ref={svgRef}
         xmlns="http://www.w3.org/2000/svg"
         viewBox={`0 0 ${width} ${height}`}
         role="img"
         aria-label={copy.label(article.code)}
-        onPointerMove={readAt}
-        onPointerLeave={() => setReading(null)}
-        className="h-auto w-full touch-none bg-white font-sans select-none"
+        {...touch}
+        className="h-auto w-full touch-none bg-white font-sans select-none max-xl:touch-pan-y"
       >
         {/* Top: head and efficiency. */}
         {grid(top1, hAxis, yH)}
@@ -452,12 +468,15 @@ export function PerformanceChart({
 
       {reading && readingRows.length > 0 && (
         <div
+          ref={tooltipRef}
           role="status"
-          className="pointer-events-none absolute top-10 rounded-md bg-navy-900 px-3.5 py-2.5 text-[12px] text-white shadow-raised"
-          style={{
-            left: `${reading.left}%`,
-            transform: reading.left > 60 ? 'translateX(calc(-100% - 12px))' : 'translateX(12px)',
-          }}
+          className="pointer-events-none absolute top-10 rounded-md bg-navy-900 px-3.5 py-2.5 text-[12px] text-white shadow-raised max-md:hidden"
+          style={
+            tooltipStyle ?? {
+              left: `${reading.left}%`,
+              transform: reading.left > 60 ? 'translateX(calc(-100% - 12px))' : 'translateX(12px)',
+            }
+          }
         >
           <ul className="space-y-0.5">
             {readingRows.map(([label, value]) => (
@@ -469,6 +488,20 @@ export function PerformanceChart({
           </ul>
         </div>
       )}
+
+      {/* Phones: the reading in a bar under the chart instead of a following tooltip. */}
+      <ChartReadout
+        className="mt-3"
+        items={
+          readingRows.length
+            ? readingRows.map(([label, value, color], i) => ({
+                label,
+                value,
+                color: i === 0 ? undefined : color,
+              }))
+            : null
+        }
+      />
 
       <p className="mt-2 text-xs text-text-muted">
         {copy.note(fmt(settings.temperature, 0), model.liquid.label)}

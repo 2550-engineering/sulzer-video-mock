@@ -18,7 +18,7 @@ export function PortalPreview() {
         <span className="text-text-muted">· {request.status}</span>
       </div>
 
-      <div className="absolute top-24 -left-8 w-80 rounded-md bg-white p-5 shadow-card">
+      <div className="absolute top-24 -left-8 w-80 rounded-md bg-white p-5 shadow-card max-md:left-0 max-md:w-[min(20rem,calc(100%-2rem))]">
         <p className="flex items-center gap-2 text-xs font-medium text-text-muted">
           <Tag className="size-3.5 text-primary" />
           {price.label}
@@ -31,7 +31,7 @@ export function PortalPreview() {
         </p>
       </div>
 
-      <div className="absolute -right-6 bottom-10 w-[22rem] rounded-md bg-white p-5 shadow-card">
+      <div className="absolute -right-6 bottom-10 w-[22rem] rounded-md bg-white p-5 shadow-card max-md:right-0 max-md:w-[min(22rem,calc(100%-1rem))]">
         <div className="flex items-center justify-between">
           <p className="flex items-center gap-2 text-xs font-medium text-text-muted">
             <Truck className="size-3.5 text-primary" />

@@ -40,7 +40,7 @@ export function ProjectList({ projects, currentId }: { projects: Project[]; curr
     )
 
   return (
-    <aside className="self-start rounded-lg border border-border bg-white">
+    <aside className="self-start rounded-lg border border-border bg-white max-xl:order-last">
       <div className="space-y-3 border-b border-border p-4">
         <button
           type="button"

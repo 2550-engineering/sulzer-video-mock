@@ -54,8 +54,8 @@ export function SizeProductPanel({
         <GradientBackdrop tone="deep" />
         <div className="relative site-container pt-5 pb-10">
           <Breadcrumb tone="dark" items={breadcrumb} />
-          <div className="mx-auto mt-8 max-w-4xl text-center">
-            <h1 className="text-[2.5rem] leading-tight font-bold tracking-tight text-white">
+          <div className="mx-auto mt-8 max-w-4xl text-center max-md:mt-6">
+            <h1 className="text-[2.5rem] leading-tight font-bold tracking-tight text-white max-md:text-[2rem]">
               {copy.title}
             </h1>
             <p className="mt-2 text-lg text-text-on-dark">{copy.intro}</p>
@@ -119,7 +119,7 @@ export function SizeProductPanel({
             type="button"
             onClick={onStart}
             disabled={startDisabled}
-            className="group ml-auto inline-flex h-12 items-center gap-2 rounded-pill bg-primary px-7 font-semibold text-white shadow-raised transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:bg-border-strong disabled:shadow-none"
+            className="group ml-auto inline-flex h-12 items-center gap-2 rounded-pill bg-primary px-7 font-semibold text-white shadow-raised transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:bg-border-strong disabled:shadow-none max-md:w-full max-md:justify-center"
           >
             {copy.actions.start}
             <ArrowRight className="size-[18px] transition-transform duration-200 group-hover:translate-x-1" />

@@ -26,8 +26,8 @@ const iconButton =
  */
 export function ProjectSizings({ project, onDuplicate, onDelete }: ProjectSizingsProps) {
   return (
-    <div className="overflow-x-auto rounded-lg border border-border bg-white">
-      <table className="w-full min-w-[44rem] border-separate border-spacing-0 text-sm">
+    <div className="overflow-x-auto rounded-lg border border-border bg-white max-xl:relative max-md:overflow-visible max-md:rounded-none max-md:border-0 max-md:bg-transparent">
+      <table className="table-cards w-full min-w-[44rem] border-separate border-spacing-0 text-sm max-md:[&>tbody>tr]:bg-white max-md:[&>tfoot>tr]:bg-white">
         <thead className="text-navy-900">
           <tr>
             <th scope="col" className={head}>

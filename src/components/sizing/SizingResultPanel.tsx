@@ -144,14 +144,14 @@ export function SizingResultPanel({
           )}
 
           {mode === 'compare' && shown.length > 1 && (
-            <div className="mt-8">
+            <div className="mt-8 max-xl:overflow-x-auto">
               {results.length > 3 && (
                 <p className="mb-3 text-sm text-text-muted">{copy.panel.compareLimit}</p>
               )}
               <table className="w-full text-left text-[15px]">
                 <thead>
                   <tr className="border-b-2 border-navy-900">
-                    <th scope="col" className="w-56 py-3" />
+                    <th scope="col" className="w-56 py-3 max-md:w-auto max-md:min-w-[8rem]" />
                     {shown.map((result, i) => (
                       <th
                         key={result.variant.id}

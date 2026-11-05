@@ -1,9 +1,12 @@
-import { useId, useState, type MouseEvent, type PointerEvent } from 'react'
+import { useEffect, useId, useRef, useState, type MouseEvent, type PointerEvent } from 'react'
 import { sizingParametersPage } from '../../data/sizingPages'
 import { groupThousands } from '../../lib/format'
 import { covers, rangeAreas } from '../../lib/rangeChart'
 import { roundSignificant } from '../../lib/units'
 import type { OperatingPoint } from '../../types'
+import { useClampedTooltip } from '../../hooks/useClampedTooltip'
+import { belowDesktop } from '../../hooks/useMediaQuery'
+import { ChartReadout } from '../charts/ChartReadout'
 
 const copy = sizingParametersPage.chart
 
@@ -70,6 +73,25 @@ export function RangeChart({
 }: RangeChartProps) {
   const clipId = useId()
   const [hover, setHover] = useState<{ label: string; left: number; top: number } | null>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  // Below 1280px a finger on an area pins its name until a tap outside the chart.
+  const [pinned, setPinned] = useState(false)
+  const [tooltipRef, tooltipStyle] = useClampedTooltip(
+    containerRef,
+    hover ? { x: hover.left, y: hover.top } : null,
+  )
+  useEffect(() => {
+    if (!pinned) return
+    function handlePointerDown(event: globalThis.PointerEvent) {
+      if (containerRef.current?.contains(event.target as Node)) return
+      setPinned(false)
+      setHover(null)
+    }
+    document.addEventListener('pointerdown', handlePointerDown)
+    return () => document.removeEventListener('pointerdown', handlePointerDown)
+  }, [pinned])
+  const touch = (event: PointerEvent<Element>) =>
+    event.pointerType !== 'mouse' && window.matchMedia?.(belowDesktop).matches
   const areas = rangeAreas(productId, frequency)
   const covering = new Set(
     areas.filter((a) => activeKeys.has(a.key) && covers(a, duty)).map((a) => a.key),
@@ -113,205 +135,230 @@ export function RangeChart({
   )
 
   return (
-    <div className="relative">
-      <svg
-        viewBox={`0 0 ${width} ${height}`}
-        role="img"
-        aria-label={`${copy.title(productName)}. ${copy.covering(covering.size, productName)}`}
-        onClick={pick}
-        className="h-auto w-full cursor-crosshair text-[10px] select-none"
-      >
-        <defs>
-          <clipPath id={clipId}>
-            <rect x={margin.left} y={margin.top} width={plotWidth} height={plotHeight} />
-          </clipPath>
-        </defs>
-        <rect
-          x={margin.left}
-          y={margin.top}
-          width={plotWidth}
-          height={plotHeight}
-          fill="white"
-          stroke="var(--sz-color-border-strong)"
-        />
+    <>
+      <div ref={containerRef} className="relative">
+        <svg
+          viewBox={`0 0 ${width} ${height}`}
+          role="img"
+          aria-label={`${copy.title(productName)}. ${copy.covering(covering.size, productName)}`}
+          onClick={pick}
+          className="h-auto w-full cursor-crosshair text-[10px] select-none max-md:text-[16px]"
+        >
+          <defs>
+            <clipPath id={clipId}>
+              <rect x={margin.left} y={margin.top} width={plotWidth} height={plotHeight} />
+            </clipPath>
+          </defs>
+          <rect
+            x={margin.left}
+            y={margin.top}
+            width={plotWidth}
+            height={plotHeight}
+            fill="white"
+            stroke="var(--sz-color-border-strong)"
+          />
 
-        {xGrid.minor.map((v) => (
-          <line
-            key={`xm${v}`}
-            x1={x(v)}
-            x2={x(v)}
-            y1={margin.top}
-            y2={margin.top + plotHeight}
-            stroke="var(--sz-color-border)"
-            strokeOpacity={0.6}
-          />
-        ))}
-        {yGrid.minor.map((v) => (
-          <line
-            key={`ym${v}`}
-            x1={margin.left}
-            x2={margin.left + plotWidth}
-            y1={y(v)}
-            y2={y(v)}
-            stroke="var(--sz-color-border)"
-            strokeOpacity={0.6}
-          />
-        ))}
-        {xGrid.major.map((v) => (
-          <g key={`x${v}`}>
+          {xGrid.minor.map((v) => (
             <line
+              key={`xm${v}`}
               x1={x(v)}
               x2={x(v)}
               y1={margin.top}
               y2={margin.top + plotHeight}
-              stroke="var(--sz-color-border-strong)"
+              stroke="var(--sz-color-border)"
+              strokeOpacity={0.6}
             />
-            <text
-              x={x(v)}
-              y={margin.top + plotHeight + 14}
-              textAnchor="middle"
-              fill="var(--sz-color-text-muted)"
-            >
-              {groupThousands(v)}
-            </text>
-          </g>
-        ))}
-        {yGrid.major.map((v) => (
-          <g key={`y${v}`}>
+          ))}
+          {yGrid.minor.map((v) => (
             <line
+              key={`ym${v}`}
               x1={margin.left}
               x2={margin.left + plotWidth}
               y1={y(v)}
               y2={y(v)}
-              stroke="var(--sz-color-border-strong)"
+              stroke="var(--sz-color-border)"
+              strokeOpacity={0.6}
+            />
+          ))}
+          {xGrid.major.map((v) => (
+            <g key={`x${v}`}>
+              <line
+                x1={x(v)}
+                x2={x(v)}
+                y1={margin.top}
+                y2={margin.top + plotHeight}
+                stroke="var(--sz-color-border-strong)"
+              />
+              <text
+                x={x(v)}
+                y={margin.top + plotHeight + 14}
+                textAnchor="middle"
+                fill="var(--sz-color-text-muted)"
+              >
+                {groupThousands(v)}
+              </text>
+            </g>
+          ))}
+          {yGrid.major.map((v) => (
+            <g key={`y${v}`}>
+              <line
+                x1={margin.left}
+                x2={margin.left + plotWidth}
+                y1={y(v)}
+                y2={y(v)}
+                stroke="var(--sz-color-border-strong)"
+              />
+              <text
+                x={margin.left - 6}
+                y={y(v)}
+                textAnchor="end"
+                dominantBaseline="middle"
+                fill="var(--sz-color-text-muted)"
+              >
+                {groupThousands(v)}
+              </text>
+            </g>
+          ))}
+          <text
+            x={margin.left + plotWidth / 2}
+            y={height - 8}
+            textAnchor="middle"
+            fill="var(--sz-color-text)"
+            fontSize={11}
+            fontWeight={600}
+          >
+            {copy.flowAxis}
+          </text>
+          <text
+            transform={`translate(12 ${margin.top + plotHeight / 2}) rotate(-90)`}
+            textAnchor="middle"
+            fill="var(--sz-color-text)"
+            fontSize={11}
+            fontWeight={600}
+          >
+            {copy.headAxis}
+          </text>
+
+          <g clipPath={`url(#${clipId})`}>
+            {ordered.map((area) => {
+              const active = activeKeys.has(area.key)
+              const on = covering.has(area.key)
+              return (
+                <path
+                  key={area.key}
+                  d={`${area.points
+                    .map(
+                      (p, i) => `${i ? 'L' : 'M'}${x(p.flow).toFixed(1)},${y(p.head).toFixed(1)}`,
+                    )
+                    .join(' ')} Z`}
+                  fill="var(--sz-color-primary)"
+                  stroke="var(--sz-color-brand)"
+                  fillOpacity={active ? (on ? 0.32 : 0.13) : 0}
+                  strokeOpacity={active ? (on ? 1 : 0.55) : 0}
+                  strokeWidth={on ? 1.4 : 0.8}
+                  pointerEvents={active ? 'visiblePainted' : 'none'}
+                  className="transition-[fill-opacity,stroke-opacity] duration-200 ease-sz"
+                  onPointerMove={(event) => {
+                    const { left, top } = toView(event)
+                    setHover({
+                      label: copy.area(area.hydraulic.code, area.hydraulic.size, area.poles),
+                      left,
+                      top,
+                    })
+                  }}
+                  onPointerDown={(event) => {
+                    if (!touch(event)) return
+                    const { left, top } = toView(event)
+                    setPinned(true)
+                    setHover({
+                      label: copy.area(area.hydraulic.code, area.hydraulic.size, area.poles),
+                      left,
+                      top,
+                    })
+                  }}
+                  onPointerLeave={(event) => {
+                    if (!touch(event)) setHover(null)
+                  }}
+                />
+              )
+            })}
+          </g>
+
+          {/* Product group box, top right. */}
+          <g pointerEvents="none">
+            <rect
+              x={margin.left + plotWidth - 86}
+              y={margin.top + 8}
+              width={78}
+              height={24}
+              rx={2}
+              fill="white"
+              stroke="var(--sz-color-navy-900)"
             />
             <text
-              x={margin.left - 6}
-              y={y(v)}
-              textAnchor="end"
+              x={margin.left + plotWidth - 47}
+              y={margin.top + 20}
+              textAnchor="middle"
               dominantBaseline="middle"
-              fill="var(--sz-color-text-muted)"
+              fill="var(--sz-color-navy-900)"
+              fontSize={12}
+              fontWeight={700}
             >
-              {groupThousands(v)}
+              {productName}
             </text>
           </g>
-        ))}
-        <text
-          x={margin.left + plotWidth / 2}
-          y={height - 8}
-          textAnchor="middle"
-          fill="var(--sz-color-text)"
-          fontSize={11}
-          fontWeight={600}
-        >
-          {copy.flowAxis}
-        </text>
-        <text
-          transform={`translate(12 ${margin.top + plotHeight / 2}) rotate(-90)`}
-          textAnchor="middle"
-          fill="var(--sz-color-text)"
-          fontSize={11}
-          fontWeight={600}
-        >
-          {copy.headAxis}
-        </text>
 
-        <g clipPath={`url(#${clipId})`}>
-          {ordered.map((area) => {
-            const active = activeKeys.has(area.key)
-            const on = covering.has(area.key)
-            return (
-              <path
-                key={area.key}
-                d={`${area.points
-                  .map((p, i) => `${i ? 'L' : 'M'}${x(p.flow).toFixed(1)},${y(p.head).toFixed(1)}`)
-                  .join(' ')} Z`}
-                fill="var(--sz-color-primary)"
-                stroke="var(--sz-color-brand)"
-                fillOpacity={active ? (on ? 0.32 : 0.13) : 0}
-                strokeOpacity={active ? (on ? 1 : 0.55) : 0}
-                strokeWidth={on ? 1.4 : 0.8}
-                pointerEvents={active ? 'visiblePainted' : 'none'}
-                className="transition-[fill-opacity,stroke-opacity] duration-200 ease-sz"
-                onPointerMove={(event) => {
-                  const { left, top } = toView(event)
-                  setHover({
-                    label: copy.area(area.hydraulic.code, area.hydraulic.size, area.poles),
-                    left,
-                    top,
-                  })
-                }}
-                onPointerLeave={() => setHover(null)}
-              />
-            )
-          })}
-        </g>
+          <g pointerEvents="none">
+            <path
+              d={`M${dx},${margin.top + plotHeight} V${dy} H${margin.left}`}
+              fill="none"
+              stroke="var(--sz-color-navy-900)"
+              strokeOpacity={0.45}
+              strokeDasharray="3 3"
+            />
+            <circle
+              cx={dx}
+              cy={dy}
+              r={6.5}
+              fill="var(--sz-color-accent-yellow)"
+              stroke="var(--sz-color-navy-900)"
+              strokeWidth={1.75}
+            />
+            <text
+              x={labelLeft ? dx - 11 : dx + 11}
+              y={dy - 11}
+              textAnchor={labelLeft ? 'end' : 'start'}
+              fill="var(--sz-color-navy-900)"
+              fontSize={12}
+              fontWeight={700}
+              stroke="white"
+              strokeWidth={3}
+              paintOrder="stroke"
+            >
+              {label}
+            </text>
+          </g>
+        </svg>
 
-        {/* Product group box, top right. */}
-        <g pointerEvents="none">
-          <rect
-            x={margin.left + plotWidth - 86}
-            y={margin.top + 8}
-            width={78}
-            height={24}
-            rx={2}
-            fill="white"
-            stroke="var(--sz-color-navy-900)"
-          />
-          <text
-            x={margin.left + plotWidth - 47}
-            y={margin.top + 20}
-            textAnchor="middle"
-            dominantBaseline="middle"
-            fill="var(--sz-color-navy-900)"
-            fontSize={12}
-            fontWeight={700}
+        {hover && (
+          <div
+            ref={tooltipRef}
+            role="status"
+            className="pointer-events-none absolute rounded-sm bg-navy-900 px-2.5 py-1.5 text-xs font-medium whitespace-nowrap text-white shadow-card max-md:hidden"
+            style={tooltipStyle ?? { left: hover.left + 12, top: hover.top - 34 }}
           >
-            {productName}
-          </text>
-        </g>
-
-        <g pointerEvents="none">
-          <path
-            d={`M${dx},${margin.top + plotHeight} V${dy} H${margin.left}`}
-            fill="none"
-            stroke="var(--sz-color-navy-900)"
-            strokeOpacity={0.45}
-            strokeDasharray="3 3"
-          />
-          <circle
-            cx={dx}
-            cy={dy}
-            r={6.5}
-            fill="var(--sz-color-accent-yellow)"
-            stroke="var(--sz-color-navy-900)"
-            strokeWidth={1.75}
-          />
-          <text
-            x={labelLeft ? dx - 11 : dx + 11}
-            y={dy - 11}
-            textAnchor={labelLeft ? 'end' : 'start'}
-            fill="var(--sz-color-navy-900)"
-            fontSize={12}
-            fontWeight={700}
-            stroke="white"
-            strokeWidth={3}
-            paintOrder="stroke"
-          >
-            {label}
-          </text>
-        </g>
-      </svg>
-
-      {hover && (
-        <div
-          role="status"
-          className="pointer-events-none absolute rounded-sm bg-navy-900 px-2.5 py-1.5 text-xs font-medium whitespace-nowrap text-white shadow-card"
-          style={{ left: hover.left + 12, top: hover.top - 34 }}
-        >
-          {hover.label}
-        </div>
-      )}
-    </div>
+            {hover.label}
+          </div>
+        )}
+      </div>
+      {/* Phones: the duty point and the area under the finger in a bar under the chart. */}
+      <ChartReadout
+        className="mt-3"
+        items={[
+          { value: label, color: 'var(--sz-color-accent-yellow)' },
+          ...(hover ? [{ value: hover.label }] : []),
+        ]}
+      />
+    </>
   )
 }

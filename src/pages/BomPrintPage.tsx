@@ -62,14 +62,14 @@ export function BomPrintPage() {
         <button
           type="button"
           onClick={() => window.print()}
-          className="inline-flex h-11 items-center gap-2 rounded-pill bg-primary px-6 text-sm font-semibold text-white shadow-raised transition-colors hover:bg-primary-hover"
+          className="inline-flex h-11 items-center gap-2 rounded-pill bg-primary px-6 text-sm font-semibold text-white shadow-raised transition-colors hover:bg-primary-hover max-md:shrink-0 max-md:px-4"
         >
           <Printer className="size-4" />
           {copy.printButton}
         </button>
       </div>
 
-      <article className="mx-auto max-w-[210mm] bg-white px-[12mm] py-[12mm] shadow-card print:shadow-none">
+      <article className="mx-auto max-w-[210mm] bg-white px-[12mm] py-[12mm] shadow-card max-md:px-4 max-md:py-6 print:shadow-none">
         <header className="flex items-end justify-between border-b-2 border-navy-900 pb-4">
           <SulzerLogo className="h-7" />
           <p className="text-xs font-semibold tracking-[0.12em] text-text-muted uppercase">
@@ -81,7 +81,7 @@ export function BomPrintPage() {
           <h1 className="text-xl leading-tight font-bold tracking-tight text-brand">
             {owner.name}
           </h1>
-          <dl className="mt-2 grid grid-cols-[9rem_minmax(0,1fr)] gap-y-0.5 text-sm">
+          <dl className="mt-2 grid grid-cols-[9rem_minmax(0,1fr)] gap-y-0.5 text-sm max-md:grid-cols-[7.5rem_minmax(0,1fr)] max-md:gap-x-2">
             <dt className="text-text-muted">{copy.printProductNumber}</dt>
             <dd className="font-semibold tabular-nums">{ownerProductNumber(owner)}</dd>
             <dt className="text-text-muted">{copy.printVersion}</dt>
@@ -95,42 +95,45 @@ export function BomPrintPage() {
           </dl>
         </div>
 
-        <table className="mt-6 w-full border-collapse text-[11px]">
-          <thead>
-            <tr>
-              <th className={th}>{c.position}</th>
-              <th className={th}>{c.name}</th>
-              <th className={th}>{c.partNumber}</th>
-              <th className={`${th} text-right`}>{c.quantity}</th>
-              <th className={th}>{c.material}</th>
-              <th className={th}>{c.kits}</th>
-              {user && <th className={`${th} text-right`}>{c.price}</th>}
-              {user && <th className={th}>{c.leadTime}</th>}
-            </tr>
-          </thead>
-          <tbody>
-            {parts.map((part) => (
-              <tr key={part.id} className="break-inside-avoid">
-                <td className={`${td} font-semibold tabular-nums`}>{part.position}</td>
-                <td className={td}>{part.name}</td>
-                <td className={`${td} whitespace-nowrap tabular-nums`}>{part.partNumber}</td>
-                <td className={`${td} text-right tabular-nums`}>{part.quantity}</td>
-                <td className={td}>{part.material}</td>
-                <td className={`${td} whitespace-nowrap`}>
-                  {kitsOf(part, catalogue.kits).join(', ')}
-                </td>
-                {user && (
-                  <td className={`${td} text-right whitespace-nowrap tabular-nums`}>
-                    {formatPartPrice(part.listPrice)}
-                  </td>
-                )}
-                {user && (
-                  <td className={`${td} whitespace-nowrap`}>{part.availability.leadTime}</td>
-                )}
+        {/* On tablet screens the table scrolls sideways in here; on paper and desktop it is a plain block. */}
+        <div className="max-xl:not-print:overflow-x-auto">
+          <table className="table-cards mt-6 w-full border-collapse text-[11px] max-md:text-[13px]">
+            <thead>
+              <tr>
+                <th className={th}>{c.position}</th>
+                <th className={th}>{c.name}</th>
+                <th className={th}>{c.partNumber}</th>
+                <th className={`${th} text-right`}>{c.quantity}</th>
+                <th className={th}>{c.material}</th>
+                <th className={th}>{c.kits}</th>
+                {user && <th className={`${th} text-right`}>{c.price}</th>}
+                {user && <th className={th}>{c.leadTime}</th>}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {parts.map((part) => (
+                <tr key={part.id} className="break-inside-avoid">
+                  <td className={`${td} font-semibold tabular-nums`}>{part.position}</td>
+                  <td className={td}>{part.name}</td>
+                  <td className={`${td} whitespace-nowrap tabular-nums`}>{part.partNumber}</td>
+                  <td className={`${td} text-right tabular-nums`}>{part.quantity}</td>
+                  <td className={td}>{part.material}</td>
+                  <td className={`${td} whitespace-nowrap`}>
+                    {kitsOf(part, catalogue.kits).join(', ')}
+                  </td>
+                  {user && (
+                    <td className={`${td} text-right whitespace-nowrap tabular-nums`}>
+                      {formatPartPrice(part.listPrice)}
+                    </td>
+                  )}
+                  {user && (
+                    <td className={`${td} whitespace-nowrap`}>{part.availability.leadTime}</td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         <footer className="mt-6 border-t border-border pt-3 text-[10px] text-text-subtle">
           {copy.printFooter}

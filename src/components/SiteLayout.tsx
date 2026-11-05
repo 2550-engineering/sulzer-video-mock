@@ -19,7 +19,9 @@ export function SiteLayout() {
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
       {/* Content keeps clear of the toolbar where the page margin is narrow (see site-container). */}
-      <main className={`flex-1 ${toolbar ? 'lg:[--sz-toolbar-space:5rem]' : ''}`}>
+      <main
+        className={`flex-1 ${toolbar ? 'max-xl:[--sz-toolbar-space:0px] lg:[--sz-toolbar-space:5rem]' : ''}`}
+      >
         {/* Keyed by path so each new page fades in; tab and hash changes don't. */}
         <div key={pathname} className="animate-page-in">
           <Outlet />

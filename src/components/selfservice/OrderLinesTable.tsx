@@ -15,11 +15,11 @@ export function OrderLinesTable({ order }: { order: SalesOrder }) {
   const discounted = order.discount > 0
   return (
     <section className="overflow-hidden rounded-lg border border-border bg-white">
-      <h2 className="px-6 pt-5 pb-4 text-lg font-bold text-navy-900">
+      <h2 className="px-6 pt-5 pb-4 text-lg font-bold text-navy-900 max-md:px-4">
         {copy.title} <span className="font-normal text-text-muted">({totals.items})</span>
       </h2>
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[40rem] border-separate border-spacing-0 text-[15px]">
+      <div className="overflow-x-auto max-xl:relative max-md:overflow-visible max-md:px-4">
+        <table className="table-cards w-full min-w-[40rem] border-separate border-spacing-0 text-[15px]">
           <thead className="text-sm text-navy-900">
             <tr>
               <th scope="col" className={`${head} pl-6`}>
@@ -48,7 +48,11 @@ export function OrderLinesTable({ order }: { order: SalesOrder }) {
               const unit = netPrice(line.listPrice, order.discount)
               return (
                 <tr key={line.position}>
-                  <td className={`${cell} pl-6 text-text-muted tabular-nums`}>{line.position}</td>
+                  <td
+                    className={`${cell} pl-6 text-text-muted tabular-nums max-md:justify-between! max-md:font-normal! max-md:before:block!`}
+                  >
+                    {line.position}
+                  </td>
                   <td className={`${cell} font-medium text-navy-900 tabular-nums`}>
                     {line.partNumber}
                   </td>
@@ -86,7 +90,7 @@ export function OrderLinesTable({ order }: { order: SalesOrder }) {
           </tbody>
         </table>
       </div>
-      <dl className="ml-auto max-w-sm space-y-2 px-6 py-5 text-[15px]">
+      <dl className="ml-auto max-w-sm space-y-2 px-6 py-5 text-[15px] max-md:px-4 max-md:pt-2">
         {discounted && (
           <>
             <div className="flex justify-between gap-4">

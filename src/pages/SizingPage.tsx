@@ -244,8 +244,8 @@ export function SizingPage() {
       />
 
       <section className="bg-surface-muted">
-        <div className="site-container grid items-start gap-8 py-8 lg:grid-cols-[minmax(0,44rem)_minmax(0,1fr)]">
-          <div className="rounded-lg border border-border bg-white px-5 py-5">
+        <div className="site-container grid items-start gap-8 py-8 max-xl:grid-cols-1! lg:grid-cols-[minmax(0,44rem)_minmax(0,1fr)]">
+          <div className="rounded-lg border border-border bg-white px-5 py-5 max-md:px-4">
             <h2 className="mb-3 text-xl font-bold tracking-tight text-brand">
               {copy.parameters.title}
             </h2>
@@ -292,7 +292,7 @@ export function SizingPage() {
             {!fullWidth && optional}
           </div>
 
-          <div className="rounded-lg border border-border bg-white px-4 py-4 lg:sticky lg:top-[calc(var(--sz-header-height)+1rem)]">
+          <div className="rounded-lg border border-border bg-white px-4 py-4 max-xl:static lg:sticky lg:top-[calc(var(--sz-header-height)+1rem)]">
             {productId && (
               <RangeChart
                 productId={productId}

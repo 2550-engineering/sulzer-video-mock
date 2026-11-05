@@ -47,7 +47,7 @@ export function CartMenu({ open, onToggle, onClose, buttonClassName }: CartMenuP
       <div
         id="mini-cart"
         inert={!open}
-        className={`absolute top-[calc(100%+12px)] right-0 z-30 w-[22rem] rounded-lg bg-white text-left shadow-card ring-1 ring-navy-900/10 ${popoverClasses(open)}`}
+        className={`absolute top-[calc(100%+12px)] right-0 z-30 w-[22rem] rounded-lg bg-white text-left shadow-card ring-1 ring-navy-900/10 max-md:fixed max-md:inset-x-4 max-md:top-[calc(var(--sz-header-height)+8px)] max-md:w-auto ${popoverClasses(open)}`}
       >
         <p className="border-b border-border px-5 py-3.5 font-semibold text-navy-900">
           {copy.title} <span className="font-normal text-text-muted">({count})</span>

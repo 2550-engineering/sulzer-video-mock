@@ -97,7 +97,7 @@ export function ProjectReportPage() {
   ].filter((row): row is [string, string] => Boolean(row[1]))
 
   return (
-    <div className="min-h-screen bg-surface-muted py-8 print:bg-white print:py-0">
+    <div className="min-h-screen bg-surface-muted py-8 max-md:py-4 print:bg-white print:py-0">
       <title>{`${copy.title} – ${project.name} | Sulzer`}</title>
 
       <div className="mx-auto mb-6 flex max-w-[210mm] flex-wrap items-center justify-between gap-4 px-4 print:hidden">
@@ -121,10 +121,10 @@ export function ProjectReportPage() {
         </div>
       </div>
 
-      <article className="mx-auto max-w-[210mm] bg-white px-[14mm] py-[12mm] shadow-card print:shadow-none">
-        <header className="flex items-end justify-between gap-6 border-b-2 border-navy-900 pb-4">
+      <article className="mx-auto max-w-[210mm] bg-white px-[14mm] py-[12mm] shadow-card max-md:px-4 max-md:py-6 print:shadow-none">
+        <header className="flex items-end justify-between gap-6 border-b-2 border-navy-900 pb-4 max-md:flex-wrap max-md:gap-3">
           <SulzerLogo className="h-7" />
-          <div className="text-right">
+          <div className="text-right max-md:min-w-0">
             <p className="text-xs font-semibold tracking-[0.12em] text-text-muted uppercase">
               {copy.title}
             </p>
@@ -138,7 +138,7 @@ export function ProjectReportPage() {
 
         <div className="mt-8">
           <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-[1.75rem] leading-tight font-bold tracking-tight text-brand">
+            <h1 className="text-[1.75rem] leading-tight font-bold tracking-tight text-brand max-md:min-w-0 max-md:text-2xl">
               {project.name}
             </h1>
             <ProjectStatusChip status={project.status} />
@@ -151,7 +151,7 @@ export function ProjectReportPage() {
 
         <section className="mt-8 break-inside-avoid">
           <h2 className={sectionTitle}>{copy.information}</h2>
-          <div className="mt-4 grid grid-cols-[minmax(0,1fr)_68mm] gap-8">
+          <div className="mt-4 grid grid-cols-[minmax(0,1fr)_68mm] gap-8 max-md:grid-cols-1 max-md:gap-6">
             <div>
               {project.description && (
                 <p className="text-sm leading-relaxed text-text">{project.description}</p>
@@ -174,7 +174,9 @@ export function ProjectReportPage() {
               {info.map(([label, value]) => (
                 <div key={label} className="flex justify-between gap-4 py-1.5">
                   <dt className="shrink-0 text-text-muted">{label}</dt>
-                  <dd className="text-right font-semibold text-navy-900">{value}</dd>
+                  <dd className="text-right font-semibold text-navy-900 max-xl:min-w-0 max-xl:[overflow-wrap:anywhere]">
+                    {value}
+                  </dd>
                 </div>
               ))}
             </dl>
@@ -211,7 +213,7 @@ export function ProjectReportPage() {
                   </div>
                 )}
                 <div
-                  className={`mt-3 grid gap-5 ${unit.length > 1 ? 'grid-cols-2' : 'max-w-[100mm] grid-cols-1'}`}
+                  className={`mt-3 grid gap-5 max-md:grid-cols-1 ${unit.length > 1 ? 'grid-cols-2' : 'max-w-[100mm] grid-cols-1'}`}
                 >
                   {unit.map((item, i) => {
                     const result = results[i]
@@ -279,7 +281,7 @@ export function ProjectReportPage() {
 
         <section className="mt-10 break-inside-avoid">
           <h2 className={sectionTitle}>{copy.members}</h2>
-          <table className="mt-3 w-full text-sm">
+          <table className="mt-3 w-full text-sm max-md:[overflow-wrap:anywhere]">
             <tbody className="divide-y divide-border">
               {project.members.map((member) => (
                 <tr key={member.id}>

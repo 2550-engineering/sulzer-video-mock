@@ -24,7 +24,7 @@ export function SiteStatusList({ assets }: { assets: Asset[] }) {
         <li key={site.id}>
           <Link
             to={`/connect/assets#${site.id}`}
-            className="group flex items-center gap-4 px-6 py-3.5 transition-colors hover:bg-white/[0.03]"
+            className="group flex items-center gap-4 px-6 py-3.5 transition-colors hover:bg-white/[0.03] max-md:gap-3 max-md:px-4"
           >
             <ConnectStatusDot status={worst} />
             <span className="min-w-0 flex-1">
@@ -33,7 +33,7 @@ export function SiteStatusList({ assets }: { assets: Asset[] }) {
                 {site.type}
               </span>
             </span>
-            <span className="text-right text-[13px] tabular-nums">
+            <span className="text-right text-[13px] tabular-nums max-md:shrink-0">
               <span className="block text-text-on-dark">
                 {dashboardPage.sites.assets(own.length)}
               </span>

@@ -30,7 +30,7 @@ export function ConnectReportsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-[1440px] px-10 pt-8 pb-16">
+    <div className="mx-auto max-w-[1440px] px-10 pt-8 pb-16 max-xl:px-6 max-md:px-4 max-md:pt-6">
       <title>{`${copy.title} – ${connectApp.name}`}</title>
       <ConnectPageHeader
         title={copy.title}
@@ -57,7 +57,7 @@ export function ConnectReportsPage() {
         }
       />
 
-      <div className="mt-8 grid items-start gap-6 lg:grid-cols-[17rem_minmax(0,1fr)]">
+      <div className="mt-8 grid items-start gap-6 max-lg:grid-cols-1 max-md:mt-6 max-md:gap-4 lg:grid-cols-[17rem_minmax(0,1fr)]">
         <ConnectPanel flush className="overflow-hidden">
           <ul className="divide-y divide-white/[0.07]">
             {copy.list.map((report) => {

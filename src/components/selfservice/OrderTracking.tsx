@@ -22,7 +22,7 @@ export function OrderTracking({ order }: { order: SalesOrder }) {
 
   return (
     <section className="rounded-lg border border-border bg-white">
-      <div className="flex flex-wrap items-start justify-between gap-6 border-b border-border px-6 py-5">
+      <div className="flex flex-wrap items-start justify-between gap-6 border-b border-border px-6 py-5 max-md:px-4">
         <div className="flex items-center gap-4">
           <span className="flex size-12 items-center justify-center rounded-full bg-primary-tint text-primary">
             <Truck className="size-6" strokeWidth={1.75} />
@@ -70,7 +70,7 @@ export function OrderTracking({ order }: { order: SalesOrder }) {
         )}
       </div>
 
-      <div className="px-6 pt-6 pb-2">
+      <div className="px-6 pt-6 pb-2 max-md:px-4">
         <ProgressSteps
           label={copy.tracking.title}
           current={orderSteps.indexOf(order.status)}
@@ -82,13 +82,13 @@ export function OrderTracking({ order }: { order: SalesOrder }) {
         />
       </div>
 
-      <div className="px-6 pt-4 pb-6">
+      <div className="px-6 pt-4 pb-6 max-md:px-4">
         <h3 className="text-sm font-semibold text-navy-900">{copy.tracking.history}</h3>
         <ol className="mt-3">
           {events.map((event, i) => (
             <li
               key={`${event.at}-${event.text}`}
-              className="relative grid grid-cols-[8.5rem_1rem_minmax(0,1fr)] gap-x-4 pb-4 last:pb-0"
+              className="relative grid grid-cols-[8.5rem_1rem_minmax(0,1fr)] gap-x-4 pb-4 last:pb-0 max-md:grid-cols-[5.5rem_1rem_minmax(0,1fr)] max-md:gap-x-3"
             >
               <p className="text-sm text-text-muted tabular-nums">
                 {formatDateTime(event.at, demoClock.today)}

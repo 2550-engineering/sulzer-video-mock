@@ -160,7 +160,7 @@ export function QuotationPage() {
         }
       />
 
-      <div className="site-container grid items-start gap-6 pt-10 pb-24 lg:grid-cols-[minmax(0,1fr)_21rem]">
+      <div className="site-container grid items-start gap-6 pt-10 pb-24 max-lg:grid-cols-1 lg:grid-cols-[minmax(0,1fr)_21rem]">
         {preparing ? (
           <div className="flex flex-col items-center rounded-lg border border-border bg-white px-8 py-20 text-center">
             <span className="flex size-16 items-center justify-center rounded-full bg-primary-tint text-primary">
@@ -183,7 +183,7 @@ export function QuotationPage() {
               </p>
               <p className="text-text-muted tabular-nums">1 / 1</p>
             </div>
-            <div className="overflow-x-auto px-6 py-8 xl:px-10">
+            <div className="overflow-x-auto px-6 py-8 max-xl:relative max-md:px-3 max-md:py-4 xl:px-10">
               <QuotationDocument quotation={quotation} />
             </div>
           </div>

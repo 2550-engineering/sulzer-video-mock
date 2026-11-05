@@ -35,16 +35,16 @@ export function ReportPreview({ assets }: { assets: Asset[] }) {
   ]
 
   return (
-    <article className="mx-auto w-full max-w-[860px] animate-fade-in rounded-sm bg-white px-14 py-12 text-text shadow-[0_40px_80px_-30px_rgba(0,0,0,0.7)]">
-      <header className="flex items-start justify-between gap-8 border-b-2 border-brand pb-6">
+    <article className="mx-auto w-full max-w-[860px] animate-fade-in rounded-sm bg-white px-14 py-12 text-text shadow-[0_40px_80px_-30px_rgba(0,0,0,0.7)] max-lg:px-10 max-lg:py-10 max-md:px-5 max-md:py-6">
+      <header className="flex items-start justify-between gap-8 border-b-2 border-brand pb-6 max-md:flex-col max-md:gap-4">
         <div>
           <SulzerLogo className="h-6" />
-          <h2 className="mt-6 text-[1.75rem] leading-tight font-bold tracking-tight text-brand">
+          <h2 className="mt-6 text-[1.75rem] leading-tight font-bold tracking-tight text-brand max-md:mt-4 max-md:text-[1.375rem]">
             {copy.title}
           </h2>
           <p className="mt-1 text-text-muted">{copy.period}</p>
         </div>
-        <dl className="text-right text-sm">
+        <dl className="text-right text-sm max-md:text-left">
           <dt className="text-text-muted">{copy.preparedFor}</dt>
           <dd className="font-semibold text-navy-900">{customer?.name}</dd>
           <dd className="text-text-muted">{customer?.customerNumber}</dd>
@@ -55,9 +55,12 @@ export function ReportPreview({ assets }: { assets: Asset[] }) {
       <h3 className="mt-8 text-xs font-bold tracking-[0.12em] text-text-muted uppercase">
         {copy.summary}
       </h3>
-      <dl className="mt-3 grid grid-cols-4 divide-x divide-border rounded-md border border-border">
+      <dl className="mt-3 grid grid-cols-4 divide-x divide-border rounded-md border border-border max-md:grid-cols-2 max-md:divide-x-0">
         {kpis.map((kpi) => (
-          <div key={kpi.label} className="px-4 py-3">
+          <div
+            key={kpi.label}
+            className="px-4 py-3 max-md:border-border max-md:px-3 max-md:odd:border-r max-md:[&:nth-child(-n+2)]:border-b"
+          >
             <dt className="text-xs text-text-muted">{kpi.label}</dt>
             <dd className="mt-1 text-xl font-bold text-navy-900 tabular-nums">{kpi.value}</dd>
           </div>
@@ -67,7 +70,7 @@ export function ReportPreview({ assets }: { assets: Asset[] }) {
       <h3 className="mt-8 text-xs font-bold tracking-[0.12em] text-text-muted uppercase">
         {copy.attention}
       </h3>
-      <table className="mt-3 w-full text-left text-sm">
+      <table className="table-cards mt-3 w-full text-left text-sm">
         <thead className="border-b border-border-strong text-xs text-text-muted">
           <tr>
             {Object.values(copy.columns).map((column) => (
@@ -118,7 +121,7 @@ export function ReportPreview({ assets }: { assets: Asset[] }) {
       <h3 className="mt-8 text-xs font-bold tracking-[0.12em] text-text-muted uppercase">
         {copy.sites}
       </h3>
-      <table className="mt-3 w-full text-left text-sm">
+      <table className="table-cards mt-3 w-full text-left text-sm">
         <thead className="border-b border-border-strong text-xs text-text-muted">
           <tr>
             {Object.values(copy.siteColumns).map((column, i) => (

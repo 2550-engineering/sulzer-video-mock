@@ -80,7 +80,7 @@ export function CheckoutPage() {
     }, placingMs)
   }
 
-  const card = 'rounded-lg border border-border bg-white px-6 py-6'
+  const card = 'rounded-lg border border-border bg-white px-6 py-6 max-md:px-4 max-md:py-5'
 
   return (
     <>
@@ -110,7 +110,7 @@ export function CheckoutPage() {
               )}
             </div>
           ) : (
-            <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
+            <div className="grid items-start gap-8 max-lg:grid-cols-1 max-md:gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
               <div className="min-w-0 space-y-6">
                 {partner && (
                   <div className={card}>

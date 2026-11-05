@@ -37,13 +37,13 @@ export function CompareTable({
   onAddToProject,
   onTenderText,
 }: CompareTableProps) {
-  const cell = 'border-b border-border px-5 py-3 align-top'
+  const cell = 'border-b border-border px-5 py-3 align-top max-md:px-3'
   return (
     <div className="overflow-x-auto rounded-lg border border-border bg-white">
-      <table className="w-full min-w-[48rem] table-fixed border-separate border-spacing-0 text-[15px]">
+      <table className="w-full min-w-[48rem] table-fixed border-separate border-spacing-0 text-[15px] max-md:min-w-[34rem]">
         <caption className="sr-only">{copy.tableLabel}</caption>
         <colgroup>
-          <col className="w-[15rem]" />
+          <col className="w-[15rem] max-md:w-[8.5rem]" />
           {results.map((r) => (
             <col key={r.variant.id} />
           ))}

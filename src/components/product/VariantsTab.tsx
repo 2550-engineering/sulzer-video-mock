@@ -31,17 +31,17 @@ export function VariantsTab({ variants }: { variants: ProductVariants }) {
 
       <h3 className="mt-20 text-2xl font-bold tracking-tight text-brand">{copy.compareTitle}</h3>
       <div className="mt-6 overflow-x-auto rounded-lg ring-1 ring-border">
-        <table className="w-full min-w-[640px] text-left text-[15px]">
+        <table className="w-full min-w-[640px] text-left text-[15px] max-md:min-w-0 max-md:text-sm">
           <thead className="bg-surface-muted">
             <tr>
-              <th scope="col" className="px-6 py-4 font-semibold text-navy-900">
+              <th scope="col" className="px-6 py-4 font-semibold text-navy-900 max-md:px-3">
                 {copy.feature}
               </th>
               {packages.map((pkg) => (
                 <th
                   key={pkg.id}
                   scope="col"
-                  className="w-44 px-6 py-4 text-center font-semibold text-navy-900"
+                  className="w-44 px-6 py-4 text-center font-semibold text-navy-900 max-md:w-auto max-md:px-2"
                 >
                   {pkg.name}
                 </th>
@@ -51,11 +51,11 @@ export function VariantsTab({ variants }: { variants: ProductVariants }) {
           <tbody>
             {features.map(({ label, tier }) => (
               <tr key={label} className="border-t border-border">
-                <th scope="row" className="px-6 py-3.5 font-normal text-text">
+                <th scope="row" className="px-6 py-3.5 font-normal text-text max-md:px-3">
                   {label}
                 </th>
                 {packages.map((pkg, i) => (
-                  <td key={pkg.id} className="px-6 py-3.5 text-center">
+                  <td key={pkg.id} className="px-6 py-3.5 text-center max-md:px-2">
                     {i >= tier ? (
                       <Check
                         aria-label={copy.included}

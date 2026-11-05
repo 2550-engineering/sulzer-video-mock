@@ -23,7 +23,7 @@ export function MegaMenu({ open, session, onNavigate }: MegaMenuProps) {
     <div
       id="mega-menu"
       inert={!open}
-      className={`absolute inset-x-0 top-full z-10 border-t border-border bg-white shadow-card ${popoverClasses(open)}`}
+      className={`absolute inset-x-0 top-full z-10 border-t border-border bg-white shadow-card max-xl:hidden ${popoverClasses(open)}`}
     >
       <div className="site-container grid grid-cols-12 gap-8 pt-10 pb-12">
         <div className="col-span-4 xl:col-span-3">

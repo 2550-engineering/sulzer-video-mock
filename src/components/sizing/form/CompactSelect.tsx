@@ -10,7 +10,7 @@ type CompactSelectProps = {
 }
 
 export const compactControl =
-  'h-8 w-full rounded-sm border border-border-strong bg-white px-2 text-[13px] text-text transition-[border-color,box-shadow] focus:border-primary focus:shadow-[0_0_0_3px_var(--sz-color-primary-tint-strong)] focus-visible:outline-none'
+  'h-8 w-full rounded-sm border border-border-strong bg-white px-2 text-[13px] text-text transition-[border-color,box-shadow] focus:border-primary focus:shadow-[0_0_0_3px_var(--sz-color-primary-tint-strong)] focus-visible:outline-none max-xl:h-10 max-md:text-base'
 
 /** Small native select for the sizing form. Options with no hits come disabled. */
 export function CompactSelect({ id, value, options, onChange, anyLabel }: CompactSelectProps) {

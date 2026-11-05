@@ -33,8 +33,8 @@ function kindLabel(item: CartItem) {
 export function CartLines({ items, readOnly = false }: { items: CartItem[]; readOnly?: boolean }) {
   const cart = useCart()
   return (
-    <div className="overflow-x-auto rounded-lg border border-border bg-white">
-      <table className="w-full min-w-[48rem] border-separate border-spacing-0 text-[15px]">
+    <div className="overflow-x-auto rounded-lg border border-border bg-white max-xl:relative max-md:overflow-visible max-md:rounded-none max-md:border-0 max-md:bg-transparent">
+      <table className="table-cards w-full min-w-[48rem] border-separate border-spacing-0 text-[15px] max-md:[&>tbody>tr]:bg-white max-md:[&>tfoot>tr]:bg-white">
         <thead className="text-sm text-navy-900">
           <tr>
             <th scope="col" className={head}>
@@ -62,11 +62,11 @@ export function CartLines({ items, readOnly = false }: { items: CartItem[]; read
         {groupByProduct(items).map((group) => {
           return (
             <tbody key={group.variantId}>
-              <tr>
+              <tr className="max-md:mb-0! max-md:border-0! max-md:bg-transparent! max-md:p-0!">
                 <th
                   scope="colgroup"
                   colSpan={readOnly ? 5 : 6}
-                  className="border-b border-border bg-surface-subtle px-4 py-2.5 text-left text-sm font-semibold text-navy-900"
+                  className="border-b border-border bg-surface-subtle px-4 py-2.5 text-left text-sm font-semibold text-navy-900 max-md:block max-md:border-0 max-md:bg-transparent max-md:px-0 max-md:pt-3 max-md:pb-2"
                 >
                   <span className="text-text-muted">
                     {group.items.some((item) => item.kind === 'product')
@@ -94,7 +94,7 @@ export function CartLines({ items, readOnly = false }: { items: CartItem[]; read
               </tr>
               {group.items.map((item) => (
                 <tr key={item.id} className="animate-fade-in">
-                  <td className={cell}>
+                  <td className={`${cell} ${readOnly ? '' : 'max-md:pr-12!'}`}>
                     <div className="flex items-center gap-4">
                       <CartLineImage item={item} />
                       <div className="min-w-0">
@@ -146,13 +146,15 @@ export function CartLines({ items, readOnly = false }: { items: CartItem[]; read
                     {formatPartPrice(item.unitPrice * item.quantity)}
                   </td>
                   {!readOnly && (
-                    <td className={cell}>
+                    <td
+                      className={`${cell} max-md:absolute! max-md:top-2 max-md:right-2 max-md:p-0! max-md:before:hidden`}
+                    >
                       <button
                         type="button"
                         onClick={() => cart.remove(item.id)}
                         aria-label={copy.remove(item.name)}
                         title={copy.remove(item.name)}
-                        className="flex size-9 items-center justify-center rounded-md text-text-muted transition-colors hover:bg-surface-muted hover:text-danger"
+                        className="flex size-9 items-center justify-center rounded-md text-text-muted transition-colors hover:bg-surface-muted hover:text-danger max-md:size-11"
                       >
                         <Trash2 className="size-4" />
                       </button>

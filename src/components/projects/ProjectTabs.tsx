@@ -14,7 +14,10 @@ export function ProjectTabs<T extends string>({
   idPrefix,
 }: ProjectTabsProps<T>) {
   return (
-    <div role="tablist" className="mt-6 flex gap-1 border-b border-border-strong">
+    <div
+      role="tablist"
+      className="mt-6 flex gap-1 border-b border-border-strong max-md:[scrollbar-width:none] max-md:overflow-x-auto max-md:overscroll-x-contain"
+    >
       {tabs.map((tab) => (
         <button
           key={tab.id}
@@ -24,7 +27,7 @@ export function ProjectTabs<T extends string>({
           aria-selected={active === tab.id}
           aria-controls={`${idPrefix}-panel`}
           onClick={() => onSelect(tab.id)}
-          className={`relative px-4 pt-2 pb-3 text-base font-semibold transition-colors ${
+          className={`relative px-4 pt-2 pb-3 text-base font-semibold transition-colors max-md:shrink-0 max-md:px-3 max-md:whitespace-nowrap ${
             active === tab.id ? 'text-navy-900' : 'text-text-muted hover:text-navy-900'
           }`}
         >
@@ -39,7 +42,7 @@ export function ProjectTabs<T extends string>({
           {active === tab.id && (
             <span
               aria-hidden
-              className="absolute inset-x-2 -bottom-px h-[3px] rounded-t-sm bg-primary"
+              className="absolute inset-x-2 -bottom-px h-[3px] rounded-t-sm bg-primary max-md:bottom-0"
             />
           )}
         </button>

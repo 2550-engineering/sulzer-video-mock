@@ -1,7 +1,8 @@
 import { ChevronRight, MessageCircleMore, X } from 'lucide-react'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useRef, useState, type CSSProperties } from 'react'
 import { Link } from 'react-router'
 import { chatOptions } from '../config/navigation'
+import { useBottomBarLift } from '../hooks/useBottomBarLift'
 import { useDismiss } from '../hooks/useDismiss'
 import { popoverClasses } from '../lib/popover'
 import { SulzerLogo } from './SulzerLogo'
@@ -12,13 +13,19 @@ export function ChatWidget() {
   const [open, setOpen] = useState(false)
   const close = useCallback(() => setOpen(false), [])
   useDismiss(ref, open, close)
+  // Below 1280px the button rises above an open bottom bar instead of covering it.
+  const lift = useBottomBarLift()
 
   return (
-    <div ref={ref} className="fixed right-6 bottom-6 z-40">
+    <div
+      ref={ref}
+      style={{ '--sz-chat-lift': `${lift}px` } as CSSProperties}
+      className="fixed right-6 bottom-6 z-40 max-xl:bottom-[calc(1.5rem+var(--sz-chat-lift)+env(safe-area-inset-bottom))] max-xl:transition-[bottom] max-xl:duration-250 max-xl:ease-sz max-md:right-[max(1rem,env(safe-area-inset-right))] max-md:bottom-[calc(1rem+var(--sz-chat-lift)+env(safe-area-inset-bottom))]"
+    >
       <div
         id="chat-card"
         inert={!open}
-        className={`absolute right-0 bottom-[calc(100%+16px)] w-[344px] origin-bottom-right overflow-hidden rounded-lg bg-white shadow-card ring-1 ring-navy-900/5 ${popoverClasses(open)}`}
+        className={`absolute right-0 bottom-[calc(100%+16px)] w-[344px] origin-bottom-right overflow-hidden rounded-lg bg-white shadow-card ring-1 ring-navy-900/5 max-md:w-[calc(100vw-2rem)] max-md:max-w-[344px] ${popoverClasses(open)}`}
       >
         <div className="bg-navy-900 px-6 pt-5 pb-6 text-white on-dark">
           <SulzerLogo variant="white" className="h-4" />
@@ -53,7 +60,7 @@ export function ChatWidget() {
         aria-label={open ? 'Close chat' : 'Chat with Sulzer'}
         aria-expanded={open}
         aria-controls="chat-card"
-        className="flex size-14 items-center justify-center rounded-full bg-primary text-white shadow-raised transition-[background-color,scale] hover:scale-105 hover:bg-primary-hover active:scale-95"
+        className="flex size-14 items-center justify-center rounded-full bg-primary text-white shadow-raised transition-[background-color,scale] hover:scale-105 hover:bg-primary-hover active:scale-95 max-md:size-12"
       >
         {open ? (
           <X className="size-6" strokeWidth={2} />

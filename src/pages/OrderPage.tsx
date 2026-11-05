@@ -83,7 +83,7 @@ export function OrderPage() {
         }
       />
 
-      <div className="site-container grid items-start gap-6 pt-10 pb-24 lg:grid-cols-[minmax(0,1fr)_22rem]">
+      <div className="site-container grid items-start gap-6 pt-10 pb-24 max-lg:grid-cols-1 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <div className="min-w-0 space-y-6">
           <OrderTracking order={order} />
           <OrderLinesTable order={order} />

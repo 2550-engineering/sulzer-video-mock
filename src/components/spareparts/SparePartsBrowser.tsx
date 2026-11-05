@@ -130,13 +130,15 @@ export function SparePartsBrowser({ catalogue, owner, ownerPicker }: SparePartsB
 
   return (
     <div
-      className={`grid items-start gap-8 ${
+      className={`grid items-start gap-8 max-lg:grid-cols-1 ${
         view === 'bom'
           ? 'lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]'
           : 'lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]'
       }`}
     >
-      <aside className="flex max-h-[44rem] flex-col rounded-lg border border-border bg-white lg:sticky lg:top-[calc(var(--sz-header-height)+5.5rem)] lg:h-[calc(100vh-var(--sz-header-height)-8rem)] lg:max-h-none lg:min-h-[32rem]">
+      <aside
+        className={`flex max-h-[44rem] flex-col rounded-lg border border-border bg-white max-xl:min-w-0 lg:sticky lg:top-[calc(var(--sz-header-height)+5.5rem)] lg:h-[calc(100vh-var(--sz-header-height)-8rem)] lg:max-h-none lg:min-h-[32rem] ${view === 'bom' ? 'max-md:max-h-none' : ''}`}
+      >
         <div className="border-b border-border px-5 pt-5 pb-4">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <h2 className="text-lg font-bold tracking-tight text-navy-900">

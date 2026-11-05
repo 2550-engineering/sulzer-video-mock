@@ -35,6 +35,8 @@ export const connectApp = {
   settingsToast: 'Settings are managed by your Sulzer Connect administrator',
   /** Leaves the app, back to the website. */
   exit: { label: 'Exit', title: 'Back to My Pages', to: '/my-pages' },
+  /** Phones: the last tab of the bottom bar opens the remaining pages. */
+  more: { label: 'More', close: 'Close menu' },
   synced: `Updated today, ${demoClock.lastSync}`,
   alertsLabel: (count: number) => `${count} active alert${count === 1 ? '' : 's'}`,
   signIn: 'Sign in',
@@ -96,6 +98,8 @@ export const dashboardPage = {
     subtitle: 'All connected pumps, per day',
     total: (hours: string) => `${hours} h this week`,
     today: 'so far today',
+    /** Under the last bar when the chart is narrow (phones). */
+    todayShort: 'today',
     unit: 'h',
   },
 }

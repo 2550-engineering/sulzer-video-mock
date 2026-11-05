@@ -20,7 +20,7 @@ export function ConnectLayout() {
         {welcome ? (
           <Outlet />
         ) : (
-          <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-8">
+          <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-8 max-md:min-h-[calc(100vh-10rem)] max-md:px-4">
             <title>{connectApp.name}</title>
             <div className="max-w-md animate-fade-in text-center">
               <span className="mx-auto flex size-14 items-center justify-center rounded-full bg-white/10 text-primary-on-dark">
