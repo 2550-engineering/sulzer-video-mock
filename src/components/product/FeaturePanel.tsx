@@ -12,13 +12,13 @@ export function FeaturePanel({ feature, highlights }: FeaturePanelProps) {
     <section className="site-container py-16 lg:py-20">
       {feature && (
         <div className="grid items-center overflow-hidden rounded-lg bg-surface-sunken lg:grid-cols-2">
-          <div className="px-10 py-12 lg:px-14 lg:py-16">
+          <div className="px-10 py-12 max-md:px-6 max-md:py-8 lg:px-14 lg:py-16">
             <h2 className="text-[2rem] leading-tight font-bold tracking-tight text-brand">
               {feature.title}
             </h2>
             <p className="mt-4 max-w-md text-lg leading-relaxed text-text-muted">{feature.text}</p>
           </div>
-          <div className="relative aspect-[16/10] h-full">
+          <div className="relative aspect-[16/10] h-full max-xl:h-auto max-xl:min-w-0">
             <SmartImage src={feature.image.src} alt={feature.image.alt} fit="contain" />
           </div>
         </div>

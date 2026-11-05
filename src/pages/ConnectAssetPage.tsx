@@ -43,7 +43,7 @@ const color = {
 
 const DAY = 24 * 60 * 60 * 1000
 
-const pageClass = 'mx-auto max-w-[1680px] px-10 pt-8 pb-16'
+const pageClass = 'mx-auto max-w-[1680px] px-10 pt-8 pb-16 max-xl:px-6 max-md:px-4 max-md:pt-6'
 
 /** Rounded-out value axis for a temperature chart, keeping both limits in view. */
 function temperatureDomain(points: ConditionPoint[], channel: ConditionChannel) {
@@ -195,8 +195,8 @@ export function ConnectAssetPage() {
         }
       />
 
-      <div className="mt-8 grid items-start gap-6 xl:grid-cols-[23rem_minmax(0,1fr)]">
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-1">
+      <div className="mt-8 grid items-start gap-6 max-xl:grid-cols-1 max-md:mt-6 max-md:gap-4 xl:grid-cols-[23rem_minmax(0,1fr)]">
+        <div className="grid gap-6 max-md:grid-cols-1 max-md:gap-4 md:grid-cols-2 xl:grid-cols-1">
           <ConnectPanel title={copy.health.title} subtitle={copy.health.caption}>
             <HealthGauge
               score={score}
@@ -214,8 +214,8 @@ export function ConnectAssetPage() {
           </ConnectPanel>
         </div>
 
-        <div className="min-w-0 space-y-6">
-          <div className="grid gap-4 sm:grid-cols-2 2xl:grid-cols-4">
+        <div className="min-w-0 space-y-6 max-md:space-y-4">
+          <div className="grid gap-4 max-sm:grid-cols-2 max-sm:gap-3 sm:grid-cols-2 2xl:grid-cols-4">
             <KpiTile {...kpi('vibration')} label={copy.kpis.vibration} />
             <KpiTile {...kpi('bearingTemperature')} label={copy.kpis.bearingTemperature} />
             <KpiTile {...kpi('motorTemperature')} label={copy.kpis.motorTemperature} />
@@ -255,7 +255,7 @@ export function ConnectAssetPage() {
             </div>
           </ConnectPanel>
 
-          <div className="grid gap-6 2xl:grid-cols-2">
+          <div className="grid gap-6 max-xl:grid-cols-1 max-md:gap-4 2xl:grid-cols-2">
             {(['bearingTemperature', 'motorTemperature'] as const).map((channel) => {
               const chart = channel === 'bearingTemperature' ? copy.bearingChart : copy.motorChart
               return (

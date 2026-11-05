@@ -34,9 +34,9 @@ export function AccountsTable({ assets, accountIds, defaultOpen }: AccountsTable
 
   return (
     <div className="overflow-x-auto">
-      <div className="min-w-[64rem]">
+      <div className="min-w-[64rem] max-md:min-w-0">
         <div
-          className={`grid items-center gap-x-5 border-y border-white/10 bg-white/[0.04] px-6 py-3 text-[13px] font-semibold text-text-on-dark ${columns}`}
+          className={`grid items-center gap-x-5 border-y border-white/10 bg-white/[0.04] px-6 py-3 text-[13px] font-semibold text-text-on-dark ${columns} max-md:hidden`}
         >
           <span />
           <span>{copy.accountColumns.name}</span>
@@ -57,7 +57,7 @@ export function AccountsTable({ assets, accountIds, defaultOpen }: AccountsTable
               return (
                 <Fragment key={customer.id}>
                   <li
-                    className={`grid items-center gap-x-5 px-6 py-4 text-sm transition-colors ${columns} ${
+                    className={`grid items-center gap-x-5 px-6 py-4 text-sm transition-colors ${columns} max-md:grid-cols-[2rem_minmax(0,1fr)] max-md:gap-x-3 max-md:gap-y-2.5 max-md:border-t max-md:border-white/10 max-md:px-4 ${
                       expanded ? 'bg-white/[0.04]' : 'hover:bg-white/[0.03]'
                     }`}
                   >
@@ -93,13 +93,13 @@ export function AccountsTable({ assets, accountIds, defaultOpen }: AccountsTable
                         )}
                       </p>
                     </div>
-                    <div className="min-w-0">
+                    <div className="min-w-0 max-md:col-start-2">
                       <p className="truncate text-white">{customer.contact.name}</p>
                       <p className="truncate text-[13px] text-text-on-dark-muted">
                         {customer.contact.email}
                       </p>
                     </div>
-                    <div>
+                    <div className="max-md:col-start-2 max-md:flex max-md:flex-wrap max-md:items-center max-md:gap-2">
                       {users > 0 ? (
                         <button
                           type="button"
@@ -122,8 +122,10 @@ export function AccountsTable({ assets, accountIds, defaultOpen }: AccountsTable
                         </button>
                       )}
                     </div>
-                    <p className="text-text-on-dark tabular-nums">{customer.customerNumber}</p>
-                    <div>
+                    <p className="text-text-on-dark tabular-nums max-md:col-start-2 max-md:text-[13px] max-md:text-text-on-dark-muted">
+                      {customer.customerNumber}
+                    </p>
+                    <div className="max-md:hidden">
                       {own.length > 0 && (
                         <button
                           type="button"
@@ -136,7 +138,7 @@ export function AccountsTable({ assets, accountIds, defaultOpen }: AccountsTable
                     </div>
                   </li>
                   {expanded && own.length > 0 && (
-                    <li className="animate-fade-in bg-navy-900/60 py-2 pl-10">
+                    <li className="animate-fade-in bg-navy-900/60 py-2 pl-10 max-md:pl-0">
                       <AssetMonitorTable assets={own} />
                     </li>
                   )}

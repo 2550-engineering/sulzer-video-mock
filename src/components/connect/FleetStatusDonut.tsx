@@ -26,8 +26,8 @@ export function FleetStatusDonut({ counts, centerValue, centerLabel }: FleetStat
   const starts = lengths.map((_, i) => lengths.slice(0, i).reduce((sum, l) => sum + l, 0))
 
   return (
-    <div className="flex flex-wrap items-center gap-x-8 gap-y-6">
-      <div className="relative size-44 shrink-0">
+    <div className="flex flex-wrap items-center gap-x-8 gap-y-6 max-md:flex-col max-md:items-stretch">
+      <div className="relative size-44 shrink-0 max-md:mx-auto">
         <svg viewBox="0 0 180 180" className="size-full -rotate-90" aria-hidden>
           <circle
             cx={90}
@@ -66,7 +66,7 @@ export function FleetStatusDonut({ counts, centerValue, centerLabel }: FleetStat
           <span className="mt-0.5 text-xs text-text-on-dark-muted">{centerLabel}</span>
         </div>
       </div>
-      <ul className="min-w-40 flex-1 space-y-3">
+      <ul className="min-w-40 flex-1 space-y-3 max-md:min-w-0">
         {order.map((status) => (
           <li key={status} className="flex items-center gap-3 text-sm">
             <span

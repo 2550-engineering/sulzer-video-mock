@@ -42,7 +42,7 @@ export function ConnectUsersPage({ view }: { view: 'users' | 'teams' }) {
   ]
 
   return (
-    <div className="mx-auto max-w-[1280px] px-10 pt-8 pb-16">
+    <div className="mx-auto max-w-[1280px] px-10 pt-8 pb-16 max-xl:px-6 max-md:px-4 max-md:pt-6">
       <title>{`${view === 'users' ? copy.title : copy.teamsTitle} – ${connectApp.name}`}</title>
       <ConnectPageHeader
         title={view === 'users' ? copy.title : copy.teamsTitle}
@@ -59,8 +59,14 @@ export function ConnectUsersPage({ view }: { view: 'users' | 'teams' }) {
         }
       />
 
-      <ConnectPanel flush className="mt-8 overflow-hidden">
-        <nav aria-label={copy.title} className="flex gap-1 border-b border-white/10 px-4">
+      <ConnectPanel
+        flush
+        className="mt-8 overflow-hidden max-md:mt-6 max-md:overflow-visible max-md:border-0 max-md:bg-transparent max-md:shadow-none"
+      >
+        <nav
+          aria-label={copy.title}
+          className="flex gap-1 border-b border-white/10 px-4 max-md:mb-4 max-md:px-0"
+        >
           <NavLink to="/connect/users" className={tabClass}>
             {copy.tabs.users}
           </NavLink>
@@ -70,58 +76,65 @@ export function ConnectUsersPage({ view }: { view: 'users' | 'teams' }) {
         </nav>
 
         {view === 'users' ? (
-          <table className="w-full animate-fade-in text-left text-sm">
-            <thead className="bg-white/[0.04] text-[13px] text-text-on-dark">
-              <tr>
-                {Object.values(copy.columns).map((column) => (
-                  <th key={column} scope="col" className="px-6 py-3 font-semibold">
-                    {column}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/[0.07]">
-              {people.map((person) => (
-                <tr key={person.email} className="transition-colors hover:bg-white/[0.03]">
-                  <td className="px-6 py-3.5">
-                    <div className="flex items-center gap-3">
-                      <Avatar
-                        initials={person.initials}
-                        className={person.pending ? 'opacity-50' : ''}
-                      />
-                      <div>
-                        <p className="font-semibold text-white">{person.name}</p>
-                        <p className="text-[13px] text-text-on-dark-muted">{person.email}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-3.5">
-                    <span
-                      className={`rounded-sm px-2 py-0.5 text-xs font-semibold ${roleTones[person.role]}`}
-                    >
-                      {person.role}
-                    </span>
-                  </td>
-                  <td className="px-6 py-3.5 text-text-on-dark">{person.teams.join(', ')}</td>
-                  <td className="px-6 py-3.5 text-text-on-dark-muted tabular-nums">
-                    {person.pending ? (
-                      <span className="font-semibold text-warning-on-dark">{copy.pending}</span>
-                    ) : (
-                      person.lastActive
-                    )}
-                  </td>
+          <div className="md:max-xl:overflow-x-auto">
+            <table className="table-cards w-full animate-fade-in text-left text-sm max-xl:min-w-[48rem]">
+              <thead className="bg-white/[0.04] text-[13px] text-text-on-dark">
+                <tr>
+                  {Object.values(copy.columns).map((column) => (
+                    <th key={column} scope="col" className="px-6 py-3 font-semibold">
+                      {column}
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-white/[0.07]">
+                {people.map((person) => (
+                  <tr
+                    key={person.email}
+                    className="transition-colors hover:bg-white/[0.03] max-md:bg-navy-900/70"
+                  >
+                    <td className="px-6 py-3.5">
+                      <div className="flex items-center gap-3">
+                        <Avatar
+                          initials={person.initials}
+                          className={person.pending ? 'opacity-50' : ''}
+                        />
+                        <div>
+                          <p className="font-semibold text-white">{person.name}</p>
+                          <p className="text-[13px] text-text-on-dark-muted max-md:font-normal">
+                            {person.email}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-3.5">
+                      <span
+                        className={`rounded-sm px-2 py-0.5 text-xs font-semibold ${roleTones[person.role]}`}
+                      >
+                        {person.role}
+                      </span>
+                    </td>
+                    <td className="px-6 py-3.5 text-text-on-dark">{person.teams.join(', ')}</td>
+                    <td className="px-6 py-3.5 text-text-on-dark-muted tabular-nums">
+                      {person.pending ? (
+                        <span className="font-semibold text-warning-on-dark">{copy.pending}</span>
+                      ) : (
+                        person.lastActive
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
-          <ul className="grid animate-fade-in gap-4 p-6 md:grid-cols-3">
+          <ul className="grid animate-fade-in gap-4 p-6 max-md:grid-cols-1 max-md:px-0 max-md:pt-0 md:grid-cols-3 md:max-lg:grid-cols-2!">
             {connectTeams.map((team) => {
               const members = people.filter((person) => person.teams.includes(team.name))
               return (
                 <li
                   key={team.name}
-                  className="rounded-lg border border-white/10 bg-navy-800/60 p-5"
+                  className="rounded-lg border border-white/10 bg-navy-800/60 p-5 max-md:bg-navy-900/70"
                 >
                   <h2 className="font-semibold text-white">{team.name}</h2>
                   <p className="mt-1 text-[13px] text-text-on-dark-muted">{team.description}</p>

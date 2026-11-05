@@ -65,7 +65,7 @@ export function Drawer({
         aria-modal="true"
         aria-labelledby={titleId}
         className={`absolute inset-y-0 right-0 flex w-full ${widths[size]} flex-col bg-white shadow-[-24px_0_60px_-24px_rgba(12,28,46,0.4)] transition-transform duration-250 ease-sz ${
-          open ? 'translate-x-0' : 'translate-x-full'
+          open ? 'translate-x-0' : 'translate-x-full max-xl:shadow-none'
         }`}
       >
         <div className="flex items-start justify-between gap-6 border-b border-border px-8 py-5">

@@ -67,7 +67,7 @@ export function SizingResultsTable({
         >
           <span className="text-right whitespace-nowrap">
             {label}
-            {unit && <span className="block text-xs font-normal text-text-muted">[{unit}]</span>}
+            {unit && <span className="block text-xs font-normal text-text-muted"> [{unit}]</span>}
           </span>
           <Icon
             aria-hidden
@@ -79,8 +79,8 @@ export function SizingResultsTable({
   }
 
   return (
-    <div className="max-h-[calc(100vh-var(--sz-header-height)-7rem)] overflow-auto rounded-b-lg border border-border bg-white">
-      <table className="w-full min-w-[76rem] border-separate border-spacing-0 text-left text-[15px]">
+    <div className="max-h-[calc(100vh-var(--sz-header-height)-7rem)] overflow-auto rounded-b-lg border border-border bg-white max-md:max-h-none max-md:overflow-visible max-md:rounded-none max-md:border-0 max-md:bg-transparent">
+      <table className="table-cards w-full min-w-[76rem] border-separate border-spacing-0 text-left text-[15px]">
         <thead className="text-sm text-navy-900">
           <tr>
             <th scope="col" className={`${head} ${stickyLeft[0]} z-20`}>

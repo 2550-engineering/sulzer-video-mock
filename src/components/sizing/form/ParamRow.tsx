@@ -15,8 +15,11 @@ type ParamRowProps = {
 export function ParamRow({ label, htmlFor, required, after, error, children }: ParamRowProps) {
   const Label = htmlFor ? 'label' : 'span'
   return (
-    <div className="grid grid-cols-[11.25rem_minmax(0,16.25rem)_minmax(0,1fr)] items-start gap-x-3 py-[3px]">
-      <Label htmlFor={htmlFor} className="pt-[7px] text-[13px] leading-tight text-text-muted">
+    <div className="grid grid-cols-[11.25rem_minmax(0,16.25rem)_minmax(0,1fr)] items-start gap-x-3 py-[3px] max-xl:grid-cols-[11.25rem_minmax(0,1fr)_5.5rem] max-md:grid-cols-[minmax(0,1fr)_auto] max-md:gap-x-0 max-md:gap-y-1 max-md:py-1.5">
+      <Label
+        htmlFor={htmlFor}
+        className="pt-[7px] text-[13px] leading-tight text-text-muted max-xl:pt-[11px] max-md:col-span-2 max-md:pt-0"
+      >
         {label}
         {required && <span className="ml-0.5 text-danger">*</span>}
       </Label>
@@ -24,7 +27,9 @@ export function ParamRow({ label, htmlFor, required, after, error, children }: P
         {children}
         {error && <p className="mt-0.5 text-[11px] leading-tight text-danger">{error}</p>}
       </div>
-      <div className="pt-[7px] text-[13px] text-text-muted">{after}</div>
+      <div className="pt-[7px] text-[13px] text-text-muted max-xl:pt-[11px] max-md:pl-3 max-md:empty:pl-0">
+        {after}
+      </div>
     </div>
   )
 }

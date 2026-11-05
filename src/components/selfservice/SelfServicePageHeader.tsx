@@ -31,13 +31,15 @@ export function SelfServicePageHeader({
         <div className="min-w-0">
           <p className="text-sm font-semibold text-text-muted">{eyebrow}</p>
           <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-2">
-            <h1 className="text-[2.75rem] leading-tight font-bold tracking-tight text-brand">
+            <h1 className="text-[2.75rem] leading-tight font-bold tracking-tight text-brand max-md:text-[2rem]">
               {title}
             </h1>
             {badge}
           </div>
           {description && (
-            <div className="mt-2 max-w-3xl text-lg text-text-muted">{description}</div>
+            <div className="mt-2 max-w-3xl text-lg text-text-muted max-md:text-base">
+              {description}
+            </div>
           )}
         </div>
         {aside && <div className="flex flex-wrap items-center gap-3">{aside}</div>}

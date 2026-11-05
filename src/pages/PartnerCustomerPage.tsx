@@ -122,15 +122,15 @@ export function PartnerCustomerPage() {
       </div>
 
       <header className="site-container flex flex-wrap items-end justify-between gap-6 pt-4">
-        <div className="flex min-w-0 items-center gap-6">
-          <span className="flex h-24 w-64 shrink-0 animate-fade-in items-center justify-center rounded-lg bg-white px-6 shadow-card ring-1 ring-navy-900/5">
+        <div className="flex min-w-0 items-center gap-6 max-md:flex-col max-md:items-start max-md:gap-4">
+          <span className="flex h-24 w-64 shrink-0 animate-fade-in items-center justify-center rounded-lg bg-white px-6 shadow-card ring-1 ring-navy-900/5 max-md:h-20 max-md:w-56">
             <CustomerLogo customerId={customer.id} className="h-12 max-w-full" />
           </span>
           <div className="min-w-0">
             <p className="text-sm font-semibold text-text-muted">
               {copy.eyebrow(customer.customerNumber, customer.industry)}
             </p>
-            <h1 className="mt-1 text-[2.75rem] leading-tight font-bold tracking-tight text-brand">
+            <h1 className="mt-1 text-[2.75rem] leading-tight font-bold tracking-tight text-brand max-md:text-[2rem]">
               {customer.name}
             </h1>
           </div>
@@ -180,11 +180,11 @@ export function PartnerCustomerPage() {
                   <li key={asset.id}>
                     <Link
                       to={`/assets/${asset.id}`}
-                      className="group flex items-center gap-4 rounded-md px-4 py-3 transition-colors hover:bg-white/60"
+                      className="group flex items-center gap-4 rounded-md px-4 py-3 transition-colors hover:bg-white/60 max-md:flex-wrap max-md:gap-x-3 max-md:gap-y-1 max-md:px-3"
                     >
                       <AssetStatusDot status={asset.status} />
                       <span className="w-16 font-bold text-navy-900">{asset.tag}</span>
-                      <span className="min-w-0 flex-1 truncate text-[15px] text-navy-900">
+                      <span className="min-w-0 flex-1 truncate text-[15px] text-navy-900 max-md:basis-full max-md:whitespace-normal">
                         {alert
                           ? assetPage.alert.title(channels[alert.channel].label, alert.level)
                           : asset.name}
@@ -198,7 +198,7 @@ export function PartnerCustomerPage() {
                           <span className="text-text-muted"> · {alert.finding.title}</span>
                         )}
                       </span>
-                      <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
+                      <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary max-md:hidden">
                         {copy.attention.view}
                         <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
                       </span>

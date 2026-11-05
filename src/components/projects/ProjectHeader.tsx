@@ -43,7 +43,7 @@ export function ProjectHeader({
   ]
 
   return (
-    <div className="rounded-lg border border-border bg-white px-6 py-5">
+    <div className="rounded-lg border border-border bg-white px-6 py-5 max-md:px-4">
       <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
@@ -52,7 +52,7 @@ export function ProjectHeader({
           </div>
           <dl className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm">
             {facts.map(([label, value]) => (
-              <div key={label} className="flex gap-1.5">
+              <div key={label} className="flex gap-1.5 max-md:min-w-0 max-md:flex-wrap">
                 <dt className="text-text-muted">{label}</dt>
                 <dd className="font-semibold text-navy-900 tabular-nums">{value}</dd>
               </div>
@@ -60,7 +60,7 @@ export function ProjectHeader({
           </dl>
           {badge}
         </div>
-        <div className="flex shrink-0 flex-col items-end gap-2">
+        <div className="flex shrink-0 flex-col items-end gap-2 max-md:w-full max-md:flex-row max-md:flex-wrap max-md:items-center max-md:justify-between">
           <div className="flex gap-2">
             <button
               type="button"
@@ -81,7 +81,9 @@ export function ProjectHeader({
           <div className="flex items-center">{icons}</div>
         </div>
       </div>
-      <div className="mt-4 flex flex-wrap gap-2">{children}</div>
+      <div className="mt-4 flex flex-wrap gap-2 max-md:grid max-md:grid-cols-2 max-md:[&>*]:h-auto max-md:[&>*]:min-h-11 max-md:[&>*]:justify-center max-md:[&>*]:px-3 max-md:[&>*]:py-2 max-md:[&>*]:text-center">
+        {children}
+      </div>
     </div>
   )
 }

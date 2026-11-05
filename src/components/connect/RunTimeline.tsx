@@ -51,7 +51,7 @@ export function RunTimeline({ points, range }: { points: ConditionPoint[]; range
         {timeTicks(start, end, range).map((tick) => (
           <span
             key={tick}
-            className="absolute -translate-x-1/2 tabular-nums"
+            className="absolute -translate-x-1/2 tabular-nums max-md:whitespace-nowrap max-md:even:hidden"
             style={{ left: `${share(tick)}%` }}
           >
             {timeTickLabel(tick, range)}

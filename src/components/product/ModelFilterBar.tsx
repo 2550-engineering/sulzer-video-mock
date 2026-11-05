@@ -29,7 +29,7 @@ export function ModelFilterBar({
   onReset,
 }: ModelFilterBarProps) {
   return (
-    <div className="flex flex-wrap items-end gap-x-8 gap-y-5 rounded-lg border border-border bg-surface-subtle px-6 py-5">
+    <div className="flex flex-wrap items-end gap-x-8 gap-y-5 rounded-lg border border-border bg-surface-subtle px-6 py-5 max-md:gap-x-4 max-md:px-4">
       {options.frequencies.length > 1 && (
         <SegmentedToggle
           label={copy.filters.frequency}
@@ -38,7 +38,7 @@ export function ModelFilterBar({
           onChange={(value) => onFrequency(Number(value) as 50 | 60)}
         />
       )}
-      <div className="w-52">
+      <div className="w-52 max-md:w-full">
         <SelectField
           layout="stacked"
           label={copy.filters.power}
@@ -50,7 +50,7 @@ export function ModelFilterBar({
           ]}
         />
       </div>
-      <div className="w-44">
+      <div className="w-44 max-md:w-full">
         <SelectField
           layout="stacked"
           label={copy.filters.connection}

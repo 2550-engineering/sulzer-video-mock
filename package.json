@@ -12,7 +12,11 @@
     "format:check": "prettier --check .",
     "images:doc": "node scripts/images-needed.mjs",
     "test": "vitest run",
-    "connect:devices": "node scripts/connect-devices.mjs"
+    "connect:devices": "node scripts/connect-devices.mjs",
+    "qa:desktop": "node scripts/desktop-baseline.mjs",
+    "qa:desktop-compare": "node scripts/desktop-compare.mjs",
+    "qa:responsive-audit": "node scripts/responsive-audit.mjs",
+    "qa:overflow": "node scripts/find-overflow.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.62.0",
@@ -32,7 +36,9 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.7",
     "globals": "^17.13.0",
+    "pixelmatch": "^8.0.0",
     "playwright": "^1.64.1",
+    "pngjs": "^7.0.0",
     "prettier": "^3.9.10",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4.3.3",

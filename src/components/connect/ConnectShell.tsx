@@ -1,24 +1,26 @@
-import { Bell, LogOut } from 'lucide-react'
-import { useContext, type ReactNode } from 'react'
-import { Link, NavLink } from 'react-router'
+import { Bell, Ellipsis, LogOut } from 'lucide-react'
+import { useContext, useState, type ReactNode } from 'react'
+import { Link, NavLink, useLocation } from 'react-router'
 import { useAuth } from '../../auth/useAuth'
 import { ConnectContext } from '../../connect/ConnectContext'
 import { connectApp } from '../../data/connect'
 import { useToast } from '../../toast/useToast'
 import { Avatar } from '../Avatar'
 import { SulzerLogo } from '../SulzerLogo'
+import { ConnectMoreSheet } from './ConnectMoreSheet'
 
 const railItem =
   'flex w-full flex-col items-center gap-1.5 rounded-md py-2.5 text-[11px] font-medium transition-colors'
 const railIdle = 'text-text-on-dark-muted hover:bg-white/5 hover:text-white'
-/** Pages in the phone tab bar, which has room for five. */
-const phoneTabs = 5
+/** Pages in the phone tab bar; the fifth tab, "More", opens the rest. */
+const phoneTabs = 4
 
 /**
  * Dark app frame for Sulzer Connect: a sticky top bar (sync status, alerts,
  * user), a sticky icon rail of the app's pages, and the page below. The page
  * scrolls the document, so full-page screenshots and recordings see all of it.
- * On phones the rail becomes a tab bar at the bottom and the top bar shrinks.
+ * On tablets the rail shows icons only; on phones it becomes a tab bar at the
+ * bottom (with "More" for the rest) and the top bar shrinks.
  */
 export function ConnectShell({ children }: { children: ReactNode }) {
   const { user, signIn } = useAuth()
@@ -27,6 +29,11 @@ export function ConnectShell({ children }: { children: ReactNode }) {
   const { nav, settings, exit } = connectApp
   const SettingsIcon = settings.icon
   const openAlerts = connect?.open.length ?? 0
+  const { pathname } = useLocation()
+  const [moreOpen, setMoreOpen] = useState(false)
+  const moreItems = nav.slice(phoneTabs)
+  const moreActive = moreItems.some(({ to }) => pathname.startsWith(to))
+  const openSettings = () => showToast({ message: connectApp.settingsToast })
 
   return (
     <div className="min-h-screen bg-navy-800 text-text-on-dark on-dark">
@@ -49,7 +56,7 @@ export function ConnectShell({ children }: { children: ReactNode }) {
 
         {user ? (
           <div className="flex items-center gap-3 text-sm sm:gap-5">
-            <p className="hidden items-center gap-2 text-text-on-dark-muted md:flex">
+            <p className="hidden items-center gap-2 text-text-on-dark-muted max-lg:hidden! md:flex">
               <span className="relative flex size-2">
                 <span className="absolute inset-0 animate-ping rounded-full bg-success-on-dark opacity-50 [animation-duration:2.4s]" />
                 <span className="relative size-2 rounded-full bg-success-on-dark" />
@@ -70,7 +77,7 @@ export function ConnectShell({ children }: { children: ReactNode }) {
             </Link>
             <div className="flex items-center gap-3 border-l border-white/10 pl-3 sm:pl-5">
               <Avatar initials={user.initials} />
-              <div className="leading-tight max-sm:hidden">
+              <div className="leading-tight max-lg:hidden max-sm:hidden">
                 <p className="font-medium text-white">{user.name}</p>
                 <p className="text-xs text-text-on-dark-muted">{user.company}</p>
               </div>
@@ -89,7 +96,7 @@ export function ConnectShell({ children }: { children: ReactNode }) {
 
       <div className="flex">
         {/* The rail's background runs the full page height; the nav sticks under the top bar. */}
-        <div className="w-20 shrink-0 border-r border-white/10 bg-navy-900 max-sm:hidden">
+        <div className="w-20 shrink-0 border-r border-white/10 bg-navy-900 max-xl:w-16 max-md:hidden max-sm:hidden">
           <nav
             aria-label={connectApp.name}
             className="sticky top-16 flex h-[calc(100vh-4rem)] flex-col items-center gap-1 overflow-y-auto px-2 py-3"
@@ -99,37 +106,43 @@ export function ConnectShell({ children }: { children: ReactNode }) {
                 key={label}
                 to={to}
                 className={({ isActive }) =>
-                  `${railItem} ${isActive ? 'bg-primary text-white' : railIdle}`
+                  `${railItem} ${isActive ? 'bg-primary text-white' : railIdle} max-xl:py-3`
                 }
               >
                 <Icon className="size-5" strokeWidth={1.75} />
-                {label}
+                <span className="max-xl:sr-only">{label}</span>
               </NavLink>
             ))}
 
             <div className="mt-auto w-full space-y-1 border-t border-white/10 pt-3">
               <button
                 type="button"
-                onClick={() => showToast({ message: connectApp.settingsToast })}
-                className={`${railItem} ${railIdle}`}
+                onClick={openSettings}
+                className={`${railItem} ${railIdle} max-xl:py-3`}
               >
                 <SettingsIcon className="size-5" strokeWidth={1.75} />
-                {settings.label}
+                <span className="max-xl:sr-only">{settings.label}</span>
               </button>
-              <Link to={exit.to} title={exit.title} className={`${railItem} ${railIdle}`}>
+              <Link
+                to={exit.to}
+                title={exit.title}
+                className={`${railItem} ${railIdle} max-xl:py-3`}
+              >
                 <LogOut className="size-5" strokeWidth={1.75} />
-                {exit.label}
+                <span className="max-xl:sr-only">{exit.label}</span>
               </Link>
             </div>
           </nav>
         </div>
 
-        <main className="min-w-0 flex-1 max-sm:pb-20">{children}</main>
+        <main className="min-w-0 flex-1 max-md:pb-[calc(6rem+env(safe-area-inset-bottom))]! max-sm:pb-20">
+          {children}
+        </main>
       </div>
 
       <nav
         aria-label={connectApp.name}
-        className="fixed inset-x-0 bottom-0 z-40 flex border-t border-white/10 bg-navy-900/95 px-2 pt-1.5 pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur-sm sm:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 flex border-t border-white/10 bg-navy-900/95 px-2 pt-1.5 pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur-sm max-md:flex! sm:hidden"
       >
         {nav.slice(0, phoneTabs).map(({ label, to, icon: Icon }) => (
           <NavLink
@@ -151,7 +164,27 @@ export function ConnectShell({ children }: { children: ReactNode }) {
             )}
           </NavLink>
         ))}
+        <button
+          type="button"
+          aria-expanded={moreOpen}
+          onClick={() => setMoreOpen((open) => !open)}
+          className={`${railItem} ${moreActive || moreOpen ? 'text-white' : 'text-text-on-dark-muted'}`}
+        >
+          <span
+            className={`flex h-7 w-12 items-center justify-center rounded-pill transition-colors ${moreActive ? 'bg-primary' : moreOpen ? 'bg-white/10' : ''}`}
+          >
+            <Ellipsis className="size-5" strokeWidth={1.75} />
+          </span>
+          {connectApp.more.label}
+        </button>
       </nav>
+
+      <ConnectMoreSheet
+        open={moreOpen}
+        onClose={() => setMoreOpen(false)}
+        items={moreItems}
+        onSettings={openSettings}
+      />
     </div>
   )
 }

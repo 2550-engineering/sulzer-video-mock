@@ -27,7 +27,7 @@ export function ApplicationOverview({ root, breadcrumb }: ApplicationOverviewPro
           <h2 className="text-[1.75rem] leading-tight font-bold tracking-tight text-brand">
             {copy.overview.title}
           </h2>
-          <ul className="mt-10 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-10 grid gap-x-8 gap-y-14 max-md:gap-y-10 max-sm:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {childApplications(root).map((category) => (
               <li key={category.id}>
                 <ApplicationCategoryCard category={category} />

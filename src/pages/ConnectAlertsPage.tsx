@@ -21,15 +21,15 @@ export function ConnectAlertsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-[1280px] px-10 pt-8 pb-16">
+    <div className="mx-auto max-w-[1280px] px-10 pt-8 pb-16 max-xl:px-6 max-md:px-4 max-md:pt-6">
       <title>{`${copy.title} – ${connectApp.name}`}</title>
       <ConnectPageHeader title={copy.title} subtitle={connectApp.synced} />
 
-      <ConnectPanel flush className="mt-8 overflow-hidden">
+      <ConnectPanel flush className="mt-8 overflow-hidden max-md:mt-6">
         <div
           role="tablist"
           aria-label={copy.title}
-          className="flex gap-1 border-b border-white/10 px-4"
+          className="flex gap-1 border-b border-white/10 px-4 max-md:gap-0 max-md:overflow-x-auto max-md:px-1"
         >
           {(Object.keys(copy.tabs) as Tab[]).map((id) => {
             const selected = id === tab
@@ -40,7 +40,7 @@ export function ConnectAlertsPage() {
                 role="tab"
                 aria-selected={selected}
                 onClick={() => setTab(id)}
-                className={`relative flex h-14 items-center gap-2 px-4 text-sm font-semibold transition-colors ${
+                className={`relative flex h-14 items-center gap-2 px-4 text-sm font-semibold transition-colors max-md:shrink-0 max-md:px-3 ${
                   selected ? 'text-white' : 'text-text-on-dark-muted hover:text-white'
                 }`}
               >
@@ -57,7 +57,7 @@ export function ConnectAlertsPage() {
                 {selected && (
                   <span
                     aria-hidden
-                    className="absolute inset-x-4 bottom-0 h-[3px] rounded-t-sm bg-primary-on-dark"
+                    className="absolute inset-x-4 bottom-0 h-[3px] rounded-t-sm bg-primary-on-dark max-md:inset-x-3"
                   />
                 )}
               </button>

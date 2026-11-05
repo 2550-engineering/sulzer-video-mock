@@ -442,6 +442,9 @@ export const searchPage = {
     reset: 'Reset',
     showMore: (count: number) => `Show ${count} more`,
     showLess: 'Show less',
+    /** Phones and tablets: the filter list is folded away behind this toggle. */
+    show: (active: number) => (active > 0 ? `Show filters (${active})` : 'Show filters'),
+    hide: 'Hide filters',
     groups: {
       category: 'Category',
       application: 'Application',

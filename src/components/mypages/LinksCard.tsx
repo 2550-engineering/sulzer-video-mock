@@ -15,7 +15,7 @@ export function LinksCard({ card: { title, subtitle, icon, links } }: { card: Da
               to={to}
               className="group flex items-center gap-3 rounded-md px-3 py-2.5 text-[15px] font-medium text-primary transition-colors hover:bg-primary-tint hover:text-primary-hover"
             >
-              <span className="flex-1">{label}</span>
+              <span className="flex-1 max-md:min-w-0">{label}</span>
               {badge && <LinkBadge badge={badge} />}
               <ChevronRight className="size-4 shrink-0 text-text-subtle transition-[color,translate] duration-200 group-hover:translate-x-0.5 group-hover:text-primary" />
             </Link>

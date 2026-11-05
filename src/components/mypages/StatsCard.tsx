@@ -18,20 +18,20 @@ export function StatsCard({ card }: { card: StatsCardData }) {
 
   return (
     <DashboardPanel title={title} subtitle={subtitle} icon={icon} badge={badge}>
-      <div className="flex flex-1 flex-col p-7">
-        <ul className="grid gap-4 sm:grid-cols-3">
+      <div className="flex flex-1 flex-col p-7 max-md:p-5">
+        <ul className="grid gap-4 max-md:grid-cols-1 max-md:gap-3 sm:grid-cols-3">
           {stats.map(({ value, label, detail, tone, icon: Icon, to }) => (
             <li key={label}>
               <Link
                 to={to}
-                className="group block h-full rounded-md border border-border bg-surface-subtle p-5 transition-[border-color,background-color,box-shadow] duration-200 hover:border-primary-border hover:bg-surface hover:shadow-card"
+                className="group block h-full rounded-md border border-border bg-surface-subtle p-5 transition-[border-color,background-color,box-shadow] duration-200 hover:border-primary-border hover:bg-surface hover:shadow-card max-md:grid max-md:grid-cols-[auto_minmax(0,1fr)] max-md:items-center max-md:gap-x-4 max-md:p-4"
               >
                 <span
-                  className={`flex size-9 items-center justify-center rounded-full ${tones[tone].icon}`}
+                  className={`flex size-9 items-center justify-center rounded-full max-md:row-span-2 ${tones[tone].icon}`}
                 >
                   <Icon className="size-[18px]" strokeWidth={1.75} />
                 </span>
-                <p className="mt-4 flex items-baseline gap-2">
+                <p className="mt-4 flex items-baseline gap-2 max-md:mt-0">
                   <span
                     className={`text-4xl leading-none font-bold tracking-tight tabular-nums ${tones[tone].value}`}
                   >
@@ -39,7 +39,7 @@ export function StatsCard({ card }: { card: StatsCardData }) {
                   </span>
                   <span className="text-[15px] font-semibold text-navy-900">{label}</span>
                 </p>
-                <p className="mt-2 text-sm text-text-muted">{detail}</p>
+                <p className="mt-2 text-sm text-text-muted max-md:mt-1">{detail}</p>
               </Link>
             </li>
           ))}

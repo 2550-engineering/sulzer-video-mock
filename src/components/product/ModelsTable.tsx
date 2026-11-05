@@ -127,7 +127,8 @@ type ModelsTableProps = {
 }
 
 /** The header sticks under the site header and the product tab bar (h-16 plus its 1 px border). */
-const stickyHeader = 'sticky top-[calc(var(--sz-header-height)+65px)] z-10 bg-surface-sunken'
+const stickyHeader =
+  'sticky top-[calc(var(--sz-header-height)+65px)] z-10 bg-surface-sunken max-xl:top-0'
 const cell = 'px-4 py-3.5'
 
 /**
@@ -161,8 +162,8 @@ export function ModelsTable({
 
   return (
     // overflow-clip rounds the corners without becoming a scroll container, so the header can stick.
-    <div className="overflow-clip rounded-lg border border-border bg-white">
-      <table className="w-full border-separate border-spacing-0 text-left text-[15px]">
+    <div className="overflow-clip rounded-lg border border-border bg-white max-xl:overflow-x-auto max-md:overflow-visible max-md:rounded-none max-md:border-0 max-md:bg-transparent">
+      <table className="table-cards w-full border-separate border-spacing-0 text-left text-[15px]">
         <thead className="text-sm text-navy-900">
           <tr>
             <th scope="col" className={`${stickyHeader} w-14 ${cell} border-b border-border`}>
@@ -201,6 +202,7 @@ export function ModelsTable({
                         {col.label}
                         {col.unit && (
                           <span className="block text-xs font-normal text-text-muted">
+                            {/* The space only shows in the phone card label (copied from textContent). */}{' '}
                             [{col.unit}]
                           </span>
                         )}

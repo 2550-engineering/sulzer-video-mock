@@ -14,10 +14,12 @@ export function SpecGroupTable({ title, rows }: SpecGroupTableProps) {
         {rows.map((row) => (
           <div
             key={row.label}
-            className="flex items-baseline justify-between gap-6 border-b border-border py-2.5"
+            className="flex items-baseline justify-between gap-6 border-b border-border py-2.5 max-md:gap-4"
           >
             <dt className="text-text-muted">{row.label}</dt>
-            <dd className="text-right font-semibold text-navy-900">{row.value}</dd>
+            <dd className="text-right font-semibold text-navy-900 max-md:min-w-0 max-md:[overflow-wrap:anywhere]">
+              {row.value}
+            </dd>
           </div>
         ))}
       </dl>

@@ -16,7 +16,7 @@ export function EshopHeader({ breadcrumb, title, children }: EshopHeaderProps) {
         <Breadcrumb items={breadcrumb} />
       </div>
       <div className="site-container flex flex-wrap items-baseline gap-x-4 gap-y-1 pb-8">
-        <h1 className="text-[2.5rem] leading-tight font-bold tracking-tight text-navy-900">
+        <h1 className="text-[2.5rem] leading-tight font-bold tracking-tight text-navy-900 max-md:text-[2rem]">
           {title}
         </h1>
         {children}

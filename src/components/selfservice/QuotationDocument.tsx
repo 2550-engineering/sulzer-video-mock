@@ -34,9 +34,9 @@ export function QuotationDocument({ quotation }: { quotation: SalesQuotation }) 
   return (
     <article
       aria-label={`${copy.title} ${quotation.id}`}
-      className="mx-auto w-full max-w-[52rem] bg-white px-14 py-12 text-[13px] leading-relaxed text-text shadow-raised ring-1 ring-navy-900/5"
+      className="mx-auto w-full max-w-[52rem] bg-white px-14 py-12 text-[13px] leading-relaxed text-text shadow-raised ring-1 ring-navy-900/5 max-md:px-5 max-md:py-8"
     >
-      <header className="flex items-start justify-between gap-8">
+      <header className="flex items-start justify-between gap-8 max-md:flex-col max-md:gap-6">
         <div>
           {partner ? <PartnerLogo className="h-10" /> : <SulzerLogo className="h-7" />}
           <address className="mt-4 text-xs leading-relaxed text-text-muted not-italic">
@@ -45,7 +45,7 @@ export function QuotationDocument({ quotation }: { quotation: SalesQuotation }) 
             {issuer.address.join(', ')}
           </address>
         </div>
-        <div className="text-right">
+        <div className="text-right max-md:text-left">
           <p className="text-2xl font-bold tracking-[0.18em] text-navy-900 uppercase">
             {copy.title}
           </p>
@@ -53,7 +53,7 @@ export function QuotationDocument({ quotation }: { quotation: SalesQuotation }) 
         </div>
       </header>
 
-      <div className="mt-10 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-10">
+      <div className="mt-10 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-10 max-md:mt-8 max-md:grid-cols-1 max-md:gap-6">
         <div>
           <p className={label}>{copy.to}</p>
           <p className="mt-2 text-sm font-semibold text-navy-900">{customer?.name}</p>
@@ -76,7 +76,7 @@ export function QuotationDocument({ quotation }: { quotation: SalesQuotation }) 
       <p className="mt-3">{customer && copy.greeting(customer.contact.name)}</p>
       <p className="mt-1">{copy.intro}</p>
 
-      <table className="mt-6 w-full border-collapse">
+      <table className="table-cards mt-6 w-full border-collapse">
         <thead>
           <tr className="border-y-2 border-navy-900 text-left text-xs text-navy-900">
             <th scope="col" className="py-2 pr-3 font-semibold">
@@ -102,8 +102,10 @@ export function QuotationDocument({ quotation }: { quotation: SalesQuotation }) 
         <tbody>
           {quotation.lines.map((line) => (
             <tr key={line.position} className="border-b border-border align-top">
-              <td className="py-3 pr-3 text-text-muted tabular-nums">{line.position}</td>
-              <td className="py-3 pr-3">
+              <td className="py-3 pr-3 text-text-muted tabular-nums max-md:justify-between! max-md:font-normal! max-md:before:block!">
+                {line.position}
+              </td>
+              <td className="py-3 pr-3 max-md:flex-col! max-md:items-start! max-md:text-left!">
                 <p className="font-semibold text-navy-900">{line.description}</p>
                 {line.number && <p className="text-text-muted tabular-nums">{line.number}</p>}
                 {line.detail && <p className="text-text-muted">{line.detail}</p>}
@@ -128,7 +130,7 @@ export function QuotationDocument({ quotation }: { quotation: SalesQuotation }) 
         </tbody>
       </table>
 
-      <dl className="mt-4 ml-auto w-72 space-y-1">
+      <dl className="mt-4 ml-auto w-72 space-y-1 max-md:w-full">
         {quotation.discount > 0 && (
           <>
             <div className="flex justify-between gap-4">
@@ -148,7 +150,7 @@ export function QuotationDocument({ quotation }: { quotation: SalesQuotation }) 
       </dl>
       <p className="mt-2 text-right text-xs text-text-muted">{copy.vat}</p>
 
-      <div className="mt-8 grid grid-cols-2 gap-10">
+      <div className="mt-8 grid grid-cols-2 gap-10 max-md:grid-cols-1 max-md:gap-6">
         <div>
           <p className={label}>{copy.terms}</p>
           <dl className="mt-2 space-y-1">
@@ -189,7 +191,7 @@ export function QuotationDocument({ quotation }: { quotation: SalesQuotation }) 
         </p>
       </div>
 
-      <footer className="mt-12 flex items-end justify-between gap-6 border-t border-border pt-4 text-[11px] leading-relaxed text-text-muted">
+      <footer className="mt-12 flex items-end justify-between gap-6 border-t border-border pt-4 text-[11px] leading-relaxed text-text-muted max-md:flex-col max-md:items-start max-md:gap-3">
         <p>
           {issuer.name} · {issuer.address.join(', ')} · {issuer.phone} · {issuer.web}
           <br />

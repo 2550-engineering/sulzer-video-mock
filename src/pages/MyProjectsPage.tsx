@@ -240,10 +240,10 @@ export function MyProjectsPage() {
             <Switch label={copy.advanced} checked={advanced} onChange={setAdvanced} />
           </div>
 
-          <div className="mt-6 grid items-start gap-6 xl:grid-cols-[17rem_minmax(0,1fr)_19rem]">
+          <div className="mt-6 grid items-start gap-6 max-xl:grid-cols-1 xl:grid-cols-[17rem_minmax(0,1fr)_19rem]">
             <ProjectList projects={projects} currentId={project.id} />
 
-            <div key={project.id} className="min-w-0 animate-fade-in">
+            <div key={project.id} className="min-w-0 animate-fade-in max-xl:order-first">
               <ProjectHeader
                 project={project}
                 onRename={(name) => {
@@ -259,7 +259,7 @@ export function MyProjectsPage() {
                 badge={
                   forCustomer &&
                   project.clientAccount && (
-                    <p className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm">
+                    <p className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm max-md:min-w-0">
                       <span className="inline-flex items-center gap-2 font-semibold text-navy-900">
                         <span className="flex size-7 items-center justify-center rounded-full border border-border bg-white">
                           <CustomerLogo
@@ -441,7 +441,7 @@ export function MyProjectsPage() {
                           {copy.items.empty.title}
                         </p>
                         <p className="mt-1 max-w-md text-text-muted">{copy.items.empty.text}</p>
-                        <div className="mt-6 flex gap-3">
+                        <div className="mt-6 flex gap-3 max-md:flex-wrap max-md:justify-center">
                           <Link
                             to="/sizing"
                             className="inline-flex h-10 items-center rounded-pill bg-primary px-5 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"

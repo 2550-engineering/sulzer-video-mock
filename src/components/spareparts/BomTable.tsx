@@ -110,11 +110,14 @@ export function BomTable({
 
   const c = copy.columns
   return (
-    <div ref={scrollRef} className="min-h-0 flex-1 overflow-auto overscroll-contain">
+    <div
+      ref={scrollRef}
+      className="min-h-0 flex-1 overflow-auto overscroll-contain max-md:overflow-visible"
+    >
       <p className="px-5 pt-3 pb-2 text-xs text-text-muted" aria-live="polite">
         {copy.count(shown.length, parts.length)}
       </p>
-      <table className="w-full min-w-[40rem] border-separate border-spacing-0 text-[13px]">
+      <table className="table-cards w-full min-w-[40rem] border-separate border-spacing-0 text-[13px]">
         <thead className="text-navy-900">
           <tr>
             {sortButton('position', c.position)}

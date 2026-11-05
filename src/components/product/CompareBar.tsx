@@ -18,6 +18,7 @@ export function CompareBar({ models, onRemove, onClear, onOpen }: CompareBarProp
   return (
     <div
       inert={!open}
+      data-bottom-bar={open ? 'open' : 'closed'}
       className={`fixed inset-x-0 bottom-0 z-40 border-t border-border bg-white/95 shadow-[0_-12px_32px_-16px_rgba(12,28,46,0.25)] backdrop-blur-sm transition-transform duration-250 ease-sz ${
         open ? 'translate-y-0' : 'translate-y-full'
       }`}

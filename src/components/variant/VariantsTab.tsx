@@ -31,8 +31,8 @@ export function VariantsTab({ articles, current, productName }: VariantsTabProps
       <TabHeading title={copy.title} />
       <p className="mt-3 text-text-muted">{copy.intro(articles.length, productName)}</p>
 
-      <div className="mt-8 overflow-x-auto rounded-lg border border-border bg-white">
-        <table className="w-full min-w-[56rem] border-separate border-spacing-0 text-[15px]">
+      <div className="mt-8 overflow-x-auto rounded-lg border border-border bg-white max-md:overflow-visible max-md:rounded-none max-md:border-0 max-md:bg-transparent">
+        <table className="table-cards w-full min-w-[56rem] border-separate border-spacing-0 text-[15px]">
           <thead className="text-sm text-navy-900">
             <tr>
               <th scope="col" className={head}>
@@ -80,7 +80,10 @@ export function VariantsTab({ articles, current, productName }: VariantsTabProps
                       : 'cursor-pointer bg-white hover:bg-surface-subtle'
                   }`}
                 >
-                  <th scope="row" className={`${cell} text-left font-semibold whitespace-nowrap`}>
+                  <th
+                    scope="row"
+                    className={`${cell} text-left font-semibold whitespace-nowrap max-md:block max-md:border-0 max-md:px-0 max-md:py-1.5`}
+                  >
                     {isCurrent ? (
                       <span className="text-navy-900">{article.code}</span>
                     ) : (

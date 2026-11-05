@@ -1,9 +1,12 @@
-import { useId, useState, type KeyboardEvent, type PointerEvent } from 'react'
+import { useCallback, useId, useState, type KeyboardEvent, type PointerEvent } from 'react'
 import { conditionPage, type RangeId } from '../../data/connect'
+import { useChartTouch } from '../../hooks/useChartTouch'
+import { useClampedTooltip } from '../../hooks/useClampedTooltip'
 import { useElementWidth } from '../../hooks/useElementWidth'
 import { niceTicks, timeTickLabel, timeTicks } from '../../lib/connect'
 import { formatClock, formatDay } from '../../lib/format'
 import type { ConditionPoint } from '../../types'
+import { ChartReadout } from '../charts/ChartReadout'
 
 export type ChartBand = { from: number; to: number; label: string; color: string }
 export type ChartLimit = { value: number; label: string; color: string }
@@ -73,9 +76,14 @@ export function TrendChart({
 
   function readAt(event: PointerEvent<SVGSVGElement>) {
     const rect = event.currentTarget.getBoundingClientRect()
-    const share = (event.clientX - rect.left - margin.left) / plotWidth
+    const raw = (event.clientX - rect.left - margin.left) / plotWidth
+    // A finger in the chart margin reads the nearest end instead of nothing.
+    const share = event.pointerType === 'mouse' ? raw : Math.min(Math.max(raw, 0), 1)
     setIndex(share < 0 || share > 1 ? null : Math.round(share * (points.length - 1)))
   }
+
+  const clearReading = useCallback(() => setIndex(null), [])
+  const touch = useChartTouch<SVGSVGElement>(ref, readAt, clearReading)
 
   function handleKey(event: KeyboardEvent<SVGSVGElement>) {
     if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
@@ -88,225 +96,252 @@ export function TrendChart({
 
   const reading = index === null ? null : points[index]
   const readingLeft = reading ? x(reading.time) : 0
+  const [tooltipRef, tooltipStyle] = useClampedTooltip(
+    ref,
+    reading ? { x: readingLeft, y: y(value(reading)) } : null,
+  )
+  const readingText = reading && {
+    time: `${formatDay(reading.time)}, ${formatClock(reading.time)}`,
+    value: `${value(reading).toFixed(decimals)} ${unit}`,
+    run: reading.running ? conditionPage.run.running : conditionPage.run.stopped,
+  }
 
   return (
-    <div ref={ref} className="relative" style={{ height }}>
-      {width > 0 && (
-        <svg
-          width={width}
-          height={height}
-          role="img"
-          aria-label={label}
-          tabIndex={0}
-          onPointerMove={readAt}
-          onPointerLeave={() => setIndex(null)}
-          onKeyDown={handleKey}
-          onBlur={() => setIndex(null)}
-          className="block touch-none text-[11px] select-none"
-        >
-          <defs>
-            <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={color} stopOpacity="0.32" />
-              <stop offset="100%" stopColor={color} stopOpacity="0" />
-            </linearGradient>
-          </defs>
-
-          {bands.map((band) => {
-            const top = y(Math.min(band.to, domain.max))
-            const bottom = y(Math.max(band.from, domain.min))
-            return bottom - top > 0 ? (
-              <g key={band.label}>
-                <rect
-                  x={margin.left}
-                  y={top}
-                  width={plotWidth}
-                  height={bottom - top}
-                  fill={band.color}
-                  opacity={0.14}
-                />
-                <text
-                  x={margin.left + plotWidth + 10}
-                  y={(top + bottom) / 2}
-                  dominantBaseline="middle"
-                  fill={band.color}
-                  fontWeight={700}
-                >
-                  {band.label}
-                </text>
-              </g>
-            ) : null
-          })}
-
-          {niceTicks(domain.min, domain.max).map((tick) => (
-            <g key={tick}>
-              <line
-                x1={margin.left}
-                x2={margin.left + plotWidth}
-                y1={y(tick)}
-                y2={y(tick)}
-                stroke="white"
-                strokeOpacity={0.07}
-              />
-              <text
-                x={margin.left - 10}
-                y={y(tick)}
-                textAnchor="end"
-                dominantBaseline="middle"
-                fill="var(--sz-color-text-on-dark-muted)"
-                className="tabular-nums"
-              >
-                {tick}
-              </text>
-            </g>
-          ))}
-          <text
-            x={4}
-            y={margin.top - 2}
-            fill="var(--sz-color-text-on-dark-muted)"
-            dominantBaseline="hanging"
+    <>
+      <div ref={ref} className="relative" style={{ height }}>
+        {width > 0 && (
+          <svg
+            width={width}
+            height={height}
+            role="img"
+            aria-label={label}
+            tabIndex={0}
+            {...touch}
+            onKeyDown={handleKey}
+            onBlur={() => setIndex(null)}
+            className="block touch-none text-[11px] select-none max-xl:touch-pan-y"
           >
-            {unit}
-          </text>
+            <defs>
+              <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={color} stopOpacity="0.32" />
+                <stop offset="100%" stopColor={color} stopOpacity="0" />
+              </linearGradient>
+            </defs>
 
-          {timeTicks(start, end, range).map((tick) => (
-            <text
-              key={tick}
-              x={x(tick)}
-              y={height - 8}
-              textAnchor="middle"
-              fill="var(--sz-color-text-on-dark-muted)"
-            >
-              {timeTickLabel(tick, range)}
-            </text>
-          ))}
+            {bands.map((band) => {
+              const top = y(Math.min(band.to, domain.max))
+              const bottom = y(Math.max(band.from, domain.min))
+              return bottom - top > 0 ? (
+                <g key={band.label}>
+                  <rect
+                    x={margin.left}
+                    y={top}
+                    width={plotWidth}
+                    height={bottom - top}
+                    fill={band.color}
+                    opacity={0.14}
+                  />
+                  <text
+                    x={margin.left + plotWidth + 10}
+                    y={(top + bottom) / 2}
+                    dominantBaseline="middle"
+                    fill={band.color}
+                    fontWeight={700}
+                  >
+                    {band.label}
+                  </text>
+                </g>
+              ) : null
+            })}
 
-          {/* Keyed by range, so switching range draws the line in again. */}
-          <path
-            key={`area-${range}`}
-            d={area}
-            fill={`url(#${gradientId})`}
-            className="animate-fade-in [animation-duration:800ms]"
-          />
-          <path
-            key={`line-${range}`}
-            d={line}
-            fill="none"
-            stroke={color}
-            strokeWidth={1.75}
-            strokeLinejoin="round"
-            strokeLinecap="round"
-            pathLength={1}
-            strokeDasharray="1"
-            className="animate-draw"
-          />
-
-          {limits.map((limit) => {
-            // A limit just below another one gets its label under the line, so they don't overlap.
-            const crowded = limits.some(
-              (other) => other.value > limit.value && y(limit.value) - y(other.value) < 20,
-            )
-            return (
-              <g key={limit.label}>
+            {niceTicks(domain.min, domain.max).map((tick) => (
+              <g key={tick}>
                 <line
                   x1={margin.left}
                   x2={margin.left + plotWidth}
-                  y1={y(limit.value)}
-                  y2={y(limit.value)}
-                  stroke={limit.color}
-                  strokeWidth={1.25}
-                  strokeDasharray="6 4"
+                  y1={y(tick)}
+                  y2={y(tick)}
+                  stroke="white"
+                  strokeOpacity={0.07}
                 />
                 <text
-                  x={margin.left + 8}
-                  y={y(limit.value) + (crowded ? 14 : -6)}
-                  fill={limit.color}
-                  fontWeight={600}
-                  className="tabular-nums"
-                >
-                  {limit.label}
-                </text>
-              </g>
-            )
-          })}
-
-          {markers
-            .filter((marker) => marker.time >= start && marker.time <= end)
-            .map((marker) => (
-              <g key={marker.label}>
-                <line
-                  x1={x(marker.time)}
-                  x2={x(marker.time)}
-                  y1={margin.top}
-                  y2={margin.top + plotHeight}
-                  stroke={marker.color}
-                  strokeOpacity={0.6}
-                />
-                <rect
-                  x={x(marker.time) - 22}
-                  y={margin.top}
-                  width={44}
-                  height={18}
-                  rx={9}
-                  fill={marker.color}
-                />
-                <text
-                  x={x(marker.time)}
-                  y={margin.top + 9}
-                  textAnchor="middle"
+                  x={margin.left - 10}
+                  y={y(tick)}
+                  textAnchor="end"
                   dominantBaseline="middle"
-                  fill="var(--sz-color-navy-900)"
-                  fontWeight={700}
+                  fill="var(--sz-color-text-on-dark-muted)"
                   className="tabular-nums"
                 >
-                  {marker.label}
+                  {tick}
                 </text>
               </g>
             ))}
+            <text
+              x={4}
+              y={margin.top - 2}
+              fill="var(--sz-color-text-on-dark-muted)"
+              dominantBaseline="hanging"
+            >
+              {unit}
+            </text>
 
-          {reading && (
-            <g pointerEvents="none">
-              <line
-                x1={readingLeft}
-                x2={readingLeft}
-                y1={margin.top}
-                y2={margin.top + plotHeight}
-                stroke="white"
-                strokeOpacity={0.35}
-              />
-              <circle
-                cx={readingLeft}
-                cy={y(value(reading))}
-                r={4.5}
-                fill={color}
-                stroke="var(--sz-color-navy-900)"
-                strokeWidth={2}
-              />
-            </g>
-          )}
-        </svg>
-      )}
+            {timeTicks(start, end, range)
+              // Narrow charts (phones) label every second or third tick, so labels don't run together.
+              .filter((_, i, ticks) => {
+                const spacing = ticks.length > 1 ? x(ticks[1]) - x(ticks[0]) : plotWidth
+                return i % Math.max(1, Math.ceil(64 / Math.max(spacing, 1))) === 0
+              })
+              .map((tick) => (
+                <text
+                  key={tick}
+                  x={x(tick)}
+                  y={height - 8}
+                  textAnchor="middle"
+                  fill="var(--sz-color-text-on-dark-muted)"
+                >
+                  {timeTickLabel(tick, range)}
+                </text>
+              ))}
 
-      {reading && (
-        <div
-          role="status"
-          className="pointer-events-none absolute top-2 z-10 rounded-md border border-white/10 bg-navy-900 px-3.5 py-2.5 text-[13px] text-white shadow-raised"
-          style={{
-            left: readingLeft,
-            transform:
-              readingLeft > width * 0.65 ? 'translateX(calc(-100% - 14px))' : 'translateX(14px)',
-          }}
-        >
-          <p className="text-text-on-dark-muted tabular-nums">
-            {formatDay(reading.time)}, {formatClock(reading.time)}
-          </p>
-          <p className="mt-0.5 text-base font-bold tabular-nums">
-            {value(reading).toFixed(decimals)} {unit}
-          </p>
-          <p className="text-xs text-text-on-dark-muted">
-            {reading.running ? conditionPage.run.running : conditionPage.run.stopped}
-          </p>
-        </div>
-      )}
-    </div>
+            {/* Keyed by range, so switching range draws the line in again. */}
+            <path
+              key={`area-${range}`}
+              d={area}
+              fill={`url(#${gradientId})`}
+              className="animate-fade-in [animation-duration:800ms]"
+            />
+            <path
+              key={`line-${range}`}
+              d={line}
+              fill="none"
+              stroke={color}
+              strokeWidth={1.75}
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              pathLength={1}
+              strokeDasharray="1"
+              className="animate-draw"
+            />
+
+            {limits.map((limit) => {
+              // A limit just below another one gets its label under the line, so they don't overlap.
+              const crowded = limits.some(
+                (other) => other.value > limit.value && y(limit.value) - y(other.value) < 20,
+              )
+              return (
+                <g key={limit.label}>
+                  <line
+                    x1={margin.left}
+                    x2={margin.left + plotWidth}
+                    y1={y(limit.value)}
+                    y2={y(limit.value)}
+                    stroke={limit.color}
+                    strokeWidth={1.25}
+                    strokeDasharray="6 4"
+                  />
+                  <text
+                    x={margin.left + 8}
+                    y={y(limit.value) + (crowded ? 14 : -6)}
+                    fill={limit.color}
+                    fontWeight={600}
+                    className="tabular-nums"
+                  >
+                    {limit.label}
+                  </text>
+                </g>
+              )
+            })}
+
+            {markers
+              .filter((marker) => marker.time >= start && marker.time <= end)
+              .map((marker) => (
+                <g key={marker.label}>
+                  <line
+                    x1={x(marker.time)}
+                    x2={x(marker.time)}
+                    y1={margin.top}
+                    y2={margin.top + plotHeight}
+                    stroke={marker.color}
+                    strokeOpacity={0.6}
+                  />
+                  <rect
+                    x={x(marker.time) - 22}
+                    y={margin.top}
+                    width={44}
+                    height={18}
+                    rx={9}
+                    fill={marker.color}
+                  />
+                  <text
+                    x={x(marker.time)}
+                    y={margin.top + 9}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fill="var(--sz-color-navy-900)"
+                    fontWeight={700}
+                    className="tabular-nums"
+                  >
+                    {marker.label}
+                  </text>
+                </g>
+              ))}
+
+            {reading && (
+              <g pointerEvents="none">
+                <line
+                  x1={readingLeft}
+                  x2={readingLeft}
+                  y1={margin.top}
+                  y2={margin.top + plotHeight}
+                  stroke="white"
+                  strokeOpacity={0.35}
+                />
+                <circle
+                  cx={readingLeft}
+                  cy={y(value(reading))}
+                  r={4.5}
+                  fill={color}
+                  stroke="var(--sz-color-navy-900)"
+                  strokeWidth={2}
+                />
+              </g>
+            )}
+          </svg>
+        )}
+
+        {reading && readingText && (
+          <div
+            ref={tooltipRef}
+            role="status"
+            className="pointer-events-none absolute top-2 z-10 rounded-md border border-white/10 bg-navy-900 px-3.5 py-2.5 text-[13px] text-white shadow-raised max-md:hidden"
+            style={
+              tooltipStyle ?? {
+                left: readingLeft,
+                transform:
+                  readingLeft > width * 0.65
+                    ? 'translateX(calc(-100% - 14px))'
+                    : 'translateX(14px)',
+              }
+            }
+          >
+            <p className="text-text-on-dark-muted tabular-nums">{readingText.time}</p>
+            <p className="mt-0.5 text-base font-bold tabular-nums">{readingText.value}</p>
+            <p className="text-xs text-text-on-dark-muted">{readingText.run}</p>
+          </div>
+        )}
+      </div>
+      {/* Phones: the reading in a bar under the chart instead of a following tooltip. */}
+      <ChartReadout
+        dark
+        className="mt-2"
+        items={
+          readingText && [
+            { value: readingText.time },
+            { value: readingText.value, color },
+            { value: readingText.run },
+          ]
+        }
+      />
+    </>
   )
 }

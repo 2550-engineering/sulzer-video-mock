@@ -10,7 +10,7 @@ export function CheckboxGroup({ label, options, onToggle }: CheckboxGroupProps) 
     <div
       role="group"
       aria-label={label}
-      className="flex min-h-8 flex-wrap items-center gap-x-4 gap-y-1"
+      className="flex min-h-8 flex-wrap items-center gap-x-4 gap-y-1 max-xl:min-h-10 max-xl:gap-y-2"
     >
       {options.map((option) => {
         const empty = option.count === 0 && !option.selected

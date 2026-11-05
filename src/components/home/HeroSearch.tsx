@@ -32,7 +32,7 @@ export function HeroSearch() {
         <form
           role="search"
           onSubmit={handleSubmit}
-          className="flex h-16 items-center rounded-lg bg-white p-2 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.55)] transition-shadow focus-within:shadow-[0_0_0_4px_rgba(110,168,240,0.45),0_24px_60px_-20px_rgba(0,0,0,0.55)]"
+          className="flex h-16 items-center rounded-lg bg-white p-2 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.55)] transition-shadow focus-within:shadow-[0_0_0_4px_rgba(110,168,240,0.45),0_24px_60px_-20px_rgba(0,0,0,0.55)] max-md:h-14 max-md:p-1.5"
         >
           <ScopeSelect options={searchScopes} value={scope} onChange={setScope} />
           <input
@@ -42,27 +42,30 @@ export function HeroSearch() {
             onChange={(event) => setTerm(event.target.value)}
             aria-label={placeholder}
             placeholder={placeholder}
-            className="h-full min-w-0 flex-1 bg-transparent px-5 text-lg text-text placeholder:text-text-subtle focus-visible:outline-none"
+            className="h-full min-w-0 flex-1 bg-transparent px-5 text-lg text-text placeholder:text-text-subtle focus-visible:outline-none max-md:px-3 max-md:text-base"
           />
           <button
             type="submit"
-            className="flex h-12 items-center gap-2 rounded-md bg-primary px-6 font-semibold text-white transition-colors hover:bg-primary-hover"
+            className="flex h-12 items-center gap-2 rounded-md bg-primary px-6 font-semibold text-white transition-colors hover:bg-primary-hover max-md:h-11 max-md:w-11 max-md:justify-center max-md:px-0"
           >
             <Search className="size-[18px]" strokeWidth={2.25} />
-            {hero.searchButtonLabel}
+            <span className="max-md:sr-only">{hero.searchButtonLabel}</span>
           </button>
         </form>
         <SearchSuggestions {...panelProps} className="inset-x-0 top-[calc(100%+10px)]" />
       </div>
 
-      <div className="mt-5 flex flex-wrap items-center justify-center gap-2 text-sm">
-        <span className="mr-1 text-text-on-dark-muted">{hero.popularLabel}</span>
+      {/* Below 1280px the chips scroll sideways in one row; the auto margins keep them centred while they fit. */}
+      <div className="mt-5 flex flex-wrap items-center justify-center gap-2 text-sm max-xl:[scrollbar-width:none] max-xl:flex-nowrap max-xl:justify-start max-xl:overflow-x-auto max-xl:py-1 max-xl:[&::-webkit-scrollbar]:hidden max-xl:[&>:first-child]:ml-auto max-xl:[&>:last-child]:mr-auto">
+        <span className="mr-1 text-text-on-dark-muted max-xl:shrink-0 max-xl:whitespace-nowrap">
+          {hero.popularLabel}
+        </span>
         {hero.popularSearches.map((suggestion) => (
           <button
             key={suggestion}
             type="button"
             onClick={() => search(suggestion)}
-            className="rounded-pill border border-white/20 bg-white/10 px-3.5 py-1.5 font-medium text-white backdrop-blur-sm transition-colors hover:border-white/40 hover:bg-white/20"
+            className="rounded-pill border border-white/20 bg-white/10 px-3.5 py-1.5 font-medium text-white backdrop-blur-sm transition-colors hover:border-white/40 hover:bg-white/20 max-xl:min-h-9 max-xl:shrink-0 max-xl:whitespace-nowrap"
           >
             {suggestion}
           </button>

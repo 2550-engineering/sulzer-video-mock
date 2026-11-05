@@ -84,3 +84,18 @@
   --sz-duration-page: 180ms; /* route-change fade */
   --sz-ease: cubic-bezier(0.2, 0, 0, 1);
 }
+
+/* Below 1280px the header is one 64px row plus its 1px border (see SiteHeader). */
+@media (max-width: 1279px) {
+  :root {
+    --sz-header-height: 65px;
+    /* Page side padding: 24px on tablets, 16px on phones (same on both sides). */
+    --sz-gutter: 1.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --sz-gutter: 1rem;
+  }
+}

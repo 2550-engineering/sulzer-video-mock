@@ -63,7 +63,7 @@ export function OrderConfirmationPage() {
             <SignInRequired />
           ) : (
             <div className="animate-fade-in space-y-8">
-              <div className="flex flex-wrap items-center gap-x-8 gap-y-5 rounded-lg border border-success bg-success-tint px-7 py-6">
+              <div className="flex flex-wrap items-center gap-x-8 gap-y-5 rounded-lg border border-success bg-success-tint px-7 py-6 max-md:px-5">
                 <CircleCheck
                   aria-hidden
                   className="size-12 shrink-0 text-success"
@@ -76,7 +76,9 @@ export function OrderConfirmationPage() {
                   <p className="text-3xl font-bold tracking-wide text-brand tabular-nums">
                     {order.id}
                   </p>
-                  <p className="mt-1 text-text">{copy.text(user?.email ?? '')}</p>
+                  <p className="mt-1 text-text max-md:[overflow-wrap:anywhere]">
+                    {copy.text(user?.email ?? '')}
+                  </p>
                 </div>
                 <div className="flex flex-wrap gap-3">
                   <Link
@@ -96,7 +98,7 @@ export function OrderConfirmationPage() {
                 </div>
               </div>
 
-              <dl className="grid gap-6 rounded-lg border border-border bg-white px-7 py-6 text-[15px] sm:grid-cols-3">
+              <dl className="grid gap-6 rounded-lg border border-border bg-white px-7 py-6 text-[15px] max-md:grid-cols-1 max-md:px-5 sm:grid-cols-3">
                 <div>
                   <dt className="text-sm text-text-muted">{copy.expected}</dt>
                   <dd className="text-lg font-bold text-navy-900">{expected}</dd>

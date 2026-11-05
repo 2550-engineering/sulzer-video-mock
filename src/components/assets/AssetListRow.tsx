@@ -31,7 +31,7 @@ export function AssetListRow({ asset, columns, showSite }: AssetListRowProps) {
 
   return (
     <li
-      className={`group relative grid items-center gap-x-6 px-6 py-4 transition-colors duration-150 hover:bg-surface-subtle ${columns} ${
+      className={`group relative grid items-center gap-x-6 px-6 py-4 transition-colors duration-150 hover:bg-surface-subtle max-md:grid-cols-[0.625rem_minmax(0,1fr)] max-md:gap-x-4 max-md:gap-y-2.5 max-md:px-4 max-md:[&>*:not(:first-child)]:col-start-2 ${columns} ${
         asset.status === 'ok' ? '' : 'bg-warning-tint/40'
       }`}
     >
@@ -75,14 +75,17 @@ export function AssetListRow({ asset, columns, showSite }: AssetListRowProps) {
 
       <AssetReadingCell asset={asset} />
 
-      <div className="text-sm tabular-nums">
+      <div className="text-sm tabular-nums max-md:flex max-md:flex-wrap max-md:items-baseline max-md:gap-x-2">
+        <span className="text-text-muted md:hidden">{copy.columns.service}</span>
         <p className="font-medium text-navy-900">{formatDate(asset.nextServiceDue)}</p>
-        <p className={`mt-0.5 text-xs ${due ? 'font-semibold text-primary' : 'text-text-muted'}`}>
+        <p
+          className={`mt-0.5 text-xs max-md:mt-0 ${due ? 'font-semibold text-primary' : 'text-text-muted'}`}
+        >
           {copy.inDays(daysLeft)}
         </p>
       </div>
 
-      <ChevronRight className="size-4 text-text-subtle transition-[color,translate] duration-200 group-hover:translate-x-0.5 group-hover:text-primary" />
+      <ChevronRight className="size-4 text-text-subtle transition-[color,translate] duration-200 group-hover:translate-x-0.5 group-hover:text-primary max-md:hidden" />
     </li>
   )
 }

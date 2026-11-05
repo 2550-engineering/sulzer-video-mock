@@ -1,10 +1,14 @@
-import { useState, type KeyboardEvent, type PointerEvent } from 'react'
+import { useCallback, useState, type KeyboardEvent, type PointerEvent } from 'react'
 import { sizingResultsPage } from '../../data/sizingPages'
 import { groupThousands } from '../../lib/format'
 import { niceAxis } from '../../lib/modelSpecs'
 import { bepFlowAt, efficiencyAt, headAt, type CurveSeries } from '../../lib/pumpCurves'
 import { operatingRange } from '../../lib/sizing'
 import type { OperatingPoint } from '../../types'
+import { useChartTouch } from '../../hooks/useChartTouch'
+import { useClampedTooltip } from '../../hooks/useClampedTooltip'
+import { useElementWidth } from '../../hooks/useElementWidth'
+import { ChartReadout } from '../charts/ChartReadout'
 
 const copy = sizingResultsPage.panel
 
@@ -37,6 +41,7 @@ const ticks = (max: number, step: number) =>
  */
 export function SizingCurveChart({ curves, colors, duty }: SizingCurveChartProps) {
   const [reading, setReading] = useState<number | null>(null)
+  const [containerRef, containerWidth] = useElementWidth<HTMLDivElement>()
   const single = curves.length === 1
   const series = curves.map((curve, i) => ({ ...curve, color: colors[i % colors.length] }))
 
@@ -67,9 +72,13 @@ export function SizingCurveChart({ curves, colors, duty }: SizingCurveChartProps
   function readAt(event: PointerEvent<SVGSVGElement>) {
     const rect = event.currentTarget.getBoundingClientRect()
     const vx = ((event.clientX - rect.left) / rect.width) * width
-    const flow = ((vx - margin.left) / plotWidth) * xAxis.max
+    const raw = ((vx - margin.left) / plotWidth) * xAxis.max
+    // A finger in the chart margin reads the nearest end instead of nothing.
+    const flow = event.pointerType === 'mouse' ? raw : Math.min(Math.max(raw, 0), xAxis.max)
     setReading(flow >= 0 && flow <= xAxis.max ? flow : null)
   }
+  const clearReading = useCallback(() => setReading(null), [])
+  const touch = useChartTouch<SVGSVGElement>(containerRef, readAt, clearReading)
 
   function handleKey(event: KeyboardEvent<SVGSVGElement>) {
     if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
@@ -79,6 +88,16 @@ export function SizingCurveChart({ curves, colors, duty }: SizingCurveChartProps
   }
 
   const tooltipLeft = reading === null ? 0 : (x(reading) / width) * 100
+  // The chart scales with its box: view units to CSS pixels for the tooltip position.
+  const scale = containerWidth / width
+  const topPoint =
+    reading === null
+      ? 0
+      : Math.min(...series.map((s) => clampY(y(Math.max(0, headAt(s.curve, s.scale, reading))))))
+  const [tooltipRef, tooltipStyle] = useClampedTooltip(
+    containerRef,
+    reading === null ? null : { x: x(reading) * scale, y: topPoint * scale },
+  )
   const values =
     reading === null
       ? []
@@ -105,17 +124,16 @@ export function SizingCurveChart({ curves, colors, duty }: SizingCurveChartProps
         ]
 
   return (
-    <div className="relative">
+    <div ref={containerRef} className="relative">
       <svg
         viewBox={`0 0 ${width} ${height}`}
         role="img"
         aria-label={`${copy.pumpCurve}: ${curves.map((c) => c.name).join(', ')}. ${copy.dutyPoint} ${duty.flow} m³/h, ${duty.head} m.`}
         tabIndex={0}
-        onPointerMove={readAt}
-        onPointerLeave={() => setReading(null)}
+        {...touch}
         onKeyDown={handleKey}
         onBlur={() => setReading(null)}
-        className="h-auto w-full touch-none text-[11px] select-none"
+        className="h-auto w-full touch-none text-[11px] select-none max-xl:touch-pan-y"
       >
         {single && range && (
           <rect
@@ -289,12 +307,15 @@ export function SizingCurveChart({ curves, colors, duty }: SizingCurveChartProps
 
       {reading !== null && (
         <div
+          ref={tooltipRef}
           role="status"
-          className="pointer-events-none absolute top-3 rounded-md bg-navy-900 px-3.5 py-2.5 text-[13px] text-white shadow-raised"
-          style={{
-            left: `${tooltipLeft}%`,
-            transform: tooltipLeft > 60 ? 'translateX(calc(-100% - 12px))' : 'translateX(12px)',
-          }}
+          className="pointer-events-none absolute top-3 rounded-md bg-navy-900 px-3.5 py-2.5 text-[13px] text-white shadow-raised max-md:hidden"
+          style={
+            tooltipStyle ?? {
+              left: `${tooltipLeft}%`,
+              transform: tooltipLeft > 60 ? 'translateX(calc(-100% - 12px))' : 'translateX(12px)',
+            }
+          }
         >
           <p className="font-semibold tabular-nums">Q = {groupThousands(reading, 0)} m³/h</p>
           <ul className="mt-1 space-y-0.5">
@@ -308,6 +329,16 @@ export function SizingCurveChart({ curves, colors, duty }: SizingCurveChartProps
           </ul>
         </div>
       )}
+
+      {/* Phones: the reading in a bar under the chart instead of a following tooltip. */}
+      <ChartReadout
+        className="mt-3"
+        items={
+          reading === null
+            ? null
+            : [{ label: 'Q', value: `${groupThousands(reading, 0)} m³/h` }, ...values]
+        }
+      />
 
       <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-text-muted">
         {series.map((s) => (

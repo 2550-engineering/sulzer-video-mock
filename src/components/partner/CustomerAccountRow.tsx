@@ -13,6 +13,9 @@ type CustomerAccountRowProps = {
   userName: string
 }
 
+/** Column name above each value on phones, where the header row is hidden. */
+const phoneLabel = 'mb-0.5 block text-xs font-semibold text-text-muted md:hidden'
+
 const initials = (name: string) =>
   name
     .split(' ')
@@ -30,12 +33,12 @@ export function CustomerAccountRow({ summary, columns, userName }: CustomerAccou
 
   return (
     <li
-      className={`group relative grid items-center gap-x-6 px-6 py-5 transition-colors duration-150 hover:bg-surface-subtle ${columns} ${
+      className={`group relative grid items-center gap-x-6 px-6 py-5 transition-colors duration-150 hover:bg-surface-subtle max-md:grid-cols-2 max-md:items-start max-md:gap-y-4 max-md:px-4 ${columns} ${
         attention ? 'bg-warning-tint/40' : ''
       }`}
     >
-      <div className="flex min-w-0 items-center gap-5">
-        <span className="flex h-14 w-44 shrink-0 items-center justify-center rounded-md border border-border bg-white px-3">
+      <div className="flex min-w-0 items-center gap-5 max-md:col-span-2 max-md:gap-4">
+        <span className="flex h-14 w-44 shrink-0 items-center justify-center rounded-md border border-border bg-white px-3 max-md:h-12 max-md:w-28">
           <CustomerLogo customerId={customer.id} className="h-8 max-w-full" />
         </span>
         <div className="min-w-0">
@@ -52,9 +55,13 @@ export function CustomerAccountRow({ summary, columns, userName }: CustomerAccou
         </div>
       </div>
 
-      <p className="text-[15px] font-semibold text-navy-900 tabular-nums">{sites}</p>
+      <p className="text-[15px] font-semibold text-navy-900 tabular-nums">
+        <span className={phoneLabel}>{copy.columns.sites}</span>
+        {sites}
+      </p>
 
       <div>
+        <span className={phoneLabel}>{copy.columns.assets}</span>
         <p className="text-[15px] font-semibold text-navy-900 tabular-nums">{total}</p>
         <p className="mt-0.5 text-sm whitespace-nowrap text-text-muted">
           {connected > 0 ? copy.connected(connected) : copy.notConnected}
@@ -62,6 +69,7 @@ export function CustomerAccountRow({ summary, columns, userName }: CustomerAccou
       </div>
 
       <div>
+        <span className={phoneLabel}>{copy.columns.alerts}</span>
         {attention ? (
           <span className="inline-flex items-center gap-2 rounded-pill bg-warning-tint px-3 py-1 text-sm font-semibold whitespace-nowrap text-warning-strong">
             <span aria-hidden className="size-2 rounded-full bg-warning" />
@@ -75,10 +83,11 @@ export function CustomerAccountRow({ summary, columns, userName }: CustomerAccou
       <p
         className={`text-[15px] tabular-nums ${openRequests ? 'font-semibold text-primary' : 'text-text-muted'}`}
       >
+        <span className={phoneLabel}>{copy.columns.requests}</span>
         {openRequests || copy.noAlerts}
       </p>
 
-      <div className="flex min-w-0 items-center gap-2.5">
+      <div className="flex min-w-0 items-center gap-2.5 max-md:col-span-2">
         <Avatar initials={initials(manager)} />
         <span className="truncate text-[15px] text-navy-900">{manager}</span>
         {manager === userName && (
@@ -88,7 +97,7 @@ export function CustomerAccountRow({ summary, columns, userName }: CustomerAccou
         )}
       </div>
 
-      <ChevronRight className="size-4 text-text-subtle transition-[color,translate] duration-200 group-hover:translate-x-0.5 group-hover:text-primary" />
+      <ChevronRight className="size-4 text-text-subtle transition-[color,translate] duration-200 group-hover:translate-x-0.5 group-hover:text-primary max-md:hidden" />
     </li>
   )
 }

@@ -81,7 +81,7 @@ export function SizingComparePage() {
         </div>
         <div className="site-container flex flex-wrap items-end justify-between gap-x-8 gap-y-4 pb-8">
           <div>
-            <h1 className="text-[2.5rem] leading-tight font-bold tracking-tight text-navy-900">
+            <h1 className="text-[2.5rem] leading-tight font-bold tracking-tight text-navy-900 max-md:text-[2rem]">
               {copy.title}
             </h1>
             <p className="mt-1 text-text-muted tabular-nums">
@@ -136,7 +136,7 @@ export function SizingComparePage() {
             </div>
           ) : (
             <div className="space-y-8">
-              <section className="rounded-lg border border-border bg-white p-6">
+              <section className="rounded-lg border border-border bg-white p-6 max-md:p-4">
                 <h2 className="mb-4 text-lg font-bold tracking-tight text-navy-900">
                   {copy.curvesTitle}
                 </h2>

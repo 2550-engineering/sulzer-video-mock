@@ -12,7 +12,7 @@ export function RecentActivity({ items: given }: { items?: ActivityItem[] }) {
   )
   return (
     <section className="overflow-hidden rounded-lg border border-border bg-surface shadow-card">
-      <h2 className="flex items-center gap-2.5 border-b border-border px-7 py-4 text-base font-bold tracking-tight text-brand">
+      <h2 className="flex items-center gap-2.5 border-b border-border px-7 py-4 text-base font-bold tracking-tight text-brand max-md:px-5">
         <History className="size-[18px] text-primary" strokeWidth={2} />
         {recentActivity.title}
       </h2>
@@ -21,7 +21,7 @@ export function RecentActivity({ items: given }: { items?: ActivityItem[] }) {
           <li key={subject}>
             <Link
               to={to}
-              className="group flex items-center gap-4 px-7 py-3.5 transition-colors hover:bg-surface-subtle"
+              className="group flex items-center gap-4 px-7 py-3.5 transition-colors hover:bg-surface-subtle max-md:gap-3 max-md:px-5"
             >
               <span
                 className={`flex size-9 shrink-0 items-center justify-center rounded-full ${
@@ -32,7 +32,7 @@ export function RecentActivity({ items: given }: { items?: ActivityItem[] }) {
               >
                 <Icon className="size-4" strokeWidth={1.75} />
               </span>
-              <p className="min-w-0 flex-1 truncate text-[15px] text-text-muted">
+              <p className="min-w-0 flex-1 truncate text-[15px] text-text-muted max-md:line-clamp-2 max-md:whitespace-normal">
                 <span className="font-semibold text-navy-900 transition-colors group-hover:text-primary">
                   {subject}
                 </span>{' '}

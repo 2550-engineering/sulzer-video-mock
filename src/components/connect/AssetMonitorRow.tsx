@@ -36,12 +36,12 @@ export function AssetMonitorRow({ asset, showSite, columns }: AssetMonitorRowPro
 
   return (
     <li
-      className={`group relative grid items-center gap-x-5 px-6 py-3.5 text-sm transition-colors hover:bg-white/[0.04] ${columns} ${
+      className={`group relative grid items-center gap-x-5 px-6 py-3.5 text-sm transition-colors hover:bg-white/[0.04] ${columns} max-md:grid-cols-[0.625rem_minmax(0,1fr)_auto] max-md:gap-x-3 max-md:gap-y-1 max-md:px-4 ${
         asset.status === 'ok' ? '' : 'bg-white/[0.025]'
       }`}
     >
       <ConnectStatusDot status={asset.status} />
-      <div className="min-w-0">
+      <div className="min-w-0 max-md:col-start-2 max-md:row-start-1">
         <Link
           to={`/connect/assets/${asset.id}`}
           className="font-semibold text-white transition-colors group-hover:text-primary-on-dark after:absolute after:inset-0"
@@ -53,23 +53,28 @@ export function AssetMonitorRow({ asset, showSite, columns }: AssetMonitorRowPro
           {showSite && ` · ${siteById(asset.siteId)?.name}`}
         </p>
       </div>
-      <p className="truncate text-text-on-dark">
+      <p className="truncate text-text-on-dark max-md:col-start-2 max-md:row-start-2 max-md:text-[13px]">
         {model?.name ?? getProduct(asset.productId)?.name}
       </p>
-      <p className="font-medium tabular-nums">
+      <p className="font-medium tabular-nums max-md:col-start-2 max-md:row-start-3">
         {value('vibration')}
         <span className="mx-1.5 text-text-on-dark-muted">·</span>
         {reading && value(reading.temperature)}
       </p>
-      {score !== null && <HealthBar score={score} />}
-      <p className="flex items-center gap-2 text-[13px] text-text-on-dark">
+      {score !== null && (
+        <HealthBar
+          score={score}
+          className="max-md:col-start-3 max-md:row-start-3 max-md:justify-self-end"
+        />
+      )}
+      <p className="flex items-center gap-2 text-[13px] text-text-on-dark max-md:col-start-3 max-md:row-start-1 max-md:self-start max-md:justify-self-end">
         <span
           aria-hidden
           className={`size-1.5 rounded-full ${reading?.running ? 'bg-primary-on-dark' : 'bg-white/30'}`}
         />
         {reading?.running ? copy.running : copy.stopped}
       </p>
-      <ChevronRight className="size-4 text-text-on-dark-muted transition-transform group-hover:translate-x-0.5" />
+      <ChevronRight className="size-4 text-text-on-dark-muted transition-transform group-hover:translate-x-0.5 max-md:hidden" />
     </li>
   )
 }

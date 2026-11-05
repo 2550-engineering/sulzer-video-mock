@@ -100,7 +100,7 @@ export function PumpReplacementPage() {
 
       <section className="relative z-10 site-container -mt-14">
         <div className="rounded-lg border border-border bg-white shadow-raised">
-          <div className="px-10 pt-8 pb-7">
+          <div className="px-10 pt-8 pb-7 max-md:px-5 max-md:pt-6 max-md:pb-6">
             <h2 className="text-2xl font-bold tracking-tight text-brand">{copy.search.title}</h2>
             <div className="mt-5">
               <PumpReplacementSearch
@@ -111,7 +111,7 @@ export function PumpReplacementPage() {
               />
             </div>
           </div>
-          <ul className="grid gap-5 border-t border-border px-10 py-5 sm:grid-cols-3">
+          <ul className="grid gap-5 border-t border-border px-10 py-5 max-md:grid-cols-1 max-md:px-5 sm:grid-cols-3">
             {copy.benefits.map(({ icon: Icon, title, text }) => (
               <li key={title} className="flex items-center gap-4">
                 <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary-tint text-primary">
@@ -197,7 +197,7 @@ export function PumpReplacementPage() {
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col items-start justify-center rounded-lg border border-border bg-surface-muted px-8 py-10">
+              <div className="flex flex-col items-start justify-center rounded-lg border border-border bg-surface-muted px-8 py-10 max-md:px-5 max-md:py-8">
                 <Headset aria-hidden className="size-10 text-primary" strokeWidth={1.5} />
                 <h2 className="mt-4 text-xl font-bold tracking-tight text-navy-900">
                   {copy.expert.title}
