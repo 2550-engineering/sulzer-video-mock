@@ -14,6 +14,7 @@ import {
   variantPath,
   variantsFor,
 } from './catalog'
+import { discontinued } from './availability'
 import { bepFlowAt, headAt } from './pumpCurves'
 import { maxFlowRatio, modelCurve, ratedPoint, variantPerformance } from './variantCurves'
 
@@ -36,7 +37,10 @@ const modelLeadDays: Record<ModelAvailability, number> = {
 }
 
 /** A model's or sized pump's availability ("In stock", "Made to order" …) as a cart availability. */
-export const toAvailability = (availability: ModelAvailability, leadTime: string): Availability => ({
+export const toAvailability = (
+  availability: ModelAvailability,
+  leadTime: string,
+): Availability => ({
   status: modelAvailability[availability],
   leadTime,
   leadTimeDays: modelLeadDays[availability],
@@ -105,7 +109,10 @@ function fromModel(model: ProductModel): ResultArticle {
     impellerDiameter: model.impeller,
     ipClass: 'IP55',
     listPrice: model.listPrice,
-    availability: toAvailability(model.availability, model.leadTime),
+    availability: model.discontinued
+      ? discontinued
+      : toAvailability(model.availability, model.leadTime),
+    discontinued: model.discontinued,
     to: `/products/${model.productId}/${model.id}`,
     curve: { id: model.id, name: model.name, curve, scale: 1, trimRatio: 1, operatingPoint: rated },
     speedRatio: 1,

@@ -137,6 +137,9 @@ export const productPage = {
     priceNote: 'List prices excl. VAT',
     inStock: 'In stock',
     showDetails: (name: string) => `Show details for ${name}`,
+    discontinued: 'Discontinued',
+    replacedBy: 'Replaced by',
+    noLongerAvailable: 'No longer available',
     compareLimit: 'Compare up to 3 models',
     noMatches: {
       title: 'No models match these filters',

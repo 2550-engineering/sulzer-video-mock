@@ -70,7 +70,9 @@ export function ModelsTab({ models }: { models: ProductModel[] }) {
   const filters: ModelFilters = { frequency, power, connection }
 
   const atFrequency = models.filter((model) => model.frequency === frequency)
-  const shown = sortModels(filterModels(models, filters), sort)
+  const sorted = sortModels(filterModels(models, filters), sort)
+  // Discontinued models last, whatever the sort: they are there for spare parts and replacement.
+  const shown = [...sorted.filter((m) => !m.discontinued), ...sorted.filter((m) => m.discontinued)]
   const expandedId = params.get('model')
   const compared = compareIds
     .map((id) => models.find((model) => model.id === id))

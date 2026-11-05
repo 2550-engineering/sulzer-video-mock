@@ -312,6 +312,8 @@ export type ProductModel = {
   availability: ModelAvailability
   /** e.g. "2 weeks". Signed-in users only. */
   leadTime: string
+  /** No longer built: the year production ended and the model that replaces it. Parts stay available. */
+  discontinued?: { year: number; successorId: string }
 }
 
 /** Stock situation of an orderable article: a pump variant, a spare part or a service kit. */

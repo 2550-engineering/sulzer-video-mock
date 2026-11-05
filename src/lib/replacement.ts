@@ -1,87 +1,106 @@
+import { ahlstarReplacements } from '../data/models/ahlstar'
 import { replacementPage } from '../data/replacementPage'
 import { xfpReplacements } from '../data/xfp'
-import type { FitNoteKind, ProductVariant } from '../types'
-import { variantsFor } from './catalog'
+import type { FitNoteKind, ResultArticle } from '../types'
+import { articlesFor } from './articles'
+import { getModel, getProductVariant } from './catalog'
 import { groupThousands } from './format'
-import { ratedPoint } from './variantCurves'
-import { variantSpecs } from './variantSpecs'
+import { articleSpecGroups, variantSpecs } from './variantSpecs'
 
-/* Product replacement: finding the old product, comparing it with its successor. */
+/*
+ * Product replacement: finding the old product (an XFP variant or an AHLSTAR
+ * model), comparing it with its successor.
+ */
 
 const compact = (text: string) => text.toLowerCase().replace(/\s+/g, '')
 
-const allVariants = () => variantsFor('xfp')
+/** Products whose variants or models can be looked up for a replacement. */
+const replaceableProducts = ['xfp', 'ahlstar']
+const allArticles = () => replaceableProducts.flatMap(articlesFor)
 
-/** A variant by product number or model code, as typed (spaces ignored). */
-export function findVariant(query: string) {
+/** A variant or model by product number, model code or id, as typed (spaces ignored). */
+export function findArticle(query: string) {
   const q = compact(query)
   if (!q) return undefined
-  return allVariants().find(
-    (variant) => variant.productNumber === q || compact(variant.code) === q || variant.id === q,
+  return allArticles().find(
+    (article) => article.productNumber === q || compact(article.code) === q || article.id === q,
   )
 }
 
-export const discontinuedVariants = () => allVariants().filter((variant) => variant.discontinued)
+/** Discontinued variants and models, most recently discontinued first. */
+export const discontinuedArticles = () =>
+  allArticles()
+    .filter((article) => article.discontinued)
+    .sort((a, b) => b.discontinued!.year - a.discontinued!.year)
 
-export const replacementInfo = (variant: ProductVariant) => xfpReplacements[variant.id]
+export const replacementInfo = (article: ResultArticle) =>
+  xfpReplacements[article.id] ?? ahlstarReplacements[article.id]
 
 const kW = (power: number) => `${groupThousands(power, power % 1 ? 1 : 0)} kW`
 
+/** Weight and cable length come from the variant or model behind the article. */
+function details(article: ResultArticle) {
+  const variant = getProductVariant(article.id)
+  if (variant) return { weight: variant.weight, cableLength: variant.cableLength }
+  return { weight: getModel(article.id)?.weight ?? 0, cableLength: undefined }
+}
+
+/** Spec rows of an article: the variant's search specs, or the model's spec groups. */
+function specRows(article: ResultArticle) {
+  const variant = getProductVariant(article.id)
+  return variant ? variantSpecs(variant) : articleSpecGroups(article).flatMap((group) => group.rows)
+}
+
 /** Key specs side by side, marking the rows that differ. */
-export function comparisonRows(old: ProductVariant, next: ProductVariant) {
-  const ratedOld = ratedPoint(old)
-  const ratedNext = ratedPoint(next)
+export function comparisonRows(old: ResultArticle, next: ResultArticle) {
   const rated = (p: { flow: number; head: number }) =>
     replacementPage.compare.ratedValue(
       groupThousands(p.flow),
       groupThousands(p.head, p.head % 1 ? 1 : 0),
     )
-  const specsOld = variantSpecs(old)
-  const specsNext = variantSpecs(next)
+  const nextSpecs = new Map(specRows(next).map((row) => [row.label, row.value]))
   const rows = [
-    { label: replacementPage.compare.ratedPoint, old: rated(ratedOld), next: rated(ratedNext) },
-    ...specsOld.map((spec, i) => ({
+    {
+      label: replacementPage.compare.ratedPoint,
+      old: rated(old.rated),
+      next: rated(next.rated),
+    },
+    ...specRows(old).map((spec) => ({
       label: spec.label,
       old: spec.value,
-      next: specsNext[i].value,
+      next: nextSpecs.get(spec.label) ?? '–',
     })),
   ]
   return rows.map((row) => ({ ...row, changed: row.old !== row.next }))
 }
 
 /** How well the successor fits where the old product was installed. */
-export function fitNotes(old: ProductVariant, next: ProductVariant) {
+export function fitNotes(old: ResultArticle, next: ResultArticle) {
   const copy = replacementPage.notes
   const notes: { kind: FitNoteKind; text: string }[] = []
   notes.push(
-    old.connection.outlet === next.connection.outlet
-      ? { kind: 'ok', text: copy.sameOutlet(next.connection.outlet) }
-      : { kind: 'warning', text: copy.otherOutlet(old.connection.outlet, next.connection.outlet) },
+    old.outlet === next.outlet
+      ? { kind: 'ok', text: copy.sameOutlet(next.outlet) }
+      : { kind: 'warning', text: copy.otherOutlet(old.outlet, next.outlet) },
   )
-  if (old.connection.inlet === next.connection.inlet) {
-    notes.push({ kind: 'ok', text: copy.sameInlet(next.connection.inlet) })
-  }
+  if (old.inlet === next.inlet) notes.push({ kind: 'ok', text: copy.sameInlet(next.inlet) })
   notes.push(
-    old.voltage === next.voltage && old.frequency === next.frequency
-      ? { kind: 'ok', text: copy.sameSupply(next.voltage, next.frequency) }
-      : {
-          kind: 'warning',
-          text: copy.otherSupply(
-            `${old.voltage} ${old.frequency} Hz`,
-            `${next.voltage} ${next.frequency} Hz`,
-          ),
-        },
+    old.supply === next.supply
+      ? { kind: 'ok', text: copy.sameSupply(next.supply) }
+      : { kind: 'warning', text: copy.otherSupply(old.supply, next.supply) },
   )
   notes.push(
     next.power > old.power
       ? { kind: 'info', text: copy.morePower(kW(old.power), kW(next.power)) }
       : { kind: 'ok', text: copy.samePower(kW(next.power)) },
   )
-  if (old.cableLength === next.cableLength) {
-    notes.push({ kind: 'ok', text: copy.sameCable(next.cableLength) })
+  const before = details(old)
+  const after = details(next)
+  if (before.cableLength !== undefined && before.cableLength === after.cableLength) {
+    notes.push({ kind: 'ok', text: copy.sameCable(after.cableLength) })
   }
-  if (next.weight > old.weight) {
-    notes.push({ kind: 'info', text: copy.heavier(next.weight - old.weight) })
+  if (after.weight > before.weight) {
+    notes.push({ kind: 'info', text: copy.heavier(after.weight - before.weight) })
   }
   if (old.exApproved && !next.exApproved) notes.push({ kind: 'warning', text: copy.exLost })
   // Product-specific notes (adapter kits, sensors) from the data.

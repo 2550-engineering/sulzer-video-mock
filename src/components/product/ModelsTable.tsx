@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 import { productPage } from '../../data/catalogPages'
 import { articleById } from '../../lib/articles'
 import { articleCartArticle } from '../../lib/cartArticles'
-import { partOwner, sparePartsFor, sparePartsPath } from '../../lib/catalog'
+import { getModel, partOwner, sparePartsFor, sparePartsPath } from '../../lib/catalog'
 import { formatPrice, type ModelSort, type ModelSortKey } from '../../lib/modelSpecs'
 import type { ProductModel } from '../../types'
 import { AvailabilityBadge } from './AvailabilityBadge'
@@ -63,14 +63,19 @@ const columns: Column[] = [
     label: copy.columns.listPrice,
     numeric: true,
     priced: true,
-    render: (m) => formatPrice(m.listPrice),
+    render: (m) => (m.discontinued ? '–' : formatPrice(m.listPrice)),
   },
   {
     key: 'availability',
     label: copy.columns.availability,
     numeric: false,
     priced: true,
-    render: (m) => <AvailabilityBadge model={m} />,
+    render: (m) =>
+      m.discontinued ? (
+        <span className="text-text-muted">{copy.noLongerAvailable}</span>
+      ) : (
+        <AvailabilityBadge model={m} />
+      ),
   },
 ]
 
@@ -200,11 +205,14 @@ export function ModelsTable({
             // Models sold as such (AHLSTAR) have their own page and go straight in the cart.
             const article = articleById(model.id)
             const cartArticle = article && articleCartArticle(article)
+            const successor = model.discontinued && getModel(model.discontinued.successorId)
             const rowTone = expanded
               ? 'bg-primary-tint'
-              : index % 2 === 1
-                ? 'bg-surface-subtle hover:bg-primary-tint/60'
-                : 'bg-white hover:bg-primary-tint/60'
+              : model.discontinued
+                ? 'bg-surface-sunken/60 text-text-muted hover:bg-surface-sunken'
+                : index % 2 === 1
+                  ? 'bg-surface-subtle hover:bg-primary-tint/60'
+                  : 'bg-white hover:bg-primary-tint/60'
             return (
               <Fragment key={model.id}>
                 <tr
@@ -263,6 +271,25 @@ export function ModelsTable({
                               </span>
                             )}
                           </span>
+                          {model.discontinued && (
+                            <span className="mt-1 ml-8 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
+                              <span className="rounded-sm bg-warning-tint px-1.5 py-0.5 font-semibold text-warning-strong">
+                                {copy.discontinued}
+                              </span>
+                              {successor && (
+                                <span className="text-text-muted">
+                                  {copy.replacedBy}{' '}
+                                  <Link
+                                    to={`/products/${successor.productId}/${successor.id}`}
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="font-semibold text-primary underline-offset-4 hover:underline"
+                                  >
+                                    {successor.name}
+                                  </Link>
+                                </span>
+                              )}
+                            </span>
+                          )}
                           {sparePartsFor(model.id) && (
                             <Link
                               to={sparePartsPath(partOwner(model.id)!)}

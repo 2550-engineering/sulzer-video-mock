@@ -164,6 +164,7 @@ export const sizingResultsPage = {
   },
   panel: {
     close: 'Close',
+    viewProduct: 'View product page',
     curvesTitle: (count: number) => `Curves of ${count} selected products`,
     compareTitle: (count: number) => `Comparing ${count} products`,
     compareLimit: 'Compare shows the first 3 selected products.',

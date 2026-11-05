@@ -3,7 +3,8 @@ import { useId, useState } from 'react'
 import { Link } from 'react-router'
 import { useAuth } from '../../auth/useAuth'
 import { searchPage } from '../../data/catalogPages'
-import { getProduct, getProductVariant, variantPath } from '../../lib/catalog'
+import { articleById } from '../../lib/articles'
+import { getProduct } from '../../lib/catalog'
 import { seriesColors } from '../../lib/chartColors'
 import { groupThousands } from '../../lib/format'
 import { formatPrice } from '../../lib/modelSpecs'
@@ -51,7 +52,7 @@ export function ArticleResultCard({ article, query }: ArticleResultCardProps) {
   const { user } = useAuth()
   const [showCurve, setShowCurve] = useState(false)
   const image = getProduct(article.productId)?.images[0]
-  const successor = article.discontinued && getProductVariant(article.discontinued.successorId)
+  const successor = article.discontinued && articleById(article.discontinued.successorId)
 
   return (
     <article className="relative rounded-md border border-border bg-white px-6 py-5 transition-colors duration-200 hover:border-primary">
@@ -85,7 +86,7 @@ export function ArticleResultCard({ article, query }: ArticleResultCardProps) {
             <p className="relative z-10 mt-1 w-fit text-sm text-text-muted">
               {copy.replacedBy}{' '}
               <Link
-                to={variantPath(successor)}
+                to={successor.to}
                 className="font-semibold text-primary underline-offset-4 hover:underline"
               >
                 {successor.code}

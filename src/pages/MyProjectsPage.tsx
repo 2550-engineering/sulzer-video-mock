@@ -329,6 +329,7 @@ export function MyProjectsPage() {
                     </h2>
                     {project.items.length > 0 ? (
                       <ProjectItemsTable
+                        projectId={project.id}
                         items={project.items}
                         highlightIds={added}
                         signedIn

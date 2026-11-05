@@ -24,13 +24,20 @@ type DutyMode = 'none' | 'show' | 'enter'
  * advanced options (speed, impeller diameter). Full screen and SVG download.
  * Remount (via `key`) per variant or model.
  */
-export function CurvesTab({ article }: { article: ResultArticle }) {
+export function CurvesTab({
+  article,
+  showDuty = false,
+}: {
+  article: ResultArticle
+  /** Open with "Show duty point" chosen, marking `article.rated` (e.g. a project's duty point). */
+  showDuty?: boolean
+}) {
   const ids = useId()
   const showToast = useToast()
   const frameRef = useRef<HTMLDivElement>(null)
   const svgRef = useRef<SVGSVGElement>(null)
   const [settings, setSettings] = useState<CurveSettings>(() => defaultCurveSettings(article))
-  const [dutyMode, setDutyMode] = useState<DutyMode>('none')
+  const [dutyMode, setDutyMode] = useState<DutyMode>(showDuty ? 'show' : 'none')
   const [entered, setEntered] = useState<OperatingPoint>(article.rated)
   const [show, setShow] = useState<CurveVisibility>({
     qh: true,

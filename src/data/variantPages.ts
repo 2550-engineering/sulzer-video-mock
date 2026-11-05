@@ -87,10 +87,11 @@ export const variantPage = {
   } satisfies Record<StockStatus, string>,
 
   discontinued: {
-    title: 'This product is discontinued',
+    title: 'This product is discontinued. Spare parts are still available.',
     text: (year: number, successor: string) =>
       `It was built until ${year}. ${successor} replaces it and fits the same installation.`,
     action: 'Find replacement',
+    spareParts: 'View spare parts',
   },
 
   whereToBuy: {

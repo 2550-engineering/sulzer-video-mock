@@ -933,3 +933,16 @@ Placeholder, confirm with Sulzer.
   - For "Riverside raw water intake upgrade" the defaults give 21 files, 48 MB.
   - The package's "Project files" are the team's uploads only.
 - **Documents section:** generated files are shown as by "mySulzer", dated "Today". Uploads keep only the file name and size; the file is not read or stored.
+
+### Discontinued AHLSTAR model (`src/data/models/ahlstar.ts`)
+
+- **AHLSTAR A-series 100-80-250 (INVENTED):**
+  - Product no. 62701067. Built until 2019 and replaced by AHLSTAR 100-80-250 (62801067).
+  - Rated 110 m³/h at 17 m, 11 kW, 1455 rpm, grey cast iron, gland packing, 345 kg.
+  - The old list price (EUR 9,450) is not shown anywhere.
+  - Its spare parts list is generated like the other sizes, with its own size code, so the part numbers differ from the successor's. Prices are scaled the same way.
+- **Replacement notes (INVENTED):**
+  - Same flange sizes and shaft centre height, so the base plate, coupling guard and pipework stay.
+  - A mechanical seal instead of gland packing.
+- **Banner text:** "This product is discontinued. Spare parts are still available." It now shows on every discontinued variant and model, including the XFP one.
+- **Replacement page quick picks:** "Recently discontinued products", newest first.

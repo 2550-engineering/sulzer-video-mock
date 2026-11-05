@@ -1,15 +1,24 @@
-import { ArrowRight, TriangleAlert } from 'lucide-react'
+import { ArrowRight, TriangleAlert, Wrench } from 'lucide-react'
 import { Link } from 'react-router'
 import { variantPage } from '../../data/variantPages'
-import { getProductVariant } from '../../lib/catalog'
+import { articleById } from '../../lib/articles'
 import type { ResultArticle } from '../../types'
 
 const copy = variantPage.discontinued
 
-/** Amber banner on a discontinued variant, with "Find replacement" (the replacement page). */
-export function DiscontinuedBanner({ article }: { article: ResultArticle }) {
+type DiscontinuedBannerProps = {
+  article: ResultArticle
+  /** Opens the Spare parts tab. */
+  onViewSpareParts?: () => void
+}
+
+/**
+ * Amber banner on a discontinued variant or model: spare parts are still
+ * available; "Find replacement" (the replacement page) and "View spare parts".
+ */
+export function DiscontinuedBanner({ article, onViewSpareParts }: DiscontinuedBannerProps) {
   if (!article.discontinued) return null
-  const successor = getProductVariant(article.discontinued.successorId)
+  const successor = articleById(article.discontinued.successorId)
   return (
     <div
       role="status"
@@ -24,6 +33,16 @@ export function DiscontinuedBanner({ article }: { article: ResultArticle }) {
           </p>
         )}
       </div>
+      {onViewSpareParts && (
+        <button
+          type="button"
+          onClick={onViewSpareParts}
+          className="inline-flex h-10 items-center gap-2 rounded-pill border-2 border-navy-900 px-5 text-sm font-semibold text-navy-900 transition-colors hover:bg-white"
+        >
+          <Wrench className="size-4" />
+          {copy.spareParts}
+        </button>
+      )}
       {successor && (
         <Link
           to={`/products/replacement?from=${article.id}`}

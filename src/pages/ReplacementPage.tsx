@@ -8,11 +8,12 @@ import { ReplacementCard } from '../components/replacement/ReplacementCard'
 import { ReplacementSearch } from '../components/replacement/ReplacementSearch'
 import { SpecComparison } from '../components/replacement/SpecComparison'
 import { replacementPage as copy } from '../data/replacementPage'
-import { getProductVariant, variantPath } from '../lib/catalog'
-import { comparisonRows, findVariant, fitNotes, replacementInfo } from '../lib/replacement'
+import { articleById } from '../lib/articles'
+import { comparisonRows, findArticle, fitNotes, replacementInfo } from '../lib/replacement'
 
 /**
- * /products/replacement?from=<product number>: the old product, its
+ * /products/replacement?from=<product number or id>: the old product (an XFP
+ * variant or an AHLSTAR model), its
  * recommended successor, whether it fits and how the key specs compare.
  * Without ?from, a search for the old product number and the discontinued
  * products as quick picks.
@@ -21,8 +22,8 @@ export function ReplacementPage() {
   const navigate = useNavigate()
   const [params] = useSearchParams()
   const from = params.get('from')?.trim() ?? ''
-  const old = from ? findVariant(from) : undefined
-  const successor = old?.discontinued && getProductVariant(old.discontinued.successorId)
+  const old = from ? findArticle(from) : undefined
+  const successor = old?.discontinued && articleById(old.discontinued.successorId)
 
   const search = (query: string) =>
     navigate(
@@ -64,7 +65,7 @@ export function ReplacementPage() {
                 <p className="mt-0.5 text-sm text-text">{copy.stillAvailable.text}</p>
               </div>
               <Link
-                to={variantPath(old)}
+                to={old.to}
                 className="inline-flex h-11 items-center gap-2 rounded-pill bg-primary px-6 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
               >
                 {copy.stillAvailable.action}
@@ -74,13 +75,13 @@ export function ReplacementPage() {
           ) : (
             <div key={old.id} className="animate-fade-in space-y-10">
               <div className="grid items-stretch gap-6 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
-                <OldProductCard variant={old} />
+                <OldProductCard article={old} />
                 <div className="flex items-center justify-center">
                   <span className="flex size-12 items-center justify-center rounded-full bg-navy-900 text-white shadow-raised max-md:rotate-90">
                     <ArrowRight aria-hidden className="size-5" />
                   </span>
                 </div>
-                <ReplacementCard variant={successor} info={replacementInfo(old)} />
+                <ReplacementCard article={successor} info={replacementInfo(old)} />
               </div>
 
               <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
