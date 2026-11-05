@@ -14,8 +14,9 @@ export const replacementPage = {
     button: 'Find replacement',
   },
   pick: {
-    title: 'Discontinued products with a replacement',
+    title: 'Recently discontinued products',
     discontinued: (year: number) => `Discontinued ${year}`,
+    replacedBy: (code: string) => `Replaced by ${code}`,
   },
   notFound: (query: string) =>
     `We could not find product number ‘${query}’. Check the number on the rating plate, or contact your Sulzer service centre.`,
@@ -42,7 +43,7 @@ export const replacementPage = {
     otherOutlet: (from: number, to: number) =>
       `Different discharge connection: DN ${from} on the old pump, DN ${to} on the new one`,
     sameInlet: (dn: number) => `Same pump inlet (DN ${dn})`,
-    sameSupply: (voltage: string, hz: number) => `Same supply: ${voltage}, ${hz} Hz`,
+    sameSupply: (supply: string) => `Same supply: ${supply}`,
     otherSupply: (from: string, to: string) =>
       `Different supply: ${from} on the old pump, ${to} on the new one`,
     morePower: (from: string, to: string) =>

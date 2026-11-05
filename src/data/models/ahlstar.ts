@@ -1,5 +1,11 @@
 import { productSeries } from '../../config/demo'
-import type { CasingMaterial, ModelAvailability, ProductModel, ShaftSeal } from '../../types'
+import type {
+  CasingMaterial,
+  ModelAvailability,
+  ProductModel,
+  ReplacementInfo,
+  ShaftSeal,
+} from '../../types'
 
 /*
  * AHLSTAR sizes on the Models tab. The size code is suction DN - discharge DN -
@@ -65,7 +71,7 @@ const maxPressure: Record<CasingMaterial, number> = {
   'Aluminium alloy': 10,
 }
 
-export const ahlstarModels: ProductModel[] = rows.map(
+const currentModels: ProductModel[] = rows.map(
   ([
     size,
     frequency,
@@ -106,3 +112,52 @@ export const ahlstarModels: ProductModel[] = rows.map(
     }
   },
 )
+
+/**
+ * Older A-series sizes that are no longer built. Their parts lists stay
+ * online, as repairs of discontinued pumps are a key service case. Invented:
+ * see docs/content-to-confirm.md.
+ */
+const discontinuedModels: ProductModel[] = [
+  {
+    id: 'ahlstar-a-100-80-250',
+    productId: 'ahlstar',
+    name: `${productSeries.ahlstar} A-series 100-80-250`,
+    productNumber: '62701067',
+    frequency: 50,
+    flow: 110,
+    head: 17,
+    power: 11,
+    speed: 1455,
+    impeller: 250,
+    connection: { suction: 100, discharge: 80 },
+    casingMaterial: iron,
+    shaftSeal: packing,
+    maxPressure: maxPressure[iron],
+    efficiency: 74,
+    weight: 345,
+    listPrice: 9450,
+    availability: 'Made to order',
+    leadTime: leadTimes['Made to order'],
+    discontinued: { year: 2019, successorId: 'ahlstar-100-80-250' },
+  },
+]
+
+/** Every AHLSTAR model: current sizes first, then the discontinued ones. */
+export const ahlstarModels: ProductModel[] = [...currentModels, ...discontinuedModels]
+
+/** Replacement details per discontinued model id. Invented. */
+export const ahlstarReplacements: Record<string, ReplacementInfo> = {
+  'ahlstar-a-100-80-250': {
+    notes: [
+      {
+        kind: 'ok',
+        text: 'Same flange sizes and shaft centre height: the base plate, coupling guard and pipework stay.',
+      },
+      {
+        kind: 'info',
+        text: 'The new pump has a single mechanical seal instead of gland packing, so there is no leakage to drain and no packing to adjust.',
+      },
+    ],
+  },
+}

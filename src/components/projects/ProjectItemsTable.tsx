@@ -15,6 +15,7 @@ import { useAuth } from '../../auth/useAuth'
 import { myProjectsPage } from '../../data/projectPages'
 import { sizingResultsPage } from '../../data/sizingPages'
 import { articleById } from '../../lib/articles'
+import { configuredPath } from '../../lib/configured'
 import { groupThousands } from '../../lib/format'
 import { formatPrice } from '../../lib/modelSpecs'
 import { discountFor, priceFor } from '../../lib/pricing'
@@ -30,6 +31,8 @@ import { PartPrice } from '../spareparts/PartPrice'
 const copy = myProjectsPage.items
 
 type ProjectItemsTableProps = {
+  /** For links to the configured product page in the project's context. */
+  projectId: string
   items: ProjectItem[]
   /** Item ids to highlight for a moment (just added). */
   highlightIds: string[]
@@ -72,6 +75,7 @@ const statusTones: Record<ProjectItemStatus, string> = {
  * data.
  */
 export function ProjectItemsTable({
+  projectId,
   items,
   highlightIds,
   signedIn,
@@ -162,6 +166,9 @@ export function ProjectItemsTable({
         <tbody>
           {ordered.map(({ item, variant, result, article, price, counted }, index) => {
             const name = variant?.name ?? article?.code ?? item.variantId
+            const productTo = variant
+              ? configuredPath(variant, { project: projectId, item: item.id })
+              : article?.to
             const sizing = sizings.find((s) => s.id === item.sizingId)
             const checked = selected.includes(item.id)
             const group = item.alternativeGroup
@@ -220,7 +227,16 @@ export function ProjectItemsTable({
                   </td>
                   <td className={`${cell} min-w-[12rem]`}>
                     <p className="flex flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold text-navy-900">
-                      <span className={muted ? 'text-text-muted' : ''}>{name}</span>
+                      {productTo ? (
+                        <Link
+                          to={productTo}
+                          className={`underline-offset-4 transition-colors hover:text-primary hover:underline ${muted ? 'text-text-muted' : ''}`}
+                        >
+                          {name}
+                        </Link>
+                      ) : (
+                        <span className={muted ? 'text-text-muted' : ''}>{name}</span>
+                      )}
                       {item.alternative && (
                         <span
                           className={`inline-flex items-center gap-1 rounded-pill px-2 py-0.5 text-xs font-semibold whitespace-nowrap ${
@@ -255,7 +271,7 @@ export function ProjectItemsTable({
                         </Link>
                       ) : variant?.productNumber ? (
                         <Link
-                          to={`/products/${variant.productId}#models`}
+                          to={configuredPath(variant, { project: projectId, item: item.id })}
                           className="font-semibold text-primary tabular-nums underline-offset-4 hover:underline"
                         >
                           {variant.productNumber}

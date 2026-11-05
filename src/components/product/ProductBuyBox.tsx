@@ -25,7 +25,9 @@ export function ProductBuyBox({ product, models, onChooseModel }: ProductBuyBoxP
   const { user, signIn } = useAuth()
   const navigate = useNavigate()
   const [whereToBuy, setWhereToBuy] = useState(false)
-  const lowest = Math.min(...models.map((model) => model.listPrice))
+  // Discontinued models are no longer sold.
+  const current = models.filter((model) => !model.discontinued)
+  const lowest = Math.min(...current.map((model) => model.listPrice))
 
   return (
     <div className="rounded-lg border border-border bg-surface-subtle px-6 py-5">
@@ -38,7 +40,7 @@ export function ProductBuyBox({ product, models, onChooseModel }: ProductBuyBoxP
             </p>
             <p className="text-xs text-text-muted">{copy.exclVat}</p>
           </div>
-          <p className="text-sm text-text-muted">{copy.models(models.length)}</p>
+          <p className="text-sm text-text-muted">{copy.models(current.length)}</p>
         </div>
       ) : (
         <div>

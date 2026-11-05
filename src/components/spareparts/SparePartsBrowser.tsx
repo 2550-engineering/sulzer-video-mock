@@ -285,7 +285,7 @@ export function SparePartsBrowser({ catalogue, owner, ownerPicker }: SparePartsB
 
         <section
           aria-live="polite"
-          className="relative mt-5 min-h-[15rem] rounded-lg border border-border bg-white px-6 py-5"
+          className="relative mt-5 min-h-[15rem] rounded-lg border border-border bg-white p-5"
         >
           {selected && (
             <button

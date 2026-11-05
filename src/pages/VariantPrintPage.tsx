@@ -1,24 +1,35 @@
 import { ArrowLeft, Printer } from 'lucide-react'
-import { Link, useParams } from 'react-router'
+import { Link, useLocation, useParams } from 'react-router'
 import { SmartImage } from '../components/SmartImage'
 import { SulzerLogo } from '../components/SulzerLogo'
 import { SpecGroupTable } from '../components/variant/SpecGroupTable'
+import { configuredPage } from '../data/configuredPages'
 import { variantPage as copy } from '../data/variantPages'
+import { useConfiguredPump } from '../hooks/useConfiguredPump'
 import { getArticle } from '../lib/articles'
 import { getApplication, getProduct } from '../lib/catalog'
+import { configuredSpecGroups } from '../lib/configured'
 import { articleSpecGroups } from '../lib/variantSpecs'
 import { NotFoundPage } from './NotFoundPage'
 
 /**
  * Clean print view of a variant or model (/products/:id/:variantId/print):
  * no site header or footer, A4 width, a toolbar that is hidden when printing.
- * "Print or save as PDF" opens the browser's print dialog.
+ * "Print or save as PDF" opens the browser's print dialog. With `configured`,
+ * it prints a configured pump (/products/:id/config/:variantId/print).
  */
-export function VariantPrintPage() {
+export function VariantPrintPage({ configured = false }: { configured?: boolean }) {
   const { id = '', variantId = '' } = useParams()
+  const { search } = useLocation()
+  const configuredPump = useConfiguredPump()
+  const pump = configured ? configuredPump : { variant: undefined, article: undefined }
   const product = getProduct(id)
-  const article = product && getArticle(product.id, variantId)
+  const article = configured ? pump.article : product && getArticle(product.id, variantId)
   if (!product || !article) return <NotFoundPage />
+  const specGroups = pump.variant
+    ? configuredSpecGroups(pump.variant, article, pump.duty, pump.result)
+    : articleSpecGroups(article)
+  const backTo = pump.variant ? `${article.to.split('?')[0]}${search}` : article.to
 
   const applications = article.applicationIds
     .map(getApplication)
@@ -32,7 +43,7 @@ export function VariantPrintPage() {
 
       <div className="mx-auto mb-6 flex max-w-[210mm] items-center justify-between gap-4 px-4 print:hidden">
         <Link
-          to={article.to}
+          to={backTo}
           className="inline-flex items-center gap-2 text-sm font-semibold text-primary underline-offset-4 hover:underline"
         >
           <ArrowLeft className="size-4" />
@@ -65,7 +76,9 @@ export function VariantPrintPage() {
               {article.code}
             </h1>
             <p className="mt-1 text-sm font-semibold text-navy-900 tabular-nums">
-              {copy.productNumber(article.productNumber)}
+              {pump.variant
+                ? configuredPage.productNumber(pump.variant.productNumber)
+                : copy.productNumber(article.productNumber)}
             </p>
             <p className="mt-4 text-sm leading-relaxed text-text">{product.summary}</p>
             <p className="mt-3 text-sm text-text">
@@ -79,7 +92,7 @@ export function VariantPrintPage() {
         </div>
 
         <div className="mt-8 columns-2 gap-10 [&>section]:mb-7">
-          {articleSpecGroups(article).map((group) => (
+          {specGroups.map((group) => (
             <SpecGroupTable key={group.title} title={group.title} rows={group.rows} />
           ))}
         </div>

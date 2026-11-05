@@ -11,6 +11,7 @@ import { AssetsPage } from './pages/AssetsPage'
 import { BomPrintPage } from './pages/BomPrintPage'
 import { CartPage } from './pages/CartPage'
 import { CheckoutPage } from './pages/CheckoutPage'
+import { ConfiguredProductPage } from './pages/ConfiguredProductPage'
 import { ConnectAlertsPage } from './pages/ConnectAlertsPage'
 import { ConnectAssetPage } from './pages/ConnectAssetPage'
 import { ConnectAssetsPage } from './pages/ConnectAssetsPage'
@@ -90,6 +91,11 @@ export default function App() {
                       />
                       <Route path="/products/:id" element={<ProductPage />} />
                       <Route path="/products/:id/:variantId" element={<VariantPage />} />
+                      {/* A configured pump from sizing, rebuilt from its URL. */}
+                      <Route
+                        path="/products/:id/config/:variantId"
+                        element={<ConfiguredProductPage />}
+                      />
                       <Route path="/digital-solutions" element={<DigitalSolutionsPage />} />
                       <Route path="/sizing" element={<SizingPage />} />
                       <Route path="/sizing/results" element={<SizingResultsPage />} />
@@ -122,6 +128,10 @@ export default function App() {
                     {/* A clean print view of a configured product, without the site header and footer. */}
                     <Route path="/products/:id/:variantId/print" element={<VariantPrintPage />} />
                     <Route path="/products/:id/:variantId/bom" element={<BomPrintPage />} />
+                    <Route
+                      path="/products/:id/config/:variantId/print"
+                      element={<VariantPrintPage configured />}
+                    />
                     <Route path="/my-projects/:projectId/report" element={<ProjectReportPage />} />
                     {/* Sulzer Connect is its own app, outside the website header and footer. */}
                     <Route path="/connect" element={<ConnectLayout />}>

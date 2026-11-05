@@ -4,12 +4,15 @@ import { sizingComparePage as copy } from '../../data/sizingPages'
 import { tenderDialog } from '../../data/tenderTexts'
 import { BuyAction } from '../eshop/BuyAction'
 import { alternativeLetter, type CompareRow } from '../../lib/compare'
-import { getProduct, productPath } from '../../lib/catalog'
-import type { SizingResult } from '../../types'
+import { getProduct } from '../../lib/catalog'
+import { configuredPath } from '../../lib/configured'
+import type { DutyPoint, SizingResult } from '../../types'
 import { SmartImage } from '../SmartImage'
 
 type CompareTableProps = {
   results: SizingResult[]
+  /** The sizing's duty point, carried to the configured product page. */
+  duty: DutyPoint
   rows: CompareRow[]
   /** Colour of each pump's curve, by column. */
   colors: string[]
@@ -26,6 +29,7 @@ type CompareTableProps = {
  */
 export function CompareTable({
   results,
+  duty,
   rows,
   colors,
   selectedId,
@@ -76,9 +80,25 @@ export function CompareTable({
                       <SmartImage src={image.src} alt={image.alt} fit="contain" />
                     </div>
                   )}
-                  <p className="mt-3 leading-snug font-bold text-navy-900">{variant.name}</p>
+                  <p className="mt-3 leading-snug font-bold text-navy-900">
+                    <Link
+                      to={configuredPath(variant, { duty })}
+                      className="underline-offset-4 transition-colors hover:text-primary hover:underline"
+                    >
+                      {variant.name}
+                    </Link>
+                  </p>
                   <p className="text-sm text-text-muted tabular-nums">
-                    {variant.productNumber ?? copy.onRequest}
+                    {variant.productNumber ? (
+                      <Link
+                        to={configuredPath(variant, { duty })}
+                        className="font-semibold text-primary underline-offset-4 hover:underline"
+                      >
+                        {variant.productNumber}
+                      </Link>
+                    ) : (
+                      copy.onRequest
+                    )}
                   </p>
                   <div className="mt-4 flex flex-col gap-2">
                     <button
@@ -112,7 +132,7 @@ export function CompareTable({
                       {tenderDialog.open}
                     </button>
                     <Link
-                      to={productPath(getProduct(variant.productId)!)}
+                      to={configuredPath(variant, { duty })}
                       className="inline-flex h-9 items-center justify-center gap-1.5 rounded-pill px-4 text-sm font-semibold text-primary underline-offset-4 hover:underline"
                     >
                       {copy.viewProduct}

@@ -15,14 +15,24 @@ const field =
  * "Request quotation": prefilled with the demo user when signed in. Sending
  * shows a fixed reference; nothing is stored.
  */
-export function QuotationTab({ article }: { article: ResultArticle }) {
+export function QuotationTab({
+  article,
+  embedded = false,
+  quantity = 1,
+}: {
+  article: ResultArticle
+  /** In a dialog: no heading (the dialog has the title) and no top margin. */
+  embedded?: boolean
+  /** Starting quantity. */
+  quantity?: number
+}) {
   const { user } = useAuth()
   const ids = useId()
   const [values, setValues] = useState({
     name: user?.name ?? '',
     company: user?.company ?? '',
     email: user?.email ?? '',
-    quantity: '1',
+    quantity: String(quantity),
     delivery: copy.deliveryOptions[0],
     message: '',
   })
@@ -46,10 +56,12 @@ export function QuotationTab({ article }: { article: ResultArticle }) {
 
   return (
     <>
-      <TabHeading title={copy.title} />
-      <p className="mt-3 max-w-2xl text-text-muted">{copy.intro}</p>
+      {!embedded && <TabHeading title={copy.title} />}
+      <p className={`max-w-2xl text-text-muted ${embedded ? '' : 'mt-3'}`}>{copy.intro}</p>
 
-      <div className="mt-8 max-w-3xl rounded-lg border border-border bg-white">
+      <div
+        className={`max-w-3xl rounded-lg border border-border bg-white ${embedded ? 'mt-5' : 'mt-8'}`}
+      >
         {sent ? (
           <div className="flex animate-fade-in flex-col items-center px-8 py-12 text-center">
             <CircleCheck className="size-14 text-success" strokeWidth={1.5} />

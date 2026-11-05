@@ -1,9 +1,11 @@
-import { FileText, FolderPlus, ScrollText } from 'lucide-react'
+import { ExternalLink, FileText, FolderPlus, ScrollText } from 'lucide-react'
+import { Link } from 'react-router'
 import { useAuth } from '../../auth/useAuth'
 import { priceCopy } from '../../data/pricing'
 import { tenderDialog } from '../../data/tenderTexts'
 import { sizingResultsPage as copy } from '../../data/sizingPages'
 import { seriesColors } from '../../lib/chartColors'
+import { configuredPath } from '../../lib/configured'
 import { keyFigureRows } from '../../lib/keyFigures'
 import { formatPrice } from '../../lib/modelSpecs'
 import { priceFor } from '../../lib/pricing'
@@ -130,6 +132,13 @@ export function SizingResultPanel({
                   <ScrollText className="size-4" />
                   {tenderDialog.open}
                 </button>
+                <Link
+                  to={configuredPath(first.variant, { duty })}
+                  className="inline-flex h-11 items-center justify-center gap-1.5 rounded-pill px-5 text-sm font-semibold text-primary underline-offset-4 hover:underline"
+                >
+                  {copy.panel.viewProduct}
+                  <ExternalLink className="size-3.5" />
+                </Link>
               </div>
             </div>
           )}

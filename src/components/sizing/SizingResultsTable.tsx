@@ -1,5 +1,6 @@
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
 import { Link } from 'react-router'
+import { configuredPath } from '../../lib/configured'
 import { useAuth } from '../../auth/useAuth'
 import { sizingResultsPage as copy } from '../../data/sizingPages'
 import { groupThousands } from '../../lib/format'
@@ -145,7 +146,7 @@ export function SizingResultsTable({
                 <td className={`${cell} whitespace-nowrap`}>
                   {variant.productNumber ? (
                     <Link
-                      to={`/products/${variant.productId}#models`}
+                      to={configuredPath(variant, { duty })}
                       className="font-semibold text-primary tabular-nums underline-offset-4 hover:underline"
                     >
                       {variant.productNumber}

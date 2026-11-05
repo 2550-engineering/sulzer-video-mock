@@ -160,6 +160,9 @@ export const productPage = {
       `List and net prices excl. VAT · Partner discount ${discount}% on list price`,
     inStock: 'In stock',
     showDetails: (name: string) => `Show details for ${name}`,
+    discontinued: 'Discontinued',
+    replacedBy: 'Replaced by',
+    noLongerAvailable: 'No longer available',
     compareLimit: 'Compare up to 3 models',
     noMatches: {
       title: 'No models match these filters',

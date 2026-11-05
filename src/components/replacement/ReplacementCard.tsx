@@ -4,16 +4,17 @@ import { Link } from 'react-router'
 import { useAuth } from '../../auth/useAuth'
 import { useCart } from '../../cart/useCart'
 import { replacementPage as copy } from '../../data/replacementPage'
-import { getProduct, variantPath } from '../../lib/catalog'
+import { articleDutyPoint } from '../../lib/articles'
+import { articleCartArticle } from '../../lib/cartArticles'
+import { getProduct } from '../../lib/catalog'
 import { formatPartPrice, formatPrice } from '../../lib/modelSpecs'
-import { ratedDutyPoint } from '../../lib/variantCurves'
-import type { ProductVariant, ReplacementInfo } from '../../types'
+import type { ReplacementInfo, ResultArticle } from '../../types'
 import { AddToProjectDialog } from '../projects/AddToProjectDialog'
 import { SmartImage } from '../SmartImage'
 import { StockIndicator } from '../variant/StockIndicator'
 
 type ReplacementCardProps = {
-  variant: ProductVariant
+  article: ResultArticle
   /** The adapter kit is offered with the pump, ticked by default. */
   info: ReplacementInfo | undefined
 }
@@ -23,28 +24,18 @@ type ReplacementCardProps = {
  * (signed in), and View product, Add to cart (with the adapter kit) and Add
  * to project.
  */
-export function ReplacementCard({ variant, info }: ReplacementCardProps) {
+export function ReplacementCard({ article, info }: ReplacementCardProps) {
   const ids = useId()
   const { user } = useAuth()
   const cart = useCart()
-  const image = getProduct(variant.productId)?.images[0]
+  const image = getProduct(article.productId)?.images[0]
   const kit = info?.adapterKit
   const [withKit, setWithKit] = useState(true)
   const [dialog, setDialog] = useState({ open: false, session: 0 })
 
   function addToCart() {
-    cart.add(
-      {
-        kind: 'product',
-        refId: variant.id,
-        partNumber: variant.productNumber,
-        name: variant.code,
-        variantId: variant.id,
-        unitPrice: variant.listPrice,
-        availability: variant.availability,
-      },
-      1,
-    )
+    const line = articleCartArticle(article)
+    if (line) cart.add(line, 1)
     if (kit && withKit && user) {
       cart.add(
         {
@@ -52,7 +43,7 @@ export function ReplacementCard({ variant, info }: ReplacementCardProps) {
           refId: `adapter-${kit.partNumber}`,
           partNumber: kit.partNumber,
           name: kit.name,
-          variantId: variant.id,
+          variantId: article.id,
           unitPrice: kit.listPrice,
           availability: kit.availability,
         },
@@ -72,23 +63,23 @@ export function ReplacementCard({ variant, info }: ReplacementCardProps) {
         </div>
       )}
       <h2 className="mt-4 text-xl leading-snug font-bold tracking-tight text-brand">
-        <Link to={variantPath(variant)} className="underline-offset-4 hover:underline">
-          {variant.code}
+        <Link to={article.to} className="underline-offset-4 hover:underline">
+          {article.code}
         </Link>
       </h2>
       <p className="mt-1 text-sm font-semibold text-text-muted tabular-nums">
-        {copy.productNumber(variant.productNumber)}
+        {copy.productNumber(article.productNumber)}
       </p>
 
       {user && (
         <div className="mt-4 flex animate-fade-in flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
           <span className="text-2xl font-bold tracking-tight text-navy-900 tabular-nums">
-            {formatPrice(variant.listPrice)}
+            {formatPrice(article.listPrice)}
           </span>
           <span className="text-sm font-semibold text-navy-900">
-            <StockIndicator status={variant.availability.status} />
+            <StockIndicator status={article.availability.status} />
             <span className="ml-2 font-normal text-text-muted">
-              {variant.availability.leadTime}
+              {article.availability.leadTime}
             </span>
           </span>
         </div>
@@ -134,7 +125,7 @@ export function ReplacementCard({ variant, info }: ReplacementCardProps) {
           {copy.next.addToProject}
         </button>
         <Link
-          to={variantPath(variant)}
+          to={article.to}
           className="group inline-flex h-11 items-center justify-center gap-2 rounded-pill px-3 text-sm font-semibold whitespace-nowrap text-primary underline-offset-4 hover:underline"
         >
           {copy.next.view}
@@ -145,7 +136,7 @@ export function ReplacementCard({ variant, info }: ReplacementCardProps) {
       <AddToProjectDialog
         key={dialog.session}
         open={dialog.open}
-        entries={[{ variantId: variant.id, dutyPoint: ratedDutyPoint(variant) }]}
+        entries={[{ variantId: article.id, dutyPoint: articleDutyPoint(article) }]}
         onClose={() => setDialog((d) => ({ ...d, open: false }))}
       />
     </article>

@@ -163,6 +163,7 @@ export function SizingComparePage() {
 
               <CompareTable
                 results={results}
+                duty={duty}
                 rows={rows}
                 colors={seriesColors}
                 selectedId={selectedId}

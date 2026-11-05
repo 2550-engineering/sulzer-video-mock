@@ -46,7 +46,10 @@ export function VariantHeader({ article, product, onSelectTab }: VariantHeaderPr
       <div key={article.id} className="site-container animate-fade-in pt-2 pb-12">
         {article.discontinued && (
           <div className="mb-8">
-            <DiscontinuedBanner article={article} />
+            <DiscontinuedBanner
+              article={article}
+              onViewSpareParts={() => onSelectTab('spare-parts')}
+            />
           </div>
         )}
 
