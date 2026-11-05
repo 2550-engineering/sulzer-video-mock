@@ -1,22 +1,29 @@
 import {
   Activity,
+  Anchor,
   ArrowDownToLine,
-  Bell,
+  ArrowUpFromLine,
+  BellRing,
   BrainCircuit,
   Cable,
+  Cloud,
   ChartLine,
   Cog,
   Cpu,
   Droplets,
+  Filter,
   Gauge,
   Layers,
   Leaf,
   Mountain,
+  Plug,
   Recycle,
+  Router,
   Ruler,
   ShieldCheck,
   Smartphone,
   Truck,
+  Waves,
   Wrench,
   Zap,
 } from 'lucide-react'
@@ -35,6 +42,7 @@ export const products: Product[] = [
     name: productNames.ahlstar,
     family: 'End-suction single-stage',
     category: 'End suction pumps',
+    tabSet: 'pump',
     applications: [
       'surface-water-intake',
       'raw-water-transfer',
@@ -114,6 +122,7 @@ export const products: Product[] = [
     name: productNames.sns,
     family: 'End-suction single-stage',
     category: 'End suction pumps',
+    tabSet: 'pump',
     applications: ['surface-water-intake', 'water-distribution'],
     summary:
       'Compact end-suction pump for clean water supply, irrigation and building services, built to standard dimensions for easy replacement.',
@@ -162,6 +171,7 @@ export const products: Product[] = [
     name: productNames.smd,
     family: 'Axially split, double-suction',
     category: 'Split case pumps',
+    tabSet: 'pump',
     applications: [
       'surface-water-intake',
       'raw-water-transfer',
@@ -215,6 +225,7 @@ export const products: Product[] = [
     name: productNames.sjt,
     family: 'Vertical turbine',
     category: 'Vertical turbine pumps',
+    tabSet: 'pump',
     applications: ['surface-water-intake', 'cooling-water', 'stormwater-flood-control'],
     summary:
       'Vertical turbine pump for intakes, cooling water and flood control, with the motor above the water and the bowl assembly deep in the sump.',
@@ -263,6 +274,7 @@ export const products: Product[] = [
     name: productNames.xfp,
     family: 'Submersible, non-clogging',
     category: 'Submersible pumps',
+    tabSet: 'pump',
     applications: ['surface-water-intake', 'wastewater-collection', 'stormwater-flood-control'],
     summary:
       'Heavy-duty submersible pump for raw water, sewage and stormwater, with a clog-resistant impeller and premium-efficiency motor.',
@@ -309,9 +321,10 @@ export const products: Product[] = [
   {
     id: 'sulzer-connect',
     name: productNames.connect,
-    viewTo: '/connect',
     family: 'IoT monitoring',
     category: 'Monitoring and connectivity',
+    tabSet: 'digital',
+    action: { label: `Open ${productNames.connect}`, to: '/connect' },
     applications: ['surface-water-intake', 'wastewater-collection'],
     summary:
       'Wireless sensors and a cloud dashboard that turn every pump into a connected asset, with live condition data and early warnings.',
@@ -324,28 +337,160 @@ export const products: Product[] = [
     tabs: {
       explore: {
         intro: {
-          title: 'See every pump, from anywhere',
-          text: 'Clip-on sensors measure vibration and temperature, and the gateway sends the data to a dashboard your whole team can use – no changes to the pump needed.',
+          title: 'Predict issues & protect assets with remote monitoring',
+          text: `${productNames.connect} watches vibration, temperature and run time on every pump, around the clock. When a reading starts to drift, you know – weeks before anything stops.`,
           more: [],
         },
-        highlights: [
+        hero: {
+          image: {
+            src: '/images/digital-solutions/remote-pump-station.jpg',
+            alt: 'Small brick pump station in open farmland under a blue sky, with a gateway antenna on the roof',
+          },
+          readouts: [
+            { label: 'Pump station 7 · Pump 2', value: 'Running normally', status: 'ok' },
+            {
+              label: 'Bearing vibration',
+              value: '2.4 mm/s',
+              status: 'ok',
+              trend: [44, 41, 45, 40, 42, 38, 41, 37, 39, 36, 38, 35],
+            },
+          ],
+        },
+        howItWorks: {
+          title: 'How it works',
+          text: 'From the pump to your phone in four steps. Connect a pump in under an hour, with no changes to the pump or your control system.',
+          steps: [
+            {
+              label: 'Sensors on the pump',
+              text: 'Wireless sensors on the motor and bearing housing measure vibration and temperature every few minutes.',
+              icon: Activity,
+            },
+            {
+              label: 'Gateway on site',
+              text: 'A small gateway collects the readings and sends them over the mobile network, separate from your IT.',
+              icon: Router,
+            },
+            {
+              label: 'Analysis in the cloud',
+              text: 'Every reading is checked against ISO limits and the pump’s own baseline, so wear patterns show early.',
+              icon: Cloud,
+            },
+            {
+              label: 'Alerts on your phone',
+              text: 'You get the likely cause and a recommended action, and can request service in one tap.',
+              icon: BellRing,
+            },
+          ],
+        },
+        benefits: {
+          title: 'What remote monitoring delivers',
+          text: 'Typical results when water and wastewater operators monitor their pumps remotely.',
+          stats: [
+            {
+              value: '50 %',
+              label: 'less unplanned downtime',
+              text: 'Faults show up weeks before they stop a pump.',
+            },
+            {
+              value: '30 %',
+              label: 'fewer site visits',
+              text: 'Check every station from the office. Drive out only when it is needed.',
+            },
+            {
+              value: '25 %',
+              label: 'lower maintenance cost',
+              text: 'Service planned on the pump’s condition, not the calendar.',
+            },
+            {
+              value: '< 1 h',
+              label: 'to connect a pump',
+              text: 'Clip-on sensors fit Sulzer pumps and other brands alike.',
+            },
+          ],
+        },
+        showcase: {
+          eyebrow: 'See it live',
+          title: 'Every pump, every site, on any screen',
+          text: 'The same live view on a laptop in the office, a tablet in the plant and your phone on call: health scores, trends and alerts, each with the recommended next step.',
+          points: [
+            'Live vibration, temperature and run time for each asset',
+            'Early warnings when readings drift, before a failure',
+            'Service requests and spare parts one click away',
+          ],
+          image: {
+            src: '/images/products/sulzer-connect-devices.png',
+            alt: `${productNames.connect} on a laptop, a tablet and a phone, showing a pump condition page and the fleet dashboard`,
+          },
+          action: { label: `Open ${productNames.connect}`, to: '/connect' },
+        },
+        story: {
+          storyId: 'story-connect-pump-stations',
+          quote:
+            'We used to drive out to every station each week just to listen to the pumps. Now we know which one needs us, and why, before we leave the office.',
+          author: 'Henrik Dahl',
+          role: 'Operations Manager, municipal water utility',
+          figures: [
+            { value: '42', label: 'remote pump stations connected' },
+            { value: '−60 %', label: 'night-time call-outs in the first year' },
+          ],
+        },
+        cta: {
+          title: 'See your pumps from anywhere',
+          text: `Talk to a Sulzer expert about the right package for your sites, or open ${productNames.connect} to see the assets you have already connected.`,
+          actions: [
+            { label: 'Talk to an expert', to: '/contact' },
+            { label: `Open ${productNames.connect}`, to: '/connect' },
+          ],
+        },
+      },
+      variants: {
+        title: 'Choose your package',
+        text: 'Start with a few critical pumps and grow to your whole network. Every package works with Sulzer pumps and other brands.',
+        packages: [
           {
-            label: 'Live condition data',
-            text: 'Vibration, temperature and run time for each asset.',
-            icon: Activity,
+            id: 'starter',
+            name: 'Starter',
+            tagline: 'Sensors and app',
+            audience: 'Try it on a few critical pumps',
+            features: [
+              'Wireless vibration and temperature sensors',
+              `${productNames.connect} app on web and mobile`,
+              'Live readings and 30-day history',
+              'E-mail alerts on ISO vibration limits',
+            ],
           },
           {
-            label: 'Early warnings',
-            text: 'Alerts when readings drift, before a failure.',
-            icon: Bell,
+            id: 'professional',
+            name: 'Professional',
+            tagline: 'Gateway, alerts and reports',
+            audience: 'For pump stations and plants',
+            badge: 'Most popular',
+            features: [
+              'Cellular gateway, separate from your IT network',
+              'Alerts by app, text message and e-mail',
+              'Monthly condition reports',
+              'Unlimited history, users and teams',
+            ],
           },
           {
-            label: 'Fits any pump',
-            text: 'Retrofit to Sulzer and other brands alike.',
-            icon: Cable,
+            id: 'enterprise',
+            name: 'Enterprise',
+            tagline: 'Expert remote support',
+            audience: 'For networks and critical processes',
+            features: [
+              'Remote support from Sulzer vibration analysts',
+              'Recommended actions reviewed by an engineer',
+              'Integration with SCADA and your maintenance system',
+              'Priority service response',
+            ],
           },
         ],
       },
+      learnIds: [
+        'condition-monitoring-guide',
+        'expert-video-vibration-trends',
+        'connect-getting-started',
+      ],
     },
     serviceIds: ['connect-asset-monitoring', 'remote-expert-support'],
   },
@@ -354,6 +499,8 @@ export const products: Product[] = [
     name: productNames.motorProtectionRelay,
     family: 'Motor protection',
     category: 'Monitoring and connectivity',
+    tabSet: 'digital',
+    action: { label: 'Request a quote', to: '/contact/quote' },
     applications: ['surface-water-intake', 'wastewater-collection'],
     summary:
       'Protects pump motors against overload, phase loss and dry running, and reports every trip to your control system.',
@@ -388,6 +535,11 @@ export const products: Product[] = [
           },
         ],
       },
+      learnIds: [
+        'condition-monitoring-guide',
+        'expert-video-vibration-trends',
+        'centrifugal-pump-handbook',
+      ],
     },
     serviceIds: ['commissioning', 'remote-expert-support'],
   },
@@ -396,6 +548,7 @@ export const products: Product[] = [
     name: productNames.sjm,
     family: 'Vertical mixed-flow',
     category: 'Axial and mixed flow pumps',
+    tabSet: 'pump',
     applications: ['raw-water-transfer', 'cooling-water', 'stormwater-flood-control'],
     summary:
       'Vertical mixed-flow pump for very large flows at low to medium head, from raw water transfer to cooling water and flood protection.',
@@ -444,6 +597,7 @@ export const products: Product[] = [
     name: productNames.afp,
     family: 'Submersible, solids-handling',
     category: 'Submersible pumps',
+    tabSet: 'pump',
     applications: ['wastewater-collection', 'stormwater-flood-control'],
     summary:
       'Submersible sewage pump for municipal and building wastewater, with a solids-handling impeller and a compact, cooling-jacket-free design.',
@@ -492,6 +646,7 @@ export const products: Product[] = [
     name: productNames.jDewatering,
     family: 'Submersible dewatering',
     category: 'Dewatering pumps',
+    tabSet: 'pump',
     applications: ['open-pit-dewatering', 'underground-dewatering', 'stormwater-flood-control'],
     summary:
       'Portable submersible pump for construction sites, mines and emergency drainage, light enough to move by hand and tough enough for abrasive water.',
@@ -512,25 +667,103 @@ export const products: Product[] = [
         intro: {
           title: 'Dry ground, fast',
           text: 'Drop it in, plug it in and start pumping. Hard-wearing parts keep it running in water full of sand and grit.',
-          more: [],
+          more: [
+            'The range runs from a 21 kg drainage pump one person can carry to 60 kW high-head pumps for deep mines. Standard sizes cover flows up to 600 m³/h, and the HH versions lift water up to 110 m from a single stage.',
+            'Every size uses the same design: a top discharge that cools the motor with the pumped water, a high-chrome iron impeller, double mechanical seals in an oil chamber and built-in motor protection. Crews that know one size know them all.',
+          ],
+        },
+        howItWorks: {
+          title: 'How it works',
+          text: 'Built to be set up in minutes and left running for weeks, wherever the water is.',
+          steps: [
+            {
+              label: 'Lower it in',
+              text: 'Lift by the handle and lower it on its own cable into the sump, shaft or excavation.',
+              icon: Anchor,
+            },
+            {
+              label: 'Plug it in',
+              text: 'Connect the hose and plug into site power. The control box checks phase sequence before it starts.',
+              icon: Plug,
+            },
+            {
+              label: 'Water passes the motor',
+              text: 'Water flows up around the motor to the top discharge and cools it, even when the pump is only half covered.',
+              icon: ArrowUpFromLine,
+            },
+            {
+              label: 'Grit stays out',
+              text: 'The strainer keeps out stones larger than the impeller can pass. Sand and silt go straight through.',
+              icon: Filter,
+            },
+          ],
+        },
+        feature: {
+          title: 'Built for abrasive water',
+          text: 'Impeller and wear diffuser in high-chrome iron, adjustable from outside, keep the pump at full performance in water carrying sand, slurry and rock dust. When parts do wear, change them on site in under an hour.',
+          image: {
+            src: '/images/products/j-dewatering-main.png',
+            alt: `${productNames.jDewatering}, portable submersible drainage pump`,
+          },
         },
         highlights: [
           {
             label: 'Portable',
-            text: 'Light enough to move around site.',
+            text: 'From 21 kg, with a lifting handle and a compact footprint for narrow shafts.',
             icon: Truck,
           },
           {
             label: 'Wear-resistant',
-            text: 'Hard-metal wear parts for abrasive water.',
+            text: 'High-chrome iron impeller and diffuser for abrasive water.',
             icon: Mountain,
           },
           {
             label: 'Runs dry safely',
-            text: 'Motor protection against overheating.',
+            text: 'Thermal sensors in the windings stop the motor before it overheats.',
             icon: ShieldCheck,
           },
+          {
+            label: 'High head',
+            text: 'HH versions lift up to 110 m for deep mines and tall shafts.',
+            icon: Gauge,
+          },
+          {
+            label: 'Sealed against water',
+            text: 'Double mechanical seals in an oil chamber, with an optional moisture sensor.',
+            icon: Droplets,
+          },
+          {
+            label: 'Down to 50 m',
+            text: 'Cable entry and seals rated for submergence of up to 50 m.',
+            icon: Waves,
+          },
         ],
+        benefits: {
+          title: 'Why sites choose it',
+          text: 'Typical figures from construction and mining customers running the range.',
+          stats: [
+            {
+              value: '10 min',
+              label: 'from truck to pumping',
+              text: 'No foundation, no priming, no pipework to build.',
+            },
+            {
+              value: '< 1 h',
+              label: 'to change wear parts',
+              text: 'Impeller and diffuser come out on site with standard tools.',
+            },
+            {
+              value: '110 m',
+              label: 'max. head',
+              text: 'From a single stage, with the HH versions.',
+            },
+            {
+              value: '50 m',
+              label: 'max. submergence',
+              text: 'Use it at the bottom of deep shafts and pits.',
+            },
+          ],
+        },
       },
     },
     serviceIds: ['repair-overhaul', 'service-agreements'],
@@ -540,6 +773,8 @@ export const products: Product[] = [
     name: productNames.pumpController,
     family: 'Pump control',
     category: 'Monitoring and connectivity',
+    tabSet: 'digital',
+    action: { label: 'Request a quote', to: '/contact/quote' },
     applications: ['wastewater-collection', 'stormwater-flood-control'],
     summary:
       'Level-based controller for pump stations: starts, stops and alternates pumps, logs every run and sends alarms to your phone or SCADA.',
@@ -574,6 +809,11 @@ export const products: Product[] = [
           },
         ],
       },
+      learnIds: [
+        'expert-video-sump-design',
+        'condition-monitoring-guide',
+        'centrifugal-pump-handbook',
+      ],
     },
     serviceIds: ['commissioning', 'remote-expert-support'],
   },
@@ -582,6 +822,8 @@ export const products: Product[] = [
     name: productNames.blueBox,
     family: 'Process analytics',
     category: 'Digital solutions',
+    tabSet: 'digital',
+    action: { label: 'Request a demo', to: '/contact/quote' },
     applications: ['wastewater-treatment', 'industrial-wastewater-treatment', 'water-reuse'],
     summary:
       'Analytics software for wastewater treatment plants that uses the data you already collect to optimise aeration and cut energy use.',

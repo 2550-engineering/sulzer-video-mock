@@ -67,6 +67,8 @@ const maxPressure: Record<CasingMaterial, number> = {
   'Grey cast iron': 16,
   'Ductile iron': 25,
   'Duplex stainless steel': 25,
+  // Not used for AHLSTAR.
+  'Aluminium alloy': 10,
 }
 
 const currentModels: ProductModel[] = rows.map(

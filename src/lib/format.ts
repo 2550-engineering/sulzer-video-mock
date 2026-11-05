@@ -4,6 +4,61 @@ export const groupThousands = (value: number, decimals = 0) =>
     .toLocaleString('en-GB', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })
     .replaceAll(',', ' ')
 
+const DAY = 24 * 60 * 60 * 1000
+
+/** "12 Nov 2026" from an ISO date, the same on every machine. */
+export const formatDate = (iso: string) =>
+  new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  })
+
+/** "03:12" from a wall-clock time stored as Date.UTC milliseconds. */
+export const formatClock = (time: number) =>
+  new Date(time).toLocaleTimeString('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'UTC',
+  })
+
+/** Whole days from `fromIso` to `iso`; negative when `iso` is earlier. */
+export const daysBetween = (fromIso: string, iso: string) =>
+  Math.round((Date.parse(iso) - Date.parse(fromIso)) / DAY)
+
+/** "Wed 28 Oct" from a wall-clock time stored as Date.UTC milliseconds. */
+export const formatDay = (time: number) =>
+  new Date(time).toLocaleDateString('en-GB', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    timeZone: 'UTC',
+  })
+
+/** "28 Oct" from a wall-clock time stored as Date.UTC milliseconds. */
+export const formatDayMonth = (time: number) =>
+  new Date(time).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' })
+
+/**
+ * "Today, 09:14", "Yesterday, 16:20" or "21 Oct, 10:05" from a wall-clock date time
+ * ("2026-10-28T09:14"), relative to `today` (ISO date).
+ */
+export function formatDateTime(dateTime: string, today: string) {
+  const [date, clock] = dateTime.split('T')
+  const days = daysBetween(date, today)
+  const day =
+    days === 0
+      ? 'Today'
+      : days === 1
+        ? 'Yesterday'
+        : new Date(`${date}T00:00:00Z`).toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            timeZone: 'UTC',
+          })
+  return clock ? `${day}, ${clock}` : day
+}
 /** A file size as shown in file lists: "640 KB" or "2.4 MB". */
 export const formatFileSize = (bytes: number) =>
   bytes < 1024 * 1024

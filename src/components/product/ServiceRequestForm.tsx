@@ -3,9 +3,16 @@ import { useId, useState, type FormEvent, type ReactNode } from 'react'
 import { Link } from 'react-router'
 import { useAuth } from '../../auth/useAuth'
 import { serviceRequestReference } from '../../config/demo'
-import { assets } from '../../data/assets'
+import { assetLocation } from '../../data/assets'
+import { requestsPage, requestsPath } from '../../data/selfServicePages'
+import { newRequestDefaults, newRequestReceivedAt, serviceCenter } from '../../data/serviceRequests'
+import { assetAlert } from '../../lib/assetList'
+import { needsAttention } from '../../lib/assetSummary'
+import { assetsFor } from '../../lib/connect'
 import { productPage } from '../../data/catalogPages'
-import type { Product, Service } from '../../types'
+import { useSelfService } from '../../selfService/useSelfService'
+import { useToast } from '../../toast/useToast'
+import type { Asset, Product, Service } from '../../types'
 
 const copy = productPage.services.request
 const other = 'other'
@@ -17,36 +24,74 @@ type ServiceRequestFormProps = {
   product: Product
   services: Service[]
   onDone: () => void
+  /** Where to start from, e.g. when requesting service for one asset. `services` are ids in order of preference. */
+  prefill?: { site: string; message: string; services?: string[] }
+  /** The asset the request is for. Without it, the product's unit that needs attention. */
+  asset?: Asset
 }
 
 /**
  * "Request service" form. Signed in, it is prefilled with the demo user, their
- * company and the site where they run this product. Sending shows a fixed
- * reference number; nothing is stored.
+ * company and the site where they run this product (or `prefill`). Sending shows a fixed
+ * reference number and, signed in, adds the request to /self-service/requests with a
+ * toast that links there.
  */
-export function ServiceRequestForm({ product, services, onDone }: ServiceRequestFormProps) {
+export function ServiceRequestForm({
+  product,
+  services,
+  onDone,
+  prefill,
+  asset: forAsset,
+}: ServiceRequestFormProps) {
   const { user } = useAuth()
+  const { addServiceRequest } = useSelfService()
+  const showToast = useToast()
   const ids = useId()
+  // Prefill the site of this product's unit that needs attention, else its first unit.
+  const productAssets = (user ? assetsFor(user) : []).filter(
+    (asset) => asset.productId === product.id,
+  )
+  const asset = forAsset ?? productAssets.find(needsAttention) ?? productAssets[0]
   const [values, setValues] = useState({
-    service: services[0]?.id ?? other,
+    service:
+      prefill?.services?.find((id) => services.some((service) => service.id === id)) ??
+      services[0]?.id ??
+      other,
     date: '',
-    site: user ? (assets.find((asset) => asset.productId === product.id)?.location ?? '') : '',
+    site: prefill?.site ?? (user && asset ? assetLocation(asset) : ''),
     name: user?.name ?? '',
     company: user?.company ?? '',
-    message: '',
+    message: prefill?.message ?? '',
   })
   const [sent, setSent] = useState(false)
 
   const set = (key: keyof typeof values) => (value: string) =>
     setValues((current) => ({ ...current, [key]: value }))
 
+  const serviceName =
+    services.find((service) => service.id === values.service)?.name ?? copy.otherService
+
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setSent(true)
+    if (!user || !asset) return
+    addServiceRequest({
+      ...newRequestDefaults,
+      customerId: asset.customerId,
+      assetId: asset.id,
+      service: serviceName,
+      message: values.message,
+      ...(values.date ? { preferredDate: values.date } : {}),
+      requestedBy: values.name || user.name,
+      fromAlert: assetAlert(asset) !== null,
+      steps: { Received: newRequestReceivedAt },
+    })
+    showToast({
+      message: requestsPage.toast.sent(newRequestDefaults.id),
+      detail: `${asset.tag} · ${serviceCenter.name}`,
+      action: { label: requestsPage.toast.view, to: requestsPath },
+    })
   }
-
-  const serviceName =
-    services.find((service) => service.id === values.service)?.name ?? copy.otherService
 
   if (sent) {
     return (

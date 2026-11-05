@@ -29,6 +29,7 @@ const casingMaterials: Record<ProductModel['casingMaterial'], string> = {
   'Grey cast iron': 'Grey cast iron EN-GJL-250',
   'Ductile iron': 'Ductile iron EN-GJS-400-15',
   'Duplex stainless steel': 'Duplex stainless steel 1.4470',
+  'Aluminium alloy': 'Aluminium alloy EN AC-43000',
 }
 
 /** Size codes 01, 02 … in order of first appearance; 50 and 60 Hz models of a size share them. */

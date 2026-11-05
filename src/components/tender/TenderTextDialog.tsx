@@ -1,5 +1,6 @@
 import { Copy, FileDown, Printer } from 'lucide-react'
 import { useId, useState } from 'react'
+import { demoNotice } from '../../config/demo'
 import { tenderDialog as copy } from '../../data/tenderTexts'
 import { tenderDocx } from '../../lib/docx'
 import { downloadBlob } from '../../lib/download'
@@ -101,7 +102,7 @@ export function TenderTextDialog({ open, request, onClose }: TenderTextDialogPro
                     {copy.languages[language]}
                     {!available && (
                       <span className="rounded-pill bg-surface-sunken px-2 py-0.5 text-[11px] font-semibold text-text-muted">
-                        {copy.comingSoon}
+                        {demoNotice.badge}
                       </span>
                     )}
                   </label>

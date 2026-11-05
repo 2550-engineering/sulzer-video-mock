@@ -1,9 +1,10 @@
 import { ChevronDown, CircleUserRound, LogOut } from 'lucide-react'
 import { Link } from 'react-router'
 import { useAuth } from '../auth/useAuth'
-import { accountMenuLinks } from '../config/navigation'
+import { accountMenuLinks, partnerMenuLinks } from '../config/navigation'
 import { popoverClasses } from '../lib/popover'
 import { Avatar } from './Avatar'
+import { PartnerBadge } from './PartnerBadge'
 
 const menuItem =
   'flex items-center gap-3 rounded-sm px-3 py-2.5 transition-colors hover:bg-primary-tint hover:text-primary'
@@ -28,6 +29,11 @@ export function AccountMenu({ open, onToggle, onClose, buttonClassName }: Accoun
     )
   }
 
+  const partner = user.kind === 'partner'
+  const links = partner
+    ? [...accountMenuLinks.slice(0, 1), ...partnerMenuLinks, ...accountMenuLinks.slice(1)]
+    : accountMenuLinks
+
   return (
     <div className="relative">
       <button
@@ -39,6 +45,7 @@ export function AccountMenu({ open, onToggle, onClose, buttonClassName }: Accoun
       >
         <Avatar initials={user.initials} className="ring-2 ring-primary-tint-strong" />
         {user.name}
+        {partner && <PartnerBadge />}
         <ChevronDown
           className={`size-4 text-text-subtle transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
         />
@@ -52,12 +59,18 @@ export function AccountMenu({ open, onToggle, onClose, buttonClassName }: Accoun
         <div className="flex items-center gap-3 border-b border-border bg-surface-muted px-5 py-4">
           <Avatar initials={user.initials} size="md" />
           <div className="min-w-0">
-            <p className="truncate font-semibold text-navy-900">{user.name}</p>
+            <p className="flex items-center gap-2 font-semibold text-navy-900">
+              <span className="truncate">{user.name}</span>
+              {partner && <PartnerBadge />}
+            </p>
             <p className="truncate text-sm text-text-muted">{user.company}</p>
+            {user.partner && (
+              <p className="truncate text-xs text-text-muted">{user.partner.type}</p>
+            )}
           </div>
         </div>
         <ul className="p-2 text-sm font-medium">
-          {accountMenuLinks.map(({ label, to, icon: Icon }) => (
+          {links.map(({ label, to, icon: Icon }) => (
             <li key={to}>
               <Link to={to} onClick={onClose} className={menuItem}>
                 <Icon className="size-[18px] text-primary" strokeWidth={1.75} />

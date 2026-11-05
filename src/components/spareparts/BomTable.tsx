@@ -1,11 +1,14 @@
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { useAuth } from '../../auth/useAuth'
+import { priceCopy } from '../../data/pricing'
 import { sparePartsTab } from '../../data/sparePartsPage'
 import { kitsOf, sortBom, type BomSort, type BomSortKey } from '../../lib/bom'
 import { formatPartPrice } from '../../lib/modelSpecs'
+import { priceFor } from '../../lib/pricing'
 import type { ServiceKit, SparePart } from '../../types'
 import { StockIndicator } from '../variant/StockIndicator'
+import { PartPrice } from './PartPrice'
 
 const copy = sparePartsTab.bom
 
@@ -122,7 +125,12 @@ export function BomTable({
             <th scope="col" className={head}>
               {c.kits}
             </th>
-            {user && sortButton('price', c.price, 'right')}
+            {user &&
+              sortButton(
+                'price',
+                priceFor(1, user)!.discount > 0 ? priceCopy.netPrice : c.price,
+                'right',
+              )}
             {user && sortButton('leadTime', c.leadTime)}
           </tr>
         </thead>
@@ -171,7 +179,15 @@ export function BomTable({
                   <td
                     className={`${cell} text-right font-semibold whitespace-nowrap text-navy-900 tabular-nums`}
                   >
-                    {formatPartPrice(part.listPrice)}
+                    {priceFor(part.listPrice, user)!.discount > 0 ? (
+                      <PartPrice
+                        price={priceFor(part.listPrice, user)!}
+                        format={formatPartPrice}
+                        compact
+                      />
+                    ) : (
+                      formatPartPrice(part.listPrice)
+                    )}
                   </td>
                 )}
                 {user && (

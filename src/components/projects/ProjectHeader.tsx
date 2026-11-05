@@ -17,6 +17,8 @@ type ProjectHeaderProps = {
   icons: ReactNode
   /** The action buttons along the bottom. */
   children: ReactNode
+  /** Under the facts, e.g. the customer a partner runs the project for. */
+  badge?: ReactNode
 }
 
 /**
@@ -31,6 +33,7 @@ export function ProjectHeader({
   onShare,
   icons,
   children,
+  badge,
 }: ProjectHeaderProps) {
   const facts = [
     [copy.client, project.client.company || copy.notSet],
@@ -55,6 +58,7 @@ export function ProjectHeader({
               </div>
             ))}
           </dl>
+          {badge}
         </div>
         <div className="flex shrink-0 flex-col items-end gap-2">
           <div className="flex gap-2">

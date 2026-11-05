@@ -1,5 +1,5 @@
 import { market } from '../config/demo'
-import type { ComingSoonContent, NavItem, SearchScope, TabComingSoonCopy, TabDef } from '../types'
+import type { NavItem, ProductTabSet, SearchScope, TabDef } from '../types'
 
 /* Copy for the application, product and product search templates. */
 
@@ -24,14 +24,6 @@ export const applicationPage = {
       `${count} Sulzer ${count === 1 ? 'product matches' : 'products match'} this application.`,
     actionLabel: 'See products & solutions',
   },
-  productsEmpty: {
-    title: 'Solutions for this application are on their way',
-    text: 'Our application specialists can recommend the right Sulzer products for your process today.',
-  } satisfies TabComingSoonCopy,
-  exploreEmpty: {
-    title: 'Application guide coming soon',
-    text: 'We are writing an in-depth guide for this application. In the meantime, see the products and solutions that fit.',
-  } satisfies TabComingSoonCopy,
   knowledge: {
     title: 'Want to know more about this application?',
     text: 'Engineering manuals, expert videos and customer stories that help you plan, size and run your system with confidence.',
@@ -42,13 +34,6 @@ export const applicationPage = {
   },
   learn: {
     eyebrow: 'Sulzer Academy',
-    title: 'Learning for this application is on its way',
-    text: 'Soon you will find courses, webinars and in-depth guides for this application here, created by Sulzer application engineers.',
-    features: [
-      'Self-paced courses with certificates',
-      'Live and on-demand webinars',
-      'Design guides and best practices',
-    ],
     back: { label: 'Visit Sulzer Academy', to: '/learn' } satisfies NavItem,
   },
 }
@@ -60,14 +45,23 @@ export const exploreIntroBand = {
 }
 
 export const productPage = {
-  tabs: [
-    { id: 'explore', label: 'Explore' },
-    { id: 'models', label: 'Models' },
-    { id: 'documentation', label: 'Documentation' },
-    { id: 'bim', label: 'BIM' },
-    { id: 'spare-parts', label: 'Spare parts' },
-    { id: 'services', label: 'Services' },
-  ] satisfies TabDef[],
+  /** Each product names its set in `tabSet` (data/products.ts). */
+  tabSets: {
+    pump: [
+      { id: 'explore', label: 'Explore' },
+      { id: 'models', label: 'Models' },
+      { id: 'documentation', label: 'Documentation' },
+      { id: 'bim', label: 'BIM' },
+      { id: 'spare-parts', label: 'Spare parts' },
+      { id: 'services', label: 'Services' },
+    ],
+    digital: [
+      { id: 'explore', label: 'Explore' },
+      { id: 'variants', label: 'Variants' },
+      { id: 'documentation', label: 'Documentation' },
+      { id: 'learn', label: 'Learn' },
+    ],
+  } satisfies Record<ProductTabSet, TabDef[]>,
   breadcrumb: [
     { label: 'Products & services', to: '/products' },
     { label: 'Products A–Z', to: '/products' },
@@ -96,6 +90,31 @@ export const productPage = {
     label: 'Case',
   },
   sizeLabel: 'Size product',
+  save: {
+    add: 'Save to My saved items',
+    remove: 'Remove from My saved items',
+    added: 'Saved to My saved items',
+    removed: 'Removed from My saved items',
+    view: 'View',
+  },
+  howItWorksStep: (n: number) => `Step ${n}`,
+  storyLabel: 'Customer story',
+  storyLink: 'Read the story',
+  variants: {
+    everythingIn: (name: string) => `Everything in ${name}, plus:`,
+    action: 'Request a quote',
+    actionTo: '/contact/quote',
+    priceNote:
+      'Priced per connected asset. Your Sulzer sales contact sends a quote within two working days.',
+    compareTitle: 'Compare packages',
+    feature: 'Feature',
+    included: 'Included',
+    notIncluded: 'Not included',
+  },
+  learn: {
+    title: (product: string) => `Learn more about ${product}`,
+    text: 'Manuals, expert videos and handbooks from Sulzer specialists, to help you get the most out of it.',
+  },
   keySpecLabels: {
     liquidTemp: 'Liquid temperature',
     maxFlow: 'Max. flow',
@@ -128,6 +147,8 @@ export const productPage = {
       power: 'Motor power',
       speed: 'Speed',
       listPrice: 'List price',
+      discount: 'Your discount',
+      netPrice: 'Net price',
       availability: 'Availability',
     },
     units: { flow: 'm³/h', head: 'm', power: 'kW', speed: 'rpm' },
@@ -135,6 +156,8 @@ export const productPage = {
     spareParts: 'Spare parts',
     sparePartsFor: (model: string) => `Spare parts for ${model}`,
     priceNote: 'List prices excl. VAT',
+    partnerPriceNote: (discount: number) =>
+      `List and net prices excl. VAT · Partner discount ${discount}% on list price`,
     inStock: 'In stock',
     showDetails: (name: string) => `Show details for ${name}`,
     discontinued: 'Discontinued',
@@ -186,10 +209,14 @@ export const productPage = {
         efficiency: 'Efficiency',
         connection: 'Connection',
         casingMaterial: 'Casing',
+        impellerMaterial: 'Impeller material',
         shaftSeal: 'Shaft seal',
+        solidsSize: 'Max. solids size',
+        maxSubmergence: 'Max. submergence',
         maxPressure: 'Max. pressure',
         weight: 'Weight',
         listPrice: 'List price',
+        netPrice: (discount: number) => `Your net price (−${discount}%)`,
         availability: 'Availability',
       },
     },
@@ -269,10 +296,6 @@ export const productPage = {
       `Each configured pump has its own parts list and exploded drawing. ${code} has them online now.`,
     action: 'Show its spare parts',
   },
-  spareParts: {
-    title: 'Spare parts for this product are coming to mySulzer',
-    text: 'Soon you can find genuine parts on the sectional drawing, check prices and stock, and order online. Until then, your local Sulzer team is happy to help.',
-  } satisfies TabComingSoonCopy,
   services: {
     title: 'Services',
     intro: (product: string) =>
@@ -307,10 +330,6 @@ export const productPage = {
       noDate: 'As soon as possible',
     },
   },
-  tabEmpty: {
-    title: 'Content for this tab is on its way',
-    text: 'Contact your local Sulzer team for anything you need about this product.',
-  } satisfies TabComingSoonCopy,
 }
 
 /** /products: search results, or every product (Products A–Z) without a query. */
@@ -497,20 +516,3 @@ export const catalogList = {
   viewLabel: 'View',
   sizeRangeLabel: 'Size range',
 }
-
-/** Copy for feature pages that aren't built yet. */
-export const comingSoon = {
-  assets: {
-    title: 'My assets',
-    description: 'Your installed base with live condition, alerts and service history.',
-    panelTitle: 'Your installed base, live',
-    panelText:
-      'See the condition of every Sulzer pump and mixer you own, get alerts before problems turn into downtime and plan service on real data.',
-    features: [
-      'Live status and readings for every asset',
-      'Alerts when vibration or temperature drifts',
-      'Service history and spare parts per asset',
-      'Book service straight from an alert',
-    ],
-  },
-} satisfies Record<string, ComingSoonContent>

@@ -1,16 +1,27 @@
 import type { LucideIcon } from 'lucide-react'
 
+/** A customer (asset owner), a Sulzer channel partner or a consultant. */
+export type PersonaKind = 'customer' | 'partner' | 'consultant'
+
+/** A demo persona. The ids are the keys of `personas` in config/demo.ts. */
 export type User = {
+  kind: PersonaKind
+  /** Shift+D panel: "Sign in as <label>". */
+  label: string
   firstName: string
   name: string
   initials: string
   company: string
   role: string
   email: string
+  /** Customers only: their account in data/assets.ts. */
+  customerId?: string
+  /** Partners only. */
+  partner?: { type: string; region: string }
 }
 
-/** Who the presenter signs in as: the end user (maintenance) or the consultant. */
-export type PersonaId = 'endUser' | 'consultant'
+/** Who the presenter signs in as: the end user (maintenance), the consultant or the channel partner. */
+export type PersonaId = 'endUser' | 'consultant' | 'channelPartner'
 
 export type NavItem = {
   label: string
@@ -76,14 +87,14 @@ export type AssetReadout = {
   trend?: number[]
 }
 
-/** A route rendered with the "Coming soon" placeholder until its real page is built. */
+/** A route that is not part of the demo: renders the live demo notice inside the site layout. */
 export type PlaceholderRoute = {
   path: string
   title: string
   description: string
   /** Path of the parent page, used to build the breadcrumb trail. */
   parent?: string
-  /** Photo on the "Coming soon" card. Defaults to the Sulzer brand image. */
+  /** Photo on the notice card. Defaults to the Sulzer brand image. */
   image?: ImageSource
 }
 
@@ -115,6 +126,21 @@ export type AssetStat = {
   detail: string
   tone: StatusTone
   icon: LucideIcon
+  /** The asset list, filtered to what the stat counts. */
+  to: string
+}
+
+/** Wide My Pages card with three headline stats: "My assets", or the partner's "My customers". */
+export type StatsCardData = {
+  title: string
+  subtitle: string
+  icon: LucideIcon
+  /** Small yellow pill after the title, e.g. "New". */
+  badge?: string
+  stats: AssetStat[]
+  /** Small line with a green dot, e.g. where the numbers come from. */
+  source: string
+  link: NavItem
 }
 
 /** A row in the My Pages "Recent activity" list. */
@@ -125,6 +151,8 @@ export type ActivityItem = {
   time: string
   to: string
   icon: LucideIcon
+  /** Amber icon, for alerts. */
+  tone?: 'warning'
   /** Shown only to this persona, e.g. a link to one of their projects. */
   persona?: PersonaId
 }
@@ -232,21 +260,110 @@ export type ProductPromo = {
   badge: PromoBadge
 }
 
-/** A product's Explore tab. Only `intro` and `highlights` are required. */
+/** Photo band that opens an Explore tab in place of the grey intro band, with live-looking readouts on the photo. */
+export type ExploreHero = {
+  image: ImageSource
+  readouts?: AssetReadout[]
+}
+
+/** A step in an Explore tab's "How it works" diagram. */
+export type ExploreStep = {
+  label: string
+  text: string
+  icon: LucideIcon
+}
+
+/** A headline figure, e.g. value "50 %" with label "less unplanned downtime". */
+export type BenefitStat = {
+  value: string
+  label: string
+  text?: string
+}
+
+/** Navy band with text and checkmarks on the left and a large image on the right. */
+export type ExploreShowcase = {
+  eyebrow: string
+  title: string
+  text: string
+  points: string[]
+  image: ImageSource
+  action: NavItem
+}
+
+/** One customer story, told with a quote and its results. */
+export type FeaturedStory = {
+  /** A "Customer story" item in data/knowledge.ts: its photo, headline and link. */
+  storyId: string
+  quote: string
+  author: string
+  role: string
+  figures: BenefitStat[]
+}
+
+/** Closing band with a headline and buttons. The first action is the primary button. */
+export type CtaBandContent = {
+  title: string
+  text: string
+  actions: NavItem[]
+}
+
+/**
+ * A product's Explore tab. Only `intro` is required; each other section shows
+ * when it is set, in this order: hero (or the grey intro band), how it works,
+ * feature panel and highlights, benefits, showcase, promo, stories, CTA.
+ */
 export type ProductExplore = {
   intro: ExploreIntro
+  hero?: ExploreHero
+  howItWorks?: { title: string; text: string; steps: ExploreStep[] }
   /** Large grey panel: headline and text on the left, product image on the right. */
   feature?: { title: string; text: string; image: ImageSource }
   /** Columns under the feature panel. */
-  highlights: IconItem[]
+  highlights?: IconItem[]
+  benefits?: { title: string; text: string; stats: BenefitStat[] }
+  showcase?: ExploreShowcase
   promo?: ProductPromo
-  /** Ids of "Customer story" items in data/knowledge.ts. */
+  /** Ids of "Customer story" items in data/knowledge.ts, shown as a row of cards. */
   storyIds?: string[]
+  /** One story told in full, with a quote. */
+  story?: FeaturedStory
+  cta?: CtaBandContent
+}
+
+/** A package on a digital product's Variants tab. Each package includes everything in the ones before it. */
+export type ProductPackage = {
+  id: string
+  name: string
+  /** One line under the name. */
+  tagline: string
+  /** Who it is for. */
+  audience: string
+  /** What this package adds to the one before it. */
+  features: string[]
+  /** Small badge, e.g. "Most popular". Also makes it the featured card. */
+  badge?: string
+}
+
+export type ProductVariants = {
+  title: string
+  text: string
+  packages: ProductPackage[]
 }
 
 export type ProductTabsContent = {
   explore: ProductExplore
+  /** Digital products: the Variants tab. */
+  variants?: ProductVariants
+  /** Digital products: ids from data/knowledge.ts for the Learn tab. */
+  learnIds?: string[]
 }
+
+/**
+ * Which tabs a product page has: pumps get Explore / Models / Documentation /
+ * BIM / Spare parts / Services, digital products Explore / Variants /
+ * Documentation / Learn. The tabs themselves are in data/catalogPages.ts.
+ */
+export type ProductTabSet = 'pump' | 'digital'
 
 export type Product = {
   /** Also the URL slug: /products/<id>. */
@@ -263,8 +380,11 @@ export type Product = {
   standard?: string
   /** Pumps only. Sensors, controllers and software have none. */
   keySpecs?: KeySpecs
-  /** Where "View" in product lists goes, when not the product page, e.g. "/connect". */
+  tabSet: ProductTabSet
+  /** Where "View" in product lists goes, when not the product page. No product sets it now. */
   viewTo?: string
+  /** The header button, in place of "Size product", e.g. "Open Sulzer Connect". */
+  action?: NavItem
   /** First image is the main product shot. */
   images: ImageSource[]
   tabs: ProductTabsContent
@@ -272,7 +392,8 @@ export type Product = {
   serviceIds: string[]
 }
 
-export type CasingMaterial = 'Grey cast iron' | 'Ductile iron' | 'Duplex stainless steel'
+export type CasingMaterial =
+  'Grey cast iron' | 'Ductile iron' | 'Duplex stainless steel' | 'Aluminium alloy'
 export type ShaftSeal = 'Packing' | 'Single mechanical seal' | 'Double mechanical seal'
 
 /** How fast a model ships. Shown with the price, to signed-in users only. */
@@ -307,6 +428,12 @@ export type ProductModel = {
   efficiency: number
   /** Pump with motor (and base frame, where there is one), kg. */
   weight: number
+  /** Where it isn't the casing material, e.g. "High-chrome iron" on dewatering pumps. */
+  impellerMaterial?: string
+  /** Largest solid that passes the strainer, mm. Dewatering pumps. */
+  solidsSize?: number
+  /** Max. submergence depth, m. Submersible pumps. */
+  maxSubmergence?: number
   /** List price in `market.currency`, excl. VAT. Signed-in users only. */
   listPrice: number
   availability: ModelAvailability
@@ -500,6 +627,7 @@ export type ServiceInterval = 2 | 5
 
 /** One line of a variant's bill of material. */
 export type SparePart = {
+  /** Same as the part number. */
   id: string
   /** Position number on the exploded drawing, e.g. "501". */
   position: string
@@ -617,6 +745,8 @@ export type CartItem = {
   quantity: number
   /** Each, in `market.currency`, excl. VAT. */
   unitPrice: number
+  /** Partners: the list price before their discount (`unitPrice` is their net price). */
+  listPrice?: number
   availability: Availability
 }
 
@@ -630,6 +760,10 @@ export type Order = {
   lines: CartItem[]
   reference: string
   deliveryAddressId: string
+  /** When the address is not one of `eshop.deliveryAddresses`, e.g. a partner's customer's. */
+  deliveryAddress?: { name: string; lines: string[] }
+  /** Partners: the customer the order is on behalf of. */
+  customer?: { id: string; name: string }
   delivery: DeliveryOption
   subtotal: number
   freight: number
@@ -676,6 +810,7 @@ export type DocumentType =
   | 'Spare parts list'
   | 'Declaration of conformity'
   | 'Certificate'
+  | 'Data privacy sheet'
   | 'Service video'
   | 'Dimensional drawing'
   | 'Sectional drawing'
@@ -908,6 +1043,11 @@ export type Project = {
   modifiedOrder: number
   deadline?: string
   members: ProjectMember[]
+  /**
+   * The customer account it is for (data/assets.ts `customers`), when a partner runs
+   * it for a customer. "Share with customer" adds the client contact as a member.
+   */
+  clientAccount?: string
   client: ProjectClient
   description?: string
   /** The engineering firm the project is run by, e.g. the consultant's. */
@@ -926,40 +1066,275 @@ export type Project = {
 
 export type AssetStatus = 'ok' | 'warning' | 'alarm'
 
-export type Asset = {
+/** An asset owner. The channel partner sees several. */
+export type Customer = {
   id: string
   name: string
-  location: string
+  /** Sulzer customer number, shown as "Customer no.". */
+  customerNumber: string
+  city: string
+  industry: string
+  contact: { name: string; role: string; email: string }
+}
+
+/** A contact person, e.g. at a customer. */
+export type Contact = { name: string; role: string; email: string; phone: string }
+
+/** A delivery address on an account. `lines` are printed as they are. */
+export type DeliveryAddress = { id: string; label: string; lines: string[] }
+
+/** How a customer's wordmark is drawn (components/CustomerLogo.tsx). Made for the demo. */
+export type CustomerLogoSpec = {
+  mark: 'wave' | 'sheets' | 'leaf' | 'flame'
+  /** Mark and first line. */
+  color: string
+  /** Second line. */
+  accent: string
+  name: string
+  tagline: string
+}
+
+/** The channel partner's side of a customer account (data/partner.ts). */
+export type PartnerAccount = {
+  customerId: string
+  /** The partner's own salesperson for this customer. */
+  accountManager: string
+  customerSince: number
+  /** % off list on the partner's quotations to this customer. */
+  quotationDiscount: number
+  /** The first is the main contact (the customer's `contact`). */
+  contacts: Contact[]
+  deliveryAddresses: DeliveryAddress[]
+  logo: CustomerLogoSpec
+}
+
+export type Site = {
+  id: string
+  customerId: string
+  name: string
+  city: string
+  /** e.g. "Raw water intake". */
+  type: string
+  /** `alt` also describes what the photo should show (see docs/images-needed.md). */
+  image: ImageSource
+}
+
+/** One installed unit. Dates are ISO, e.g. "2026-11-12". */
+export type Asset = {
+  /** The tag in lower case, also the URL slug: /assets/<id>. */
+  id: string
+  /** The customer's own tag, e.g. "RW-02". */
+  tag: string
+  /** e.g. "Raw water pump RW-02". */
+  name: string
+  customerId: string
+  siteId: string
   productId: string
+  /** From data/productModels.ts. Products without a Models tab have none. */
+  modelId?: string
+  serialNumber: string
+  installedOn: string
+  warrantyUntil: string
+  runHours: number
+  lastService: string
+  nextServiceDue: string
+  /** Streams condition data to Sulzer Connect (lib/conditionData.ts). */
+  connected: boolean
+  /** From the latest condition reading. Assets that aren't connected are 'ok'. */
   status: AssetStatus
-  lastReading: {
-    metric: string
-    value: string
-    /** Pre-formatted, e.g. "Today, 08:42". */
-    time: string
-  }
+}
+
+/**
+ * One hourly condition sample. `time` is a wall-clock time stored as Date.UTC
+ * milliseconds, so format it with `timeZone: 'UTC'` to get the same clock on every machine.
+ */
+export type ConditionPoint = {
+  time: number
+  /** Bearing vibration velocity, mm/s RMS. */
+  vibration: number
+  /** °C. */
+  bearingTemperature: number
+  /** Motor winding temperature, °C. */
+  motorTemperature: number
+  running: boolean
+}
+
+export type ConditionChannel = 'vibration' | 'bearingTemperature' | 'motorTemperature'
+
+/** What Sulzer Connect concludes from an asset's alert, and what to do about it. */
+export type ConditionFinding = {
+  /** The channel that raised the alert. */
+  channel: ConditionChannel
+  /** e.g. "Bearing wear pattern detected". */
+  title: string
+  /** e.g. "Inspect within 14 days". */
+  action: string
+  /** What Sulzer Connect saw, in one or two sentences. */
+  detail: string
+  /** The spare part that fixes it, from data/spareParts.ts, and the button that orders it. */
+  partId?: string
+  partAction?: string
+}
+
+export type ServiceKind = 'Service' | 'Repair' | 'Inspection' | 'Upgrade' | 'Commissioning'
+
+/** One visit in an asset's service history. */
+export type ServiceHistoryEntry = {
+  id: string
+  /** ISO date. */
+  date: string
+  kind: ServiceKind
+  title: string
+  text: string
+  technician: string
+  /** Work order number, e.g. "WO-260317-RW02". */
+  reference: string
+}
+
+/* ── Self-service: requests, orders and quotations (Phase 3, P4) ───────────── */
+
+/** A wall-clock date and time without a time zone, e.g. "2026-10-28T09:26". */
+export type DateTime = string
+
+export type ServiceRequestStatus = 'Received' | 'Planned' | 'Technician assigned' | 'Done'
+
+/** A service request on one asset. Persona-agnostic: whoever sent it is `requestedBy`. */
+export type ServiceRequest = {
+  /** e.g. "SR-2026-0142". */
+  id: string
+  customerId: string
+  assetId: string
+  /** The service type picked in the form, e.g. "Inspection". */
+  service: string
+  message: string
+  /** ISO date the customer asked for, if any. */
+  preferredDate?: string
+  requestedBy: string
+  /** Raised from a condition alert (Sulzer Connect), not routine. */
+  fromAlert: boolean
+  status: ServiceRequestStatus
+  /** When each step was reached. Steps not reached yet are missing. */
+  steps: Partial<Record<ServiceRequestStatus, DateTime>>
+  serviceCenter: string
+  /** ISO date of the planned visit, once planned. */
+  visitDate?: string
+  technician?: string
+  /** Work order number, once done. Matches the asset's service history. */
+  workOrder?: string
+}
+
+export type OrderStatus = 'Confirmed' | 'Packed' | 'Shipped' | 'Delivered'
+
+/** Direct orders are the customer's own; partner orders are a channel partner's, for a customer. */
+export type OrderChannel = 'direct' | 'partner'
+
+export type OrderLine = {
+  position: number
+  partNumber: string
+  description: string
+  quantity: number
+  /** List price per unit in `market.currency`, excl. VAT. */
+  listPrice: number
+  /** The asset the part is for, if any (its id). */
+  assetId?: string
+}
+
+/** One track & trace event. `status` marks the event that reached an order step. */
+export type TrackingEvent = {
+  at: DateTime
+  text: string
+  location: string
+  status?: OrderStatus
+}
+
+/**
+ * A Sulzer order with track & trace. The seeds are in data/orders.ts; checkout adds
+ * new ones through the self-service context (`addOrder`).
+ */
+export type SalesOrder = {
+  /** e.g. "SO-104382". */
+  id: string
+  customerId: string
+  channel: OrderChannel
+  placedAt: DateTime
+  placedBy: string
+  /** The buyer's purchase order number. */
+  poNumber: string
+  /** The quotation the order came from, if any. */
+  quotationId?: string
+  status: OrderStatus
+  /** ISO date. The delivery date once delivered. */
+  expectedDelivery: string
+  deliveryAddress: string[]
+  deliveryMethod: string
+  /** Once shipped. */
+  shipment?: { carrier: string; trackingNumber: string; packages: number; weight: string }
+  /** Oldest first. */
+  events: TrackingEvent[]
+  /** % off list on every line: the partner discount, or 0. */
+  discount: number
+  shippingCost: number
+  lines: OrderLine[]
+}
+
+/** Draft: a partner's quotation, created from a project and not sent yet. */
+export type QuotationStatus = 'Draft' | 'Requested' | 'Sent' | 'Accepted' | 'Expired'
+
+/** Who a quotation is from: Sulzer (to an end user), or the signed-in channel partner (to their customer). */
+export type QuotationIssuer = 'sulzer' | 'partner'
+
+export type QuotationLine = {
+  position: number
+  /** Product or part number. Services have none. */
+  number?: string
+  description: string
+  /** Second line, e.g. the duty point or what the work covers. */
+  detail?: string
+  quantity: number
+  unit: 'pcs' | 'h' | 'lot'
+  /** Per unit in `market.currency`, excl. VAT. */
+  listPrice: number
+  /** Sulzer products and parts, bought at the partner discount; services are the issuer's own work. */
+  kind: 'sulzer' | 'service'
+  /** e.g. "Week 49" or "3 weeks". */
+  delivery: string
+}
+
+export type SalesQuotation = {
+  /** e.g. "Q-10234". */
+  id: string
+  issuer: QuotationIssuer
+  customerId: string
+  title: string
+  status: QuotationStatus
+  requestedAt: DateTime
+  /** ISO dates, once sent. */
+  issuedOn?: string
+  validUntil?: string
+  /** While requested: when the issuer expects to send it (ISO date). */
+  expectedBy?: string
+  /** The latest change, shown in the list and on My Pages. */
+  updated: { at: DateTime; text: string }
+  /** The customer's reference, e.g. their project or work order. */
+  yourReference: string
+  projectId?: string
+  /** The order it became, once accepted. */
+  orderId?: string
+  /** The issuer's contact person for this quotation. */
+  contact: { name: string; role: string; email: string; phone: string }
+  /** % off list on every line, agreed with the customer. */
+  discount: number
+  lines: QuotationLine[]
+  deliveryTerms: string
+  paymentTerms: string
+  /** Remarks printed under the lines. */
+  notes: string[]
 }
 
 /** A tab in a page's sticky tab bar. `id` is also the URL hash. */
 export type TabDef = {
   id: string
   label: string
-}
-
-/** Shown inside a tab whose content isn't built yet. */
-export type TabComingSoonCopy = {
-  title: string
-  text: string
-}
-
-/** Copy for a feature page that isn't built yet. */
-export type ComingSoonContent = {
-  title: string
-  description: string
-  panelTitle: string
-  panelText: string
-  /** What the finished page will offer, shown as a checklist. */
-  features: string[]
 }
 
 /* ── Sizing (Phase 2, module 3) ────────────────────────────────────────────── */
@@ -1131,4 +1506,26 @@ export type FilterGroup = {
   id: string
   label: string
   options: { value: string; label: string; count: number; selected: boolean }[]
+}
+
+/* ── Personal toolbar (Phase 3, P3) ────────────────────────────────────────── */
+
+/** A bookmarked product or document, shown under Saved items. */
+export type SavedItem = { kind: 'product' | 'document'; id: string }
+
+export type UnitSystem = 'metric' | 'us'
+
+/** Units & market panel. The market itself is fixed in config/demo.ts. */
+export type PersonalPreferences = {
+  units: UnitSystem
+  /** Mains frequency: the Models tab opens on it. */
+  frequency: 50 | 60
+}
+
+/** What the personal toolbar remembers for one persona. */
+export type PersonalData = {
+  saved: SavedItem[]
+  /** Product ids, most recent first. */
+  recent: string[]
+  preferences: PersonalPreferences
 }

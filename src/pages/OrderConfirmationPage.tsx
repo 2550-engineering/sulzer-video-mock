@@ -1,4 +1,5 @@
 import { ArrowRight, CircleCheck, Truck } from 'lucide-react'
+import { useEffect } from 'react'
 import { Link, useParams } from 'react-router'
 import { useAuth } from '../auth/useAuth'
 import { useCart } from '../cart/useCart'
@@ -7,23 +8,41 @@ import { EshopHeader } from '../components/eshop/EshopHeader'
 import { SignInRequired } from '../components/eshop/SignInRequired'
 import { eshop } from '../config/demo'
 import { eshopPages } from '../data/eshopPages'
+import { partnerCheckout } from '../data/partner'
+import { orderPath } from '../data/selfServicePages'
 import { partOwner, sparePartsPath } from '../lib/catalog'
 import { formatDate } from '../lib/dates'
 import { formatPartPrice } from '../lib/modelSpecs'
+import { ordersFor } from '../lib/selfService'
+import { trackedOrder } from '../lib/trackedOrder'
+import { useSelfService } from '../selfService/useSelfService'
 import { NotFoundPage } from './NotFoundPage'
 
 const copy = eshopPages.confirmation
 const summary = eshopPages.summary
 
-/** /eshop/order/:orderId: the confirmation with order number, items and expected delivery. */
+/**
+ * /eshop/order/:orderId: the confirmation with order number, items and expected
+ * delivery. The order is also added to /self-service/orders, where "Track order"
+ * opens its track & trace.
+ */
 export function OrderConfirmationPage() {
   const { orderId = '' } = useParams()
   const { user } = useAuth()
   const { orders } = useCart()
   const order = orders.find((o) => o.id === orderId)
+  const address =
+    order?.deliveryAddress ?? eshop.deliveryAddresses.find((a) => a.id === order?.deliveryAddressId)
+  const selfService = useSelfService()
+  const added = selfService.orders.some((o) => o.id === orderId)
+  // Only accounts with track & trace see it there (the consultant has none).
+  const tracked = user !== null && ordersFor(user, selfService.orders).some((o) => o.id === orderId)
+  const { addOrder } = selfService
+  useEffect(() => {
+    if (order && user && !added) addOrder(trackedOrder(order, user, [...(address?.lines ?? [])]))
+  }, [order, user, added, address, addOrder])
   if (!order) return <NotFoundPage />
 
-  const address = eshop.deliveryAddresses.find((a) => a.id === order.deliveryAddressId)
   const owner = partOwner(order.lines[0]?.variantId ?? '')
   const expected =
     order.earliestDelivery === order.latestDelivery
@@ -61,7 +80,7 @@ export function OrderConfirmationPage() {
                 </div>
                 <div className="flex flex-wrap gap-3">
                   <Link
-                    to={copy.trackTo}
+                    to={tracked ? orderPath(order.id) : copy.trackTo}
                     className="inline-flex h-11 items-center gap-2 rounded-pill bg-primary px-6 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
                   >
                     <Truck className="size-4" />
@@ -96,6 +115,12 @@ export function OrderConfirmationPage() {
                   <dd className="text-text-muted">
                     {order.placedBy}, {order.company}
                   </dd>
+                  {order.customer && (
+                    <dd className="text-text-muted">
+                      {partnerCheckout.orderedFor}{' '}
+                      <span className="font-semibold text-navy-900">{order.customer.name}</span>
+                    </dd>
+                  )}
                 </div>
               </dl>
 

@@ -11,15 +11,15 @@ import type {
   TenderSubject,
 } from '../types'
 import { getArticle } from './articles'
-import { getModel, getProductVariant, partOwner } from './catalog'
+import { getModel, getProduct, getProductVariant, partOwner } from './catalog'
 import { evaluateVariant } from './sizing'
 import { getVariant } from './variants'
 
 /* What a tender text says about a sized pump, a variant or a model, or a project item. */
 
-/** Submersibles get the submersible wording; everything else is end-suction. */
+/** Submersibles (XFP, J …) get the submersible wording; everything else is end-suction. */
 const kindOf = (productId: string): TenderSubject['kind'] =>
-  productId === 'xfp' ? 'submersible' : 'end-suction'
+  getProduct(productId)?.family.startsWith('Submersible') ? 'submersible' : 'end-suction'
 
 const polesOf = (speed: number) => (speed > 2000 ? 2 : speed > 1200 ? 4 : 6)
 
@@ -122,7 +122,7 @@ export function articleSubject(article: ResultArticle, application?: string): Te
     ...base,
     materials: {
       casing: article.housing,
-      impeller: duplex ? 'Duplex stainless steel' : 'Grey cast iron',
+      impeller: model?.impellerMaterial ?? (duplex ? 'Duplex stainless steel' : 'Grey cast iron'),
       shaft: tenderDefaults.shaft,
       wearParts: tenderDefaults.wearParts[kind],
     },

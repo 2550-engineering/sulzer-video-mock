@@ -1,4 +1,4 @@
-import { consultantUser, demoUser } from '../config/demo'
+import { consultantUser, demoUser, personas } from '../config/demo'
 import { sizePumps } from '../lib/sizing'
 import { matchingConfigurations, sizingSelection } from '../lib/sizingFilters'
 import { configurationsForProduct, getVariant } from '../lib/variants'
@@ -12,6 +12,7 @@ import type {
   SizingRecord,
   User,
 } from '../types'
+import { customers } from './assets'
 
 /*
  * Seed projects per persona ("/my-projects"), for the projects context. Each
@@ -464,9 +465,112 @@ const consultantProjects: Project[] = [
 ]
 
 /** Seed projects per persona. */
+// ── Channel partner (Lars Ek, Aqua Pumpteknik), for their customers ───────
+
+const lars = ownerOf(personas.channelPartner)
+const aqua = (name: string, role: string) =>
+  member(
+    name,
+    personas.channelPartner.company,
+    role,
+    `${name
+      .toLowerCase()
+      .replace(/[^a-z]+/g, '.')
+      .replace(/[^a-z.]/g, '')}@aquapumpteknik.example`,
+  )
+
+/** The customer account a partner project is for, and its contact as client data. */
+function forCustomer(customerId: string, site: string) {
+  const customer = customers.find((c) => c.id === customerId)!
+  return {
+    clientAccount: customerId,
+    client: {
+      company: customer.name,
+      contact: customer.contact.name,
+      site,
+      email: customer.contact.email,
+    },
+  }
+}
+
+const partnerProjects: Project[] = [
+  {
+    // Video B: the replacement for RW-02 is added here, then shared with Emma and quoted.
+    id: 'riverside-intake-upgrade',
+    refNo: 'P-2026-0322',
+    projectNumber: '396117',
+    name: 'Riverside intake upgrade',
+    applicationId: 'surface-water-intake',
+    status: 'Concept design',
+    created: '20 Oct 2026',
+    createdBy: lars.name,
+    lastModified: 'Yesterday, 15:40',
+    lastModifiedBy: sulzerAe.name,
+    modifiedOrder: 6,
+    deadline: '31 Jan 2027',
+    members: [lars, sulzerAe],
+    ...forCustomer('nordvatten', 'Riverside intake, Västerås'),
+    items: [sizedItem('riverside-intake-upgrade-10', 10, 'RW-01/03', 150, 30, 2)],
+    sizings: [],
+    comments: [],
+    activity: [],
+    documents: [],
+  },
+  {
+    id: 'pm3-stock-pumps',
+    refNo: 'P-2026-0297',
+    projectNumber: '395640',
+    name: 'PM3 stock pump renewal',
+    status: 'Tender',
+    created: '8 Sep 2026',
+    createdBy: lars.name,
+    lastModified: '16 Oct 2026',
+    lastModifiedBy: lars.name,
+    modifiedOrder: 5,
+    deadline: '15 Nov 2026',
+    members: [
+      lars,
+      aqua('Karin Sjöberg', 'Key account manager'),
+      member(
+        'Anders Holm',
+        'Mälarbruk Paper AB',
+        'Customer',
+        'anders.holm@malarbruk.example',
+        'viewer',
+      ),
+    ],
+    ...forCustomer('malarbruk', 'Köping paper mill'),
+    items: [sizedItem('pm3-stock-pumps-10', 10, 'PM3-01/02', 220, 38, 2)],
+    sizings: [],
+    comments: [],
+    activity: [],
+    documents: [],
+  },
+  {
+    id: 'sala-dh-2027',
+    refNo: 'P-2026-0331',
+    projectNumber: '396204',
+    name: 'District heating pumps 2027',
+    status: 'Detailed design',
+    created: '23 Oct 2026',
+    createdBy: 'Henrik Dahl',
+    lastModified: '26 Oct 2026',
+    lastModifiedBy: 'Henrik Dahl',
+    modifiedOrder: 4,
+    members: [lars, aqua('Henrik Dahl', 'Account manager')],
+    ...forCustomer('vastmalm-energi', 'Sala CHP plant'),
+    items: [sizedItem('sala-dh-2027-10', 10, 'DH-01/02', 500, 25, 2)],
+    sizings: [],
+    comments: [],
+    activity: [],
+    documents: [],
+  },
+]
+
 export const projectsSeed: Record<PersonaId, Project[]> = {
   endUser: endUserProjects,
   consultant: consultantProjects,
+  channelPartner: partnerProjects,
 }
 
 /** A member record for a signed-in user, e.g. as owner of a new project. */

@@ -1,4 +1,5 @@
 import { useId } from 'react'
+import { customers } from '../../data/assets'
 import { myProjectsPage } from '../../data/projectPages'
 import type { ProjectInfoPatch } from '../../projects/ProjectsContext'
 import type { Project, ProjectAccess } from '../../types'
@@ -6,6 +7,7 @@ import { ProjectActivityFeed } from './ProjectActivityFeed'
 import { ProjectInfo } from './ProjectInfo'
 import { ProjectInfoForm } from './ProjectInfoForm'
 import { ProjectMembers } from './ProjectMembers'
+import { SelectField } from '../SelectField'
 
 const copy = myProjectsPage.panel
 export type PanelTab = keyof typeof copy.tabs
@@ -22,9 +24,14 @@ type ProjectDetailsPanelProps = {
   onSave: (patch: ProjectInfoPatch) => void
   onInvite: () => void
   onAccess: (memberId: string, access: ProjectAccess) => void
+  /** Partners: picks the customer account the project is for. */
+  onClientAccount?: (customerId: string) => void
 }
 
-/** Right column: tabs Project details (read or edit), Members and Activity. */
+/**
+ * Right column: tabs Project details (read or edit), Members and Activity. A
+ * partner can pick the customer account the project is for.
+ */
 export function ProjectDetailsPanel({
   project,
   meId,
@@ -35,6 +42,7 @@ export function ProjectDetailsPanel({
   onSave,
   onInvite,
   onAccess,
+  onClientAccount,
 }: ProjectDetailsPanelProps) {
   const ids = useId()
 
@@ -76,7 +84,28 @@ export function ProjectDetailsPanel({
           (editing ? (
             <ProjectInfoForm project={project} onSave={onSave} onCancel={() => onEditing(false)} />
           ) : (
-            <ProjectInfo project={project} onEdit={() => onEditing(true)} />
+            <>
+              {onClientAccount && (
+                <div className="pb-4">
+                  <SelectField
+                    layout="stacked"
+                    label={copy.clientAccount}
+                    value={project.clientAccount ?? ''}
+                    onChange={(id) => id && onClientAccount(id)}
+                    options={[
+                      ...(project.clientAccount
+                        ? []
+                        : [{ value: '', label: copy.chooseClient, disabled: true }]),
+                      ...customers.map((c) => ({ value: c.id, label: c.name })),
+                    ]}
+                  />
+                  {!project.clientAccount && (
+                    <p className="mt-1.5 text-xs text-text-muted">{copy.chooseClientHint}</p>
+                  )}
+                </div>
+              )}
+              <ProjectInfo project={project} onEdit={() => onEditing(true)} />
+            </>
           ))}
         {tab === 'members' && (
           <ProjectMembers project={project} meId={meId} onInvite={onInvite} onAccess={onAccess} />

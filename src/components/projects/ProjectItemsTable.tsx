@@ -11,12 +11,14 @@ import {
 } from 'lucide-react'
 import { Fragment, useState } from 'react'
 import { Link } from 'react-router'
+import { useAuth } from '../../auth/useAuth'
 import { myProjectsPage } from '../../data/projectPages'
 import { sizingResultsPage } from '../../data/sizingPages'
 import { articleById } from '../../lib/articles'
 import { configuredPath } from '../../lib/configured'
 import { groupThousands } from '../../lib/format'
 import { formatPrice } from '../../lib/modelSpecs'
+import { discountFor, priceFor } from '../../lib/pricing'
 import { chosenItems, itemStatuses } from '../../lib/projects'
 import { evaluateVariant } from '../../lib/sizing'
 import { getVariant } from '../../lib/variants'
@@ -24,6 +26,7 @@ import type { ItemPatch } from '../../projects/ProjectsContext'
 import type { ProjectItem, ProjectItemStatus, SizingRecord } from '../../types'
 import { BuyAction } from '../eshop/BuyAction'
 import { CurveThumbnail } from '../sizing/CurveThumbnail'
+import { PartPrice } from '../spareparts/PartPrice'
 
 const copy = myProjectsPage.items
 
@@ -84,6 +87,16 @@ export function ProjectItemsTable({
   onChoose,
   onChange,
 }: ProjectItemsTableProps) {
+  const { user } = useAuth()
+  // Partners see their net price under the list price.
+  const discount = user ? discountFor(user) : 0
+  /** The line or total price: net with list and discount for partners, else the list price. */
+  const priced = (amount: number) =>
+    discount > 0 ? (
+      <PartPrice price={priceFor(amount, user)!} format={formatPrice} compact />
+    ) : (
+      formatPrice(amount)
+    )
   const [selected, setSelected] = useState<string[]>([])
   const chosen = chosenItems(items)
   const rows = items.map((item) => {
@@ -381,7 +394,7 @@ export function ProjectItemsTable({
                         muted ? 'text-text-subtle' : 'text-navy-900'
                       }`}
                     >
-                      {price !== undefined ? formatPrice(price * item.quantity) : '–'}
+                      {price !== undefined ? priced(price * item.quantity) : '–'}
                       {muted && (
                         <span className="block text-xs font-normal text-text-muted">
                           {copy.notChosen}
@@ -404,7 +417,7 @@ export function ProjectItemsTable({
                 {copy.total}
               </td>
               <td className="px-3 py-3 text-right text-lg font-bold whitespace-nowrap text-navy-900 tabular-nums">
-                {formatPrice(total)}
+                {priced(total)}
               </td>
             </tr>
           </tfoot>
