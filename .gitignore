@@ -28,3 +28,6 @@ dist-ssr
 
 # Image candidates (pick from these, only the chosen file goes into public/images)
 _asset-source/images/_candidates/
+
+# QA output (screenshots, reports, test results, videos)
+_qa/

@@ -6,12 +6,11 @@ import { ProjectContextBar } from '../components/configured/ProjectContextBar'
 import { TenderTextTab } from '../components/configured/TenderTextTab'
 import { SparePartsTab } from '../components/spareparts/SparePartsTab'
 import { TabBar } from '../components/TabBar'
-import { TabComingSoon } from '../components/TabComingSoon'
+import { TabDemoNotice } from '../components/TabDemoNotice'
 import { TabHeading } from '../components/TabHeading'
 import { TabPanel } from '../components/TabPanel'
 import { CurvesTab } from '../components/variant/CurvesTab'
 import { SpecGroupTable } from '../components/variant/SpecGroupTable'
-import { productPage } from '../data/catalogPages'
 import { configuredPage as copy } from '../data/configuredPages'
 import { tenderDialog } from '../data/tenderTexts'
 import { variantPage } from '../data/variantPages'
@@ -105,11 +104,7 @@ export function ConfiguredProductPage() {
           />
         )}
         {activeTab === 'cad' &&
-          (model ? (
-            <BimTab product={product} models={[model]} />
-          ) : (
-            <TabComingSoon copy={productPage.tabEmpty} />
-          ))}
+          (model ? <BimTab product={product} models={[model]} /> : <TabDemoNotice />)}
         {activeTab === 'documentation' && (
           <DocumentationTab product={product} documents={documentsFor(product.id)} />
         )}
@@ -120,7 +115,7 @@ export function ConfiguredProductPage() {
               <SparePartsTab ownerId={model.id} />
             </>
           ) : (
-            <TabComingSoon copy={productPage.tabEmpty} />
+            <TabDemoNotice />
           ))}
       </TabPanel>
     </>
