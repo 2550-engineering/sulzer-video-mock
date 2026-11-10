@@ -1,8 +1,23 @@
 import { useId, useMemo, useState, type KeyboardEvent } from 'react'
 import { useNavigate } from 'react-router'
-import { applicationPath, getProduct, partPath, productPath, variantPath } from '../lib/catalog'
+import {
+  applicationPath,
+  getProduct,
+  modelPath,
+  partPath,
+  productPath,
+  variantPath,
+} from '../lib/catalog'
 import { minSuggestLength, normalizeQuery, scopePath, suggestGroups } from '../lib/search'
-import type { Application, Document, PartHit, Product, ProductVariant, SearchScope } from '../types'
+import type {
+  Application,
+  Document,
+  PartHit,
+  Product,
+  ProductModel,
+  ProductVariant,
+  SearchScope,
+} from '../types'
 import { useDebouncedValue } from './useDebouncedValue'
 
 /** Wait after the last keystroke before suggestions update. */
@@ -12,6 +27,7 @@ const debounceMs = 120
 export type SuggestOption = { to: string } & (
   | { kind: 'product'; product: Product }
   | { kind: 'variant'; variant: ProductVariant; product: Product }
+  | { kind: 'model'; model: ProductModel; product: Product }
   | { kind: 'application'; application: Application }
   | { kind: 'document'; document: Document; products: Product[] }
   | ({ kind: 'part' } & PartHit)
@@ -40,7 +56,9 @@ export function useSearchSuggest(term: string, scope: SearchScope, onNavigate?: 
       ...groups.products.map((suggestion) =>
         suggestion.kind === 'variant'
           ? { ...suggestion, to: variantPath(suggestion.variant) }
-          : { ...suggestion, to: suggestion.product.viewTo ?? productPath(suggestion.product) },
+          : suggestion.kind === 'model'
+            ? { ...suggestion, to: modelPath(suggestion.model) }
+            : { ...suggestion, to: suggestion.product.viewTo ?? productPath(suggestion.product) },
       ),
       ...groups.applications.map((application) => ({
         kind: 'application' as const,

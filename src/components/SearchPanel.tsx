@@ -9,7 +9,7 @@ import { scopePath } from '../lib/search'
 import { ScopeSelect } from './search/ScopeSelect'
 import { SearchSuggestions } from './search/SearchSuggestions'
 
-const defaultPlaceholder = 'Search products, applications, part numbers…'
+const defaultPlaceholder = 'Search products, product numbers, applications…'
 
 type SearchPanelProps = {
   open: boolean

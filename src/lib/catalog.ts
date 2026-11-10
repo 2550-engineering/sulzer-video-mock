@@ -19,6 +19,7 @@ import type {
   PartHit,
   PartOwner,
   Product,
+  ProductModel,
   ProductVariant,
   SavedItem,
   Service,
@@ -169,6 +170,9 @@ export function variantsFor(productId: string, modelId?: string) {
 
 export const variantPath = (variant: ProductVariant) =>
   `/products/${variant.productId}/${variant.id}`
+
+/** A model's own page: /products/<product>/<model>. */
+export const modelPath = (model: ProductModel) => `/products/${model.productId}/${model.id}`
 
 /** The configured variant or model a parts list belongs to. */
 export function partOwner(id: string): PartOwner | undefined {

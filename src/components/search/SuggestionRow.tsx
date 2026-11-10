@@ -108,6 +108,18 @@ function describe(option: Exclude<SuggestOption, { kind: 'all' }>) {
         ),
       }
     }
+    case 'model': {
+      const image = option.product.images[0]
+      return {
+        title: option.model.name,
+        detail: copy.productNumber(option.model.productNumber),
+        visual: (
+          <span className="relative size-12 shrink-0 overflow-hidden rounded-sm bg-surface-muted">
+            <SmartImage src={image.src} alt="" fit="contain" />
+          </span>
+        ),
+      }
+    }
     case 'part':
       return {
         title: option.part.name,
