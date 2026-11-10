@@ -24,7 +24,7 @@ export const hero = {
   title: 'Everything you need, whenever you need it',
   subtitle:
     'Find products, size solutions, order spare parts and follow your installed base – all in one place, around the clock.',
-  searchLabel: 'Find a Sulzer product',
+  searchLabel: 'Search by product name or product number',
   searchButtonLabel: 'Search',
   popularLabel: 'Popular',
   // Each one finds something; check before changing (a chip that ends on "No results" looks broken).

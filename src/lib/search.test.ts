@@ -124,9 +124,13 @@ describe('suggestGroups', () => {
     }
   }
 
-  it('waits for two characters', () => {
-    expect(names('a')).toEqual({ products: [], applications: [], documents: [] })
-    expect(names(' a ')).toEqual({ products: [], applications: [], documents: [] })
+  it('starts at the first character', () => {
+    expect(names('')).toEqual({ products: [], applications: [], documents: [] })
+    expect(names('  ')).toEqual({ products: [], applications: [], documents: [] })
+    expect(names('a').products.length).toBeGreaterThan(0)
+    expect(suggestGroups('62').products.some((suggestion) => suggestion.kind === 'model')).toBe(
+      true,
+    )
   })
 
   it('groups the best hits, at most 4 per group', () => {
@@ -143,6 +147,13 @@ describe('suggestGroups', () => {
     const water = suggestGroups('water')
     expect(water.applications).toHaveLength(4)
     expect(water.products.length).toBeLessThanOrEqual(4)
+  })
+
+  it('lists each matching model for a product number', () => {
+    const products = suggestGroups('628010').products
+    expect(products).toHaveLength(6)
+    expect(products.every((suggestion) => suggestion.kind === 'model')).toBe(true)
+    expect(products[0]).toMatchObject({ kind: 'model', model: { productNumber: '62801016' } })
   })
 
   it('suggests a product when one of its models matches', () => {

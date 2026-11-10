@@ -11,6 +11,7 @@ import type {
   KnowledgeItem,
   PartHit,
   Product,
+  ProductModel,
   ProductVariant,
   SearchKind,
   SearchResult,
@@ -341,12 +342,22 @@ export function scopePath(query: string, scope: SearchScope) {
 }
 
 /** Suggestions start at this many characters. */
-export const minSuggestLength = 2
+export const minSuggestLength = 1
 
-/** A product range or a configured product, in the Products suggestion group. */
+/** A product range, a configured product or a model, in the Products suggestion group. */
 export type ProductSuggestion =
   | { kind: 'product'; product: Product }
   | { kind: 'variant'; variant: ProductVariant; product: Product }
+  | { kind: 'model'; model: ProductModel; product: Product }
+
+/**
+ * The digits of a query that looks like (part of) a product number, e.g.
+ * "628010" or "6280 10". Null for anything else, e.g. "100-80-250".
+ */
+function productNumberQuery(query: string) {
+  const digits = compact(normalizeQuery(query))
+  return /^\d+$/.test(digits) ? digits : null
+}
 
 export type SuggestGroups = {
   products: ProductSuggestion[]
@@ -364,7 +375,8 @@ const noSuggestions = (): SuggestGroups => ({
 
 /**
  * Suggestions while typing, in the groups the scope searches. Products:
- * product ranges and configured products (mixed, in rank order), applications
+ * product ranges and configured products (mixed, in rank order; for a product
+ * number, every matching model, `perGroup` + 2), applications
  * and documents, `perGroup` each. Part numbers: spare parts. Documents:
  * documents. Empty under `minSuggestLength` characters.
  */
@@ -387,10 +399,14 @@ export function suggestGroups(
     return groups
   }
 
+  // Typing a product number lists each matching model, not just its product range.
+  const number = productNumberQuery(query)
   const seen = new Set<string>()
   for (const result of results) {
     if (result.kind === 'variant') {
       groups.products.push({ kind: 'variant', variant: result.variant, product: result.product })
+    } else if (result.kind === 'model' && number && result.model.productNumber.includes(number)) {
+      groups.products.push({ kind: 'model', model: result.model, product: result.product })
     } else if (
       (result.kind === 'product' || result.kind === 'model') &&
       !seen.has(result.product.id)
@@ -402,7 +418,7 @@ export function suggestGroups(
   const all = searchGroups(query)
   return {
     ...groups,
-    products: groups.products.slice(0, perGroup),
+    products: groups.products.slice(0, number ? many : perGroup),
     applications: all.applications.slice(0, perGroup),
     documents: all.documents.slice(0, perGroup),
   }

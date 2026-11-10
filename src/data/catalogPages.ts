@@ -337,7 +337,7 @@ export const searchPage = {
   breadcrumb: [{ label: 'Products & services', to: '/products' }] satisfies NavItem[],
   searchCrumb: 'Search',
   allCrumb: 'Products A–Z',
-  searchLabel: 'Search products, applications and documents',
+  searchLabel: 'Search products, product numbers, applications and documents',
   searchButtonLabel: 'Search',
   resultsTitle: (count: number, term: string) =>
     count === 0

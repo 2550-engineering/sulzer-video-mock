@@ -19,8 +19,9 @@ type SearchSuggestionsProps = {
 
 const groupOrder = ['product', 'application', 'document', 'part'] as const
 
-/** Configured products sit in the Products group, beside product ranges. */
-const groupOf = (option: SuggestOption) => (option.kind === 'variant' ? 'product' : option.kind)
+/** Configured products and models sit in the Products group, beside product ranges. */
+const groupOf = (option: SuggestOption) =>
+  option.kind === 'variant' || option.kind === 'model' ? 'product' : option.kind
 
 /** Grouped search suggestions under a search field. Use with `useSearchSuggest`. */
 export function SearchSuggestions({
@@ -67,7 +68,7 @@ export function SearchSuggestions({
       } ${className}`}
     >
       {groups.length > 0 ? (
-        // Side by side from tablet width; products take a third when they share the row, half with long model codes.
+        // Side by side from tablet width; products take a third when they share the row, half with model codes.
         <div className="divide-y divide-border md:flex md:divide-x md:divide-y-0">
           {groups.map((group) => (
             <SuggestionGroup
@@ -75,7 +76,7 @@ export function SearchSuggestions({
               title={copy.groups[group.kind]}
               className={
                 group.kind === 'product' && groups.length > 1
-                  ? group.rows.some(({ option }) => option.kind === 'variant')
+                  ? group.rows.some(({ option }) => option.kind === 'variant' || option.kind === 'model')
                     ? 'md:w-1/2 md:shrink-0'
                     : 'md:w-1/3 md:shrink-0'
                   : 'min-w-0 md:flex-1'
