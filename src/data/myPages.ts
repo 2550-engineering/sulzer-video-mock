@@ -36,7 +36,7 @@ export const dashboardCards = {
     links: [
       { label: 'List price & availability', to: '/self-service/list-price' },
       { label: 'Spare parts', to: '/spare-parts' },
-      { label: 'Replace pump', to: '/products/replacement' },
+      { label: 'Replacement Guide', to: '/products/replacement' },
       // Badges: orders in transit and open requests, from the self-service state (MyPagesPage).
       { label: 'Order status incl. track & trace', to: ordersPath },
       { label: 'Requests', to: requestsPath },

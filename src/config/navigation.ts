@@ -64,7 +64,7 @@ export const megaMenu: MegaMenuItem[] = [
       return area ? [{ label, to: applicationPath(area) }] : []
     }),
   },
-  { label: 'Product replacement', to: '/products/replacement' },
+  { label: 'Replacement Guide', to: '/products/replacement' },
   { label: 'Liquids', to: '/liquids' },
   { label: 'Spare parts', to: '/spare-parts' },
   {

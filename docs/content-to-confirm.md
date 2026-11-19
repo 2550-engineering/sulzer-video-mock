@@ -568,7 +568,7 @@ template.**
 ### Consultant: sizing entry and compare
 
 - **Mega menu (Products & services):** Categories, Applications, Products A–Z, Sizing,
-  Industries, Product replacement, Liquids, Spare parts, Digital solutions.
+  Industries, Replacement Guide, Liquids, Spare parts, Digital solutions.
   - "Industries" (Municipal water, Wastewater, Industrial water, Energy, Fertilizers, Mining
     and metals, Pulp and paper) opens the matching application areas. Its own page and
     "Liquids" are "Coming soon" pages.
@@ -790,7 +790,7 @@ The discontinued variant 24130931 (built until 2017) is a "before 2018" pump.
 
 ### Service provider entry points
 
-- **Mega menu:** "Spare parts" goes to `/spare-parts` and "Product replacement" to
+- **Mega menu:** "Spare parts" goes to `/spare-parts` and "Replacement Guide" to
   `/products/replacement`. Quick links "eShop" and the "Looking for our eShop?" help card go to
   `/eshop/cart`. My Pages "Spare parts" and "Replace pump", and the mySulzer tool cards, link
   to the same pages.
@@ -1020,7 +1020,7 @@ Placeholder, confirm with Sulzer.
   - Same flange sizes and shaft centre height, so the base plate, coupling guard and pipework stay.
   - A mechanical seal instead of gland packing.
 - **Banner text:** "This product is discontinued. Spare parts are still available." It now shows on every discontinued variant and model, including the XFP one.
-- **Replacement page quick picks:** "Recently discontinued products", newest first.
+- **Replacement Guide:** discontinued products are listed under the "Sulzer (discontinued)" brand and in the search suggestions (the old "Recently discontinued products" quick picks are gone).
 
 ## Personas (Phase 3, `src/config/demo.ts` → `personas`)
 
@@ -1160,20 +1160,20 @@ benefits, "See it live", customer story, CTA band). The personal toolbar sits on
 
 Tender texts use the consultant's tender text dialog: see "Tender texts" above.
 
-| Item                        | Value in the mock-up                                                                                                                                      | Note                                                                                                                                                                                     |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Recording path (Video B 4)  | RW-02 → "Find replacement" → `/products/replacement/existing-pump?serial=AH-1918-04512` → Size this pump / Add to project                                 | Also from the partner's My Pages links. Mega menu "Product replacement", My Pages "Replace pump" and the mySulzer cards open the discontinued-product finder at `/products/replacement`. |
-| RW-01 to RW-03 duty point   | 150 m³/h at 30 m, water at 8 °C, "measured by Sulzer Connect, 12-month median"                                                                            | Invented. Same as the sizing demo duty point, so "Size this pump" lands on the familiar result. Other units use their model's rated point.                                               |
-| Story                       | RW-02 (AHLSTAR 150-125-315, rated 320 m³/h) runs at 47 % of its best-efficiency flow, throttled from 38.2 m to 30 m                                       | Invented. The pump curve is the illustrative Models tab curve.                                                                                                                           |
-| Wear                        | 1 efficiency point per 10 000 run hours, at most 5 (`replacementDemo`)                                                                                    | Typical value, not a Sulzer figure.                                                                                                                                                      |
-| Existing motor              | 93 % efficiency (IE2 class) for every installed pump                                                                                                      | Assumption.                                                                                                                                                                              |
-| Another brand               | 60 % pump efficiency at the duty point, no throttling                                                                                                     | Assumption, shown as "estimated".                                                                                                                                                        |
-| Running hours, energy price | 6 000 h a year, €0.12 per kWh (`sizingDemo`)                                                                                                              | Same as sizing life cycle cost.                                                                                                                                                          |
-| RW-02 suggestions           | AHLSTAR A23-150-400/355 C1-SD-4P-F (drop-in), −42 %, €9 324 a year, payback 1.6 years; AHLSTAR A24-200-315/325 C1-SD-4P-F (lowest life cycle cost), −44 % | Computed by the sizing engine. Payback = list price / saving; installation not included.                                                                                                 |
-| "Fits the same foundation"  | Shown when suction and discharge DN match the existing pump                                                                                               | Simplification: foundation bolt pattern and shaft height aren't checked. Confirm the wording with Sulzer.                                                                                |
-| Submersible and other pumps | XFP, AFP and J pumps get "Our experts find your replacement" and Request quotation                                                                        | Only AHLSTAR has sizing data.                                                                                                                                                            |
-| Request quotation           | Shows a toast "Quotation requested … within two working days" with a link to `/self-service/quotations`                                                   | No quotation is added to the list.                                                                                                                                                       |
-| Hero photo                  | `public/images/replacement/replacement-hero.jpg` (missing)                                                                                                | See `docs/images-needed.md`.                                                                                                                                                             |
+| Item                        | Value in the mock-up                                                                                                                                      | Note                                                                                                                                                            |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Recording path (Video B 4)  | RW-02 → "Find replacement" → `/products/replacement/existing-pump?serial=AH-1918-04512` → Size this pump / Add to project                                 | Also from the partner's My Pages links. Mega menu, My Pages and the mySulzer cards ("Replacement Guide") open the Replacement Guide at `/products/replacement`. |
+| RW-01 to RW-03 duty point   | 150 m³/h at 30 m, water at 8 °C, "measured by Sulzer Connect, 12-month median"                                                                            | Invented. Same as the sizing demo duty point, so "Size this pump" lands on the familiar result. Other units use their model's rated point.                      |
+| Story                       | RW-02 (AHLSTAR 150-125-315, rated 320 m³/h) runs at 47 % of its best-efficiency flow, throttled from 38.2 m to 30 m                                       | Invented. The pump curve is the illustrative Models tab curve.                                                                                                  |
+| Wear                        | 1 efficiency point per 10 000 run hours, at most 5 (`replacementDemo`)                                                                                    | Typical value, not a Sulzer figure.                                                                                                                             |
+| Existing motor              | 93 % efficiency (IE2 class) for every installed pump                                                                                                      | Assumption.                                                                                                                                                     |
+| Another brand               | 60 % pump efficiency at the duty point, no throttling                                                                                                     | Assumption, shown as "estimated".                                                                                                                               |
+| Running hours, energy price | 6 000 h a year, €0.12 per kWh (`sizingDemo`)                                                                                                              | Same as sizing life cycle cost.                                                                                                                                 |
+| RW-02 suggestions           | AHLSTAR A23-150-400/355 C1-SD-4P-F (drop-in), −42 %, €9 324 a year, payback 1.6 years; AHLSTAR A24-200-315/325 C1-SD-4P-F (lowest life cycle cost), −44 % | Computed by the sizing engine. Payback = list price / saving; installation not included.                                                                        |
+| "Fits the same foundation"  | Shown when suction and discharge DN match the existing pump                                                                                               | Simplification: foundation bolt pattern and shaft height aren't checked. Confirm the wording with Sulzer.                                                       |
+| Submersible and other pumps | XFP, AFP and J pumps get "Our experts find your replacement" and Request quotation                                                                        | Only AHLSTAR has sizing data.                                                                                                                                   |
+| Request quotation           | Shows a toast "Quotation requested … within two working days" with a link to `/self-service/quotations`                                                   | No quotation is added to the list.                                                                                                                              |
+| Hero photo                  | `public/images/replacement/replacement-hero.jpg` (missing)                                                                                                | See `docs/images-needed.md`.                                                                                                                                    |
 
 ## Pump replacement guide (`src/data/replacementGuide.ts`, `src/lib/replacementGuide.ts`)
 

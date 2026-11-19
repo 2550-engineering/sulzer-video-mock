@@ -87,7 +87,7 @@ export function PumpReplacementPage() {
 
   return (
     <>
-      <title>{`${copy.breadcrumbLabel} | Sulzer`}</title>
+      <title>{`${copy.tabTitle} | Sulzer`}</title>
 
       <ApplicationPanelHero
         image={copy.hero}

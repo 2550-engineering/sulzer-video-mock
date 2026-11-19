@@ -287,3 +287,49 @@ export function energySavings(
     co2Kg: clean(kwhPerYear * replacementGuideDemo.co2PerKwh),
   }
 }
+
+/* ── Spec rows ─────────────────────────────────────────────────────────────── */
+
+export type GuideSpecRow = { label: string; value: string }
+
+/** The existing pump card: manufacturer, model, discharge, power, supply, max head and flow. */
+export const existingSpecRows = (pump: GuideExistingPump): GuideSpecRow[] =>
+  copy.specs.existing.map(([key, label]) => ({ label, value: pump[key] }))
+
+/** The Sulzer replacement card: "Manufacturer: Sulzer", then its 15 specs. */
+export const replacementSpecRows = (replacement: GuideReplacement): GuideSpecRow[] => [
+  { label: copy.specs.manufacturer, value: copy.replacement.manufacturer },
+  ...copy.specs.replacement.map(([key, label]) => ({ label, value: replacement[key] })),
+]
+
+/**
+ * The phone comparison table: every existing-pump row beside the replacement's value
+ * for the same label, then the rows only the replacement has.
+ */
+export function guideComparisonRows(pump: GuideExistingPump, replacement: GuideReplacement) {
+  const existing = existingSpecRows(pump)
+  const next = replacementSpecRows(replacement)
+  const nextByLabel = new Map(next.map((row) => [row.label, row.value]))
+  const shared = new Set(existing.map((row) => row.label))
+  return [
+    ...existing.map((row) => ({
+      label: row.label,
+      existing: row.value,
+      replacement: nextByLabel.get(row.label) ?? '',
+    })),
+    ...next
+      .filter((row) => !shared.has(row.label))
+      .map((row) => ({ label: row.label, existing: '', replacement: row.value })),
+  ]
+}
+
+/** kW in and out for the energy savings calculator, or undefined when there is nothing to save. */
+export function guideSavingsPower(selection: GuideSelection) {
+  if (selection.unmatched) return undefined
+  if (selection.kind === 'competitor')
+    return { existingKw: selection.pump.powerKw, replacementKw: selection.replacement.powerKw }
+  const { article, successor } = selection
+  return successor && successor.power < article.power
+    ? { existingKw: article.power, replacementKw: successor.power }
+    : undefined
+}

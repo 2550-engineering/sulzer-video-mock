@@ -1,11 +1,16 @@
 import { describe, expect, it } from 'vitest'
 import { guideExistingPumps, guideReplacements } from '../data/replacementGuide'
 import { replacementGuidePage } from '../data/replacementGuidePage'
+import { discontinuedArticles } from './replacement'
 import {
   energySavings,
+  existingSpecRows,
   findGuidePump,
+  guideComparisonRows,
+  guideSavingsPower,
   guideBrands,
   guideTargetQuery,
+  replacementSpecRows,
   resolveGuideSelection,
   searchByCode,
   suggestReplacements,
@@ -155,5 +160,37 @@ describe('energy savings', () => {
 
   it('saves nothing when the replacement draws more', () => {
     expect(energySavings(2, 3, 4000, 0.25).kwhPerYear).toBe(0)
+  })
+})
+
+describe('spec rows', () => {
+  it('has 7 existing and 16 replacement rows, and 16 comparison rows (7 shared)', () => {
+    const pump = findGuidePump('Flygt', 'NP 3085 SH')!
+    const replacement = guideReplacements.find((r) => r.id === pump.replacementId)!
+    expect(existingSpecRows(pump)).toHaveLength(7)
+    expect(replacementSpecRows(replacement)).toHaveLength(16)
+    const rows = guideComparisonRows(pump, replacement)
+    expect(rows[0]).toEqual({ label: 'Manufacturer', existing: 'Flygt', replacement: 'Sulzer' })
+    expect(rows).toHaveLength(16)
+    expect(rows.at(-1)).toEqual({ label: 'Weight', existing: '', replacement: '78 kg' })
+  })
+
+  it('shows the calculator for competitor pumps, not for an unknown ?from', () => {
+    const resolve = (query: string) => resolveGuideSelection(new URLSearchParams(query))
+    expect(guideSavingsPower(resolve(''))).toEqual({ existingKw: 2.4, replacementKw: 2.2 })
+    expect(guideSavingsPower(resolve('from=nothing'))).toBeUndefined()
+  })
+})
+
+describe('discontinued banner links', () => {
+  it('every /products/replacement?from=<id> lands on that product and its successor', () => {
+    for (const article of discontinuedArticles()) {
+      const selection = resolveGuideSelection(new URLSearchParams({ from: article.id }))
+      expect(selection.unmatched, article.id).toBeUndefined()
+      expect(selection.kind, article.id).toBe('sulzer')
+      if (selection.kind !== 'sulzer') continue
+      expect(selection.article.id).toBe(article.id)
+      expect(selection.successor?.id).toBe(article.discontinued!.successorId)
+    }
   })
 })

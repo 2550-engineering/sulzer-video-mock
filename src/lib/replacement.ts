@@ -1,5 +1,5 @@
 import { ahlstarReplacements } from '../data/models/ahlstar'
-import { replacementPage } from '../data/replacementPage'
+import { sulzerReplacementCopy } from '../data/replacementGuidePage'
 import { xfpReplacements } from '../data/xfp'
 import type { FitNoteKind, ResultArticle } from '../types'
 import { articlesFor } from './articles'
@@ -54,14 +54,14 @@ function specRows(article: ResultArticle) {
 /** Key specs side by side, marking the rows that differ. */
 export function comparisonRows(old: ResultArticle, next: ResultArticle) {
   const rated = (p: { flow: number; head: number }) =>
-    replacementPage.compare.ratedValue(
+    sulzerReplacementCopy.compare.ratedValue(
       groupThousands(p.flow),
       groupThousands(p.head, p.head % 1 ? 1 : 0),
     )
   const nextSpecs = new Map(specRows(next).map((row) => [row.label, row.value]))
   const rows = [
     {
-      label: replacementPage.compare.ratedPoint,
+      label: sulzerReplacementCopy.compare.ratedPoint,
       old: rated(old.rated),
       next: rated(next.rated),
     },
@@ -76,7 +76,7 @@ export function comparisonRows(old: ResultArticle, next: ResultArticle) {
 
 /** How well the successor fits where the old product was installed. */
 export function fitNotes(old: ResultArticle, next: ResultArticle) {
-  const copy = replacementPage.notes
+  const copy = sulzerReplacementCopy.notes
   const notes: { kind: FitNoteKind; text: string }[] = []
   notes.push(
     old.outlet === next.outlet

@@ -25,9 +25,14 @@ export const measuredDuties: Record<string, DutyPoint> = {
 
 export const replacementPage = {
   title: 'Find a replacement for your pump',
-  breadcrumbLabel: 'Product replacement',
+  breadcrumbLabel: 'Installed pump',
   text: 'Tell us which pump you have today. We suggest the current Sulzer model for its duty point and show what you save on energy.',
-  breadcrumb: [{ label: 'Products & services', to: '/products' }] satisfies NavItem[],
+  breadcrumb: [
+    { label: 'Products & services', to: '/products' },
+    { label: 'Replacement Guide', to: '/products/replacement' },
+  ] satisfies NavItem[],
+  /** Browser tab title. */
+  tabTitle: 'Installed pump – Replacement Guide',
   hero: {
     src: '/images/replacement/replacement-hero.jpg',
     alt: 'Engineer next to a row of installed end-suction pumps in a bright pump station',
