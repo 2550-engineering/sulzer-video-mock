@@ -1529,3 +1529,61 @@ export type PersonalData = {
   recent: string[]
   preferences: PersonalPreferences
 }
+
+/* ── Pump replacement guide ────────────────────────────────────────────────── */
+
+/** Stock status of a guide replacement, shown as a coloured chip. */
+export type GuideAvailability = 'In stock' | '2–3 week lead time' | 'Contact distributor'
+
+/** How a guide replacement goes into the existing station. */
+export type GuideFit = 'drop-in' | 'adapter'
+
+/** A Sulzer product the replacement guide recommends. Values are display strings, as on a datasheet. */
+export type GuideReplacement = {
+  id: string
+  /** e.g. "ABS XFP". */
+  range: string
+  /** e.g. "81C-CB1.3 PE22/4". */
+  model: string
+  article: string
+  material: string
+  discharge: string
+  power: string
+  /** kW, for the energy savings calculator. */
+  powerKw: number
+  voltage: string
+  impeller: string
+  maxHead: string
+  maxFlow: string
+  solids: string
+  efficiency: string
+  protection: string
+  temp: string
+  weight: string
+  tier: 'Premium' | 'Standard' | 'Grinder' | 'High-flow' | 'Drainage'
+  availability: GuideAvailability
+  comment: string
+  /** Missing for products without a photo: the page shows a neutral thumbnail. */
+  image?: ImageSource
+}
+
+/** A competitor pump the customer may have installed, with its recommended Sulzer replacement. */
+export type GuideExistingPump = {
+  brand: string
+  model: string
+  partNo: string
+  /** Swedish RSK number, e.g. "581 22 10". */
+  rsk: string
+  discharge: string
+  /** Nameplate power, e.g. "2.2 kW". */
+  power: string
+  /** Electrical input power, kW. Can differ from `power`. */
+  powerKw: number
+  voltage: string
+  maxHead: string
+  maxFlow: string
+  /** `GuideReplacement.id`. */
+  replacementId: string
+  fit: GuideFit
+  image?: ImageSource
+}

@@ -158,6 +158,19 @@ export const replacementDemo = {
 } as const
 
 /**
+ * Pump replacement guide energy savings calculator. Defaults from the standalone guide.
+ * PLACEHOLDERS — confirm with Sulzer (docs/content-to-confirm.md).
+ */
+export const replacementGuideDemo = {
+  /** Operating hours a year the calculator opens with. */
+  operatingHours: 4000,
+  /** Electricity price the calculator opens with, € per kWh. */
+  electricityPrice: 0.25,
+  /** Grid emission factor, kg CO₂ per kWh. */
+  co2PerKwh: 0.35,
+} as const
+
+/**
  * The demo's "today". Condition data runs hourly up to the last full hour before
  * `lastSync`, and "service due" counts from `today`. Wall-clock time, no time zone.
  */
