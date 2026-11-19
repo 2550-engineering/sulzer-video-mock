@@ -24,9 +24,12 @@ import {
 } from '../lib/replacementGuide'
 
 /** The search line for a ?from search: what it matched, or that it matched nothing. */
-function searchStatus(from: string, selection: GuideSelection): GuideSearchStatus | undefined {
+function searchStatus(
+  from: string,
+  selection: GuideSelection | undefined,
+): GuideSearchStatus | undefined {
   if (!from) return undefined
-  if (selection.unmatched) return { kind: 'error', text: copy.search.notFound(from) }
+  if (!selection) return { kind: 'error', text: copy.search.notFound(from) }
   if (selection.kind === 'competitor') {
     const { pump, replacement } = selection
     return {
@@ -44,6 +47,7 @@ function searchStatus(from: string, selection: GuideSelection): GuideSearchStatu
  * or Sulzer product number (?from=), from the suggestions, or by brand and model
  * (?brand=&model=), and see the Sulzer pump that replaces it, whether it fits, and
  * the energy it saves. Every choice is a history entry, so Back steps through them.
+ * Until a pump is chosen the page shows only the search.
  */
 export function ReplacementGuidePage() {
   const navigate = useNavigate()
@@ -58,22 +62,37 @@ export function ReplacementGuidePage() {
   }
   const browse = (brand: string, model: string) => go(`?${new URLSearchParams({ brand, model })}`)
 
-  const brand = selection.kind === 'competitor' ? selection.pump.brand : copy.discontinuedBrand
-  const model = selection.kind === 'competitor' ? selection.pump.model : selection.article.id
+  // A ?from search that matched nothing: the search line and a note, no pump.
+  const unmatched = from && !selection ? from : undefined
+  // A brand chosen without a model yet fills the brand list only.
+  const brandParam = params.get('brand') ?? ''
+  const brand = selection
+    ? selection.kind === 'competitor'
+      ? selection.pump.brand
+      : copy.discontinuedBrand
+    : !from && brands.some((b) => b.name === brandParam)
+      ? brandParam
+      : ''
+  const model = selection
+    ? selection.kind === 'competitor'
+      ? selection.pump.model
+      : selection.article.id
+    : ''
   const brandModels = brands.find((b) => b.name === brand)?.models ?? []
   // A Sulzer product that is still available is not in the list: show it anyway.
   const models =
-    selection.kind === 'sulzer' && !brandModels.some((m) => m.value === model)
+    selection?.kind === 'sulzer' && !brandModels.some((m) => m.value === model)
       ? [...brandModels, { value: model, label: selection.article.code }]
       : brandModels
-  const recommended =
-    selection.kind === 'competitor'
+  const recommended = !selection
+    ? undefined
+    : selection.kind === 'competitor'
       ? replacementName(selection.replacement)
       : (selection.successor ?? selection.article).code
 
   // A Sulzer product found by id (e.g. from the discontinued banner) shows its product number.
   const initialQuery =
-    selection.kind === 'sulzer' && !selection.unmatched && from === selection.article.id
+    selection?.kind === 'sulzer' && from === selection.article.id
       ? selection.article.productNumber
       : from
 
@@ -82,17 +101,14 @@ export function ReplacementGuidePage() {
     else browse(copy.discontinuedBrand, target.articleId)
   }
 
-  function chooseBrand(name: string) {
-    const first = brands.find((b) => b.name === name)?.models[0]
-    if (first) browse(name, first.value)
-  }
+  const chooseBrand = (name: string) => go(`?${new URLSearchParams({ brand: name })}`)
 
-  const resultKey = selection.unmatched
-    ? `unmatched:${selection.unmatched}`
+  const resultKey = !selection
+    ? `unmatched:${unmatched}`
     : selection.kind === 'competitor'
       ? `${selection.pump.brand}:${selection.pump.model}`
       : selection.article.id
-  const power = guideSavingsPower(selection)
+  const power = selection && guideSavingsPower(selection)
 
   return (
     <>
@@ -128,29 +144,31 @@ export function ReplacementGuidePage() {
         </div>
       </section>
 
-      <section key={resultKey} className="site-container animate-fade-in pt-8">
-        {selection.unmatched ? (
-          <p className="flex items-start gap-3 rounded-lg border border-border bg-surface-muted px-6 py-5 text-[15px] text-text">
-            <SearchX aria-hidden className="mt-0.5 size-5 shrink-0 text-text-subtle" />
-            {sulzerReplacementCopy.notFound(selection.unmatched)}
-          </p>
-        ) : selection.kind === 'competitor' ? (
-          <div className="space-y-5">
-            <GuideFitBadge fit={selection.fit} />
-            <div className="grid items-start gap-5 max-md:hidden lg:grid-cols-2">
-              <GuideExistingCard pump={selection.pump} />
-              <GuideReplacementCard replacement={selection.replacement} />
+      {(selection || unmatched) && (
+        <section key={resultKey} className="site-container animate-fade-in pt-8">
+          {!selection ? (
+            <p className="flex items-start gap-3 rounded-lg border border-border bg-surface-muted px-6 py-5 text-[15px] text-text">
+              <SearchX aria-hidden className="mt-0.5 size-5 shrink-0 text-text-subtle" />
+              {sulzerReplacementCopy.notFound(from)}
+            </p>
+          ) : selection.kind === 'competitor' ? (
+            <div className="space-y-5">
+              <GuideFitBadge fit={selection.fit} />
+              <div className="grid items-start gap-5 max-md:hidden lg:grid-cols-2">
+                <GuideExistingCard pump={selection.pump} />
+                <GuideReplacementCard replacement={selection.replacement} />
+              </div>
+              <GuideComparisonTable
+                pump={selection.pump}
+                replacement={selection.replacement}
+                className="md:hidden"
+              />
             </div>
-            <GuideComparisonTable
-              pump={selection.pump}
-              replacement={selection.replacement}
-              className="md:hidden"
-            />
-          </div>
-        ) : (
-          <SulzerReplacementResult article={selection.article} successor={selection.successor} />
-        )}
-      </section>
+          ) : (
+            <SulzerReplacementResult article={selection.article} successor={selection.successor} />
+          )}
+        </section>
+      )}
 
       {power && (
         <section className="site-container pt-8">
@@ -158,11 +176,16 @@ export function ReplacementGuidePage() {
         </section>
       )}
 
-      <div className="site-container pt-10 pb-16">
-        <p className="border-t border-border pt-6 text-[13px] text-text-subtle">
-          {copy.disclaimer}
-        </p>
-      </div>
+      {/* The disclaimer is about the result data: only with a pump. Otherwise just the gap. */}
+      {selection ? (
+        <div className="site-container pt-10 pb-16">
+          <p className="border-t border-border pt-6 text-[13px] text-text-subtle">
+            {copy.disclaimer}
+          </p>
+        </div>
+      ) : (
+        <div aria-hidden className="pb-16" />
+      )}
     </>
   )
 }

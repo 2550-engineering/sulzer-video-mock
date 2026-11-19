@@ -114,28 +114,29 @@ describe('suggestions', () => {
 describe('selection from the URL', () => {
   const resolve = (query: string) => resolveGuideSelection(new URLSearchParams(query))
 
-  it('falls back to the first Flygt pump', () => {
-    expect(resolve('')).toMatchObject({ kind: 'competitor', pump: { model: 'NP 3085 SH' } })
-    expect(resolve('from=nothing')).toMatchObject({
-      pump: { brand: 'Flygt', model: 'NP 3085 SH' },
-      unmatched: 'nothing',
-    })
+  it('shows no pump until one is chosen', () => {
+    expect(resolve('')).toBeUndefined()
+    expect(resolve('brand=Wilo')).toBeUndefined()
+    expect(resolve('brand=Wilo&model=unknown')).toBeUndefined()
+    expect(resolve('brand=Sulzer (discontinued)&model=unknown')).toBeUndefined()
+    expect(resolve('from=nothing')).toBeUndefined()
   })
 
-  it('reads brand and model, or the first model of the brand', () => {
+  it('reads brand and model', () => {
     expect(resolve('brand=KSB&model=Amarex KRT F 100-251')).toMatchObject({
       replacement: { id: 'xfp-100c' },
       fit: 'drop-in',
     })
-    expect(resolve('brand=Wilo&model=unknown')).toMatchObject({
-      pump: { model: 'Rexa FIT V06DA' },
+    expect(resolve('brand=Sulzer (discontinued)&model=24130931')).toMatchObject({
+      kind: 'sulzer',
+      article: { id: '24130931' },
     })
   })
 
   it('reads ?from as a Sulzer product number or a competitor code', () => {
     const sulzer = resolve('from=24130931')
-    expect(sulzer.kind).toBe('sulzer')
-    if (sulzer.kind === 'sulzer') expect(sulzer.successor?.id).toBe('24150231')
+    expect(sulzer?.kind).toBe('sulzer')
+    if (sulzer?.kind === 'sulzer') expect(sulzer.successor?.id).toBe('24150231')
     expect(resolve('from=98044186')).toMatchObject({ pump: { model: 'SE1.80.80.22' } })
   })
 
@@ -175,10 +176,11 @@ describe('spec rows', () => {
     expect(rows.at(-1)).toEqual({ label: 'Weight', existing: '', replacement: '78 kg' })
   })
 
-  it('shows the calculator for competitor pumps, not for an unknown ?from', () => {
-    const resolve = (query: string) => resolveGuideSelection(new URLSearchParams(query))
-    expect(guideSavingsPower(resolve(''))).toEqual({ existingKw: 2.4, replacementKw: 2.2 })
-    expect(guideSavingsPower(resolve('from=nothing'))).toBeUndefined()
+  it('shows the calculator for competitor pumps', () => {
+    const selection = resolveGuideSelection(
+      new URLSearchParams({ brand: 'Flygt', model: 'NP 3085 SH' }),
+    )!
+    expect(guideSavingsPower(selection)).toEqual({ existingKw: 2.4, replacementKw: 2.2 })
   })
 })
 
@@ -186,9 +188,8 @@ describe('discontinued banner links', () => {
   it('every /products/replacement?from=<id> lands on that product and its successor', () => {
     for (const article of discontinuedArticles()) {
       const selection = resolveGuideSelection(new URLSearchParams({ from: article.id }))
-      expect(selection.unmatched, article.id).toBeUndefined()
-      expect(selection.kind, article.id).toBe('sulzer')
-      if (selection.kind !== 'sulzer') continue
+      expect(selection?.kind, article.id).toBe('sulzer')
+      if (selection?.kind !== 'sulzer') continue
       expect(selection.article.id).toBe(article.id)
       expect(selection.successor?.id).toBe(article.discontinued!.successorId)
     }

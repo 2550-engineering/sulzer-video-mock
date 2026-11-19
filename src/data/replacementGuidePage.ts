@@ -74,6 +74,10 @@ export const replacementGuidePage = {
     brand: 'Installed pump — brand',
     model: 'Installed pump — model',
     recommended: 'Recommended replacement',
+    brandPlaceholder: 'Select brand',
+    modelPlaceholder: 'Select model',
+    /** The recommendation box before a pump is chosen. */
+    recommendedNone: 'Choose your pump',
     /** Accessible name of the suggestion list. */
     suggestions: 'Matching pumps',
     /** Right-hand side of a suggestion row. */
