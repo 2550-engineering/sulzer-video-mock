@@ -61,14 +61,26 @@ Deck slides 11 (end user / asset owner), 12 (end user IoT) and 13 (channel partn
 - **P3 Connect product page + digital solutions + personal toolbar.**
 - **P4 Requests, orders and quotations.**
 - **P5 Spare parts, sectional drawing and eShop.**
-- **P6 Replacement finder and tender texts.**
+- **P6 Replacement Guide, installed-pump replacement finder and tender texts.**
 - **P7 Channel partner:** partner My Pages, customers, partner prices.
 
 P5 and P6 are also needed by the service provider (slide 9) and consultant (slide 10) videos. Build them persona-agnostic and reusable: no end-user or partner wording baked into the components, persona-specific bits (prices, "on behalf of" a customer) passed in as props or read from the signed-in persona.
 
 Personas: `endUser` (Emma Lindqvist, Nordvatten Utilities; also the service provider workshop demo, slide 9), `consultant` (Anna Berg, Nordic Water Consulting, slide 10) and `channelPartner` (Lars Ek, Aqua Pumpteknik). To add one, add its id to `PersonaId` in `src/types.ts` and an entry to `personas`; auth, the Shift+D panel and the per-persona project store pick it up.
 
-Spare parts, exploded drawings, the cart and checkout, the discontinued-product replacement finder and tender texts are shared components from the slide 9 and 10 work. Persona-specific bits are layered on top: partner net prices (`lib/pricing.ts`), "order on behalf of customer" at checkout, and the installed-pump replacement finder at `/products/replacement/existing-pump`.
+Spare parts, exploded drawings, the cart and checkout, the Replacement Guide and tender texts are shared components from the slide 9 and 10 work. Persona-specific bits are layered on top: partner net prices (`lib/pricing.ts`), "order on behalf of customer" at checkout, and the installed-pump replacement finder at `/products/replacement/existing-pump`.
+
+## Replacement Guide
+
+The client's standalone Pump Replacement Guide (`_reference/sulzer-guide/`), ported into the site.
+
+- **Route:** `/products/replacement` (`src/pages/ReplacementGuidePage.tsx`). Finds the Sulzer replacement for a competitor pump (Flygt, Grundfos, KSB, Wilo, Ebara, Tsurumi) or the successor of a discontinued Sulzer product (brand "Sulzer (discontinued)"), with fit, comparison and energy savings.
+- **Data:** `src/data/replacementGuide.ts` (catalogue, ported unchanged from the guide), page copy in `src/data/replacementGuidePage.ts`, calculator defaults and assistant timing in `replacementGuideDemo` (`src/config/demo.ts`).
+- **Logic:** `src/lib/replacementGuide.ts` (search, URL, comparison, energy savings).
+- **URL params:** `?brand=&model=` for a pump picked from the lists (`brand=Sulzer (discontinued)&model=<article id>` for a Sulzer one), `?from=<code>` for a search by part, RSK or Sulzer product number. Every choice is a history entry.
+- **Assistant:** the Sulzer Assistant chat (`src/components/replacement/ReplacementAssistant.tsx`, answers in `src/data/replacementAssistant.ts`) replaces the chat card on `/products/replacement` only (`assistantPaths` in `src/config/navigation.ts`).
+- **Not the same page:** `/products/replacement/existing-pump` is the separate installed-pump replacement finder (end user and partner, from My assets), with the normal chat card.
+- **Photos:** `public/images/replacement-guide/`, extracted from the guide's `image-slots.state.json` with `node scripts/extract-guide-images.mjs`. Rerun it if the client sends an updated guide.
 
 ## Responsive
 
@@ -83,6 +95,7 @@ The mock-up is being made responsive for tablets and phones. The desktop layout 
 ## Images
 
 - Images come from Sulzer's own media (sulzer.com, Sulzer PDFs in `_asset-source/pdfs`) or licensed stock. **Never Grundfos, KSB or Xylem.**
+- **Exception:** the competitor pump photos in `public/images/replacement-guide/existing/` come from the client's own Pump Replacement Guide and are approved for the Replacement Guide page (`/products/replacement`) only. Don't use them anywhere else, and no other competitor images anywhere.
 - Every image in `public/images` that came from the web is logged in `~/Documents/Claude/Projects/Sulzer/docs/image-sources.md` with its source URL.
 - `npm run images:doc` lists every image path in `src/data` with its aspect, minimum size and what it should show (`docs/images-needed.md`). New image folders need a spec in `scripts/images-needed.mjs`.
 

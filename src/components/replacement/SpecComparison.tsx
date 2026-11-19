@@ -1,4 +1,4 @@
-import { replacementPage as copy } from '../../data/replacementPage'
+import { sulzerReplacementCopy as copy } from '../../data/replacementGuidePage'
 
 type SpecComparisonProps = {
   rows: { label: string; old: string; next: string; changed: boolean }[]

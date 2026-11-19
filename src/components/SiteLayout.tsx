@@ -1,19 +1,24 @@
 import { Outlet, useLocation } from 'react-router'
 import { useAuth } from '../auth/useAuth'
+import { assistantPaths } from '../config/navigation'
 import { toolbarPaths } from '../data/personal'
 import { ChatWidget } from './ChatWidget'
 import { SiteFooter } from './SiteFooter'
 import { SiteHeader } from './SiteHeader'
+import { ReplacementAssistant } from './replacement/ReplacementAssistant'
 import { PersonalToolbar } from './toolbar/PersonalToolbar'
 
 /**
  * Shell for every route: sticky header, page content, footer and floating chat.
  * Signed in, product, application and search pages also get the personal toolbar.
+ * The Replacement Guide swaps the chat card for the Sulzer Assistant, which starts
+ * over each time the page is entered.
  */
 export function SiteLayout() {
   const { pathname } = useLocation()
   const { user } = useAuth()
   const toolbar = user !== null && toolbarPaths.some((path) => path.test(pathname))
+  const assistant = assistantPaths.includes(pathname)
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -29,7 +34,7 @@ export function SiteLayout() {
       </main>
       <SiteFooter />
       {toolbar && <PersonalToolbar />}
-      <ChatWidget />
+      {assistant ? <ReplacementAssistant /> : <ChatWidget />}
     </div>
   )
 }

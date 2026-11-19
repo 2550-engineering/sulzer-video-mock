@@ -105,7 +105,7 @@ export const tailoredSection = {
         to: '/spare-parts',
       },
       {
-        label: 'Replacement pump finder',
+        label: 'Replacement Guide',
         text: 'Get a Sulzer match for your existing pump.',
         icon: Replace,
         to: '/products/replacement',
@@ -138,7 +138,7 @@ export const exploreSection = {
       icon: Tag,
     },
     {
-      title: 'Replacement pump finder',
+      title: 'Replacement Guide',
       text: 'Enter the brand and model you have today and get the right Sulzer replacement.',
       linkLabel: 'Try it',
       to: '/products/replacement',

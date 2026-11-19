@@ -40,7 +40,7 @@ import { PumpReplacementPage } from './pages/PumpReplacementPage'
 import { QuotationPage } from './pages/QuotationPage'
 import { QuotationsPage } from './pages/QuotationsPage'
 import { RecentlyViewedPage } from './pages/RecentlyViewedPage'
-import { ReplacementPage } from './pages/ReplacementPage'
+import { ReplacementGuidePage } from './pages/ReplacementGuidePage'
 import { RequestsPage } from './pages/RequestsPage'
 import { SavedItemsPage } from './pages/SavedItemsPage'
 import { SizingComparePage } from './pages/SizingComparePage'
@@ -79,7 +79,7 @@ export default function App() {
                       />
                       <Route path="/products" element={<ProductSearchPage />} />
                       {/* Products A–Z and Categories are the results page without a query; keeps old links working. */}
-                      <Route path="/products/replacement" element={<ReplacementPage />} />
+                      <Route path="/products/replacement" element={<ReplacementGuidePage />} />
                       {/* Replacing an installed pump (asset, serial number, type or other brand) with energy savings. */}
                       <Route
                         path="/products/replacement/existing-pump"

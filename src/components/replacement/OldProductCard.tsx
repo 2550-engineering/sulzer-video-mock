@@ -1,5 +1,5 @@
 import { Link } from 'react-router'
-import { replacementPage as copy } from '../../data/replacementPage'
+import { sulzerReplacementCopy as copy } from '../../data/replacementGuidePage'
 import { getProduct } from '../../lib/catalog'
 import type { ResultArticle } from '../../types'
 import { SmartImage } from '../SmartImage'

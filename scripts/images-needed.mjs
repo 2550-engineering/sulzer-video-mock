@@ -102,6 +102,12 @@ const specs = [
     minSize: '2560 × 1100',
   },
   {
+    match: /^\/images\/replacement-guide\//,
+    kind: 'Pump replacement guide photo (WebP, product photo on a light background)',
+    aspect: '1:1 (shown contained, so other shapes letterbox)',
+    minSize: '400 × 400',
+  },
+  {
     match: /^\/images\/sites\//,
     kind: 'Site photo (also the asset page hero band; keep the subject centred)',
     aspect: '16:9',
@@ -122,6 +128,7 @@ const { intro } = await load('/src/data/mySulzer.ts')
 const { sites, assets } = await load('/src/data/assets.ts')
 const { digitalSolutionsPage } = await load('/src/data/digitalSolutions.ts')
 const { replacementPage } = await load('/src/data/replacement.ts')
+const { guideExistingPumps, guideReplacements } = await load('/src/data/replacementGuide.ts')
 await server.close()
 
 const byId = (items) => new Map(items.map((item) => [item.id, item]))
@@ -208,6 +215,9 @@ const images = [
   ...Object.values(cadPreviews),
   ...sites.map((site) => site.image),
   replacementPage.hero,
+  ...[...guideReplacements, ...guideExistingPumps].flatMap((item) =>
+    item.image ? [item.image] : [],
+  ),
 ]
 
 const rows = images.map(({ src, alt }) => {
@@ -254,6 +264,10 @@ with the file name (hide the labels with \`showPlaceholderLabels\` in \`src/conf
   \`ahlstar-main.png\`). \`public/images/spare-parts/\` still holds \`service-kits.jpg\` and
   \`original-spare-parts.jpg\`; they are no longer shown since \`/spare-parts\` and \`/eshop\`
   became real pages, and can go.
+- **Replacement guide photos** (\`public/images/replacement-guide/\`) were extracted from the
+  standalone guide with \`scripts/extract-guide-images.mjs\`. They are small WebP files. The
+  existing-pump photos show other manufacturers' pumps: they come from the client's own guide
+  and are approved for \`/products/replacement\` only (CLAUDE.md, Images).
 - **Formats:** JPG for photos (quality 80–85), PNG for product cut-outs.
 
 ${rows.length} images, ${missing} missing.

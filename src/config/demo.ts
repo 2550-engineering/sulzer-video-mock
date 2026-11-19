@@ -158,6 +158,29 @@ export const replacementDemo = {
 } as const
 
 /**
+ * Pump replacement guide: energy savings calculator defaults from the standalone guide,
+ * and the timing of the Sulzer Assistant chat.
+ * PLACEHOLDERS — confirm with Sulzer (docs/content-to-confirm.md).
+ */
+export const replacementGuideDemo = {
+  /** Operating hours a year the calculator opens with. */
+  operatingHours: 4000,
+  /** Electricity price the calculator opens with, € per kWh. */
+  electricityPrice: 0.25,
+  /** Grid emission factor, kg CO₂ per kWh. */
+  co2PerKwh: 0.35,
+  /**
+   * Whether the Sulzer Assistant opens by itself when the page loads (as in the standalone
+   * guide). Off: only the chat button shows, and a click opens the greeting.
+   */
+  assistantAutoOpen: false,
+  /** With auto-open on: how long after the page loads it opens, ms. */
+  assistantAutoOpenDelay: 1000,
+  /** How long the assistant "types" before each answer, ms. Fixed, so every take matches. */
+  assistantTypingDelay: 900,
+} as const
+
+/**
  * The demo's "today". Condition data runs hourly up to the last full hour before
  * `lastSync`, and "service due" counts from `today`. Wall-clock time, no time zone.
  */

@@ -1,5 +1,5 @@
 import { CircleCheck, Info, TriangleAlert } from 'lucide-react'
-import { replacementPage as copy } from '../../data/replacementPage'
+import { sulzerReplacementCopy as copy } from '../../data/replacementGuidePage'
 import type { FitNoteKind } from '../../types'
 
 const icons = {

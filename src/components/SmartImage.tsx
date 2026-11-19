@@ -8,8 +8,14 @@ const fits = {
   contain: 'object-contain',
 } as const
 
+/** An image imported from src/assets: "/src/assets/…" in dev, "/assets/…" once built. */
+const isBundled = (src: string) => /^\/(src\/)?assets\//.test(src) || src.startsWith('data:image/')
+
 type SmartImageProps = {
-  /** Fixed path under public/, e.g. "/images/products/ahlstar-main.png". */
+  /**
+   * Fixed path under public/, e.g. "/images/products/ahlstar-main.png", or the URL of an
+   * image imported from src/assets (bundled, so always there).
+   */
   src: string
   alt: string
   /** CSS aspect ratio, e.g. "4 / 3". Without it, the image fills its positioned parent. */
@@ -27,7 +33,7 @@ type SmartImageProps = {
  */
 export function SmartImage({ src, alt, aspect, fit = 'cover', className = '' }: SmartImageProps) {
   const [failedSrc, setFailedSrc] = useState<string>()
-  const available = publicImages.has(src) && failedSrc !== src
+  const available = (publicImages.has(src) || isBundled(src)) && failedSrc !== src
   const box = aspect ? 'relative w-full' : 'absolute inset-0'
 
   if (available) {
