@@ -265,8 +265,9 @@ with the file name (hide the labels with \`showPlaceholderLabels\` in \`src/conf
   \`original-spare-parts.jpg\`; they are no longer shown since \`/spare-parts\` and \`/eshop\`
   became real pages, and can go.
 - **Replacement guide photos** (\`public/images/replacement-guide/\`) were extracted from the
-  standalone guide with \`scripts/extract-guide-images.mjs\`. They are small WebP files, and the
-  existing-pump photos show other manufacturers' pumps: see \`docs/content-to-confirm.md\`.
+  standalone guide with \`scripts/extract-guide-images.mjs\`. They are small WebP files. The
+  existing-pump photos show other manufacturers' pumps: they come from the client's own guide
+  and are approved for \`/products/replacement\` only (CLAUDE.md, Images).
 - **Formats:** JPG for photos (quality 80–85), PNG for product cut-outs.
 
 ${rows.length} images, ${missing} missing.
