@@ -169,9 +169,12 @@ export const replacementGuideDemo = {
   electricityPrice: 0.25,
   /** Grid emission factor, kg CO₂ per kWh. */
   co2PerKwh: 0.35,
-  /** The Sulzer Assistant opens by itself with its greeting when the page loads. */
-  assistantAutoOpen: true,
-  /** How long after the page loads it opens, ms. */
+  /**
+   * Whether the Sulzer Assistant opens by itself when the page loads (as in the standalone
+   * guide). Off: only the chat button shows, and a click opens the greeting.
+   */
+  assistantAutoOpen: false,
+  /** With auto-open on: how long after the page loads it opens, ms. */
   assistantAutoOpenDelay: 1000,
   /** How long the assistant "types" before each answer, ms. Fixed, so every take matches. */
   assistantTypingDelay: 900,
