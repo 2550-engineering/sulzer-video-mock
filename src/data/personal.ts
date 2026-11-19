@@ -43,12 +43,21 @@ export const emptyPersonal: PersonalData = {
 /** Pages that show the personal toolbar (signed in): product, application and search pages. */
 export const toolbarPaths = [/^\/products(\/|$)/, /^\/applications(\/|$)/]
 
+/**
+ * Of those, pages where the toolbar starts tucked away behind a small tab on the right
+ * edge, so it doesn't cover the content or the chat: the Replacement Guide.
+ */
+export const collapsedToolbarPaths = [/^\/products\/replacement$/]
+
 const myPages: NavItem = { label: 'My Pages', to: '/my-pages' }
 const mySulzer: NavItem = { label: 'mySulzer', to: '/my-sulzer' }
 
 export const personalToolbar = {
   label: 'Personal toolbar',
   close: 'Close',
+  /** The tab and button of a tucked-away toolbar (collapsedToolbarPaths). */
+  show: 'Show personal toolbar',
+  hide: 'Hide toolbar',
   compare: {
     label: 'Compare',
     title: 'Compare models',

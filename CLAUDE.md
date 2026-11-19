@@ -79,6 +79,7 @@ The client's standalone Pump Replacement Guide (`_reference/sulzer-guide/`), por
 - **Logic:** `src/lib/replacementGuide.ts` (search, URL, comparison, energy savings).
 - **URL params:** `?brand=&model=` for a pump picked from the lists (`brand=Sulzer (discontinued)&model=<article id>` for a Sulzer one), `?from=<code>` for a search by part, RSK or Sulzer product number. Every choice is a history entry. With no pump chosen (no params, `?brand=` alone, or a search that matches nothing) the page shows only the search: no comparison, calculator or disclaimer.
 - **Assistant:** the Sulzer Assistant chat (`src/components/replacement/ReplacementAssistant.tsx`, answers in `src/data/replacementAssistant.ts`) replaces the chat card on `/products/replacement` only (`assistantPaths` in `src/config/navigation.ts`).
+- **Personal toolbar:** tucked away behind a small tab on the right edge on `/products/replacement` (`collapsedToolbarPaths` in `src/data/personal.ts`), so it doesn't cover the results or the assistant. Every other page keeps it as before.
 - **Not the same page:** `/products/replacement/existing-pump` is the separate installed-pump replacement finder (end user and partner, from My assets), with the normal chat card.
 - **Photos:** `public/images/replacement-guide/`, extracted from the guide's `image-slots.state.json` with `node scripts/extract-guide-images.mjs`. Rerun it if the client sends an updated guide.
 
