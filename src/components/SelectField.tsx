@@ -11,6 +11,9 @@ type SelectFieldProps<T extends string> = {
   layout?: 'inline' | 'stacked'
   /** `dark` for navy bands: light label text. */
   tone?: 'light' | 'dark'
+  /** Shown while `value` is '' (nothing chosen yet); it can't be picked again. */
+  placeholder?: string
+  disabled?: boolean
 }
 
 /** Native select in Sulzer styling, with its label. */
@@ -21,8 +24,11 @@ export function SelectField<T extends string>({
   onChange,
   layout = 'inline',
   tone = 'light',
+  placeholder,
+  disabled,
 }: SelectFieldProps<T>) {
   const id = useId()
+  const empty = placeholder !== undefined && value === ''
   return (
     <div
       className={
@@ -45,9 +51,15 @@ export function SelectField<T extends string>({
         <select
           id={id}
           value={value}
+          disabled={disabled}
           onChange={(event) => onChange(event.target.value as T)}
-          className="h-10 w-full cursor-pointer appearance-none rounded-md border border-border-strong bg-white pr-10 pl-3.5 font-medium text-navy-900 transition-colors hover:border-primary focus-visible:border-primary"
+          className={`h-10 w-full cursor-pointer appearance-none rounded-md border border-border-strong bg-white pr-10 pl-3.5 font-medium transition-colors hover:border-primary focus-visible:border-primary disabled:cursor-not-allowed disabled:bg-surface-muted disabled:hover:border-border-strong ${empty ? 'text-text-subtle' : 'text-navy-900'}`}
         >
+          {placeholder !== undefined && (
+            <option value="" disabled hidden>
+              {placeholder}
+            </option>
+          )}
           {options.map((option) => (
             <option key={option.value} value={option.value} disabled={option.disabled}>
               {option.label}

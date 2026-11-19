@@ -24,7 +24,7 @@ export type GuideBrand = {
 }
 
 /** The pump the page shows, and what replaces it. */
-export type GuideSelection = (
+export type GuideSelection =
   | {
       kind: 'competitor'
       pump: GuideExistingPump
@@ -38,10 +38,6 @@ export type GuideSelection = (
       successor?: ResultArticle
       fit: GuideFit
     }
-) & {
-  /** `?from` as typed, when it matched nothing and the page fell back to the default pump. */
-  unmatched?: string
-}
 
 /** One row in the search box's suggestion list. */
 export type GuideSuggestion = {
@@ -220,9 +216,6 @@ function sulzerSelection(article: ResultArticle): GuideSelection {
   }
 }
 
-/** The guide's default: the first Flygt pump. */
-const defaultSelection = () => competitorSelection(guideExistingPumps[0])
-
 function selectionOf(target: GuideTarget): GuideSelection | undefined {
   if (target.kind === 'sulzer') {
     const article = articleById(target.articleId)
@@ -242,25 +235,26 @@ export function guideTargetQuery(target: GuideTarget) {
 }
 
 /**
- * The pump the URL asks for: ?brand=&model= (an unknown model opens the brand's first),
- * or ?from= with a Sulzer article id or product number, or a competitor part or RSK
- * number. Anything else opens the first Flygt pump.
+ * The pump the URL asks for: ?brand=&model= (a Sulzer article id as the model under
+ * "Sulzer (discontinued)"), or ?from= with a Sulzer article id or product number, or a
+ * competitor part or RSK number. Nothing when no pump is chosen yet (no params, a brand
+ * alone, an unknown model) or ?from matches nothing: the page then shows only the search.
  */
-export function resolveGuideSelection(params: URLSearchParams): GuideSelection {
+export function resolveGuideSelection(params: URLSearchParams): GuideSelection | undefined {
   const from = params.get('from')?.trim()
   if (from) {
     const target = searchByCode(from)
-    return (target && selectionOf(target)) ?? { ...defaultSelection(), unmatched: from }
+    return target ? selectionOf(target) : undefined
   }
   const brand = params.get('brand')
-  const model = params.get('model') ?? ''
+  const model = params.get('model')
+  if (!brand || !model) return undefined
   if (brand === copy.discontinuedBrand) {
-    const article = discontinuedArticles().find((a) => a.id === model) ?? discontinuedArticles()[0]
-    if (article) return sulzerSelection(article)
+    const article = discontinuedArticles().find((a) => a.id === model)
+    return article && sulzerSelection(article)
   }
-  const pump =
-    brand && (findGuidePump(brand, model) ?? guideExistingPumps.find((p) => p.brand === brand))
-  return pump ? competitorSelection(pump) : defaultSelection()
+  const pump = findGuidePump(brand, model)
+  return pump && competitorSelection(pump)
 }
 
 /* ── Energy ────────────────────────────────────────────────────────────────── */
@@ -325,7 +319,6 @@ export function guideComparisonRows(pump: GuideExistingPump, replacement: GuideR
 
 /** kW in and out for the energy savings calculator, or undefined when there is nothing to save. */
 export function guideSavingsPower(selection: GuideSelection) {
-  if (selection.unmatched) return undefined
   if (selection.kind === 'competitor')
     return { existingKw: selection.pump.powerKw, replacementKw: selection.replacement.powerKw }
   const { article, successor } = selection
