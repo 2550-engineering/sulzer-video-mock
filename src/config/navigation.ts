@@ -122,6 +122,9 @@ export const chatOptions: IconLink[] = [
   { label: 'Talk to a service expert', to: '/contact', icon: Headset },
 ]
 
+/** Pages (exact paths) that show the Sulzer Assistant chat instead of the chat card above. */
+export const assistantPaths: string[] = ['/products/replacement']
+
 export const footerColumns: FooterColumn[] = [
   {
     title: 'Products & services',
